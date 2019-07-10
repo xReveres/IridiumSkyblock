@@ -14,8 +14,9 @@ public class NMSUtils {
             if (size % 2 == 1) size++;
 
             Object worldBorder = getNMSClass("WorldBorder").getConstructor().newInstance();
-            Object craftWorld = getCraftClass("CraftWorld").cast(centerLocation.getWorld());
 
+
+            Object craftWorld = getCraftClass("CraftWorld").cast(centerLocation.getWorld());
             setField(worldBorder, "world", craftWorld.getClass().getMethod("getHandle").invoke(craftWorld), false);
 
             worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX(), centerLocation.getBlockZ());
@@ -34,8 +35,8 @@ public class NMSUtils {
             }
 
             Object packet = getNMSClass("PacketPlayOutWorldBorder").getConstructor(getNMSClass("WorldBorder"),
-                    getNMSClass("PacketPlayOutWorldBorder").getDeclaredClasses()[0]).newInstance(worldBorder,
-                    Enum.valueOf((Class<Enum>) getNMSClass("PacketPlayOutWorldBorder").getDeclaredClasses()[0], "INITIALIZE"));
+                    getNMSClass("PacketPlayOutWorldBorder").getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1]).newInstance(worldBorder,
+                    Enum.valueOf((Class<Enum>) getNMSClass("PacketPlayOutWorldBorder").getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1], "INITIALIZE"));
             sendPacket(player, packet);
         } catch (Exception e) {
             EpicSkyblock.getInstance().sendErrorMessage(e);
@@ -126,6 +127,10 @@ public class NMSUtils {
 
     public static String getVersion() {
         return EpicSkyblock.getInstance().getServer().getClass().getPackage().getName().split("\\.")[3];
+    }
+
+    public static int getVersionNumber() {
+        return Integer.parseInt(getVersion().substring(1, getVersion().length() - 3).replace("_", ""));
     }
 
     public enum Color {
