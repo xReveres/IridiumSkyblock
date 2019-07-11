@@ -8,6 +8,7 @@ import com.peaches.epicskyblock.configs.OreGen;
 import com.peaches.epicskyblock.listeners.*;
 import com.peaches.epicskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.peaches.epicskyblock.serializer.Persist;
+import jdk.nashorn.internal.ir.Block;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -17,6 +18,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
@@ -45,44 +48,40 @@ public class EpicSkyblock extends JavaPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
-        Plugin WorldEdit = Bukkit.getPluginManager().getPlugin("WorldEdit");
-        if (WorldEdit != null) {
-            getDataFolder().mkdir();
-            loadSchematic();
+        getDataFolder().mkdir();
+        loadSchematic();
 
-            instance = this;
+        instance = this;
 
-            persist = new Persist();
+        persist = new Persist();
 
-            commandManager = new CommandManager("island");
-            commandManager.registerCommands();
+        commandManager = new CommandManager("island");
+        commandManager.registerCommands();
 
-            loadConfigs();
-            saveConfigs();
+        loadConfigs();
+        saveConfigs();
 
-            registerListeners(new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onPlayerMove(), new onInventoryClick(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onEntityDamage(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+        registerListeners(new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onPlayerMove(), new onInventoryClick(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onEntityDamage(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
-            new Metrics(this);
+        new Metrics(this);
 
-            Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> getPersist().save(islandManager), 0, 20);
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> getPersist().save(islandManager), 0, 20);
 
-            setupPlaceholderAPI();
+        setupPlaceholderAPI();
 
-            startCounting();
+        startCounting();
 
-            getLogger().info("-------------------------------");
-            getLogger().info("");
-            getLogger().info(getDescription().getName() + " Enabled!");
-            getLogger().info("");
-            getLogger().info("-------------------------------");
-        } else {
-            getLogger().info("-------------------------------");
-            getLogger().info("");
-            getLogger().info("Failed to load World Edit");
-            getLogger().info("");
-            getLogger().info("-------------------------------");
-            Bukkit.getPluginManager().disablePlugin(this);
+        try {
+            Bukkit.getServer().getClass().getMethod("createBlockData", String.class).invoke(Bukkit.getServer(), "minecraft:cobblestone_slab[type=top,waterlogged=false]");
+        } catch (Exception e) {
+            EpicSkyblock.getInstance().sendErrorMessage(e);
         }
+
+        getLogger().info("-------------------------------");
+        getLogger().info("");
+        getLogger().info(getDescription().getName() + " Enabled!");
+        getLogger().info("");
+        getLogger().info("-------------------------------");
     }
 
     public void startCounting() {
