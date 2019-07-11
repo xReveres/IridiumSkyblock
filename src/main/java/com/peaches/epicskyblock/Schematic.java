@@ -162,25 +162,27 @@ public class Schematic {
             }
         } else {
             //LoadBlocks
-            try {
-                Method createBlockData = Bukkit.getServer().getClass().getMethod("createBlockData", String.class);
-                Method setBlockData = Block.class.getMethod("setBlockData", Class.forName("org.bukkit.block.data.BlockData"), boolean.class);
-                for (int x = 0; x < width; ++x) {
-                    for (int y = 0; y < height; ++y) {
-                        for (int z = 0; z < length; ++z) {
-                            int index = y * width * length + z * width + x;
-                            Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-                            for (String s : palette.keySet()) {
-                                int i = getChildTag(palette, s, IntTag.class).getValue();
-                                if (blockdata[index] == i) {
-                                    setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), false);
+            if (NMSUtils.getVersionNumber() >= 113) {
+                try {
+                    Method createBlockData = Bukkit.getServer().getClass().getMethod("createBlockData", String.class);
+                    Method setBlockData = Block.class.getMethod("setBlockData", Class.forName("org.bukkit.block.data.BlockData"), boolean.class);
+                    for (int x = 0; x < width; ++x) {
+                        for (int y = 0; y < height; ++y) {
+                            for (int z = 0; z < length; ++z) {
+                                int index = y * width * length + z * width + x;
+                                Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
+                                for (String s : palette.keySet()) {
+                                    int i = getChildTag(palette, s, IntTag.class).getValue();
+                                    if (blockdata[index] == i) {
+                                        setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), false);
+                                    }
                                 }
                             }
                         }
                     }
+                } catch (Exception e) {
+                    EpicSkyblock.getInstance().sendErrorMessage(e);
                 }
-            } catch (Exception e) {
-                EpicSkyblock.getInstance().sendErrorMessage(e);
             }
         }
     }
@@ -211,9 +213,9 @@ public class Schematic {
         short width = getChildTag(schematic, "Width", ShortTag.class).getValue();
         short length = getChildTag(schematic, "Length", ShortTag.class).getValue();
         short height = getChildTag(schematic, "Height", ShortTag.class).getValue();
-        int version = getChildTag(schematic, "Version", IntTag.class).getValue();
         if (!schematic.containsKey("Blocks")) {
             // 1.13 Schematic
+            int version = getChildTag(schematic, "Version", IntTag.class).getValue();
             Map<String, Tag> palette = getChildTag(schematic, "Palette", CompoundTag.class).getValue();
             byte[] blockdata = getChildTag(schematic, "BlockData", ByteArrayTag.class).getValue();
             if (version == 1) {

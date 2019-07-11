@@ -77,7 +77,6 @@ public class IslandManager {
         File schematicFolder = new File(EpicSkyblock.getInstance().getDataFolder(), "schematics");
         File schematicFile = new File(schematicFolder, "island.schematic");
         try {
-            Schematic.debugSchematic(schematicFile);
             Schematic.loadSchematic(schematicFile).pasteSchematic(loc);
         } catch (IOException e) {
             EpicSkyblock.getInstance().sendErrorMessage(e);

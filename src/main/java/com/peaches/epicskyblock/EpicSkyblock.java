@@ -71,12 +71,6 @@ public class EpicSkyblock extends JavaPlugin {
 
         startCounting();
 
-        try {
-            Bukkit.getServer().getClass().getMethod("createBlockData", String.class).invoke(Bukkit.getServer(), "minecraft:cobblestone_slab[type=top,waterlogged=false]");
-        } catch (Exception e) {
-            EpicSkyblock.getInstance().sendErrorMessage(e);
-        }
-
         getLogger().info("-------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");

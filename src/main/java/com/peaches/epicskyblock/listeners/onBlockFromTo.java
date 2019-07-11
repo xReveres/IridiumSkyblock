@@ -1,6 +1,7 @@
 package com.peaches.epicskyblock.listeners;
 
 import com.peaches.epicskyblock.EpicSkyblock;
+import com.peaches.epicskyblock.Island;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,19 +26,22 @@ public class onBlockFromTo implements Listener {
                         return;
                     }
 
-                    Random r = new Random();
-                    ArrayList<String> items = new ArrayList<>();
-                    for (String item : EpicSkyblock.getOreGen().ores) {
-                        Integer i1 = Integer.parseInt(item.split(":")[1]);
-                        for (int i = 0; i <= i1; i++) {
-                            items.add(item.split(":")[0]);
+                    Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(fromLoc);
+                    if (island != null) {
+                        Random r = new Random();
+                        ArrayList<String> items = new ArrayList<>();
+                        for (String item : EpicSkyblock.getOreGen().ores.get(island.getOreLevel()).getOres()) {
+                            Integer i1 = Integer.parseInt(item.split(":")[1]);
+                            for (int i = 0; i <= i1; i++) {
+                                items.add(item.split(":")[0]);
+                            }
                         }
+                        String item = items.get(r.nextInt(items.size()));
+                        if (Material.getMaterial(item) == null) return;
+                        e.setCancelled(true);
+                        b.setType(Material.getMaterial(item));
+                        b.getState().update(true);
                     }
-                    String item = items.get(r.nextInt(items.size()));
-                    if (Material.getMaterial(item) == null) return;
-                    e.setCancelled(true);
-                    b.setType(Material.getMaterial(item));
-                    b.getState().update(true);
                 }
             });
         }

@@ -18,6 +18,7 @@ public class UpgradeGUI {
     public ItemStack size;
     public ItemStack member;
     public ItemStack warp;
+    public ItemStack ores;
     public int islandID;
     public int scheduler;
 
@@ -64,8 +65,16 @@ public class UpgradeGUI {
         warpLore.add("");
         warpLore.add("&b&l[!] &bRight Click to Purchase this Upgrade");
         this.warp = Utils.makeItem(Material.ENDER_PORTAL_FRAME, 1, 0, "&b&lIsland Warp", Utils.color(warpLore));
+
+        int currentores = island.getOreLevel();
+        String orescost = EpicSkyblock.getOreGen().ores.containsKey(currentwarp + 1) ? EpicSkyblock.getOreGen().ores.get(currentwarp + 1).getCost() + " Crystals" : "Max Level Reached";
+        List<String> oresLore = new ArrayList<>(Arrays.asList("&7Want to improve your generator? Buy this", "&7upgrade to increase your island generator.", "", "&b&lInformation:", "&b&l * &7Current Level: &b" + currentores, "&b&l * &7Upgrade Cost: &b" + orescost));
+        oresLore.add("");
+        oresLore.add("&b&l[!] &bRight Click to Purchase this Upgrade");
+        this.ores = Utils.makeItem(Material.DIAMOND_ORE, 1, 0, "&b&lIsland Generator", Utils.color(oresLore));
         inventory.setItem(10, size);
-        inventory.setItem(13, member);
-        inventory.setItem(16, warp);
+        inventory.setItem(12, member);
+        inventory.setItem(14, warp);
+        inventory.setItem(16, ores);
     }
 }

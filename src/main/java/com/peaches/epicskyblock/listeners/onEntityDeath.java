@@ -14,15 +14,17 @@ public class onEntityDeath implements Listener {
     public void onEntityDeath(EntityDeathEvent e) {
         if (e.getEntity().getKiller() == null) return;
         Island island = User.getUser(e.getEntity().getKiller().getName()).getIsland();
-        if (island.hunter > -1) {
-            island.hunter++;
-            if (island.hunter >= EpicSkyblock.getMissions().hunter.getAmount()) {
-                island.hunter = -1;
-                island.completeMission("Hunter", EpicSkyblock.getMissions().hunter.getReward());
+        if (island != null) {
+            if (island.hunter > -1) {
+                island.hunter++;
+                if (island.hunter >= EpicSkyblock.getMissions().hunter.getAmount()) {
+                    island.hunter = -1;
+                    island.completeMission("Hunter", EpicSkyblock.getMissions().hunter.getReward());
+                }
             }
-        }
-        if (island.getExpBooster() != 0) {
-            e.setDroppedExp(e.getDroppedExp() * 2);
+            if (island.getExpBooster() != 0) {
+                e.setDroppedExp(e.getDroppedExp() * 2);
+            }
         }
     }
 }

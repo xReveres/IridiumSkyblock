@@ -71,6 +71,18 @@ public class onInventoryClick implements Listener {
             }
             if (e.getInventory().equals(user.getIsland().getUpgradeGUI().inventory)) {
                 e.setCancelled(true);
+                if (e.getCurrentItem().equals(user.getIsland().getUpgradeGUI().ores)) {
+                    if (EpicSkyblock.getOreGen().ores.containsKey(user.getIsland().getOreLevel() + 1)) {
+                        if (user.getIsland().getCrystals() >= EpicSkyblock.getOreGen().ores.get(user.getIsland().getOreLevel() + 1).getCost()) {
+                            user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getOreGen().ores.get(user.getIsland().getOreLevel() + 1).getCost());
+                            user.getIsland().setOreLevel(user.getIsland().getOreLevel() + 1);
+                        } else {
+                            e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                        }
+                    } else {
+                        p.sendMessage(Utils.color(EpicSkyblock.getMessages().maxLevelReached.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                }
                 if (e.getCurrentItem().equals(user.getIsland().getUpgradeGUI().size)) {
                     if (EpicSkyblock.getConfiguration().size.containsKey(user.getIsland().getSizeLevel() + 1)) {
                         if (user.getIsland().getCrystals() >= EpicSkyblock.getConfiguration().size.get(user.getIsland().getSizeLevel() + 1).getCost()) {

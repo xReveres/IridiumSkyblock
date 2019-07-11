@@ -77,6 +77,7 @@ public class Island {
     private int sizeLevel;
     private int memberLevel;
     private int warpLevel;
+    private int oreLevel;
 
     private Integer a;
 
@@ -122,6 +123,7 @@ public class Island {
         sizeLevel = 1;
         memberLevel = 1;
         warpLevel = 1;
+        oreLevel = 1;
         value = 0;
         warps = new ArrayList<>();
         treasureHunter = 0;
@@ -490,6 +492,14 @@ public class Island {
 
     public void setWarpLevel(int warpLevel) {
         this.warpLevel = warpLevel;
+    }
+
+    public int getOreLevel() {
+        return oreLevel;
+    }
+
+    public void setOreLevel(int oreLevel) {
+        this.oreLevel = oreLevel;
     }
 
     public List<Warp> getWarps() {
