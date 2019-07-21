@@ -143,8 +143,10 @@ public class Island {
         for (Chunk c : chunks) {
             for (Entity e : c.getEntities()) {
                 if (e instanceof Player) {
-                    Player p = (Player) e;
-                    sendBorder(p);
+                    if (isInIsland(e.getLocation())) {
+                        Player p = (Player) e;
+                        sendBorder(p);
+                    }
                 }
             }
         }
@@ -154,8 +156,10 @@ public class Island {
         for (Chunk c : chunks) {
             for (Entity e : c.getEntities()) {
                 if (e instanceof Player) {
-                    Player p = (Player) e;
-                    hideBorder(p);
+                    if (isInIsland(e.getLocation())) {
+                        Player p = (Player) e;
+                        hideBorder(p);
+                    }
                 }
             }
         }
@@ -299,6 +303,19 @@ public class Island {
         deleteBlocks();
         killEntities();
         EpicSkyblock.getIslandManager().pasteSchematic(getCenter().clone());
+        clearInventories();
+    }
+
+    public void clearInventories() {
+        for (Chunk c : chunks) {
+            for (Entity e : c.getEntities()) {
+                if (e instanceof Player) {
+                    if (isInIsland(e.getLocation())) {
+                        ((Player) e).getInventory().clear();
+                    }
+                }
+            }
+        }
     }
 
     public void teleportHome(Player p) {
@@ -362,8 +379,10 @@ public class Island {
     public void killEntities() {
         for (Chunk c : chunks) {
             for (Entity e : c.getEntities()) {
-                if (e.getType() != EntityType.PLAYER) {
-                    e.remove();
+                if (isInIsland(e.getLocation())) {
+                    if (e.getType() != EntityType.PLAYER) {
+                        e.remove();
+                    }
                 }
             }
         }
