@@ -27,7 +27,7 @@ public class InviteCommand extends Command {
         User user = User.getUser(p.getName());
         Player player = Bukkit.getPlayer(args[1]);
         if (player != null) {
-            User u = User.getUser(p.getName());
+            User u = User.getUser(player.getName());
             if (user.getIsland() != null) {
                 if (u.getIsland() == null) {
                     u.invites.add(user.getIsland().getId());
