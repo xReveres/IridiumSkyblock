@@ -13,7 +13,6 @@ public class BorderColorGUI {
 
     public Inventory inventory;
     public int islandID;
-    public int scheduler;
 
     public ItemStack red;
     public ItemStack green;
@@ -22,10 +21,7 @@ public class BorderColorGUI {
     public BorderColorGUI(Island island) {
         this.inventory = Bukkit.createInventory(null, 27, Utils.color(EpicSkyblock.getConfiguration().BorderColorGUITitle));
         islandID = island.getId();
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), this::addContent, 0, 10);
-    }
 
-    public void addContent() {
         for (int i = 0; i < 27; i++) {
             inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
         }

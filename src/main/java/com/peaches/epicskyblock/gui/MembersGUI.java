@@ -25,20 +25,24 @@ public class MembersGUI {
     }
 
     public void addContent() {
-        if (EpicSkyblock.getIslandManager().islands.containsKey(islandID)) {
-            Island island = EpicSkyblock.getIslandManager().islands.get(islandID);
-            for (int i = 0; i < 27; i++) {
-                inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+        try {
+            if (EpicSkyblock.getIslandManager().islands.containsKey(islandID)) {
+                Island island = EpicSkyblock.getIslandManager().islands.get(islandID);
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+                }
+                int i = 0;
+                for (String member : island.getMembers()) {
+                    ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + member);
+                    SkullMeta m = (SkullMeta) head.getItemMeta();
+                    m.setOwner(member);
+                    head.setItemMeta(m);
+                    inventory.setItem(i, head);
+                    i++;
+                }
             }
-            int i = 0;
-            for (String member : island.getMembers()) {
-                ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + member);
-                SkullMeta m = (SkullMeta) head.getItemMeta();
-                m.setOwner(member);
-                head.setItemMeta(m);
-                inventory.setItem(i, head);
-                i++;
-            }
+        }catch (Exception e){
+          EpicSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

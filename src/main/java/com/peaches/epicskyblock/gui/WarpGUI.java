@@ -25,18 +25,22 @@ public class WarpGUI {
     }
 
     public void addContent() {
-        if (EpicSkyblock.getIslandManager().islands.containsKey(islandID)) {
-            Island island = EpicSkyblock.getIslandManager().islands.get(islandID);
-            for (int i = 0; i < 27; i++) {
-                inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+        try {
+            if (EpicSkyblock.getIslandManager().islands.containsKey(islandID)) {
+                Island island = EpicSkyblock.getIslandManager().islands.get(islandID);
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+                }
+                int i = 9;
+                warps.clear();
+                for (Island.Warp warp : island.getWarps()) {
+                    warps.put(i, warp);
+                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName())));
+                    i++;
+                }
             }
-            int i = 9;
-            warps.clear();
-            for (Island.Warp warp : island.getWarps()) {
-                warps.put(i, warp);
-                inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName())));
-                i++;
-            }
+        } catch (Exception e) {
+            EpicSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }
