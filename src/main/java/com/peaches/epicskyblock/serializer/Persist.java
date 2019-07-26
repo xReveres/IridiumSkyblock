@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
@@ -111,6 +112,13 @@ public class Persist {
     }
 
     public boolean save(Object instance, File file) {
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                EpicSkyblock.getInstance().sendErrorMessage(e);
+            }
+        }
         return DiscUtil.writeCatch(file, gson.toJson(instance), true);
     }
 

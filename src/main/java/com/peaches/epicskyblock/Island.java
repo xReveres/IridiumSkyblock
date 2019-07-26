@@ -218,20 +218,24 @@ public class Island {
 
             @Override
             public void run() {
-                if (Y <= EpicSkyblock.getIslandManager().getWorld().getMaxHeight()) {
-                    for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
-                        for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                            Location loc = new Location(getPos1().getWorld(), X, Y, Z);
-                            if (Utils.isBlockValuable(loc.getBlock())) {
-                                if (!blocks.contains(loc)) blocks.add(loc);
+                try {
+                    if (Y <= EpicSkyblock.getIslandManager().getWorld().getMaxHeight()) {
+                        for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
+                            for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
+                                Location loc = new Location(getPos1().getWorld(), X, Y, Z);
+                                if (Utils.isBlockValuable(loc.getBlock())) {
+                                    if (!blocks.contains(loc)) blocks.add(loc);
+                                }
                             }
                         }
+                    } else {
+                        Bukkit.getScheduler().cancelTask(a);
+                        a = -1;
                     }
-                } else {
-                    Bukkit.getScheduler().cancelTask(a);
-                    a = -1;
+                    Y++;
+                }catch (Exception e){
+                    EpicSkyblock.getInstance().sendErrorMessage(e);
                 }
-                Y++;
             }
         }, 0, 1);
     }

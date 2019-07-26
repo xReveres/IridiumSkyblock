@@ -21,8 +21,12 @@ public class LeaveCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p.getName());
         if (user.getIsland() != null) {
-            user.getIsland().removeUser(user);
-            sender.sendMessage(Utils.color(EpicSkyblock.getMessages().leftIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            if (user.getIsland().getOwner().equalsIgnoreCase(p.getName())) {
+                sender.sendMessage(Utils.color(EpicSkyblock.getMessages().cantLeaveIfOwner.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            } else {
+                user.getIsland().removeUser(user);
+                sender.sendMessage(Utils.color(EpicSkyblock.getMessages().leftIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            }
         } else {
             sender.sendMessage(Utils.color(EpicSkyblock.getMessages().noIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         }
