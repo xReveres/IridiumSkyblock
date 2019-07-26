@@ -35,6 +35,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         new BoosterCommand();
         new CrystalsCommand();
         new GiveCrystalsCommand();
+        new RemoveCrystalsCommand();
         new MembersCommand();
         new FlyCommand();
         new AboutCommand();
