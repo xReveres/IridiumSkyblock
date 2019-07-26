@@ -1,6 +1,7 @@
 package com.peaches.epicskyblock.commands;
 
 import com.peaches.epicskyblock.EpicSkyblock;
+import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -74,6 +75,18 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     } else {
                         // Must be a player
                         cs.sendMessage(Utils.color(EpicSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                        return true;
+                    }
+                }
+            }else{
+                if(cs instanceof Player){
+                    Player p = (Player) cs;
+                    User u = User.getUser(p.getName());
+                    if(u.getIsland() != null){
+                        u.getIsland().teleportHome(p);
+                        return true;
+                    }else{
+                        EpicSkyblock.getIslandManager().createIsland(p);
                         return true;
                     }
                 }
