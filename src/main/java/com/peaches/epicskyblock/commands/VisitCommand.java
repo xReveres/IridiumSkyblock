@@ -24,9 +24,9 @@ public class VisitCommand extends Command {
             return;
         }
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
         Player player = Bukkit.getPlayer(args[1]);
         if (player != null) {
+            User user = User.getUser(player.getName());
             if (user.getIsland() != null) {
                 if (user.getIsland().isVisit()) {
                     user.getIsland().teleportHome(p);
