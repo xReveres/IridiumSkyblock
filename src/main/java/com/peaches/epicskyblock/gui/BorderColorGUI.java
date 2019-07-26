@@ -26,11 +26,9 @@ public class BorderColorGUI {
     }
 
     public void addContent() {
-        Island island = EpicSkyblock.getIslandManager().islands.get(islandID);
         for (int i = 0; i < 27; i++) {
             inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
         }
-        int i = 0;
         this.red = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, "&c&lRed");
         this.green = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, "&a&lGreen");
         this.blue = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 11, "&b&lBlue");
