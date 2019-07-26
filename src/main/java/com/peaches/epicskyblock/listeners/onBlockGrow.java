@@ -14,17 +14,21 @@ public class onBlockGrow implements Listener {
 
     @EventHandler
     public void onBlockGrow(BlockGrowEvent e) {
-        Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
-        if (island != null) {
-            if (island.getFarmingBooster() != 0) {
-                if (e.getBlock().getType().equals(Material.CROPS)) {
-                    e.setCancelled(true);
-                    Crops c = new Crops(CropState.RIPE);
-                    BlockState bs = e.getBlock().getState();
-                    bs.setData(c);
-                    bs.update();
+        try {
+            Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
+            if (island != null) {
+                if (island.getFarmingBooster() != 0) {
+                    if (e.getBlock().getType().equals(Material.CROPS)) {
+                        e.setCancelled(true);
+                        Crops c = new Crops(CropState.RIPE);
+                        BlockState bs = e.getBlock().getState();
+                        bs.setData(c);
+                        bs.update();
+                    }
                 }
             }
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 }

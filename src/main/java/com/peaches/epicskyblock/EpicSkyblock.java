@@ -8,7 +8,10 @@ import com.peaches.epicskyblock.configs.OreGen;
 import com.peaches.epicskyblock.listeners.*;
 import com.peaches.epicskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.peaches.epicskyblock.serializer.Persist;
-import jdk.nashorn.internal.ir.Block;
+import io.sentry.SentryClient;
+import io.sentry.SentryClientFactory;
+import io.sentry.event.Event;
+import io.sentry.event.EventBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -18,13 +21,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EpicSkyblock extends JavaPlugin {
+    
+    private SentryClient sentry;
 
     private static EpicSkyblock instance;
 
@@ -47,61 +53,123 @@ public class EpicSkyblock extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        super.onEnable();
-        getDataFolder().mkdir();
-        loadSchematic();
+        try {
+            sentry = SentryClientFactory.sentryClient("https://88cbd35ae467457bbc87a56d81169389@sentry.prodigysupport.team/5" + "?timeout=15000" + "&async=true" + "&stacktrace.app.packages=com.peaches.epicskyblock");
+            super.onEnable();
+            getDataFolder().mkdir();
+            loadSchematic();
 
-        instance = this;
+            instance = this;
 
-        persist = new Persist();
+            persist = new Persist();
 
-        commandManager = new CommandManager("island");
-        commandManager.registerCommands();
+            commandManager = new CommandManager("island");
+            commandManager.registerCommands();
 
-        loadConfigs();
-        saveConfigs();
+            loadConfigs();
+            saveConfigs();
 
-        registerListeners(new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onPlayerMove(), new onInventoryClick(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onEntityDamage(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+            registerListeners(new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onPlayerMove(), new onInventoryClick(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onEntityDamage(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
-        new Metrics(this);
+            new Metrics(this);
 
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> getPersist().save(islandManager), 0, 20);
+            Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> getPersist().save(islandManager), 0, 20);
 
-        setupPlaceholderAPI();
+            setupPlaceholderAPI();
 
-        startCounting();
+            startCounting();
 
-        getLogger().info("-------------------------------");
-        getLogger().info("");
-        getLogger().info(getDescription().getName() + " Enabled!");
-        getLogger().info("");
-        getLogger().info("-------------------------------");
+            getLogger().info("-------------------------------");
+            getLogger().info("");
+            getLogger().info(getDescription().getName() + " Enabled!");
+            getLogger().info("");
+            getLogger().info("-------------------------------");
+        } catch (Exception e) {
+            sendErrorMessage(e);
+        }
     }
 
     public void startCounting() {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
-            if (LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.MONDAY) && LocalDateTime.now().getHour() == 0 && LocalDateTime.now().getMinute() == 0 && LocalDateTime.now().getSecond() == 0) {
-                for (Island island : getIslandManager().islands.values()) {
-                    island.treasureHunter = 0;
-                    island.competitor = 0;
-                    island.miner = 0;
-                    island.farmer = 0;
-                    island.hunter = 0;
-                    island.fisherman = 0;
-                    island.builder = 0;
+            try {
+                if (LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.MONDAY) && LocalDateTime.now().getHour() == 0 && LocalDateTime.now().getMinute() == 0 && LocalDateTime.now().getSecond() == 0) {
+                    for (Island island : getIslandManager().islands.values()) {
+                        island.treasureHunter = 0;
+                        island.competitor = 0;
+                        island.miner = 0;
+                        island.farmer = 0;
+                        island.hunter = 0;
+                        island.fisherman = 0;
+                        island.builder = 0;
+                    }
                 }
+            } catch (Exception e) {
+                sendErrorMessage(e);
             }
         }, 20, 20);
     }
 
     public void sendErrorMessage(Exception e) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw, true);
-        e.printStackTrace(pw);
-        getLogger().info(sw.getBuffer().toString());
-        if (configuration == null || configuration.sendErrorReports) {
-            getLogger().info("Sending Error Report");
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            try {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw, true);
+                e.printStackTrace(pw);
+                String error = sw.getBuffer().toString();
+                final EventBuilder eventBuilder = new EventBuilder();
+                eventBuilder.withMessage(error);
+                eventBuilder.withLevel(Event.Level.ERROR);
+                eventBuilder.withTag("ip", InetAddress.getLocalHost().getHostAddress());
+                eventBuilder.withTag("plugin_version", getDescription().getVersion());
+
+                final Map<String, Map<String, Object>> contexts = new HashMap<>();
+
+
+                final Map<String, Object> serverPluginsInfo = new HashMap<>();
+                final StringBuilder stringBuilder = new StringBuilder();
+                final Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
+                for (int i = 0; i < plugins.length; i++) {
+                    final Plugin plugin = plugins[i];
+
+
+                    final StringBuilder authorBuilder = new StringBuilder();
+                    final List<String> authors = plugin.getDescription().getAuthors();
+                    for (int i2 = 0; i2 < authors.size(); i2++)
+                        authorBuilder.append(i2 == 0 ? authors.get(i2) : (", " + authors.get(i2)));
+                    serverPluginsInfo.put(plugin.getName() + " (v" + plugin.getDescription().getVersion() + ")", "Description: " + (plugin.getDescription().getDescription() != null ? plugin.getDescription().getDescription() : "EMPTY") + "\nAuthor(s): " + (!authors.isEmpty() ? authorBuilder.toString() : "UNKNOWN") + "\nWebsite: " + (plugin.getDescription().getWebsite() != null ? plugin.getDescription().getWebsite() : "UNKNOWN"));
+                    final String name = plugin.getName() + " (v" + plugin.getDescription().getVersion() + ")";
+                    if (i == 0)
+                        stringBuilder.append(name);
+                    else stringBuilder.append(", ").append(name);
+                }
+
+                final Map<String, Object> serverInfo = new HashMap<>();
+                serverInfo.put("IP", Bukkit.getIp());
+                serverInfo.put("Port", Bukkit.getPort());
+                serverInfo.put("Address", Bukkit.getIp() + ":" + Bukkit.getPort());
+                serverInfo.put("Name", Bukkit.getName());
+                serverInfo.put("Version", Bukkit.getVersion());
+                serverInfo.put("Bukkit Version", Bukkit.getBukkitVersion());
+                serverInfo.put("Installed Plugins (" + plugins.length + ")", stringBuilder.toString());
+                contexts.put("Server Info", serverInfo);
+
+                contexts.put("Installed Plugins Info", serverPluginsInfo);
+
+                final Map<String, Object> pluginInfo = new HashMap<>();
+                pluginInfo.put("Name", getName());
+                pluginInfo.put("Version", getDescription().getVersion());
+                pluginInfo.put("Authors", getDescription().getAuthors());
+                contexts.put("Plugin Info", pluginInfo);
+
+                eventBuilder.withContexts(contexts);
+
+                sentry.sendEvent(eventBuilder.build());
+
+                getLogger().info(error);
+
+            } catch (Exception exception) {
+            }
+        });
     }
 
     private void registerListeners(Listener... listener) {
@@ -155,19 +223,23 @@ public class EpicSkyblock extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        super.onDisable();
+        try {
+            super.onDisable();
 
-        saveConfigs();
+            saveConfigs();
 
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            p.closeInventory();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.closeInventory();
+            }
+
+            getLogger().info("-------------------------------");
+            getLogger().info("");
+            getLogger().info(getDescription().getName() + " Disabled!");
+            getLogger().info("");
+            getLogger().info("-------------------------------");
+        } catch (Exception e) {
+            sendErrorMessage(e);
         }
-
-        getLogger().info("-------------------------------");
-        getLogger().info("");
-        getLogger().info(getDescription().getName() + " Disabled!");
-        getLogger().info("");
-        getLogger().info("-------------------------------");
     }
 
     public static EpicSkyblock getInstance() {

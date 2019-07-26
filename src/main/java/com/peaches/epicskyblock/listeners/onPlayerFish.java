@@ -10,17 +10,21 @@ public class onPlayerFish implements Listener {
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent e) {
-        if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
-            User u = User.getUser(e.getPlayer().getName());
-            if (u.getIsland() != null) {
-                if (u.getIsland().fisherman > -1) {
-                    u.getIsland().fisherman++;
-                    if (u.getIsland().fisherman >= EpicSkyblock.getMissions().fisherman.getAmount()) {
-                        u.getIsland().fisherman = -1;
-                        u.getIsland().completeMission("Fisherman", EpicSkyblock.getMissions().fisherman.getReward());
+        try {
+            if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
+                User u = User.getUser(e.getPlayer().getName());
+                if (u.getIsland() != null) {
+                    if (u.getIsland().fisherman > -1) {
+                        u.getIsland().fisherman++;
+                        if (u.getIsland().fisherman >= EpicSkyblock.getMissions().fisherman.getAmount()) {
+                            u.getIsland().fisherman = -1;
+                            u.getIsland().completeMission("Fisherman", EpicSkyblock.getMissions().fisherman.getReward());
+                        }
                     }
                 }
             }
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 }

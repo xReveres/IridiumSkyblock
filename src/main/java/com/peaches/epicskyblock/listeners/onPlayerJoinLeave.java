@@ -12,11 +12,15 @@ public class onPlayerJoinLeave implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSkyblock.getInstance(), () -> {
-            Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(e.getPlayer().getLocation());
-            if (island != null) {
-                island.sendBorder(e.getPlayer());
-            }
-        }, 1);
+        try {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSkyblock.getInstance(), () -> {
+                Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(e.getPlayer().getLocation());
+                if (island != null) {
+                    island.sendBorder(e.getPlayer());
+                }
+            }, 1);
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
+        }
     }
 }

@@ -13,17 +13,21 @@ public class onPlayerTalk implements Listener {
 
     @EventHandler
     public void onPlayerTalk(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
-        User u = User.getUser(p.getName());
-        if (u.warp != null) {
-            if (u.warp.getPassword().equals(e.getMessage())) {
-                Bukkit.getScheduler().runTask(EpicSkyblock.getInstance(), () -> p.teleport(u.warp.getLocation()));
-                        p.sendMessage(Utils.color(EpicSkyblock.getMessages().teleporting.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-            } else {
-                p.sendMessage(Utils.color(EpicSkyblock.getMessages().wrongPassword.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                u.warp = null;
+        try {
+            Player p = e.getPlayer();
+            User u = User.getUser(p.getName());
+            if (u.warp != null) {
+                if (u.warp.getPassword().equals(e.getMessage())) {
+                    Bukkit.getScheduler().runTask(EpicSkyblock.getInstance(), () -> p.teleport(u.warp.getLocation()));
+                    p.sendMessage(Utils.color(EpicSkyblock.getMessages().teleporting.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                } else {
+                    p.sendMessage(Utils.color(EpicSkyblock.getMessages().wrongPassword.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    u.warp = null;
+                }
+                e.setCancelled(true);
             }
-            e.setCancelled(true);
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 }

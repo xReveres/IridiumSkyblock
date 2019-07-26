@@ -17,33 +17,37 @@ public class onBlockFromTo implements Listener {
 
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent e) {
-        if (e.getFace() != BlockFace.DOWN) {
-            Block b = e.getToBlock();
-            Location fromLoc = b.getLocation();
-            Bukkit.getScheduler().runTask(EpicSkyblock.getInstance(), () -> {
-                if (b.getType().equals(Material.COBBLESTONE) || b.getType().equals(Material.STONE)) {
-                    if (!isSurroundedByWater(fromLoc)) {
-                        return;
-                    }
-
-                    Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(fromLoc);
-                    if (island != null) {
-                        Random r = new Random();
-                        ArrayList<String> items = new ArrayList<>();
-                        for (String item : EpicSkyblock.getOreGen().ores.get(island.getOreLevel()).getOres()) {
-                            Integer i1 = Integer.parseInt(item.split(":")[1]);
-                            for (int i = 0; i <= i1; i++) {
-                                items.add(item.split(":")[0]);
-                            }
+        try {
+            if (e.getFace() != BlockFace.DOWN) {
+                Block b = e.getToBlock();
+                Location fromLoc = b.getLocation();
+                Bukkit.getScheduler().runTask(EpicSkyblock.getInstance(), () -> {
+                    if (b.getType().equals(Material.COBBLESTONE) || b.getType().equals(Material.STONE)) {
+                        if (!isSurroundedByWater(fromLoc)) {
+                            return;
                         }
-                        String item = items.get(r.nextInt(items.size()));
-                        if (Material.getMaterial(item) == null) return;
-                        e.setCancelled(true);
-                        b.setType(Material.getMaterial(item));
-                        b.getState().update(true);
+
+                        Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(fromLoc);
+                        if (island != null) {
+                            Random r = new Random();
+                            ArrayList<String> items = new ArrayList<>();
+                            for (String item : EpicSkyblock.getOreGen().ores.get(island.getOreLevel()).getOres()) {
+                                Integer i1 = Integer.parseInt(item.split(":")[1]);
+                                for (int i = 0; i <= i1; i++) {
+                                    items.add(item.split(":")[0]);
+                                }
+                            }
+                            String item = items.get(r.nextInt(items.size()));
+                            if (Material.getMaterial(item) == null) return;
+                            e.setCancelled(true);
+                            b.setType(Material.getMaterial(item));
+                            b.getState().update(true);
+                        }
                     }
-                }
-            });
+                });
+            }
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 

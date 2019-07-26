@@ -8,8 +8,12 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 public class onEntityExplode implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
-        if (e.getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
-            e.setCancelled(true);
+        try {
+            if (e.getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
+                e.setCancelled(true);
+            }
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 }

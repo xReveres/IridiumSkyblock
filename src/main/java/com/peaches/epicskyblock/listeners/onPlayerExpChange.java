@@ -11,16 +11,20 @@ public class onPlayerExpChange implements Listener {
 
     @EventHandler
     public void onPlayerExpChange(PlayerExpChangeEvent e) {
-        Player p = e.getPlayer();
-        User user = User.getUser(p.getName());
-        if (user.getIsland() != null) {
-            if (user.getIsland().treasureHunter > -1) {
-                user.getIsland().treasureHunter += e.getAmount();
-                if (user.getIsland().treasureHunter >= EpicSkyblock.getMissions().treasureHunter.getAmount()) {
-                    user.getIsland().treasureHunter = -1;
-                    user.getIsland().completeMission("Treasure Hunter", EpicSkyblock.getMissions().treasureHunter.getReward());
+        try {
+            Player p = e.getPlayer();
+            User user = User.getUser(p.getName());
+            if (user.getIsland() != null) {
+                if (user.getIsland().treasureHunter > -1) {
+                    user.getIsland().treasureHunter += e.getAmount();
+                    if (user.getIsland().treasureHunter >= EpicSkyblock.getMissions().treasureHunter.getAmount()) {
+                        user.getIsland().treasureHunter = -1;
+                        user.getIsland().completeMission("Treasure Hunter", EpicSkyblock.getMissions().treasureHunter.getReward());
+                    }
                 }
             }
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 }

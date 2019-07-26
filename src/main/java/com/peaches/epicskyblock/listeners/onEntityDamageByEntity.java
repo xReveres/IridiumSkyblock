@@ -11,22 +11,26 @@ public class onEntityDamageByEntity implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player) {
-            Player p = (Player) e.getDamager();
-            if (e.getEntity() instanceof Player) {
-                Player player = (Player) e.getEntity();
-                User damager = User.getUser(p.getName());
-                User entity = User.getUser(player.getName());
-                if (e.getEntity().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
-                    e.setCancelled(true);
-                } else{
-                    if(damager.getIsland() != null && entity.getIsland() != null){
-                        if (damager.getIsland().equals(entity.getIsland()) && damager.getIsland() != null) {
-                            e.setCancelled(true);
+        try {
+            if (e.getDamager() instanceof Player) {
+                Player p = (Player) e.getDamager();
+                if (e.getEntity() instanceof Player) {
+                    Player player = (Player) e.getEntity();
+                    User damager = User.getUser(p.getName());
+                    User entity = User.getUser(player.getName());
+                    if (e.getEntity().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
+                        e.setCancelled(true);
+                    } else {
+                        if (damager.getIsland() != null && entity.getIsland() != null) {
+                            if (damager.getIsland().equals(entity.getIsland()) && damager.getIsland() != null) {
+                                e.setCancelled(true);
+                            }
                         }
                     }
                 }
             }
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 }

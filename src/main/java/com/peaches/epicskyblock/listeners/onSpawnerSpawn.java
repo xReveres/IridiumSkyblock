@@ -11,9 +11,13 @@ public class onSpawnerSpawn implements Listener {
 
     @EventHandler
     public void onSpawnerSpawn(SpawnerSpawnEvent e) {
-        Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(e.getLocation());
-        if (island.getSpawnerBooster() != 0) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSkyblock.getInstance(), () -> e.getSpawner().setDelay(e.getSpawner().getDelay() / 2), 0);
+        try {
+            Island island = EpicSkyblock.getIslandManager().getIslandViaLocation(e.getLocation());
+            if (island.getSpawnerBooster() != 0) {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSkyblock.getInstance(), () -> e.getSpawner().setDelay(e.getSpawner().getDelay() / 2), 0);
+            }
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 

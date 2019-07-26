@@ -11,15 +11,19 @@ public class onPlayerMove implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        if (e.getTo().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
-            if (e.getTo().getY() <= 0) {
-                // Send to island home
-                Player p = e.getPlayer();
-                User u = User.getUser(p.getName());
-                if (u.getIsland() != null) {
-                    u.getIsland().teleportHome(p);
+        try {
+            if (e.getTo().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
+                if (e.getTo().getY() <= 0) {
+                    // Send to island home
+                    Player p = e.getPlayer();
+                    User u = User.getUser(p.getName());
+                    if (u.getIsland() != null) {
+                        u.getIsland().teleportHome(p);
+                    }
                 }
             }
+        } catch (Exception ex) {
+            EpicSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 
