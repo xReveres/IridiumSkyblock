@@ -15,8 +15,7 @@ public class Config {
     public String WarpGUITitle = "&7Warps";
     public String TopGUITitle = "&7Top Islands";
     public String BorderColorGUITitle = "&7Border Color";
-    public boolean sendErrorReports = true;
-    public int distance = 200;
+    public int distance = 1;
     public HashMap<Integer, Upgrade> size = new HashMap<Integer, Upgrade>() {{
         put(1, new Upgrade(50, 15));
         put(2, new Upgrade(100, 15));

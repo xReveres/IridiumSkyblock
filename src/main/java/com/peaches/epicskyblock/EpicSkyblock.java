@@ -80,6 +80,8 @@ public class EpicSkyblock extends JavaPlugin {
 
             startCounting();
 
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> islandManager.test(), 0, 20);
+
             getLogger().info("-------------------------------");
             getLogger().info("");
             getLogger().info(getDescription().getName() + " Enabled!");

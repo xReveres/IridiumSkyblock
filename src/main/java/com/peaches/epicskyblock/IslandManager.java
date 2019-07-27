@@ -1,9 +1,6 @@
 package com.peaches.epicskyblock;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -14,6 +11,9 @@ public class IslandManager {
 
     public HashMap<Integer, Island> islands = new HashMap<>();
     public HashMap<String, User> users = new HashMap<>();
+
+    int length = 1;
+    int current = 0;
 
     public Direction direction = Direction.NORTH;
     public String worldName = "EpicSkyblock";
@@ -45,17 +45,31 @@ public class IslandManager {
 
         NMSUtils.sendTitle(player, "&b&lIsland Created", 20, 40, 20);
 
-        direction = direction.next();
         switch (direction) {
             case NORTH:
                 nextLocation.add(EpicSkyblock.getConfiguration().distance, 0, 0);
+                break;
             case EAST:
                 nextLocation.add(0, 0, EpicSkyblock.getConfiguration().distance);
+                break;
             case SOUTH:
                 nextLocation.subtract(EpicSkyblock.getConfiguration().distance, 0, 0);
+                break;
             case WEST:
                 nextLocation.subtract(0, 0, EpicSkyblock.getConfiguration().distance);
+                break;
         }
+
+        current++;
+
+        if (current == length) {
+            current = 0;
+            direction = direction.next();
+            if (direction == Direction.SOUTH || direction == Direction.NORTH) {
+                length++;
+            }
+        }
+
         EpicSkyblock.getInstance().saveConfigs();
 
         nextID++;
