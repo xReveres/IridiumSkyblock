@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EpicSkyblock extends JavaPlugin {
-    
+
     private SentryClient sentry;
 
     private static EpicSkyblock instance;
@@ -55,11 +55,12 @@ public class EpicSkyblock extends JavaPlugin {
     public void onEnable() {
         try {
             sentry = SentryClientFactory.sentryClient("https://88cbd35ae467457bbc87a56d81169389@sentry.prodigysupport.team/5" + "?timeout=15000" + "&async=true" + "&stacktrace.app.packages=com.peaches.epicskyblock");
+
+            instance = this;
+
             super.onEnable();
             getDataFolder().mkdir();
             loadSchematic();
-
-            instance = this;
 
             persist = new Persist();
 
@@ -121,47 +122,6 @@ public class EpicSkyblock extends JavaPlugin {
                 eventBuilder.withLevel(Event.Level.ERROR);
                 eventBuilder.withTag("ip", InetAddress.getLocalHost().getHostAddress());
                 eventBuilder.withTag("plugin_version", getDescription().getVersion());
-
-                final Map<String, Map<String, Object>> contexts = new HashMap<>();
-
-
-                final Map<String, Object> serverPluginsInfo = new HashMap<>();
-                final StringBuilder stringBuilder = new StringBuilder();
-                final Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
-                for (int i = 0; i < plugins.length; i++) {
-                    final Plugin plugin = plugins[i];
-
-
-                    final StringBuilder authorBuilder = new StringBuilder();
-                    final List<String> authors = plugin.getDescription().getAuthors();
-                    for (int i2 = 0; i2 < authors.size(); i2++)
-                        authorBuilder.append(i2 == 0 ? authors.get(i2) : (", " + authors.get(i2)));
-                    serverPluginsInfo.put(plugin.getName() + " (v" + plugin.getDescription().getVersion() + ")", "Description: " + (plugin.getDescription().getDescription() != null ? plugin.getDescription().getDescription() : "EMPTY") + "\nAuthor(s): " + (!authors.isEmpty() ? authorBuilder.toString() : "UNKNOWN") + "\nWebsite: " + (plugin.getDescription().getWebsite() != null ? plugin.getDescription().getWebsite() : "UNKNOWN"));
-                    final String name = plugin.getName() + " (v" + plugin.getDescription().getVersion() + ")";
-                    if (i == 0)
-                        stringBuilder.append(name);
-                    else stringBuilder.append(", ").append(name);
-                }
-
-                final Map<String, Object> serverInfo = new HashMap<>();
-                serverInfo.put("IP", Bukkit.getIp());
-                serverInfo.put("Port", Bukkit.getPort());
-                serverInfo.put("Address", Bukkit.getIp() + ":" + Bukkit.getPort());
-                serverInfo.put("Name", Bukkit.getName());
-                serverInfo.put("Version", Bukkit.getVersion());
-                serverInfo.put("Bukkit Version", Bukkit.getBukkitVersion());
-                serverInfo.put("Installed Plugins (" + plugins.length + ")", stringBuilder.toString());
-                contexts.put("Server Info", serverInfo);
-
-                contexts.put("Installed Plugins Info", serverPluginsInfo);
-
-                final Map<String, Object> pluginInfo = new HashMap<>();
-                pluginInfo.put("Name", getName());
-                pluginInfo.put("Version", getDescription().getVersion());
-                pluginInfo.put("Authors", getDescription().getAuthors());
-                contexts.put("Plugin Info", pluginInfo);
-
-                eventBuilder.withContexts(contexts);
 
                 sentry.sendEvent(eventBuilder.build());
 
