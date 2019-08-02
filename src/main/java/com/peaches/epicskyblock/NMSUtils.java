@@ -21,7 +21,11 @@ public class NMSUtils {
 
             worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX(), centerLocation.getBlockZ());
 
-            worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, size);
+            if (color == Color.Off) {
+                worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, Integer.MAX_VALUE);
+            } else {
+                worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, size);
+            }
 
             worldBorder.getClass().getMethod("setWarningTime", int.class).invoke(worldBorder, 0);
 
@@ -134,6 +138,6 @@ public class NMSUtils {
     }
 
     public enum Color {
-        Blue, Green, Red
+        Blue, Green, Red, Off
     }
 }

@@ -136,6 +136,8 @@ public class onInventoryClick implements Listener {
                         user.getIsland().setBorderColor(NMSUtils.Color.Red);
                     if (e.getCurrentItem().equals(user.getIsland().getBorderColorGUI().green))
                         user.getIsland().setBorderColor(NMSUtils.Color.Green);
+                    if (e.getCurrentItem().equals(user.getIsland().getBorderColorGUI().off))
+                        user.getIsland().setBorderColor(NMSUtils.Color.Off);
                     user.getIsland().sendBorder();
                 }
                 if (e.getInventory().equals(user.getIsland().getWarpGUI().inventory)) {

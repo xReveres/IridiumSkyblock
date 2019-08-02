@@ -47,6 +47,9 @@ public class EpicSkyblock extends JavaPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     /*
     TODO
+    /Is editor
+    Demote/Promote/Kick users from /is members
+    Visit players islands from /is top
     Permissions/Ranks: Owner Moderator Trusted Member
     Way to edit warps
      */

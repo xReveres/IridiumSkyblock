@@ -17,6 +17,7 @@ public class BorderColorGUI {
     public ItemStack red;
     public ItemStack green;
     public ItemStack blue;
+    public ItemStack off;
 
     public BorderColorGUI(Island island) {
         this.inventory = Bukkit.createInventory(null, 27, Utils.color(EpicSkyblock.getConfiguration().BorderColorGUITitle));
@@ -28,9 +29,11 @@ public class BorderColorGUI {
         this.red = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, "&c&lRed");
         this.green = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, "&a&lGreen");
         this.blue = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 11, "&b&lBlue");
+        this.off = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, "&b&lOff");
 
-        inventory.setItem(11, this.red);
-        inventory.setItem(13, this.blue);
-        inventory.setItem(15, this.green);
+        inventory.setItem(10, this.red);
+        inventory.setItem(12, this.blue);
+        inventory.setItem(14, this.green);
+        inventory.setItem(16, this.off);
     }
 }
