@@ -43,5 +43,6 @@ public class Messages {
     public String islandNowPrivate = "%prefix% &7Your island is now private.";
     public String islandNowPublic = "%prefix% &7Your island is now public.";
     public String cantLeaveIfOwner = "%prefix% &7You cannot leave your island whilst owner. do /is delete instead.";
+    public String cantKickOwner = "%prefix% &7You cannot kick the island owner.";
 
 }

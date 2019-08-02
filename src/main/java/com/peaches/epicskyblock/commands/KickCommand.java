@@ -30,8 +30,12 @@ public class KickCommand extends Command {
             User u = User.getUser(p.getName());
             if (user.getIsland() != null) {
                 if (user.getIsland().equals(u.getIsland())) {
-                    user.getIsland().removeUser(u);
-                    sender.sendMessage(Utils.color(EpicSkyblock.getMessages().kickedMember.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    if (u.getIsland().getOwner().equalsIgnoreCase(player.getName())) {
+                        sender.sendMessage(Utils.color(EpicSkyblock.getMessages().cantKickOwner.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    } else {
+                        user.getIsland().removeUser(u);
+                        sender.sendMessage(Utils.color(EpicSkyblock.getMessages().kickedMember.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
                 } else {
                     sender.sendMessage(Utils.color(EpicSkyblock.getMessages().notInYourIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                 }

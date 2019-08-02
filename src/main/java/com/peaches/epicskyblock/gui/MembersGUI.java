@@ -41,8 +41,8 @@ public class MembersGUI {
                     i++;
                 }
             }
-        }catch (Exception e){
-          EpicSkyblock.getInstance().sendErrorMessage(e);
+        } catch (Exception e) {
+            EpicSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }
