@@ -49,6 +49,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         new VisitCommand();
         new PublicCommand();
         new PrivateCommand();
+        new BypassCommand();
     }
 
     public void registerCommand(com.peaches.epicskyblock.commands.Command command) {
@@ -79,14 +80,14 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                         return true;
                     }
                 }
-            }else{
-                if(cs instanceof Player){
+            } else {
+                if (cs instanceof Player) {
                     Player p = (Player) cs;
                     User u = User.getUser(p.getName());
-                    if(u.getIsland() != null){
+                    if (u.getIsland() != null) {
                         u.getIsland().teleportHome(p);
                         return true;
-                    }else{
+                    } else {
                         EpicSkyblock.getIslandManager().createIsland(p);
                         return true;
                     }

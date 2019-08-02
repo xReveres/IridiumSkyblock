@@ -6,24 +6,24 @@ import com.peaches.epicskyblock.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MissionsCommand extends Command {
+public class BypassCommand extends Command {
 
-    public MissionsCommand() {
-        super(Arrays.asList("missions"),"Opens the missions GUI", "", true);
+    public BypassCommand() {
+        super(Arrays.asList("bypass"), "Bypass all island restictions", "epicskyblock.bypass", true);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
-        if (user.getIsland() != null) {
-            p.openInventory(user.getIsland().getMissionsGUI().inventory);
+        User u = User.getUser(p.getName());
+        u.bypassing = !u.bypassing;
+        if (u.bypassing) {
+            p.sendMessage(Utils.color(EpicSkyblock.getMessages().nowBypassing.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         } else {
-            sender.sendMessage(Utils.color(EpicSkyblock.getMessages().noIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            p.sendMessage(Utils.color(EpicSkyblock.getMessages().noLongerBypassing.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         }
     }
 

@@ -44,5 +44,7 @@ public class Messages {
     public String islandNowPublic = "%prefix% &7Your island is now public.";
     public String cantLeaveIfOwner = "%prefix% &7You cannot leave your island whilst owner. do /is delete instead.";
     public String cantKickOwner = "%prefix% &7You cannot kick the island owner.";
+    public String nowBypassing = "%prefix% &7You are now bypassing island restrictions.";
+    public String noLongerBypassing = "%prefix% &7You are no longer bypassing island restrictions.";
 
 }

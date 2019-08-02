@@ -14,7 +14,7 @@ import java.util.List;
 public class VisitCommand extends Command {
 
     public VisitCommand() {
-        super(new ArrayList<>(Arrays.asList("visit")), "Visit another players island", "", true);
+        super(Arrays.asList("visit"), "Visit another players island", "", true);
     }
 
     @Override

@@ -8,11 +8,13 @@ public class User {
     public int islandID;
     public ArrayList<Integer> invites;
     public Island.Warp warp;
+    public boolean bypassing;
 
     public User(String player) {
         invites = new ArrayList<>();
         this.player = player;
         this.islandID = 0;
+        bypassing = false;
         EpicSkyblock.getIslandManager().users.put(this.player, this);
     }
 

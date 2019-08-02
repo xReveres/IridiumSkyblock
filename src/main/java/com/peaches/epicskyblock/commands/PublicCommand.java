@@ -13,7 +13,7 @@ import java.util.List;
 public class PublicCommand extends Command {
 
     public PublicCommand() {
-        super(new ArrayList<>(Arrays.asList("public")), "allow players to visit your island", "", true);
+        super(Arrays.asList("public"), "allow players to visit your island", "", true);
     }
 
     @Override

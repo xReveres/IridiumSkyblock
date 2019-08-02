@@ -39,10 +39,14 @@ public class onBlockBreak implements Listener {
                         island.blocks.remove(e.getBlock().getLocation());
                         // Block is in players island
                     } else {
-                        e.setCancelled(true);
+                        if (!u.bypassing) {
+                            e.setCancelled(true);
+                        }
                     }
                 } else {
-                    e.setCancelled(true);
+                    if (!u.bypassing) {
+                        e.setCancelled(true);
+                    }
                 }
             }
         } catch (Exception ex) {

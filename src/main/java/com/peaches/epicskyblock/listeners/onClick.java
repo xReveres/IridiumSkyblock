@@ -20,10 +20,14 @@ public class onClick implements Listener {
                         if ((e.getClickedBlock().getX() > island.getPos1().getX() && e.getClickedBlock().getX() <= island.getPos2().getX()) && (e.getClickedBlock().getZ() > island.getPos1().getZ() && e.getClickedBlock().getZ() <= island.getPos2().getZ())) {
                             // Block is in players island
                         } else {
-                            e.setCancelled(true);
+                            if(!u.bypassing){
+                                e.setCancelled(true);
+                            }
                         }
                     } else {
-                        e.setCancelled(true);
+                        if(!u.bypassing){
+                            e.setCancelled(true);
+                        }
                     }
                 }
             }

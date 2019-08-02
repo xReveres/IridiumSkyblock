@@ -14,7 +14,7 @@ import java.util.List;
 public class KickCommand extends Command {
 
     public KickCommand() {
-        super(new ArrayList<>(Arrays.asList("kick")), "Kick a player from your island", "", true);
+        super(Arrays.asList("kick"), "Kick a player from your island", "", true);
     }
 
     @Override

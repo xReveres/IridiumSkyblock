@@ -13,7 +13,7 @@ import java.util.List;
 public class AboutCommand extends Command {
 
     public AboutCommand() {
-        super(new ArrayList<>(Arrays.asList("about", "version")), "Displays plugin info", "", false);
+        super(Arrays.asList("about", "version"), "Displays plugin info", "", false);
     }
 
     @Override

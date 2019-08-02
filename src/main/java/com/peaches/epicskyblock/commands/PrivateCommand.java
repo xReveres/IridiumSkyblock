@@ -14,7 +14,7 @@ import java.util.List;
 public class PrivateCommand extends Command {
 
     public PrivateCommand() {
-        super(new ArrayList<>(Arrays.asList("private")), "Stop players visiting your island", "", true);
+        super(Arrays.asList("private"), "Stop players visiting your island", "", true);
     }
 
     @Override
