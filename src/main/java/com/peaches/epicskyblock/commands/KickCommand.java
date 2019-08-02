@@ -24,10 +24,10 @@ public class KickCommand extends Command {
             return;
         }
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
+        User user = User.getUser(p);
         Player player = Bukkit.getPlayer(args[1]);
         if (player != null) {
-            User u = User.getUser(p.getName());
+            User u = User.getUser(p);
             if (user.getIsland() != null) {
                 if (user.getIsland().equals(u.getIsland())) {
                     if (u.getIsland().getOwner().equalsIgnoreCase(player.getName())) {

@@ -19,7 +19,7 @@ public class LeaveCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
+        User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.getIsland().getOwner().equalsIgnoreCase(p.getName())) {
                 sender.sendMessage(Utils.color(EpicSkyblock.getMessages().cantLeaveIfOwner.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));

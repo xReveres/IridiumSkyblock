@@ -19,7 +19,7 @@ public class ValueCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
+        User user = User.getUser(p);
         if (user.getIsland() != null) {
             p.sendMessage(Utils.color(EpicSkyblock.getMessages().islandValue.replace("%value%", user.getIsland().getValue() + "").replace("%rank%", Utils.getIslandRank(user.getIsland()) + "").replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         } else {

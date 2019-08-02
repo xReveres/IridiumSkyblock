@@ -1,5 +1,7 @@
 package com.peaches.epicskyblock;
 
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 
 public class User {
@@ -25,4 +27,9 @@ public class User {
     public static User getUser(String p) {
         return EpicSkyblock.getIslandManager().users.containsKey(p) ? EpicSkyblock.getIslandManager().users.get(p) : new User(p);
     }
+
+    public static User getUser(Player p) {
+        return getUser(p.getUniqueId().toString());
+    }
+
 }

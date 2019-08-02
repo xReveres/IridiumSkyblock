@@ -28,7 +28,7 @@ public class RemoveCrystalsCommand extends Command {
         if (Bukkit.getPlayer(args[1]) != null) {
             Player player = Bukkit.getPlayer(args[1]);
             if (player != null) {
-                Island island = User.getUser(player.getName()).getIsland();
+                Island island = User.getUser(player).getIsland();
                 if (island != null) {
                     try {
                         int amount = Integer.parseInt(args[2]);

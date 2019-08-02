@@ -38,7 +38,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             return "";
         }
 
-        User user = User.getUser(player.getName());
+        User user = User.getUser(player);
 
         switch (placeholder) {
             case "island_value":

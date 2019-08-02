@@ -20,7 +20,7 @@ public class SetWarpCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length == 2 || args.length == 3) {
-            User user = User.getUser(p.getName());
+            User user = User.getUser(p);
             if (user.getIsland() != null) {
                 String password = args.length == 3 ? args[2] : "";
                 user.getIsland().addWarp(p, p.getLocation(), args[1], password);

@@ -13,7 +13,7 @@ public class onPlayerExpChange implements Listener {
     public void onPlayerExpChange(PlayerExpChangeEvent e) {
         try {
             Player p = e.getPlayer();
-            User user = User.getUser(p.getName());
+            User user = User.getUser(p);
             if (user.getIsland() != null) {
                 if (user.getIsland().treasureHunter > -1) {
                     user.getIsland().treasureHunter += e.getAmount();

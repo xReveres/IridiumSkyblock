@@ -24,10 +24,10 @@ public class InviteCommand extends Command {
             return;
         }
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
+        User user = User.getUser(p);
         Player player = Bukkit.getPlayer(args[1]);
         if (player != null) {
-            User u = User.getUser(player.getName());
+            User u = User.getUser(player);
             if (user.getIsland() != null) {
                 if (u.getIsland() == null) {
                     u.invites.add(user.getIsland().getId());

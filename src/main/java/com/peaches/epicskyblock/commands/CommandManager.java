@@ -83,7 +83,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             } else {
                 if (cs instanceof Player) {
                     Player p = (Player) cs;
-                    User u = User.getUser(p.getName());
+                    User u = User.getUser(p);
                     if (u.getIsland() != null) {
                         u.getIsland().teleportHome(p);
                         return true;

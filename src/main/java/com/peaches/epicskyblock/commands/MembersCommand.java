@@ -19,7 +19,7 @@ public class MembersCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
+        User user = User.getUser(p);
         if (user.getIsland() != null) {
             p.openInventory(user.getIsland().getMembersGUI().inventory);
         } else {

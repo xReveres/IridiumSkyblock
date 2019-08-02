@@ -18,7 +18,7 @@ public class BypassCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User u = User.getUser(p.getName());
+        User u = User.getUser(p);
         u.bypassing = !u.bypassing;
         if (u.bypassing) {
             p.sendMessage(Utils.color(EpicSkyblock.getMessages().nowBypassing.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));

@@ -16,7 +16,7 @@ public class onPlayerMove implements Listener {
                 if (e.getTo().getY() <= 0) {
                     // Send to island home
                     Player p = e.getPlayer();
-                    User u = User.getUser(p.getName());
+                    User u = User.getUser(p);
                     if (u.getIsland() != null) {
                         u.getIsland().teleportHome(p);
                     }

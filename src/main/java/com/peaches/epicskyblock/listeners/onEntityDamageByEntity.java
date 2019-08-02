@@ -16,8 +16,8 @@ public class onEntityDamageByEntity implements Listener {
                 Player p = (Player) e.getDamager();
                 if (e.getEntity() instanceof Player) {
                     Player player = (Player) e.getEntity();
-                    User damager = User.getUser(p.getName());
-                    User entity = User.getUser(player.getName());
+                    User damager = User.getUser(p);
+                    User entity = User.getUser(player);
                     if (e.getEntity().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
                         e.setCancelled(true);
                     } else {

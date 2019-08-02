@@ -15,7 +15,7 @@ public class onPlayerTalk implements Listener {
     public void onPlayerTalk(AsyncPlayerChatEvent e) {
         try {
             Player p = e.getPlayer();
-            User u = User.getUser(p.getName());
+            User u = User.getUser(p);
             if (u.warp != null) {
                 if (u.warp.getPassword().equals(e.getMessage())) {
                     Bukkit.getScheduler().runTask(EpicSkyblock.getInstance(), () -> p.teleport(u.warp.getLocation()));

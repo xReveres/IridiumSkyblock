@@ -19,7 +19,7 @@ public class FlyCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
+        User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.getIsland().getFlightBooster() != 0 || p.hasPermission("EpicSkyblock.Fly")) {
                 if (p.isFlying()) {

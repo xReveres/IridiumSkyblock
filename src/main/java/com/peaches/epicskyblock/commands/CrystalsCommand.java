@@ -19,7 +19,7 @@ public class CrystalsCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
+        User user = User.getUser(p);
         if (user.getIsland() != null) {
             sender.sendMessage(Utils.color(EpicSkyblock.getMessages().crystalAmount.replace("%crystals%", user.getIsland().getCrystals() + "").replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         } else {

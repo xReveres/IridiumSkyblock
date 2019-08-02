@@ -19,7 +19,7 @@ public class DeleteCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User user = User.getUser(p.getName());
+        User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.getIsland().getOwner().equals(p.getName())) {
                 user.getIsland().delete();

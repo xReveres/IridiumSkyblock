@@ -38,7 +38,7 @@ public class IslandManager {
         Island island = new Island(player, pos1, pos2, center, home, nextID);
         islands.put(nextID, island);
 
-        User.getUser(player.getName()).islandID = nextID;
+        User.getUser(player).islandID = nextID;
 
         island.generateIsland();
         island.teleportHome(player);
