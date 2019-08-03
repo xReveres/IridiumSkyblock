@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class Island {
@@ -101,7 +102,11 @@ public class Island {
 
     private NMSUtils.Color borderColor;
 
+    private HashMap<Roles, Permissions> permissions;
+
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, int id) {
+        User user = User.getUser(owner);
+        user.role = Roles.Owner;
         this.owner = owner.getName();
         this.pos1 = pos1;
         this.pos2 = pos2;
@@ -136,7 +141,15 @@ public class Island {
         startvalue = -1;
         borderColor = NMSUtils.Color.Blue;
         visit = true;
+        permissions = new HashMap<>();
         init();
+    }
+
+    public Permissions getPermissions(Roles role) {
+        if (!permissions.containsKey(role)) {
+            permissions.put(role, new Permissions());
+        }
+        return permissions.get(role);
     }
 
     public void sendBorder() {
@@ -233,7 +246,7 @@ public class Island {
                         a = -1;
                     }
                     Y++;
-                }catch (Exception e){
+                } catch (Exception e) {
                     EpicSkyblock.getInstance().sendErrorMessage(e);
                 }
             }
@@ -252,6 +265,7 @@ public class Island {
     public void addUser(User user) {
         if (members.size() < EpicSkyblock.getConfiguration().member.get(memberLevel).getSize()) {
             user.islandID = id;
+            user.role = Roles.Visitor;
             user.invites.clear();
             members.add(user.player);
             teleportHome(Bukkit.getPlayer(user.player));
@@ -348,6 +362,10 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getMissionsGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getUpgradeGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getWarpGUI().scheduler);
+        for (Permissions permissions : permissions.values()) {
+            Bukkit.getScheduler().cancelTask(permissions.scheduler);
+        }
+        permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         deleteBlocks();
         killEntities();

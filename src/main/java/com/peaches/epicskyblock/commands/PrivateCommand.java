@@ -22,8 +22,12 @@ public class PrivateCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            user.getIsland().setVisit(false);
-            sender.sendMessage(Utils.color(EpicSkyblock.getMessages().islandNowPrivate.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            if (user.bypassing || user.getIsland().getPermissions(user.role).islandprivate) {
+                user.getIsland().setVisit(false);
+                sender.sendMessage(Utils.color(EpicSkyblock.getMessages().islandNowPrivate.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            } else {
+                sender.sendMessage(Utils.color(EpicSkyblock.getMessages().noPermission.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            }
         } else {
             sender.sendMessage(Utils.color(EpicSkyblock.getMessages().noIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         }

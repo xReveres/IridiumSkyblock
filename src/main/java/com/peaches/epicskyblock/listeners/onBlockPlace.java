@@ -25,6 +25,9 @@ public class onBlockPlace implements Listener {
                         }
                     }
                     if (island.isInIsland(e.getBlock().getLocation())) {
+                        if (!u.bypassing && !u.getIsland().getPermissions(u.role).placeBlocks) {
+                            e.setCancelled(true);
+                        }
                         if (Utils.isBlockValuable(e.getBlock())) {
                             if (!island.blocks.contains(e.getBlock().getLocation()))
                                 island.blocks.add(e.getBlock().getLocation());

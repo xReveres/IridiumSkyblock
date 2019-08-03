@@ -8,6 +8,7 @@ public class User {
 
     public String player;
     public int islandID;
+    public Roles role;
     public ArrayList<Integer> invites;
     public Island.Warp warp;
     public boolean bypassing;

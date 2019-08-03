@@ -22,8 +22,12 @@ public class RegenCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.getIsland().getOwner().equals(p.getName())) {
-                user.getIsland().generateIsland();
-                sender.sendMessage(Utils.color(EpicSkyblock.getMessages().regenIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                if (user.bypassing || user.getIsland().getPermissions(user.role).kickMembers) {
+                    user.getIsland().generateIsland();
+                    sender.sendMessage(Utils.color(EpicSkyblock.getMessages().regenIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                } else {
+                    sender.sendMessage(Utils.color(EpicSkyblock.getMessages().noPermission.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
             } else {
                 sender.sendMessage(Utils.color(EpicSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
             }

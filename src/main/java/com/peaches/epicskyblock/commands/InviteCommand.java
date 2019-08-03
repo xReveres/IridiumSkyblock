@@ -30,9 +30,14 @@ public class InviteCommand extends Command {
             User u = User.getUser(player);
             if (user.getIsland() != null) {
                 if (u.getIsland() == null) {
-                    u.invites.add(user.getIsland().getId());
-                    p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerInvited.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                    player.sendMessage(Utils.color(EpicSkyblock.getMessages().invitedByPlayer.replace("%player%", p.getName()).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+
+                    if (u.bypassing || u.getIsland().getPermissions(u.role).kickMembers) {
+                        u.invites.add(user.getIsland().getId());
+                        p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerInvited.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                        player.sendMessage(Utils.color(EpicSkyblock.getMessages().invitedByPlayer.replace("%player%", p.getName()).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    } else {
+                        sender.sendMessage(Utils.color(EpicSkyblock.getMessages().noPermission.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
                 } else {
                     sender.sendMessage(Utils.color(EpicSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                 }
