@@ -14,7 +14,7 @@ public class onEntityDamage implements Listener {
         try {
             if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
                 if (e.getEntity() instanceof Player) {
-                    User u = User.getUser(e.getEntity().getName());
+                    User u = User.getUser(((Player) e.getEntity()).getPlayer());
                     if (u.getIsland() != null) {
                         if (u.getIsland().isInIsland(e.getEntity().getLocation())) {
                             e.setCancelled(true);

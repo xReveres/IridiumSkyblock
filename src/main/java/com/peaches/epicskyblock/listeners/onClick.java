@@ -12,7 +12,7 @@ public class onClick implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         try {
-            User u = User.getUser(e.getPlayer().getName());
+            User u = User.getUser(e.getPlayer());
             if (e.getClickedBlock().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
                 Island island = u.getIsland();
                 if (island != null) {
