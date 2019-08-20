@@ -12,7 +12,7 @@ public class onPlayerFish implements Listener {
     public void onPlayerFish(PlayerFishEvent e) {
         try {
             if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
-                User u = User.getUser(e.getPlayer().getName());
+                User u = User.getUser(e.getPlayer());
                 if (u.getIsland() != null) {
                     if (u.getIsland().fisherman > -1) {
                         u.getIsland().fisherman++;

@@ -13,7 +13,7 @@ public class onBlockBreak implements Listener {
     @EventHandler
     public void onBreakBlock(BlockBreakEvent e) {
         try {
-            User u = User.getUser(e.getPlayer().getName());
+            User u = User.getUser(e.getPlayer());
             if (e.getBlock().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
                 Island island = u.getIsland();
                 if (island != null) {

@@ -13,7 +13,7 @@ public class onInventoryClick implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         try {
             Player p = (Player) e.getWhoClicked();
-            User user = User.getUser(e.getWhoClicked().getName());
+            User user = User.getUser(((Player) e.getWhoClicked()).getPlayer());
             if (user.getIsland() != null) {
                 if (e.getInventory().equals(user.getIsland().getBoosterGUI().inventory)) {
                     e.setCancelled(true);
