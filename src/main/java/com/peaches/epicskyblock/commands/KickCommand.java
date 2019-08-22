@@ -24,16 +24,16 @@ public class KickCommand extends Command {
             return;
         }
         Player p = (Player) sender;
-        User user = User.getUser(p);
+        User user = User.getUser(p); // User kicking the player
         Player player = Bukkit.getPlayer(args[1]);
         if (player != null) {
-            User u = User.getUser(p);
+            User u = User.getUser(player); // Player we want to kick
             if (user.getIsland() != null) {
                 if (user.getIsland().equals(u.getIsland())) {
-                    if (u.getIsland().getOwner().equalsIgnoreCase(player.getName())) {
+                    if (user.getIsland().getOwner().equalsIgnoreCase(player.getName())) {
                         sender.sendMessage(Utils.color(EpicSkyblock.getMessages().cantKickOwner.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                     } else {
-                        if (u.bypassing || u.getIsland().getPermissions(u.role).kickMembers) {
+                        if (user.bypassing || user.getIsland().getPermissions(u.role).kickMembers) {
                             user.getIsland().removeUser(u);
                             sender.sendMessage(Utils.color(EpicSkyblock.getMessages().kickedMember.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                         } else {
