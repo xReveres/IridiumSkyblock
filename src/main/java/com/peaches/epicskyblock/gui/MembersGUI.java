@@ -2,6 +2,7 @@ package com.peaches.epicskyblock.gui;
 
 import com.peaches.epicskyblock.EpicSkyblock;
 import com.peaches.epicskyblock.Island;
+import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -33,7 +34,7 @@ public class MembersGUI {
                 }
                 int i = 0;
                 for (String member : island.getMembers()) {
-                    ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + member);
+                    ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + User.getUser(member).name);
                     SkullMeta m = (SkullMeta) head.getItemMeta();
                     m.setOwner(member);
                     head.setItemMeta(m);

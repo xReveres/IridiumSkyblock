@@ -7,15 +7,17 @@ import java.util.ArrayList;
 public class User {
 
     public String player;
+    public String name;
     public int islandID;
     public Roles role;
     public ArrayList<Integer> invites;
     public Island.Warp warp;
     public boolean bypassing;
 
-    public User(String player) {
+    public User(Player p) {
         invites = new ArrayList<>();
-        this.player = player;
+        this.player = p.getUniqueId().toString();
+        this.name = p.getName();
         this.islandID = 0;
         bypassing = false;
         EpicSkyblock.getIslandManager().users.put(this.player, this);
@@ -26,11 +28,11 @@ public class User {
     }
 
     public static User getUser(String p) {
-        return EpicSkyblock.getIslandManager().users.containsKey(p) ? EpicSkyblock.getIslandManager().users.get(p) : new User(p);
+        return EpicSkyblock.getIslandManager().users.get(p);
     }
 
     public static User getUser(Player p) {
-        return getUser(p.getUniqueId().toString());
+        return EpicSkyblock.getIslandManager().users.containsKey(p.getUniqueId().toString()) ? EpicSkyblock.getIslandManager().users.get(p.getUniqueId().toString()) : new User(p);
     }
 
 }
