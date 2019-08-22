@@ -226,9 +226,7 @@ public class Island {
     public void initBlocks() {
         blocks.clear();
         this.a = Bukkit.getScheduler().scheduleSyncRepeatingTask(EpicSkyblock.getInstance(), new Runnable() {
-
             double Y = 0;
-
             @Override
             public void run() {
                 try {
@@ -250,7 +248,7 @@ public class Island {
                     EpicSkyblock.getInstance().sendErrorMessage(e);
                 }
             }
-        }, 0, 1);
+        }, 0, 5);
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
