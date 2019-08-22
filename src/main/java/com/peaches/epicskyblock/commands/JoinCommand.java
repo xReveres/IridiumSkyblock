@@ -26,8 +26,9 @@ public class JoinCommand extends Command {
         }
         Player p = (Player) sender;
         User user = User.getUser(p);
-        if (Bukkit.getPlayer(args[1]) != null) {
-            User u = User.getUser(args[1]);
+        Player player = Bukkit.getPlayer(args[1]);
+        if (player != null) {
+            User u = User.getUser(player);
             if (u.getIsland() != null) {
                 if (user.getIsland() == null) {
                     Island island = u.getIsland();
