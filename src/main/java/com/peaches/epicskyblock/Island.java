@@ -561,6 +561,10 @@ public class Island {
         this.oreLevel = oreLevel;
     }
 
+    public void removeWarp(Warp warp){
+        warps.remove(warp);
+    }
+
     public List<Warp> getWarps() {
         return warps;
     }

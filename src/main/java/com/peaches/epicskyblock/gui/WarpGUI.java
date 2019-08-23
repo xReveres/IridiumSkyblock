@@ -29,6 +29,7 @@ public class WarpGUI implements Listener {
         this.inventory = Bukkit.createInventory(null, 27, Utils.color(EpicSkyblock.getConfiguration().WarpGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), this::addContent, 0, 10);
+        EpicSkyblock.getInstance().registerListeners(this);
     }
 
     public void addContent() {
@@ -42,7 +43,7 @@ public class WarpGUI implements Listener {
                 warps.clear();
                 for (Island.Warp warp : island.getWarps()) {
                     warps.put(i, warp);
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName()), Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp.")));
+                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName()), Utils.color(Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."))));
                     i++;
                 }
             }
@@ -53,14 +54,14 @@ public class WarpGUI implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        Player p = (Player) e.getWhoClicked();
-        User u = User.getUser(p);
         if (e.getInventory().equals(inventory)) {
+            Player p = (Player) e.getWhoClicked();
+            User u = User.getUser(p);
             e.setCancelled(true);
             if (warps.containsKey(e.getSlot())) {
                 Island.Warp warp = warps.get(e.getSlot());
                 if (e.getClick().equals(ClickType.RIGHT)) {
-                    warps.remove(e.getSlot());
+                    u.getIsland().removeWarp(warps.get(e.getSlot()));
                 } else {
                     if (warp.getPassword().isEmpty()) {
                         p.teleport(warp.getLocation());
