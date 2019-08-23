@@ -10,15 +10,19 @@ public class Permissions {
 
     private transient Inventory inventory;
 
-    public ItemStack Breakblocks;
-    public ItemStack Placeblocks;
-    public ItemStack Interact;
-    public ItemStack Kickmembers;
-    public ItemStack Invitemembers;
-    public ItemStack Regen;
-    public ItemStack Islandprivate;
+    public transient ItemStack Breakblocks;
+    public transient ItemStack Placeblocks;
+    public transient ItemStack Interact;
+    public transient ItemStack Kickmembers;
+    public transient ItemStack Invitemembers;
+    public transient ItemStack Regen;
+    public transient ItemStack Islandprivate;
 
     public Permissions() {
+        init();
+    }
+
+    public void init() {
         this.inventory = Bukkit.createInventory(null, 27, Utils.color(EpicSkyblock.getConfiguration().PermissionsGUITitle));
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), this::addContent, 0, 10);
     }

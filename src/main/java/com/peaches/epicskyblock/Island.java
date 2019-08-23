@@ -304,6 +304,9 @@ public class Island {
                 }
             }
         }, 0, 20);
+        for (Permissions permissions : permissions.values()) {
+            permissions.init();
+        }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(EpicSkyblock.getInstance(), this::calculateIslandValue, 0, 20);
     }
 
