@@ -81,7 +81,7 @@ public class MembersGUI implements Listener {
                                 for (String member : u.getIsland().getMembers()) {
                                     Player p = Bukkit.getPlayer(User.getUser(member).name);
                                     if (p != null) {
-                                        p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerDemoted.replace("%rank%", u.role.name()).replace("%player%", p.getName()).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                                        p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerDemoted.replace("%rank%", u.role.name()).replace("%player%", u.name).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                                     }
                                 }
                             }
@@ -102,7 +102,7 @@ public class MembersGUI implements Listener {
                                     for (String member : u.getIsland().getMembers()) {
                                         Player p = Bukkit.getPlayer(User.getUser(member).name);
                                         if (p != null) {
-                                            p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerPromoted.replace("%rank%", u.role.name()).replace("%player%", p.getName()).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                                            p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerPromoted.replace("%rank%", u.role.name()).replace("%player%", u.name).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                                         }
                                     }
                                 }
