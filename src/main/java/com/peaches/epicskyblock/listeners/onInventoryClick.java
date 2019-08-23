@@ -122,9 +122,6 @@ public class onInventoryClick implements Listener {
                         }
                     }
                 }
-                if (e.getInventory().equals(TopGUI.inventory)) {
-                    e.setCancelled(true);
-                }
                 if (e.getInventory().equals(user.getIsland().getBorderColorGUI().inventory)) {
                     e.setCancelled(true);
                     if (e.getCurrentItem().equals(user.getIsland().getBorderColorGUI().blue))
@@ -136,20 +133,6 @@ public class onInventoryClick implements Listener {
                     if (e.getCurrentItem().equals(user.getIsland().getBorderColorGUI().off))
                         user.getIsland().setBorderColor(NMSUtils.Color.Off);
                     user.getIsland().sendBorder();
-                }
-                if (e.getInventory().equals(user.getIsland().getWarpGUI().inventory)) {
-                    e.setCancelled(true);
-                    if (user.getIsland().getWarpGUI().warps.containsKey(e.getSlot())) {
-                        Island.Warp warp = user.getIsland().getWarpGUI().warps.get(e.getSlot());
-                        if (warp.getPassword().isEmpty()) {
-                            p.teleport(warp.getLocation());
-                            p.sendMessage(Utils.color(EpicSkyblock.getMessages().teleporting.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                        } else {
-                            p.sendMessage(Utils.color(EpicSkyblock.getMessages().enterPassword.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                            user.warp = warp;
-                        }
-                        p.closeInventory();
-                    }
                 }
             }
         } catch (Exception ex) {
