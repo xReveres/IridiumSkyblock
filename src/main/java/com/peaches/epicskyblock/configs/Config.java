@@ -18,10 +18,6 @@ public class Config {
     public String PermissionsGUITitle = "&7Permissions";
     public int distance = 200;
     public Biome defaultBiome = Biome.PLAINS;
-    public int spawnerBoosterCost = 15;
-    public int farmingBoosterCost = 15;
-    public int experienceBoosterCost = 15;
-    public int flightBoosterCost = 15;
     public HashMap<Material, Integer> blockvalue = new HashMap<Material, Integer>() {{
         put(Material.DIAMOND_BLOCK, 10);
         put(Material.EMERALD_BLOCK, 20);

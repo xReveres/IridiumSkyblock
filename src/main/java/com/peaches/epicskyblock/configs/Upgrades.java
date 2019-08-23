@@ -13,22 +13,22 @@ public class Upgrades {
         put(3, new Upgrades.OreUpgrade(15, new ArrayList<>(Arrays.asList("COBBLESTONE:5", "IRON_ORE:50", "COAL_ORE:50", "DIAMOND_ORE:30"))));
     }};
 
-    public HashMap<Integer, Upgrades.Upgrade> size = new HashMap<Integer, Upgrades.Upgrade>() {{
-        put(1, new Upgrades.Upgrade(50, 15));
-        put(2, new Upgrades.Upgrade(100, 15));
-        put(3, new Upgrades.Upgrade(150, 15));
+    public HashMap<Integer, Upgrades.IntegerUpgrade> size = new HashMap<Integer, Upgrades.IntegerUpgrade>() {{
+        put(1, new Upgrades.IntegerUpgrade(50, 15));
+        put(2, new Upgrades.IntegerUpgrade(100, 15));
+        put(3, new Upgrades.IntegerUpgrade(150, 15));
     }};
 
-    public HashMap<Integer, Upgrades.Upgrade> member = new HashMap<Integer, Upgrades.Upgrade>() {{
-        put(1, new Upgrades.Upgrade(9, 15));
-        put(2, new Upgrades.Upgrade(18, 15));
-        put(3, new Upgrades.Upgrade(27, 15));
+    public HashMap<Integer, Upgrades.IntegerUpgrade> member = new HashMap<Integer, Upgrades.IntegerUpgrade>() {{
+        put(1, new Upgrades.IntegerUpgrade(9, 15));
+        put(2, new Upgrades.IntegerUpgrade(18, 15));
+        put(3, new Upgrades.IntegerUpgrade(27, 15));
     }};
 
-    public HashMap<Integer, Upgrades.Upgrade> warp = new HashMap<Integer, Upgrades.Upgrade>() {{
-        put(1, new Upgrades.Upgrade(2, 15));
-        put(2, new Upgrades.Upgrade(5, 15));
-        put(3, new Upgrades.Upgrade(9, 15));
+    public HashMap<Integer, Upgrades.IntegerUpgrade> warp = new HashMap<Integer, Upgrades.IntegerUpgrade>() {{
+        put(1, new Upgrades.IntegerUpgrade(2, 15));
+        put(2, new Upgrades.IntegerUpgrade(5, 15));
+        put(3, new Upgrades.IntegerUpgrade(9, 15));
     }};
 
     public class OreUpgrade {
@@ -49,11 +49,11 @@ public class Upgrades {
         }
     }
 
-    public class Upgrade {
+    public class IntegerUpgrade {
         private int size;
         private int cost;
 
-        public Upgrade(int size, int cost) {
+        public IntegerUpgrade(int size, int cost) {
             this.size = size;
             this.cost = cost;
         }

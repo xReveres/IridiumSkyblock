@@ -1,10 +1,7 @@
 package com.peaches.epicskyblock;
 
 import com.peaches.epicskyblock.commands.CommandManager;
-import com.peaches.epicskyblock.configs.Config;
-import com.peaches.epicskyblock.configs.Messages;
-import com.peaches.epicskyblock.configs.Missions;
-import com.peaches.epicskyblock.configs.Upgrades;
+import com.peaches.epicskyblock.configs.*;
 import com.peaches.epicskyblock.listeners.*;
 import com.peaches.epicskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.peaches.epicskyblock.serializer.Persist;
@@ -32,9 +29,11 @@ public class EpicSkyblock extends JavaPlugin {
     private static EpicSkyblock instance;
 
     private static Config configuration;
+    private static Messages messages;
     private static Missions missions;
     private static Upgrades upgrades;
-    private static Messages messages;
+    private static Boosters boosters;
+
     private static Persist persist;
 
     private static IslandManager islandManager;
@@ -167,6 +166,7 @@ public class EpicSkyblock extends JavaPlugin {
         islandManager = persist.getFile(IslandManager.class).exists() ? persist.load(IslandManager.class) : new IslandManager();
         messages = persist.getFile(Messages.class).exists() ? persist.load(Messages.class) : new Messages();
         upgrades = persist.getFile(Upgrades.class).exists() ? persist.load(Upgrades.class) : new Upgrades();
+        boosters = persist.getFile(Boosters.class).exists() ? persist.load(Boosters.class) : new Boosters();
 
         for (Island island : islandManager.islands.values()) {
             island.init();
@@ -179,6 +179,7 @@ public class EpicSkyblock extends JavaPlugin {
         if (islandManager != null) persist.save(islandManager);
         if (messages != null) persist.save(messages);
         if (upgrades != null) persist.save(upgrades);
+        if (boosters != null) persist.save(boosters);
     }
 
     @Override
@@ -233,6 +234,10 @@ public class EpicSkyblock extends JavaPlugin {
             EpicSkyblock.getInstance().saveConfigs();
         }
         return upgrades;
+    }
+
+    public static Boosters getBoosters() {
+        return boosters;
     }
 
     public static Persist getPersist() {
