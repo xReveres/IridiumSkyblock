@@ -13,10 +13,10 @@ public class onClick implements Listener {
     public void onClick(PlayerInteractEvent e) {
         try {
             User u = User.getUser(e.getPlayer());
-            if (e.getClickedBlock() != null) {
-                if (e.getClickedBlock().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
-                    Island island = u.getIsland();
-                    if (island != null) {
+            Island island = u.getIsland();
+            if (island != null) {
+                if (e.getClickedBlock() != null) {
+                    if (e.getClickedBlock().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
                         if ((e.getClickedBlock().getX() > island.getPos1().getX() && e.getClickedBlock().getX() <= island.getPos2().getX()) && (e.getClickedBlock().getZ() > island.getPos1().getZ() && e.getClickedBlock().getZ() <= island.getPos2().getZ())) {
                             // Block is in players island
                             if (!u.bypassing && !u.getIsland().getPermissions(u.role).interact) {
@@ -27,11 +27,13 @@ public class onClick implements Listener {
                                 e.setCancelled(true);
                             }
                         }
-                    } else {
-                        if (!u.bypassing) {
-                            e.setCancelled(true);
-                        }
                     }
+                } else {
+
+                }
+            } else {
+                if (!u.bypassing) {
+                    e.setCancelled(true);
                 }
             }
         } catch (Exception ex) {
