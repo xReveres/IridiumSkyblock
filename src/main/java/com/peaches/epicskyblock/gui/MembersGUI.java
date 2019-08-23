@@ -36,7 +36,7 @@ public class MembersGUI {
                 for (String member : island.getMembers()) {
                     ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + User.getUser(member).name);
                     SkullMeta m = (SkullMeta) head.getItemMeta();
-                    m.setOwner(member);
+                    m.setOwner(User.getUser(member).name);
                     head.setItemMeta(m);
                     inventory.setItem(i, head);
                     i++;
