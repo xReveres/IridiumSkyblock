@@ -1,10 +1,7 @@
 package com.peaches.epicskyblock;
 
 import com.peaches.epicskyblock.gui.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -281,6 +278,9 @@ public class Island {
 
     public void removeUser(User user) {
         user.islandID = 0;
+        Player player = Bukkit.getPlayer(user.name);
+        player.setFlying(false);
+        player.setAllowFlight(false);
         members.remove(user.player);
         for (String member : members) {
             User u = User.getUser(member);
@@ -308,7 +308,7 @@ public class Island {
                 for (String player : members) {
                     Player p = Bukkit.getPlayer(player);
                     if (p != null) {
-                        if (!p.hasPermission("EpicSkyblock.Fly")) {
+                        if (!p.hasPermission("EpicSkyblock.Fly") && p.getGameMode().equals(GameMode.SURVIVAL)) {
                             p.setAllowFlight(false);
                             p.setFlying(false);
                         }
