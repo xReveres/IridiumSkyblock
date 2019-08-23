@@ -29,7 +29,7 @@ public class BorderColorGUI {
         this.red = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, "&c&lRed");
         this.green = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, "&a&lGreen");
         this.blue = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 11, "&b&lBlue");
-        this.off = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, "&b&lOff");
+        this.off = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, "&b&lOff");
 
         inventory.setItem(10, this.red);
         inventory.setItem(12, this.blue);
