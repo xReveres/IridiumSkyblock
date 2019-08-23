@@ -52,7 +52,7 @@ public class TopGUI implements Listener {
                     SkullMeta m = (SkullMeta) head.getItemMeta();
                     m.setOwner(owner.name);
                     head.setItemMeta(m);
-                    islands.put(i, island.getId());
+                    islands.put(EpicSkyblock.getConfiguration().islandTopSlots.get(i), island.getId());
                     inventory.setItem(EpicSkyblock.getConfiguration().islandTopSlots.get(i), head);
                 }
             }
@@ -66,8 +66,8 @@ public class TopGUI implements Listener {
         if (e.getInventory().equals(inventory)) {
             e.setCancelled(true);
             if (islands.containsKey(e.getSlot())) {
-                Island island = EpicSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot()));
-                island.teleportHome((Player) e.getWhoClicked());
+                e.getWhoClicked().closeInventory();
+                EpicSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot())).teleportHome((Player) e.getWhoClicked());
             }
         }
     }
