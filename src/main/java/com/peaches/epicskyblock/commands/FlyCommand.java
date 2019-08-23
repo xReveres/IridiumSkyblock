@@ -13,7 +13,7 @@ import java.util.List;
 public class FlyCommand extends Command {
 
     public FlyCommand() {
-        super(Arrays.asList("fly", "flight"),"Toggle your ability to fly", "", true);
+        super(Arrays.asList("fly", "flight"), "Toggle your ability to fly", "", true);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class FlyCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.getIsland().getFlightBooster() != 0 || p.hasPermission("EpicSkyblock.Fly")) {
-                if (p.isFlying()) {
+                if (p.getAllowFlight()) {
                     p.setAllowFlight(false);
                     p.setFlying(false);
                     p.sendMessage(Utils.color(EpicSkyblock.getMessages().flightDisabled.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
