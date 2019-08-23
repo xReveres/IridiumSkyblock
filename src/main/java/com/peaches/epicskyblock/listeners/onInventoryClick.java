@@ -122,18 +122,6 @@ public class onInventoryClick implements Listener {
                         }
                     }
                 }
-                if (e.getInventory().equals(user.getIsland().getBorderColorGUI().inventory)) {
-                    e.setCancelled(true);
-                    if (e.getCurrentItem().equals(user.getIsland().getBorderColorGUI().blue))
-                        user.getIsland().setBorderColor(NMSUtils.Color.Blue);
-                    if (e.getCurrentItem().equals(user.getIsland().getBorderColorGUI().red))
-                        user.getIsland().setBorderColor(NMSUtils.Color.Red);
-                    if (e.getCurrentItem().equals(user.getIsland().getBorderColorGUI().green))
-                        user.getIsland().setBorderColor(NMSUtils.Color.Green);
-                    if (e.getCurrentItem().equals(user.getIsland().getBorderColorGUI().off))
-                        user.getIsland().setBorderColor(NMSUtils.Color.Off);
-                    user.getIsland().sendBorder();
-                }
             }
         } catch (Exception ex) {
             EpicSkyblock.getInstance().sendErrorMessage(ex);

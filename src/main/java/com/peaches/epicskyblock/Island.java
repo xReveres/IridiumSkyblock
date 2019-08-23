@@ -120,6 +120,7 @@ public class Island {
         membersGUI = new MembersGUI(this);
         warpGUI = new WarpGUI(this);
         borderColorGUI = new BorderColorGUI(this);
+        EpicSkyblock.getInstance().registerListeners(borderColorGUI);
         spawnerBooster = 0;
         farmingBooster = 0;
         expBooster = 0;
@@ -474,7 +475,10 @@ public class Island {
     }
 
     public BorderColorGUI getBorderColorGUI() {
-        if (borderColorGUI == null) borderColorGUI = new BorderColorGUI(this);
+        if (borderColorGUI == null) {
+            borderColorGUI = new BorderColorGUI(this);
+            EpicSkyblock.getInstance().registerListeners(borderColorGUI);
+        }
         return borderColorGUI;
     }
 
