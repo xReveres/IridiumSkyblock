@@ -21,7 +21,7 @@ public class RegenCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            if (user.getIsland().getOwner().equals(p.getName())) {
+            if (user.getIsland().getOwner().equals(p.getUniqueId().toString())) {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).kickMembers) {
                     user.getIsland().generateIsland();
                     sender.sendMessage(Utils.color(EpicSkyblock.getMessages().regenIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));

@@ -21,7 +21,7 @@ public class DeleteCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            if (user.getIsland().getOwner().equals(p.getName())) {
+            if (user.getIsland().getOwner().equals(p.getUniqueId().toString())) {
                 user.getIsland().delete();
             } else {
                 sender.sendMessage(Utils.color(EpicSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));

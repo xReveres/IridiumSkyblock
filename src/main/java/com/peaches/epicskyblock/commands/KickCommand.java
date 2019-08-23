@@ -30,7 +30,7 @@ public class KickCommand extends Command {
             User u = User.getUser(player); // Player we want to kick
             if (user.getIsland() != null) {
                 if (user.getIsland().equals(u.getIsland())) {
-                    if (user.getIsland().getOwner().equalsIgnoreCase(player.getName())) {
+                    if (user.getIsland().getOwner().equalsIgnoreCase(player.getUniqueId().toString())) {
                         sender.sendMessage(Utils.color(EpicSkyblock.getMessages().cantKickOwner.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                     } else {
                         if (user.bypassing || user.getIsland().getPermissions(u.role).kickMembers) {
