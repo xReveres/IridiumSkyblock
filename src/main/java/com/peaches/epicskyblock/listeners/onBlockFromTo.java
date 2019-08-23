@@ -31,7 +31,7 @@ public class onBlockFromTo implements Listener {
                         if (island != null) {
                             Random r = new Random();
                             ArrayList<String> items = new ArrayList<>();
-                            for (String item : EpicSkyblock.getOreGen().ores.get(island.getOreLevel()).getOres()) {
+                            for (String item : EpicSkyblock.getUpgrades().ores.get(island.getOreLevel()).getOres()) {
                                 Integer i1 = Integer.parseInt(item.split(":")[1]);
                                 for (int i = 0; i <= i1; i++) {
                                     items.add(item.split(":")[0]);

@@ -4,7 +4,7 @@ import com.peaches.epicskyblock.commands.CommandManager;
 import com.peaches.epicskyblock.configs.Config;
 import com.peaches.epicskyblock.configs.Messages;
 import com.peaches.epicskyblock.configs.Missions;
-import com.peaches.epicskyblock.configs.OreGen;
+import com.peaches.epicskyblock.configs.Upgrades;
 import com.peaches.epicskyblock.listeners.*;
 import com.peaches.epicskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.peaches.epicskyblock.serializer.Persist;
@@ -24,9 +24,6 @@ import java.io.StringWriter;
 import java.net.InetAddress;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class EpicSkyblock extends JavaPlugin {
 
@@ -36,7 +33,7 @@ public class EpicSkyblock extends JavaPlugin {
 
     private static Config configuration;
     private static Missions missions;
-    private static OreGen oreGen;
+    private static Upgrades upgrades;
     private static Messages messages;
     private static Persist persist;
 
@@ -169,7 +166,7 @@ public class EpicSkyblock extends JavaPlugin {
         missions = persist.getFile(Missions.class).exists() ? persist.load(Missions.class) : new Missions();
         islandManager = persist.getFile(IslandManager.class).exists() ? persist.load(IslandManager.class) : new IslandManager();
         messages = persist.getFile(Messages.class).exists() ? persist.load(Messages.class) : new Messages();
-        oreGen = persist.getFile(OreGen.class).exists() ? persist.load(OreGen.class) : new OreGen();
+        upgrades = persist.getFile(Upgrades.class).exists() ? persist.load(Upgrades.class) : new Upgrades();
 
         for (Island island : islandManager.islands.values()) {
             island.init();
@@ -181,7 +178,7 @@ public class EpicSkyblock extends JavaPlugin {
         if (missions != null) persist.save(missions);
         if (islandManager != null) persist.save(islandManager);
         if (messages != null) persist.save(messages);
-        if (oreGen != null) persist.save(oreGen);
+        if (upgrades != null) persist.save(upgrades);
     }
 
     @Override
@@ -229,13 +226,13 @@ public class EpicSkyblock extends JavaPlugin {
         return messages;
     }
 
-    public static OreGen getOreGen() {
-        if (oreGen == null) {
-            oreGen = new OreGen();
-            EpicSkyblock.getPersist().getFile(oreGen).delete();
+    public static Upgrades getUpgrades() {
+        if (upgrades == null) {
+            upgrades = new Upgrades();
+            EpicSkyblock.getPersist().getFile(upgrades).delete();
             EpicSkyblock.getInstance().saveConfigs();
         }
-        return oreGen;
+        return upgrades;
     }
 
     public static Persist getPersist() {

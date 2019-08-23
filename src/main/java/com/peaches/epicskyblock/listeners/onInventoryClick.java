@@ -73,9 +73,9 @@ public class onInventoryClick implements Listener {
                 if (e.getInventory().equals(user.getIsland().getUpgradeGUI().inventory)) {
                     e.setCancelled(true);
                     if (e.getCurrentItem().equals(user.getIsland().getUpgradeGUI().ores)) {
-                        if (EpicSkyblock.getOreGen().ores.containsKey(user.getIsland().getOreLevel() + 1)) {
-                            if (user.getIsland().getCrystals() >= EpicSkyblock.getOreGen().ores.get(user.getIsland().getOreLevel() + 1).getCost()) {
-                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getOreGen().ores.get(user.getIsland().getOreLevel() + 1).getCost());
+                        if (EpicSkyblock.getUpgrades().ores.containsKey(user.getIsland().getOreLevel() + 1)) {
+                            if (user.getIsland().getCrystals() >= EpicSkyblock.getUpgrades().ores.get(user.getIsland().getOreLevel() + 1).getCost()) {
+                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getUpgrades().ores.get(user.getIsland().getOreLevel() + 1).getCost());
                                 user.getIsland().setOreLevel(user.getIsland().getOreLevel() + 1);
                             } else {
                                 e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
@@ -85,9 +85,9 @@ public class onInventoryClick implements Listener {
                         }
                     }
                     if (e.getCurrentItem().equals(user.getIsland().getUpgradeGUI().size)) {
-                        if (EpicSkyblock.getConfiguration().size.containsKey(user.getIsland().getSizeLevel() + 1)) {
-                            if (user.getIsland().getCrystals() >= EpicSkyblock.getConfiguration().size.get(user.getIsland().getSizeLevel() + 1).getCost()) {
-                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getConfiguration().size.get(user.getIsland().getSizeLevel() + 1).getCost());
+                        if (EpicSkyblock.getUpgrades().size.containsKey(user.getIsland().getSizeLevel() + 1)) {
+                            if (user.getIsland().getCrystals() >= EpicSkyblock.getUpgrades().size.get(user.getIsland().getSizeLevel() + 1).getCost()) {
+                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getUpgrades().size.get(user.getIsland().getSizeLevel() + 1).getCost());
                                 user.getIsland().setSizeLevel(user.getIsland().getSizeLevel() + 1);
                                 user.getIsland().sendBorder();
                             } else {
@@ -98,9 +98,9 @@ public class onInventoryClick implements Listener {
                         }
                     }
                     if (e.getCurrentItem().equals(user.getIsland().getUpgradeGUI().member)) {
-                        if (EpicSkyblock.getConfiguration().member.containsKey(user.getIsland().getMemberLevel() + 1)) {
-                            if (user.getIsland().getCrystals() >= EpicSkyblock.getConfiguration().member.get(user.getIsland().getMemberLevel() + 1).getCost()) {
-                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getConfiguration().member.get(user.getIsland().getMemberLevel() + 1).getCost());
+                        if (EpicSkyblock.getUpgrades().member.containsKey(user.getIsland().getMemberLevel() + 1)) {
+                            if (user.getIsland().getCrystals() >= EpicSkyblock.getUpgrades().member.get(user.getIsland().getMemberLevel() + 1).getCost()) {
+                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getUpgrades().member.get(user.getIsland().getMemberLevel() + 1).getCost());
                                 user.getIsland().setMemberLevel(user.getIsland().getMemberLevel() + 1);
                             } else {
                                 e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
@@ -110,9 +110,9 @@ public class onInventoryClick implements Listener {
                         }
                     }
                     if (e.getCurrentItem().equals(user.getIsland().getUpgradeGUI().warp)) {
-                        if (EpicSkyblock.getConfiguration().warp.containsKey(user.getIsland().getWarpLevel() + 1)) {
-                            if (user.getIsland().getCrystals() >= EpicSkyblock.getConfiguration().warp.get(user.getIsland().getWarpLevel() + 1).getCost()) {
-                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getConfiguration().warp.get(user.getIsland().getWarpLevel() + 1).getCost());
+                        if (EpicSkyblock.getUpgrades().warp.containsKey(user.getIsland().getWarpLevel() + 1)) {
+                            if (user.getIsland().getCrystals() >= EpicSkyblock.getUpgrades().warp.get(user.getIsland().getWarpLevel() + 1).getCost()) {
+                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getUpgrades().warp.get(user.getIsland().getWarpLevel() + 1).getCost());
                                 user.getIsland().setWarpLevel(user.getIsland().getWarpLevel() + 1);
                             } else {
                                 e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));

@@ -179,7 +179,7 @@ public class Island {
     }
 
     public void sendBorder(Player p) {
-        NMSUtils.sendWorldBorder(p, borderColor, EpicSkyblock.getConfiguration().size.get(sizeLevel).getSize(), getCenter());
+        NMSUtils.sendWorldBorder(p, borderColor, EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize(), getCenter());
     }
 
     public void hideBorder(Player p) {
@@ -252,7 +252,7 @@ public class Island {
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
-        if (warps.size() < EpicSkyblock.getConfiguration().warp.get(warpLevel).getSize()) {
+        if (warps.size() < EpicSkyblock.getUpgrades().warp.get(warpLevel).getSize()) {
             warps.add(new Warp(location, name, password));
             player.sendMessage(Utils.color(EpicSkyblock.getMessages().warpAdded.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         } else {
@@ -261,7 +261,7 @@ public class Island {
     }
 
     public void addUser(User user) {
-        if (members.size() < EpicSkyblock.getConfiguration().member.get(memberLevel).getSize()) {
+        if (members.size() < EpicSkyblock.getUpgrades().member.get(memberLevel).getSize()) {
             user.islandID = id;
             user.role = Roles.Visitor;
             user.invites.clear();
@@ -513,8 +513,8 @@ public class Island {
     public void setSizeLevel(int sizeLevel) {
         this.sizeLevel = sizeLevel;
 
-        pos1 = getCenter().clone().subtract(EpicSkyblock.getConfiguration().size.get(sizeLevel).getSize() / 2, 0, EpicSkyblock.getConfiguration().size.get(sizeLevel).getSize() / 2);
-        pos2 = getCenter().clone().add(EpicSkyblock.getConfiguration().size.get(sizeLevel).getSize() / 2, 0, EpicSkyblock.getConfiguration().size.get(sizeLevel).getSize() / 2);
+        pos1 = getCenter().clone().subtract(EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2, 0, EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2);
+        pos2 = getCenter().clone().add(EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2, 0, EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2);
     }
 
     public int getMemberLevel() {

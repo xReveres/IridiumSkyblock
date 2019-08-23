@@ -17,21 +17,6 @@ public class Config {
     public String BorderColorGUITitle = "&7Border Color";
     public String PermissionsGUITitle = "&7Permissions";
     public int distance = 200;
-    public HashMap<Integer, Upgrade> size = new HashMap<Integer, Upgrade>() {{
-        put(1, new Upgrade(50, 15));
-        put(2, new Upgrade(100, 15));
-        put(3, new Upgrade(150, 15));
-    }};
-    public HashMap<Integer, Upgrade> member = new HashMap<Integer, Upgrade>() {{
-        put(1, new Upgrade(9, 15));
-        put(2, new Upgrade(18, 15));
-        put(3, new Upgrade(27, 15));
-    }};
-    public HashMap<Integer, Upgrade> warp = new HashMap<Integer, Upgrade>() {{
-        put(1, new Upgrade(2, 15));
-        put(2, new Upgrade(5, 15));
-        put(3, new Upgrade(9, 15));
-    }};
     public Biome defaultBiome = Biome.PLAINS;
     public int spawnerBoosterCost = 15;
     public int farmingBoosterCost = 15;
@@ -59,22 +44,4 @@ public class Config {
         put(10, 25);
 
     }};
-
-    public class Upgrade {
-        private int size;
-        private int cost;
-
-        public Upgrade(int size, int cost) {
-            this.size = size;
-            this.cost = cost;
-        }
-
-        public int getSize() {
-            return size;
-        }
-
-        public int getCost() {
-            return cost;
-        }
-    }
 }
