@@ -107,4 +107,8 @@ public class IslandManager {
         }
         return null;
     }
+
+    public Island getIslandViaId(int i) {
+        return islands.get(i);
+    }
 }

@@ -2,6 +2,7 @@ package com.peaches.epicskyblock;
 
 import com.peaches.epicskyblock.commands.CommandManager;
 import com.peaches.epicskyblock.configs.*;
+import com.peaches.epicskyblock.gui.TopGUI;
 import com.peaches.epicskyblock.listeners.*;
 import com.peaches.epicskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.peaches.epicskyblock.serializer.Persist;
@@ -38,6 +39,8 @@ public class EpicSkyblock extends JavaPlugin {
 
     private static CommandManager commandManager;
 
+    public static TopGUI topGUI;
+
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     /*
     TODO
@@ -62,10 +65,12 @@ public class EpicSkyblock extends JavaPlugin {
             commandManager = new CommandManager("island");
             commandManager.registerCommands();
 
+            topGUI = new TopGUI();
+
             loadConfigs();
             saveConfigs();
 
-            registerListeners(new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onInventoryClick(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onEntityDamage(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+            registerListeners(topGUI, new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onInventoryClick(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onEntityDamage(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
             new Metrics(this);
 

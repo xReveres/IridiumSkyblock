@@ -22,7 +22,7 @@ public class TopCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            p.openInventory(TopGUI.inventory);
+            p.openInventory(EpicSkyblock.topGUI.inventory);
         } else {
             p.sendMessage(Utils.color(EpicSkyblock.getMessages().noIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         }
