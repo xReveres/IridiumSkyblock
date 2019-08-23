@@ -23,14 +23,6 @@ public class onEntityDamage implements Listener {
                         }
                     }
                 }
-                if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
-                    User u = User.getUser(((Player) e.getEntity()).getPlayer());
-                    if (u.getIsland() != null) {
-                        if (u.getIsland().isInIsland(e.getEntity().getLocation())) {
-                            e.setCancelled(true);
-                        }
-                    }
-                }
             }
         } catch (Exception ex) {
             EpicSkyblock.getInstance().sendErrorMessage(ex);
