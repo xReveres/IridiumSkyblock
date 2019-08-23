@@ -141,7 +141,11 @@ public class Island {
         startvalue = -1;
         borderColor = NMSUtils.Color.Blue;
         visit = true;
-        permissions = new HashMap<>();
+        permissions = new HashMap<Roles, Permissions>() {{
+            for (Roles role : Roles.values()) {
+                put(role, new Permissions());
+            }
+        }};
         init();
     }
 
@@ -267,7 +271,7 @@ public class Island {
             user.role = Roles.Visitor;
             user.invites.clear();
             members.add(user.player);
-            teleportHome(Bukkit.getPlayer(user.player));
+            teleportHome(Bukkit.getPlayer(user.name));
             user.invites.clear();
         } else {
             Bukkit.getPlayer(user.player).sendMessage(Utils.color(EpicSkyblock.getMessages().maxMemberCount.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
