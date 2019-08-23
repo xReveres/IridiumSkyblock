@@ -122,9 +122,6 @@ public class onInventoryClick implements Listener {
                         }
                     }
                 }
-                if (e.getInventory().equals(user.getIsland().getMembersGUI().inventory)) {
-                    e.setCancelled(true);
-                }
                 if (e.getInventory().equals(TopGUI.inventory)) {
                     e.setCancelled(true);
                 }

@@ -10,7 +10,8 @@ public class Messages {
     public String alreadyHaveIsland = "%prefix% &7You already have an island.";
     public String playerAlreadyHaveIsland = "%prefix% &7This player already has an island.";
     public String notInYourIsland = "%prefix% &7This player is not apart of your island.";
-    public String kickedMember = "%prefix% &7This member has been kicked from your island.";
+    public String kickedMember = "%prefix% &7%member% has been kicked from your island.";
+    public String youHaveBeenKicked = "%prefix% &7You have been kicked from your island.";
     public String mustBeAPlayer = "%prefix% &7You must be a player to execute this command.";
     public String mustBeIslandOwner = "%prefix% &7You must be the island owner to execute this command.";
     public String teleporting = "%prefix% &7Teleporting...";
@@ -44,7 +45,13 @@ public class Messages {
     public String islandNowPublic = "%prefix% &7Your island is now public.";
     public String cantLeaveIfOwner = "%prefix% &7You cannot leave your island whilst owner. do /is delete instead.";
     public String cantKickOwner = "%prefix% &7You cannot kick the island owner.";
+    public String cantDemoteOwner = "%prefix% &7You cannot demote the island owner.";
     public String nowBypassing = "%prefix% &7You are now bypassing island restrictions.";
     public String noLongerBypassing = "%prefix% &7You are no longer bypassing island restrictions.";
+    public String cantDemoteUser = "%prefix% &7You cannot demote this user.";
+    public String cantPromoteUser = "%prefix% &7You cannot promote this user.";
+    public String transferOwnership = "%prefix% &7To transfer ownership issue the command /is transfer <PlayerName>.";
+    public String playerPromoted = "%prefix% &7%player% has been promoted to %rank%.";
+    public String playerDemoted = "%prefix% &7%player% has been demoted to %rank%.";
 
 }

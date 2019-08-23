@@ -281,6 +281,13 @@ public class Island {
     public void removeUser(User user) {
         user.islandID = 0;
         members.remove(user.player);
+        for (String member : members) {
+            User u = User.getUser(member);
+            Player p = Bukkit.getPlayer(u.name);
+            if (p != null) {
+                p.sendMessage(Utils.color(EpicSkyblock.getMessages().kickedMember.replace("%member%", user.name).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            }
+        }
     }
 
     public boolean isInIsland(Location location) {

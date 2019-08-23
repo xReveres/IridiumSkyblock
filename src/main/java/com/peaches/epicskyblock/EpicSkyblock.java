@@ -109,7 +109,7 @@ public class EpicSkyblock extends JavaPlugin {
         e.printStackTrace();
     }
 
-    private void registerListeners(Listener... listener) {
+    public void registerListeners(Listener... listener) {
         for (Listener l : listener) {
             Bukkit.getPluginManager().registerEvents(l, this);
         }

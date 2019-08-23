@@ -17,6 +17,8 @@ public class Permissions {
     public transient ItemStack Invitemembers;
     public transient ItemStack Regen;
     public transient ItemStack Islandprivate;
+    public transient ItemStack Promote;
+    public transient ItemStack Demote;
 
     public Permissions() {
         init();
@@ -38,14 +40,18 @@ public class Permissions {
         this.Invitemembers = Utils.makeItem(Material.STAINED_CLAY, 1, inviteMembers ? 5 : 14, "&b&lInvite Members");
         this.Regen = Utils.makeItem(Material.STAINED_CLAY, 1, regen ? 5 : 14, "&b&lRegen");
         this.Islandprivate = Utils.makeItem(Material.STAINED_CLAY, 1, islandprivate ? 5 : 14, "&b&lIsland Visits");
+        this.Promote = Utils.makeItem(Material.STAINED_CLAY, 1, promote ? 5 : 14, "&b&lPromote");
+        this.Demote = Utils.makeItem(Material.STAINED_CLAY, 1, demote ? 5 : 14, "&b&lDemote");
 
-        inventory.setItem(10, Breakblocks);
-        inventory.setItem(11, Placeblocks);
-        inventory.setItem(12, Interact);
-        inventory.setItem(13, Kickmembers);
-        inventory.setItem(14, Invitemembers);
-        inventory.setItem(15, Regen);
-        inventory.setItem(16, Islandprivate);
+        inventory.setItem(9, Breakblocks);
+        inventory.setItem(10, Placeblocks);
+        inventory.setItem(11, Interact);
+        inventory.setItem(12, Kickmembers);
+        inventory.setItem(13, Invitemembers);
+        inventory.setItem(14, Regen);
+        inventory.setItem(15, Islandprivate);
+        inventory.setItem(16, Promote);
+        inventory.setItem(17, Demote);
     }
 
     public boolean breakBlocks = true;
@@ -55,6 +61,8 @@ public class Permissions {
     public boolean inviteMembers = true;
     public boolean regen = false;
     public boolean islandprivate = true;
+    public boolean promote = true;
+    public boolean demote = true;
 
     public Inventory getInventory() {
         return inventory;
