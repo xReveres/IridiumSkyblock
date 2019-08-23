@@ -24,8 +24,6 @@ import java.time.LocalDateTime;
 
 public class EpicSkyblock extends JavaPlugin {
 
-    private SentryClient sentry;
-
     private static EpicSkyblock instance;
 
     private static Config configuration;
@@ -53,8 +51,6 @@ public class EpicSkyblock extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            sentry = SentryClientFactory.sentryClient("https://88cbd35ae467457bbc87a56d81169389@sentry.prodigysupport.team/5" + "?timeout=15000" + "&async=true" + "&stacktrace.app.packages=com.peaches.epicskyblock");
-
             instance = this;
 
             super.onEnable();
@@ -110,25 +106,7 @@ public class EpicSkyblock extends JavaPlugin {
     }
 
     public void sendErrorMessage(Exception e) {
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-            try {
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw, true);
-                e.printStackTrace(pw);
-                String error = sw.getBuffer().toString();
-                final EventBuilder eventBuilder = new EventBuilder();
-                eventBuilder.withMessage(error);
-                eventBuilder.withLevel(Event.Level.ERROR);
-                eventBuilder.withTag("ip", InetAddress.getLocalHost().getHostAddress());
-                eventBuilder.withTag("plugin_version", getDescription().getVersion());
-
-                sentry.sendEvent(eventBuilder.build());
-
-                getLogger().info(error);
-
-            } catch (Exception exception) {
-            }
-        });
+        e.printStackTrace();
     }
 
     private void registerListeners(Listener... listener) {
