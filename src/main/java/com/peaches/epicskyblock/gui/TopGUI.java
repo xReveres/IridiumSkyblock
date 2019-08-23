@@ -2,6 +2,7 @@ package com.peaches.epicskyblock.gui;
 
 import com.peaches.epicskyblock.EpicSkyblock;
 import com.peaches.epicskyblock.Island;
+import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -34,12 +35,13 @@ public class TopGUI {
                 if (top.size() >= i) {
                     ArrayList<String> lore = new ArrayList<>();
                     Island island = top.get(i - 1);
-                    lore.add("&b&l * &7Leader: &b" + island.getOwner());
+                    User owner = User.getUser(island.getOwner());
+                    lore.add("&b&l * &7Leader: &b" + owner.name);
                     lore.add("&b&l * &7Rank: &b" + i);
                     lore.add("&b&l * &7Value: &b" + island.getValue());
-                    ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + island.getOwner(), Utils.color(lore));
+                    ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + owner.name, Utils.color(lore));
                     SkullMeta m = (SkullMeta) head.getItemMeta();
-                    m.setOwner(island.getOwner());
+                    m.setOwner(owner.name);
                     head.setItemMeta(m);
                     inventory.setItem(EpicSkyblock.getConfiguration().islandTopSlots.get(i), head);
                 }
