@@ -65,10 +65,10 @@ public class EpicSkyblock extends JavaPlugin {
             commandManager = new CommandManager("island");
             commandManager.registerCommands();
 
-            topGUI = new TopGUI();
-
             loadConfigs();
             saveConfigs();
+
+            topGUI = new TopGUI();
 
             registerListeners(topGUI, new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onInventoryClick(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onEntityDamage(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
