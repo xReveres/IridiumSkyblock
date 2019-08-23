@@ -107,12 +107,12 @@ public class Island {
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, int id) {
         User user = User.getUser(owner);
         user.role = Roles.Owner;
-        this.owner = owner.getName();
+        this.owner = user.player;
         this.pos1 = pos1;
         this.pos2 = pos2;
         this.center = center;
         this.home = home;
-        this.members = new ArrayList<>(Collections.singletonList(owner.getName()));
+        this.members = new ArrayList<>(Collections.singletonList(user.player));
         this.id = id;
         upgradeGUI = new UpgradeGUI(this);
         boosterGUI = new BoosterGUI(this);
@@ -227,6 +227,7 @@ public class Island {
         blocks.clear();
         this.a = Bukkit.getScheduler().scheduleSyncRepeatingTask(EpicSkyblock.getInstance(), new Runnable() {
             double Y = 0;
+
             @Override
             public void run() {
                 try {
