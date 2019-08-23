@@ -2,6 +2,7 @@ package com.peaches.epicskyblock.listeners;
 
 import com.peaches.epicskyblock.EpicSkyblock;
 import com.peaches.epicskyblock.User;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +25,22 @@ public class onEntityDamageByEntity implements Listener {
                         if (damager.getIsland() != null && entity.getIsland() != null) {
                             if (damager.getIsland().equals(entity.getIsland()) && damager.getIsland() != null) {
                                 e.setCancelled(true);
+                            }
+                        }
+                    }
+                }else if(e.getDamager() instanceof Arrow){
+                    Arrow a = (Arrow) e.getDamager();
+                    if(a.getShooter() instanceof Player){
+                        Player player = (Player) a.getShooter();
+                        User damager = User.getUser(p);
+                        User entity = User.getUser(player);
+                        if (e.getEntity().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
+                            e.setCancelled(true);
+                        } else {
+                            if (damager.getIsland() != null && entity.getIsland() != null) {
+                                if (damager.getIsland().equals(entity.getIsland()) && damager.getIsland() != null) {
+                                    e.setCancelled(true);
+                                }
                             }
                         }
                     }
