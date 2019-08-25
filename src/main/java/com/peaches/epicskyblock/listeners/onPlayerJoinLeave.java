@@ -8,8 +8,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class onPlayerJoinLeave implements Listener {
 
-    //
-
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         try {
