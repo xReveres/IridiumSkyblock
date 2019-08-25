@@ -316,6 +316,13 @@ public class Island {
                 }
             }
         }, 0, 20);
+        if(permissions==null){
+            permissions = new HashMap<Roles, Permissions>() {{
+                for (Roles role : Roles.values()) {
+                    put(role, new Permissions());
+                }
+            }};
+        }
         for (Permissions permissions : permissions.values()) {
             permissions.init();
         }
@@ -443,6 +450,10 @@ public class Island {
 
     public String getOwner() {
         return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public int getId() {

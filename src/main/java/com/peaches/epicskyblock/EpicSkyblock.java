@@ -11,6 +11,7 @@ import io.sentry.SentryClientFactory;
 import io.sentry.event.Event;
 import io.sentry.event.EventBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -22,6 +23,8 @@ import java.io.StringWriter;
 import java.net.InetAddress;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 public class EpicSkyblock extends JavaPlugin {
 
@@ -150,7 +153,6 @@ public class EpicSkyblock extends JavaPlugin {
         messages = persist.getFile(Messages.class).exists() ? persist.load(Messages.class) : new Messages();
         upgrades = persist.getFile(Upgrades.class).exists() ? persist.load(Upgrades.class) : new Upgrades();
         boosters = persist.getFile(Boosters.class).exists() ? persist.load(Boosters.class) : new Boosters();
-
         for (Island island : islandManager.islands.values()) {
             island.init();
         }
