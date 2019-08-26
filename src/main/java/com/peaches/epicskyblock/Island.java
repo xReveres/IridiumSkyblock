@@ -453,6 +453,10 @@ public class Island {
         return home;
     }
 
+    public void setHome(Location home) {
+        this.home = home;
+    }
+
     public String getOwner() {
         return owner;
     }
