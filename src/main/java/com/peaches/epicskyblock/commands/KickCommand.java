@@ -5,6 +5,7 @@ import com.peaches.epicskyblock.Roles;
 import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,7 +27,7 @@ public class KickCommand extends Command {
         }
         Player p = (Player) sender;
         User user = User.getUser(p); // User kicking the player
-        Player player = Bukkit.getPlayer(args[1]);
+        OfflinePlayer player = Bukkit.getPlayer(args[1]);
         if (player != null) {
             User u = User.getUser(player); // Player we want to kick
             if (user.getIsland() != null) {
@@ -36,7 +37,8 @@ public class KickCommand extends Command {
                     } else {
                         if (user.bypassing || user.getIsland().getPermissions(u.role).kickMembers) {
                             user.getIsland().removeUser(u);
-                            player.sendMessage(Utils.color(EpicSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                            if (player.getPlayer() != null)
+                                player.getPlayer().sendMessage(Utils.color(EpicSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                         } else {
                             sender.sendMessage(Utils.color(EpicSkyblock.getMessages().noPermission.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                         }

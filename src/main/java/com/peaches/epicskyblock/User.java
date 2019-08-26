@@ -1,5 +1,6 @@
 package com.peaches.epicskyblock;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class User {
     public Island.Warp warp;
     public boolean bypassing;
 
-    public User(Player p) {
+    public User(OfflinePlayer p) {
         invites = new ArrayList<>();
         this.player = p.getUniqueId().toString();
         this.name = p.getName();
@@ -31,7 +32,7 @@ public class User {
         return EpicSkyblock.getIslandManager().users.get(p);
     }
 
-    public static User getUser(Player p) {
+    public static User getUser(OfflinePlayer p) {
         return EpicSkyblock.getIslandManager().users.containsKey(p.getUniqueId().toString()) ? EpicSkyblock.getIslandManager().users.get(p.getUniqueId().toString()) : new User(p);
     }
 

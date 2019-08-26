@@ -4,6 +4,7 @@ import com.peaches.epicskyblock.EpicSkyblock;
 import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,7 +25,7 @@ public class VisitCommand extends Command {
             return;
         }
         Player p = (Player) sender;
-        Player player = Bukkit.getPlayer(args[1]);
+        OfflinePlayer player = Bukkit.getPlayer(args[1]);
         if (player != null) {
             User user = User.getUser(player);
             if (user.getIsland() != null) {

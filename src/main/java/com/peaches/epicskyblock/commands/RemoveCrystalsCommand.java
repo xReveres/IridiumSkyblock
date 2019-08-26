@@ -5,6 +5,7 @@ import com.peaches.epicskyblock.Island;
 import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,7 +27,7 @@ public class RemoveCrystalsCommand extends Command {
         }
 
         if (Bukkit.getPlayer(args[1]) != null) {
-            Player player = Bukkit.getPlayer(args[1]);
+            OfflinePlayer player = Bukkit.getPlayer(args[1]);
             if (player != null) {
                 Island island = User.getUser(player).getIsland();
                 if (island != null) {
