@@ -1,5 +1,7 @@
 package com.peaches.epicskyblock;
 
+import com.peaches.epicskyblock.api.IslandCreateEvent;
+import com.peaches.epicskyblock.api.IslandDeleteEvent;
 import com.peaches.epicskyblock.gui.*;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
@@ -145,6 +147,7 @@ public class Island {
             }
         }};
         init();
+        Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
 
     public Permissions getPermissions(Roles role) {
@@ -316,7 +319,7 @@ public class Island {
                 }
             }
         }, 0, 20);
-        if(permissions==null){
+        if (permissions == null) {
             permissions = new HashMap<Roles, Permissions>() {{
                 for (Roles role : Roles.values()) {
                     put(role, new Permissions());
@@ -379,6 +382,8 @@ public class Island {
     }
 
     public void delete() {
+        Bukkit.getPluginManager().callEvent(new IslandDeleteEvent(this));
+        
         Bukkit.getScheduler().cancelTask(getMembersGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBoosterGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getMissionsGUI().scheduler);
@@ -572,7 +577,7 @@ public class Island {
         this.oreLevel = oreLevel;
     }
 
-    public void removeWarp(Warp warp){
+    public void removeWarp(Warp warp) {
         warps.remove(warp);
     }
 
