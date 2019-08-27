@@ -40,10 +40,14 @@ public class BoosterGUI {
                 this.farming = Utils.makeItem(Material.WHEAT, 1, 0, "&b&lIncreased Crops", Utils.color(new ArrayList<>(Arrays.asList("&7Are your crops too slow? Buy this", "&7booster and increase crop growth rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b" + island.getFarmingBooster() + "s", "&b&l * &7Booster Cost: &b" + EpicSkyblock.getBoosters().farmingBooster.getCost() + " Crystals", "", "&b&l[!] &bRight Click to Purchase this Booster."))));
                 this.exp = Utils.makeItem(Material.EXP_BOTTLE, 1, 0, "&b&lIncreased Experience", Utils.color(new ArrayList<>(Arrays.asList("&7Takes too long to get exp? Buy this", "&7booster and exp rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b" + island.getExpBooster() + "s", "&b&l * &7Booster Cost: &b" + EpicSkyblock.getBoosters().experianceBooster.getCost() + "Crystals", "", "&b&l[!] &bRight Click to Purchase this Booster."))));
                 this.flight = Utils.makeItem(Material.FEATHER, 1, 0, "&b&lIncreased Flight", Utils.color(new ArrayList<>(Arrays.asList("&7Tired of falling off your island? Buy this", "&7booster and allow all members to fly.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b" + island.getFlightBooster() + "s", "&b&l * &7Booster Cost: &b" + EpicSkyblock.getBoosters().flightBooster.getCost() + " Crystals", "", "&b&l[!] &bRight Click to Purchase this Booster."))));
-                inventory.setItem(10, spawner);
-                inventory.setItem(12, farming);
-                inventory.setItem(14, exp);
-                inventory.setItem(16, flight);
+                if (EpicSkyblock.getBoosters().spawnerBooster.isEnabled())
+                    inventory.setItem(EpicSkyblock.getBoosters().spawnerBooster.getSlot(), spawner);
+                if (EpicSkyblock.getBoosters().farmingBooster.isEnabled())
+                    inventory.setItem(EpicSkyblock.getBoosters().farmingBooster.getSlot(), farming);
+                if (EpicSkyblock.getBoosters().experianceBooster.isEnabled())
+                    inventory.setItem(EpicSkyblock.getBoosters().experianceBooster.getSlot(), exp);
+                if (EpicSkyblock.getBoosters().flightBooster.isEnabled())
+                    inventory.setItem(EpicSkyblock.getBoosters().flightBooster.getSlot(), flight);
             }
         } catch (Exception e) {
             EpicSkyblock.getInstance().sendErrorMessage(e);
