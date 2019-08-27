@@ -5,13 +5,16 @@ import com.peaches.epicskyblock.Island;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class BoosterGUI {
+public class BoosterGUI implements Listener {
 
     public Inventory inventory;
     public int islandID;
@@ -27,6 +30,7 @@ public class BoosterGUI {
         this.inventory = Bukkit.createInventory(null, 27, Utils.color(EpicSkyblock.getConfiguration().BoosterGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), this::addContent, 0, 10);
+        EpicSkyblock.getInstance().registerListeners(this);
     }
 
     public void addContent() {
@@ -51,6 +55,62 @@ public class BoosterGUI {
             }
         } catch (Exception e) {
             EpicSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (e.getInventory().equals(inventory)) {
+            e.setCancelled(true);
+            if (e.getCurrentItem() == null) return;
+            if (EpicSkyblock.getBoosters().spawnerBooster.isEnabled() && e.getCurrentItem().equals(spawner)) {
+                if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= EpicSkyblock.getBoosters().spawnerBooster.getCost()) {
+                    if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getSpawnerBooster() == 0) {
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - EpicSkyblock.getBoosters().spawnerBooster.getCost());
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setSpawnerBooster(3600);
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().spawnerBoosterActive.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
+            }
+            if (EpicSkyblock.getBoosters().farmingBooster.isEnabled() && e.getCurrentItem().equals(farming)) {
+                if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= EpicSkyblock.getBoosters().farmingBooster.getCost()) {
+                    if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getFarmingBooster() == 0) {
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - EpicSkyblock.getBoosters().farmingBooster.getCost());
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setFarmingBooster(3600);
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().farmingBoosterActive.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
+            }
+            if (EpicSkyblock.getBoosters().spawnerBooster.isEnabled() && e.getCurrentItem().equals(exp)) {
+                if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= EpicSkyblock.getBoosters().experianceBooster.getCost()) {
+                    if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getExpBooster() == 0) {
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - EpicSkyblock.getBoosters().experianceBooster.getCost());
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setExpBooster(3600);
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().expBoosterActive.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
+            }
+            if (EpicSkyblock.getBoosters().spawnerBooster.isEnabled() && e.getCurrentItem().equals(flight)) {
+                if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= EpicSkyblock.getBoosters().flightBooster.getCost()) {
+                    if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getFlightBooster() == 0) {
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - EpicSkyblock.getBoosters().flightBooster.getCost());
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setFlightBooster(3600);
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().flightBoosterActive.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
+            }
         }
     }
 }

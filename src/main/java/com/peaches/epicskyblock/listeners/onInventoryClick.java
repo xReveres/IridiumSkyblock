@@ -15,58 +15,6 @@ public class onInventoryClick implements Listener {
             Player p = (Player) e.getWhoClicked();
             User user = User.getUser(((Player) e.getWhoClicked()).getPlayer());
             if (user.getIsland() != null) {
-                if (e.getInventory().equals(user.getIsland().getBoosterGUI().inventory)) {
-                    e.setCancelled(true);
-                    if (e.getCurrentItem() == null) return;
-                    if (e.getCurrentItem().equals(user.getIsland().getBoosterGUI().spawner)) {
-                        if (user.getIsland().getCrystals() >= EpicSkyblock.getBoosters().spawnerBooster.getCost()) {
-                            if (user.getIsland().getSpawnerBooster() == 0) {
-                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getBoosters().spawnerBooster.getCost());
-                                user.getIsland().setSpawnerBooster(3600);
-                            } else {
-                                e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().spawnerBoosterActive.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                            }
-                        } else {
-                            e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                        }
-                    }
-                    if (e.getCurrentItem().equals(user.getIsland().getBoosterGUI().farming)) {
-                        if (user.getIsland().getCrystals() >= EpicSkyblock.getBoosters().farmingBooster.getCost()) {
-                            if (user.getIsland().getFarmingBooster() == 0) {
-                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getBoosters().farmingBooster.getCost());
-                                user.getIsland().setFarmingBooster(3600);
-                            } else {
-                                e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().farmingBoosterActive.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                            }
-                        } else {
-                            e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                        }
-                    }
-                    if (e.getCurrentItem().equals(user.getIsland().getBoosterGUI().exp)) {
-                        if (user.getIsland().getCrystals() >= EpicSkyblock.getBoosters().experianceBooster.getCost()) {
-                            if (user.getIsland().getExpBooster() == 0) {
-                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getBoosters().experianceBooster.getCost());
-                                user.getIsland().setExpBooster(3600);
-                            } else {
-                                e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().expBoosterActive.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                            }
-                        } else {
-                            e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                        }
-                    }
-                    if (e.getCurrentItem().equals(user.getIsland().getBoosterGUI().flight)) {
-                        if (user.getIsland().getCrystals() >= EpicSkyblock.getBoosters().flightBooster.getCost()) {
-                            if (user.getIsland().getFlightBooster() == 0) {
-                                user.getIsland().setCrystals(user.getIsland().getCrystals() - EpicSkyblock.getBoosters().flightBooster.getCost());
-                                user.getIsland().setFlightBooster(3600);
-                            } else {
-                                e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().flightBoosterActive.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                            }
-                        } else {
-                            e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                        }
-                    }
-                }
                 if (e.getInventory().equals(user.getIsland().getMissionsGUI().inventory)) {
                     e.setCancelled(true);
                 }
