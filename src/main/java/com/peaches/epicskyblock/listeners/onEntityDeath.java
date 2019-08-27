@@ -13,6 +13,7 @@ public class onEntityDeath implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
         try {
+            if(e.getEntity().getKiller() == null)return;
             if (e.getEntity().getKiller().getPlayer() == null) return;
             Island island = User.getUser(e.getEntity().getKiller().getPlayer()).getIsland();
             if (island != null) {
