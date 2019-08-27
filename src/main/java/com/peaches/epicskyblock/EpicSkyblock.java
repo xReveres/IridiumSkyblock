@@ -65,7 +65,7 @@ public class EpicSkyblock extends JavaPlugin {
 
             topGUI = new TopGUI();
 
-            registerListeners(topGUI, new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onInventoryClick(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+            registerListeners(topGUI, new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
             new Metrics(this);
 

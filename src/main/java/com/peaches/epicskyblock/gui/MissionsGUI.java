@@ -5,6 +5,9 @@ import com.peaches.epicskyblock.Island;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MissionsGUI {
+public class MissionsGUI implements Listener {
 
     public Inventory inventory;
     public int islandID;
@@ -30,6 +33,7 @@ public class MissionsGUI {
         this.inventory = Bukkit.createInventory(null, 27, Utils.color(EpicSkyblock.getConfiguration().MissionsGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), this::addContent, 0, 10);
+        EpicSkyblock.getInstance().registerListeners(this);
     }
 
     public void addContent() {
@@ -55,8 +59,15 @@ public class MissionsGUI {
                 inventory.setItem(15, this.fisherman);
                 inventory.setItem(16, this.builder);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             EpicSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (e.getInventory().equals(inventory)) {
+            e.setCancelled(true);
         }
     }
 }

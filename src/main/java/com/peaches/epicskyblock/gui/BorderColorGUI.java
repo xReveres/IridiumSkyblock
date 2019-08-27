@@ -39,6 +39,7 @@ public class BorderColorGUI implements Listener {
         inventory.setItem(12, this.blue);
         inventory.setItem(14, this.green);
         inventory.setItem(16, this.off);
+        EpicSkyblock.getInstance().registerListeners(this);
     }
 
     @EventHandler

@@ -5,6 +5,9 @@ import com.peaches.epicskyblock.Island;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class UpgradeGUI {
+public class UpgradeGUI implements Listener {
 
     public Inventory inventory;
     public ItemStack size;
@@ -26,6 +29,7 @@ public class UpgradeGUI {
         this.inventory = Bukkit.createInventory(null, 27, Utils.color(EpicSkyblock.getConfiguration().UpgradeGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), this::addContent, 0, 10);
+        EpicSkyblock.getInstance().registerListeners(this);
     }
 
     public void addContent() {
@@ -81,6 +85,62 @@ public class UpgradeGUI {
             }
         } catch (Exception e) {
             EpicSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e){
+        if(e.getInventory().equals(inventory)){
+            e.setCancelled(true);
+            if (e.getCurrentItem().equals(ores)) {
+                if (EpicSkyblock.getUpgrades().ores.containsKey(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getOreLevel() + 1)) {
+                    if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= EpicSkyblock.getUpgrades().ores.get(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getOreLevel() + 1).getCost()) {
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - EpicSkyblock.getUpgrades().ores.get(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getOreLevel() + 1).getCost());
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setOreLevel(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getOreLevel() + 1);
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().maxLevelReached.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
+            }
+            if (e.getCurrentItem().equals(size)) {
+                if (EpicSkyblock.getUpgrades().size.containsKey(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getSizeLevel() + 1)) {
+                    if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= EpicSkyblock.getUpgrades().size.get(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getSizeLevel() + 1).getCost()) {
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - EpicSkyblock.getUpgrades().size.get(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getSizeLevel() + 1).getCost());
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setSizeLevel(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getSizeLevel() + 1);
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).sendBorder();
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().maxLevelReached.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
+            }
+            if (e.getCurrentItem().equals(member)) {
+                if (EpicSkyblock.getUpgrades().member.containsKey(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getMemberLevel() + 1)) {
+                    if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= EpicSkyblock.getUpgrades().member.get(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getMemberLevel() + 1).getCost()) {
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - EpicSkyblock.getUpgrades().member.get(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getMemberLevel() + 1).getCost());
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setMemberLevel(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getMemberLevel() + 1);
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().maxLevelReached.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
+            }
+            if (e.getCurrentItem().equals(warp)) {
+                if (EpicSkyblock.getUpgrades().warp.containsKey(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getWarpLevel() + 1)) {
+                    if (EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= EpicSkyblock.getUpgrades().warp.get(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getWarpLevel() + 1).getCost()) {
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - EpicSkyblock.getUpgrades().warp.get(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getWarpLevel() + 1).getCost());
+                        EpicSkyblock.getIslandManager().getIslandViaId(islandID).setWarpLevel(EpicSkyblock.getIslandManager().getIslandViaId(islandID).getWarpLevel() + 1);
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                    }
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().maxLevelReached.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
+            }
         }
     }
 }
