@@ -145,6 +145,7 @@ public class EpicSkyblock extends JavaPlugin {
         messages = persist.getFile(Messages.class).exists() ? persist.load(Messages.class) : new Messages();
         upgrades = persist.getFile(Upgrades.class).exists() ? persist.load(Upgrades.class) : new Upgrades();
         boosters = persist.getFile(Boosters.class).exists() ? persist.load(Boosters.class) : new Boosters();
+
         for (Island island : islandManager.islands.values()) {
             island.init();
         }

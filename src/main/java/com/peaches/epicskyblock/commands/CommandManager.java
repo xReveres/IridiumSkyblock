@@ -3,6 +3,7 @@ package com.peaches.epicskyblock.commands;
 import com.peaches.epicskyblock.EpicSkyblock;
 import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,17 +11,16 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CommandManager implements CommandExecutor, TabCompleter {
-    private HashMap<String, com.peaches.epicskyblock.commands.Command> commands = new HashMap<>();
-    private List<com.peaches.epicskyblock.commands.Command> commandList = new ArrayList<>();
+    private List<com.peaches.epicskyblock.commands.Command> commands = new ArrayList<>();
 
     public CommandManager(String command) {
         EpicSkyblock.getInstance().getCommand(command).setExecutor(this);
         EpicSkyblock.getInstance().getCommand(command).setTabCompleter(this);
     }
+
 
     public void registerCommands() {
         new CreateCommand();
@@ -50,34 +50,33 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         new PublicCommand();
         new PrivateCommand();
         new BypassCommand();
+        new SetHomeCommand();
     }
 
     public void registerCommand(com.peaches.epicskyblock.commands.Command command) {
-        for (String alias : command.getAliases()) {
-            commands.put(alias.toLowerCase(), command);
-        }
-        commandList.add(command);
+        commands.add(command);
     }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         try {
             if (args.length != 0) {
-                if (commands.containsKey(args[0])) {
-                    com.peaches.epicskyblock.commands.Command command = commands.get(args[0]);
-                    if (!command.isPlayer() || cs instanceof Player) {
-                        if (cs.hasPermission(command.getPermission()) || command.getPermission().isEmpty()) {
-                            command.execute(cs, args);
-                            return true;
+                for (com.peaches.epicskyblock.commands.Command command : commands) {
+                    if (command.getAliases().contains(args[0])) {
+                        if (!command.isPlayer() || cs instanceof Player) {
+                            if (cs.hasPermission(command.getPermission()) || command.getPermission().isEmpty()) {
+                                command.execute(cs, args);
+                                return true;
+                            } else {
+                                // No permission
+                                cs.sendMessage(Utils.color(EpicSkyblock.getMessages().noPermission.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                                return true;
+                            }
                         } else {
-                            // No permission
-                            cs.sendMessage(Utils.color(EpicSkyblock.getMessages().noPermission.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                            // Must be a player
+                            cs.sendMessage(Utils.color(EpicSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                             return true;
                         }
-                    } else {
-                        // Must be a player
-                        cs.sendMessage(Utils.color(EpicSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                        return true;
                     }
                 }
             } else {
@@ -95,7 +94,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             }
             //Help Menu
             cs.sendMessage(Utils.color("&b&lEpicSkyblock: &bHelp"));
-            for (com.peaches.epicskyblock.commands.Command c : commandList) {
+            for (com.peaches.epicskyblock.commands.Command c : commands) {
                 cs.sendMessage(Utils.color("&b&l * &7" + c.getAliases().get(0) + ": &b" + c.getDescription()));
             }
         } catch (Exception e) {
@@ -109,15 +108,19 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         try {
             if (args.length == 1) {
                 ArrayList<String> result = new ArrayList<>();
-                for (String command : commands.keySet()) {
-                    if (command.toLowerCase().startsWith(args[0].toLowerCase())) {
-                        result.add(command);
+                for (com.peaches.epicskyblock.commands.Command command : commands) {
+                    for (String alias : command.getAliases()) {
+                        if (alias.toLowerCase().startsWith(args[0].toLowerCase())) {
+                            result.add(alias);
+                        }
                     }
                 }
                 return result;
             }
-            if (commands.containsKey(args[0])) {
-                return commands.get(args[0]).TabComplete(cs, cmd, s, args);
+            for (com.peaches.epicskyblock.commands.Command command : commands) {
+                if (command.getAliases().contains(args[0])) {
+                    return command.TabComplete(cs, cmd, s, args);
+                }
             }
         } catch (Exception e) {
             EpicSkyblock.getInstance().sendErrorMessage(e);
