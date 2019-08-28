@@ -53,6 +53,7 @@ public class Messages {
     public String transferOwnership = "%prefix% &7To transfer ownership issue the command /is transfer <PlayerName>.";
     public String playerPromoted = "%prefix% &7%player% has been promoted to %rank%.";
     public String playerDemoted = "%prefix% &7%player% has been demoted to %rank%.";
-    public String setHome = "%prefix% &7%You have set your home to this location.";
+    public String setHome = "%prefix% &7You have set your home to this location.";
+    public String isNotSafe = "%prefix% &7This location is not safe.";
 
 }

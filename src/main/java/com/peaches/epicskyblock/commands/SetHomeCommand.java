@@ -20,8 +20,12 @@ public class SetHomeCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            user.getIsland().setHome(p.getLocation());
-            p.sendMessage(Utils.color(EpicSkyblock.getMessages().setHome.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            if (Utils.isSafe(p.getLocation(), user.getIsland())) {
+                user.getIsland().setHome(p.getLocation());
+                p.sendMessage(Utils.color(EpicSkyblock.getMessages().setHome.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            } else {
+                p.sendMessage(Utils.color(EpicSkyblock.getMessages().isNotSafe.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            }
         } else {
             p.sendMessage(Utils.color(EpicSkyblock.getMessages().noIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
         }

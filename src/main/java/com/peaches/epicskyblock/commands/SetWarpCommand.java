@@ -23,7 +23,11 @@ public class SetWarpCommand extends Command {
             User user = User.getUser(p);
             if (user.getIsland() != null) {
                 String password = args.length == 3 ? args[2] : "";
-                user.getIsland().addWarp(p, p.getLocation(), args[1], password);
+                if(Utils.isSafe(p.getLocation(), user.getIsland())){
+                    user.getIsland().addWarp(p, p.getLocation(), args[1], password);
+                }else{
+                    p.sendMessage(Utils.color(EpicSkyblock.getMessages().isNotSafe.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
             } else {
                 p.sendMessage(Utils.color(EpicSkyblock.getMessages().noIsland.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
             }

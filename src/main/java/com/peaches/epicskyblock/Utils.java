@@ -64,8 +64,8 @@ public class Utils {
     }
 
 
-    public static boolean isSafe(Location loc) {
-        return (loc.getBlock().getType().equals(Material.AIR)
+    public static boolean isSafe(Location loc, Island island) {
+        return (island.isInIsland(loc) && loc.getBlock().getType().equals(Material.AIR)
                 && (!loc.clone().add(0, -1, 0).getBlock().getType().equals(Material.AIR) && !loc.clone().add(0, -1, 0).getBlock().isLiquid()));
     }
 
@@ -83,14 +83,14 @@ public class Utils {
     public static Location getNewHome(Island island, Location loc) {
         Block b;
         b = EpicSkyblock.getIslandManager().getWorld().getHighestBlockAt(loc);
-        if (isSafe(b.getLocation())) {
+        if (isSafe(b.getLocation(), island)) {
             return b.getLocation().add(0.5, 1, 0.5);
         }
 
         for (double X = island.getPos1().getX(); X <= island.getPos2().getX(); X++) {
             for (double Z = island.getPos1().getZ(); Z <= island.getPos2().getZ(); Z++) {
                 b = EpicSkyblock.getIslandManager().getWorld().getHighestBlockAt((int) X, (int) Z);
-                if (isSafe(b.getLocation())) {
+                if (isSafe(b.getLocation(), island)) {
                     return b.getLocation().add(0.5, 1, 0.5);
                 }
             }
