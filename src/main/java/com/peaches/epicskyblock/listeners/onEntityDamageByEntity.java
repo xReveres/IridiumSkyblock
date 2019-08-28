@@ -28,23 +28,27 @@ public class onEntityDamageByEntity implements Listener {
                 }
             }
             if (e.getDamager() instanceof Player && !(e.getEntity() instanceof Player)) { // Deals with a player attacking animals that are not from their island
-                User user = User.getUser((Player) e.getDamager());
-                if (user.getIsland() != null) {
-                    if (!user.getIsland().isInIsland(e.getEntity().getLocation())) {
+                if (e.getEntity().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
+                    User user = User.getUser((Player) e.getDamager());
+                    if (user.getIsland() != null) {
+                        if (!user.getIsland().isInIsland(e.getEntity().getLocation())) {
+                            e.setCancelled(true);
+                        }
+                    } else {
                         e.setCancelled(true);
                     }
-                } else {
-                    e.setCancelled(true);
                 }
             }
             if (e.getEntity() instanceof Player && !(e.getDamager() instanceof Player)) { //Deals with a mob attacking a player that doesnt belong to the island (/is home traps?)
-                User user = User.getUser((Player) e.getEntity());
-                if (user.getIsland() != null) {
-                    if (!user.getIsland().isInIsland(e.getDamager().getLocation())) {
+                if (e.getEntity().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
+                    User user = User.getUser((Player) e.getEntity());
+                    if (user.getIsland() != null) {
+                        if (!user.getIsland().isInIsland(e.getDamager().getLocation())) {
+                            e.setCancelled(true);
+                        }
+                    } else {
                         e.setCancelled(true);
                     }
-                } else {
-                    e.setCancelled(true);
                 }
             }
             if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two allies pvping
