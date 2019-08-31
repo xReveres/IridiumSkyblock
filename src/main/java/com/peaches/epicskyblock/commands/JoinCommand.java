@@ -5,6 +5,7 @@ import com.peaches.epicskyblock.Island;
 import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,7 +27,7 @@ public class JoinCommand extends Command {
         }
         Player p = (Player) sender;
         User user = User.getUser(p);
-        Player player = Bukkit.getPlayer(args[1]);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         if (player != null) {
             User u = User.getUser(player);
             if (u.getIsland() != null) {

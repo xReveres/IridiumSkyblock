@@ -25,7 +25,7 @@ public class VisitCommand extends Command {
             return;
         }
         Player p = (Player) sender;
-        OfflinePlayer player = Bukkit.getPlayer(args[1]);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         if (player != null) {
             User user = User.getUser(player);
             if (user.getIsland() != null) {

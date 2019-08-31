@@ -27,7 +27,7 @@ public class KickCommand extends Command {
         }
         Player p = (Player) sender;
         User user = User.getUser(p); // User kicking the player
-        OfflinePlayer player = Bukkit.getPlayer(args[1]);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         if (player != null) {
             User u = User.getUser(player); // Player we want to kick
             if (user.getIsland() != null) {

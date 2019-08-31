@@ -20,7 +20,6 @@ public class TopCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        User user = User.getUser(p);
         p.openInventory(EpicSkyblock.topGUI.inventory);
 
     }
