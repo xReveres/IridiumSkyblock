@@ -4,6 +4,7 @@ import com.peaches.epicskyblock.EpicSkyblock;
 import com.peaches.epicskyblock.User;
 import com.peaches.epicskyblock.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,7 +26,7 @@ public class InviteCommand extends Command {
         }
         Player p = (Player) sender;
         User user = User.getUser(p);
-        Player player = Bukkit.getPlayer(args[1]);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         if (player != null) {
             User u = User.getUser(player);
             if (user.getIsland() != null) {
@@ -33,7 +34,8 @@ public class InviteCommand extends Command {
                     if (user.bypassing || user.getIsland().getPermissions(u.role).inviteMembers) {
                         u.invites.add(user.getIsland().getId());
                         p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerInvited.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
-                        player.sendMessage(Utils.color(EpicSkyblock.getMessages().invitedByPlayer.replace("%player%", p.getName()).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                        if (player.getPlayer() != null)
+                            player.getPlayer().sendMessage(Utils.color(EpicSkyblock.getMessages().invitedByPlayer.replace("%player%", p.getName()).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                     } else {
                         sender.sendMessage(Utils.color(EpicSkyblock.getMessages().noPermission.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                     }
