@@ -1,7 +1,7 @@
 package com.peaches.epicskyblock;
 
 public enum Roles {
-    Owner(6), CoOwner(5), Moderator(4), Trusted(3), Member(2), Visitor(1);
+    Owner(6), CoOwner(5), Admin(4), Moderator(3), Member(2), Visitor(1);
 
     int rank;
 

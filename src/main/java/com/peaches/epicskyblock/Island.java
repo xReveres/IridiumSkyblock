@@ -62,6 +62,7 @@ public class Island {
     private transient MembersGUI membersGUI;
     private transient WarpGUI warpGUI;
     private transient BorderColorGUI borderColorGUI;
+    private transient PermissionsGUI permissionsGUI;
 
     private int id;
 
@@ -253,7 +254,7 @@ public class Island {
                     EpicSkyblock.getInstance().sendErrorMessage(e);
                 }
             }
-        }, 0, 5);
+        }, 0, 20);
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
@@ -325,9 +326,6 @@ public class Island {
                 }
             }};
         }
-        for (Permissions permissions : permissions.values()) {
-            permissions.init();
-        }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(EpicSkyblock.getInstance(), this::calculateIslandValue, 0, 20);
     }
 
@@ -388,9 +386,6 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getMissionsGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getUpgradeGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getWarpGUI().scheduler);
-        for (Permissions permissions : permissions.values()) {
-            Bukkit.getScheduler().cancelTask(permissions.scheduler);
-        }
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         deleteBlocks();
@@ -498,6 +493,11 @@ public class Island {
             borderColorGUI = new BorderColorGUI(this);
         }
         return borderColorGUI;
+    }
+
+    public PermissionsGUI getPermissionsGUI() {
+        if (permissionsGUI == null) permissionsGUI = new PermissionsGUI(this);
+        return permissionsGUI;
     }
 
     public int getSpawnerBooster() {
