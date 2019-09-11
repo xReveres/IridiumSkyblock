@@ -16,10 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Island {
 
@@ -84,7 +81,7 @@ public class Island {
 
     private int value;
 
-    public transient List<Location> blocks;
+    public transient HashSet<Location> blocks;
 
     private List<Warp> warps;
 
@@ -228,6 +225,10 @@ public class Island {
         }
     }
 
+    //TODO
+    // Do players who are online first?
+    // One island at a time at 1 tick per layer then if a person is offline do at like 1 layer a second?
+    // Have a seperate runnable that loops islands and stuff
     public void initBlocks() {
         blocks.clear();
         this.a = Bukkit.getScheduler().scheduleSyncRepeatingTask(EpicSkyblock.getInstance(), new Runnable() {
@@ -241,7 +242,7 @@ public class Island {
                             for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
                                 Location loc = new Location(getPos1().getWorld(), X, Y, Z);
                                 if (Utils.isBlockValuable(loc.getBlock())) {
-                                    if (!blocks.contains(loc)) blocks.add(loc);
+                                    blocks.add(loc);
                                 }
                             }
                         }
@@ -254,7 +255,7 @@ public class Island {
                     EpicSkyblock.getInstance().sendErrorMessage(e);
                 }
             }
-        }, 0, 20);
+        }, 0, 4);
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
@@ -299,7 +300,7 @@ public class Island {
     }
 
     public void init() {
-        blocks = new ArrayList<>();
+        blocks = new HashSet<>();
         initChunks();
         initBlocks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), () -> {
@@ -380,7 +381,7 @@ public class Island {
 
     public void delete() {
         Bukkit.getPluginManager().callEvent(new IslandDeleteEvent(this));
-        
+
         Bukkit.getScheduler().cancelTask(getMembersGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBoosterGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getMissionsGUI().scheduler);
