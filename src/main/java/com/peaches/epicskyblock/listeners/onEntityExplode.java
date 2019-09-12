@@ -4,6 +4,7 @@ import com.peaches.epicskyblock.EpicSkyblock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.potion.PotionEffectType;
 
 public class onEntityExplode implements Listener {
     @EventHandler
