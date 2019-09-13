@@ -15,7 +15,6 @@ public class onPlayerMove implements Listener {
             if (e.getPlayer().getLocation().getWorld().equals(EpicSkyblock.getIslandManager().getWorld())) {
                 if (e.getPlayer().getLocation().getY() < 0) {
                     User u = User.getUser(e.getPlayer());
-                    e.setCancelled(true);
                     if (u.getIsland() != null) {
                         u.getIsland().teleportHome(e.getPlayer());
                     }
