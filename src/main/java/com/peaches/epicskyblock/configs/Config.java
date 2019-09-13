@@ -18,6 +18,7 @@ public class Config {
     public String BorderColorGUITitle = "&7Border Color";
     public String PermissionsGUITitle = "&7Permissions";
     public int distance = 200;
+    public int layersPerTick = 5;
     public Biome defaultBiome = Biome.PLAINS;
     public MissionRestart missionRestart = MissionRestart.Daily;
     public HashMap<Material, Integer> blockvalue = new HashMap<Material, Integer>() {{

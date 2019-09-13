@@ -81,7 +81,7 @@ public class Island {
 
     private int value;
 
-    public transient HashSet<Location> blocks;
+    public HashSet<Location> blocks;
 
     private List<Warp> warps;
 
@@ -104,6 +104,7 @@ public class Island {
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, int id) {
         User user = User.getUser(owner);
         user.role = Roles.Owner;
+        blocks = new HashSet<>();
         this.owner = user.player;
         this.pos1 = pos1;
         this.pos2 = pos2;
@@ -225,37 +226,40 @@ public class Island {
         }
     }
 
-    //TODO
-    // Do players who are online first?
-    // One island at a time at 1 tick per layer then if a person is offline do at like 1 layer a second?
-    // Have a seperate runnable that loops islands and stuff
     public void initBlocks() {
-        blocks.clear();
         this.a = Bukkit.getScheduler().scheduleSyncRepeatingTask(EpicSkyblock.getInstance(), new Runnable() {
             double Y = 0;
 
             @Override
             public void run() {
                 try {
-                    if (Y <= EpicSkyblock.getIslandManager().getWorld().getMaxHeight()) {
-                        for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
-                            for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                                Location loc = new Location(getPos1().getWorld(), X, Y, Z);
-                                if (Utils.isBlockValuable(loc.getBlock())) {
-                                    blocks.add(loc);
+                    for (int i = 0; i < EpicSkyblock.getConfiguration().layersPerTick; i++) {
+                        if (Y <= EpicSkyblock.getIslandManager().getWorld().getMaxHeight()) {
+                            for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
+                                for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
+                                    Location loc = new Location(getPos1().getWorld(), X, Y, Z);
+                                    if (Utils.isBlockValuable(loc.getBlock())) {
+                                        blocks.add(loc);
+                                    }
                                 }
                             }
+                        } else {
+                            Bukkit.getScheduler().cancelTask(a);
+                            a = -1;
+                            for (Location location : blocks) {
+                                if (!Utils.isBlockValuable(location.getBlock())) {
+                                    blocks.remove(location);
+                                }
+                            }
+                            EpicSkyblock.getInstance().updatingBlocks = false;
                         }
-                    } else {
-                        Bukkit.getScheduler().cancelTask(a);
-                        a = -1;
+                        Y++;
                     }
-                    Y++;
                 } catch (Exception e) {
                     EpicSkyblock.getInstance().sendErrorMessage(e);
                 }
             }
-        }, 0, 4);
+        }, 0, 1);
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
@@ -300,9 +304,7 @@ public class Island {
     }
 
     public void init() {
-        blocks = new HashSet<>();
         initChunks();
-        initBlocks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), () -> {
             if (spawnerBooster > 0) spawnerBooster--;
             if (farmingBooster > 0) farmingBooster--;

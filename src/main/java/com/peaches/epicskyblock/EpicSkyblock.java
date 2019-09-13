@@ -15,6 +15,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class EpicSkyblock extends JavaPlugin {
 
@@ -34,6 +37,8 @@ public class EpicSkyblock extends JavaPlugin {
 
     public static TopGUI topGUI;
 
+    public boolean updatingBlocks = false;
+
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
 
     @Override
@@ -52,6 +57,9 @@ public class EpicSkyblock extends JavaPlugin {
 
             loadConfigs();
             saveConfigs();
+
+            // Call it as a delayed task to wait for the server to properly load first
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::islandValueManager);
 
             topGUI = new TopGUI();
 
@@ -93,6 +101,22 @@ public class EpicSkyblock extends JavaPlugin {
                 sendErrorMessage(e);
             }
         }, 20, 20);
+    }
+
+    public void islandValueManager() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            Iterator<Map.Entry<Integer, Island>> islands = islandManager.islands.entrySet().iterator();
+            @Override
+            public void run() {
+                if (!updatingBlocks) {
+                    updatingBlocks = true;
+                    if(!islands.hasNext()){
+                        islands = islandManager.islands.entrySet().iterator();
+                    }
+                    islands.next().getValue().initBlocks();
+                }
+            }
+        }, 0, 0);
     }
 
     public void sendErrorMessage(Exception e) {
