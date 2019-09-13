@@ -78,7 +78,7 @@ public class EpicSkyblock extends JavaPlugin {
     public void startCounting() {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
             try {
-                if (LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.MONDAY) && LocalDateTime.now().getHour() == 0 && LocalDateTime.now().getMinute() == 0 && LocalDateTime.now().getSecond() == 0) {
+                if ((LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.MONDAY) || configuration.missionRestart == MissionRestart.Daily) && LocalDateTime.now().getHour() == 0 && LocalDateTime.now().getMinute() == 0 && LocalDateTime.now().getSecond() == 0) {
                     for (Island island : getIslandManager().islands.values()) {
                         island.treasureHunter = 0;
                         island.competitor = 0;

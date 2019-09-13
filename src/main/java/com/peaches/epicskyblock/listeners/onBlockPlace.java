@@ -1,9 +1,6 @@
 package com.peaches.epicskyblock.listeners;
 
-import com.peaches.epicskyblock.EpicSkyblock;
-import com.peaches.epicskyblock.Island;
-import com.peaches.epicskyblock.User;
-import com.peaches.epicskyblock.Utils;
+import com.peaches.epicskyblock.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -20,7 +17,7 @@ public class onBlockPlace implements Listener {
                     if (island.builder > -1) {
                         island.builder++;
                         if (island.builder >= EpicSkyblock.getMissions().builder.getAmount()) {
-                            island.builder = -1;
+                            island.builder = EpicSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
                             island.completeMission("Builder", EpicSkyblock.getMissions().builder.getReward());
                         }
                     }

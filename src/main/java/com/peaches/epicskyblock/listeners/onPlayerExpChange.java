@@ -1,6 +1,7 @@
 package com.peaches.epicskyblock.listeners;
 
 import com.peaches.epicskyblock.EpicSkyblock;
+import com.peaches.epicskyblock.MissionRestart;
 import com.peaches.epicskyblock.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +19,7 @@ public class onPlayerExpChange implements Listener {
                 if (user.getIsland().treasureHunter > -1) {
                     user.getIsland().treasureHunter += e.getAmount();
                     if (user.getIsland().treasureHunter >= EpicSkyblock.getMissions().treasureHunter.getAmount()) {
-                        user.getIsland().treasureHunter = -1;
+                        user.getIsland().treasureHunter = EpicSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
                         user.getIsland().completeMission("Treasure Hunter", EpicSkyblock.getMissions().treasureHunter.getReward());
                     }
                 }

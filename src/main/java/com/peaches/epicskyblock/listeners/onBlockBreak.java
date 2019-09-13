@@ -2,6 +2,7 @@ package com.peaches.epicskyblock.listeners;
 
 import com.peaches.epicskyblock.EpicSkyblock;
 import com.peaches.epicskyblock.Island;
+import com.peaches.epicskyblock.MissionRestart;
 import com.peaches.epicskyblock.User;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -21,7 +22,7 @@ public class onBlockBreak implements Listener {
                         if (u.getIsland().miner > -1) {
                             u.getIsland().miner++;
                             if (u.getIsland().miner >= EpicSkyblock.getMissions().miner.getAmount()) {
-                                u.getIsland().miner = -1;
+                                island.miner = EpicSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
                                 u.getIsland().completeMission("Miner", EpicSkyblock.getMissions().miner.getReward());
                             }
                         }
@@ -30,7 +31,7 @@ public class onBlockBreak implements Listener {
                         if (u.getIsland().farmer > -1) {
                             u.getIsland().farmer++;
                             if (u.getIsland().farmer >= EpicSkyblock.getMissions().farmer.getAmount()) {
-                                u.getIsland().farmer = -1;
+                                island.farmer = EpicSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
                                 u.getIsland().completeMission("Farmer", EpicSkyblock.getMissions().farmer.getReward());
                             }
                         }

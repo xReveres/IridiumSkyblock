@@ -2,6 +2,7 @@ package com.peaches.epicskyblock.listeners;
 
 import com.peaches.epicskyblock.EpicSkyblock;
 import com.peaches.epicskyblock.Island;
+import com.peaches.epicskyblock.MissionRestart;
 import com.peaches.epicskyblock.User;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -13,14 +14,14 @@ public class onEntityDeath implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
         try {
-            if(e.getEntity().getKiller() == null)return;
+            if (e.getEntity().getKiller() == null) return;
             if (e.getEntity().getKiller().getPlayer() == null) return;
             Island island = User.getUser(e.getEntity().getKiller().getPlayer()).getIsland();
             if (island != null) {
                 if (island.hunter > -1) {
                     island.hunter++;
                     if (island.hunter >= EpicSkyblock.getMissions().hunter.getAmount()) {
-                        island.hunter = -1;
+                        island.hunter = EpicSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
                         island.completeMission("Hunter", EpicSkyblock.getMissions().hunter.getReward());
                     }
                 }

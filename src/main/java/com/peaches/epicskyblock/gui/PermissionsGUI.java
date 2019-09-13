@@ -29,6 +29,7 @@ public class PermissionsGUI implements Listener {
         roles = new HashMap<>();
         for (int i = 1; i < Roles.Owner.getRank(); i++) {
             roles.put(10 + i, Roles.getViaRank(i));
+            inventory.setItem(10 + i, Utils.makeItem(Material.STAINED_CLAY, 1, 14, "&b"+Roles.getViaRank(i).name()));
         }
         EpicSkyblock.getInstance().registerListeners(this);
     }
@@ -38,7 +39,7 @@ public class PermissionsGUI implements Listener {
         if (e.getInventory().equals(inventory)) {
             e.setCancelled(true);
             if (roles.containsKey(e.getSlot())) {
-                
+
             }
         }
     }

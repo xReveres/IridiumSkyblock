@@ -1,5 +1,6 @@
 package com.peaches.epicskyblock.configs;
 
+import com.peaches.epicskyblock.MissionRestart;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 
@@ -18,6 +19,7 @@ public class Config {
     public String PermissionsGUITitle = "&7Permissions";
     public int distance = 200;
     public Biome defaultBiome = Biome.PLAINS;
+    public MissionRestart missionRestart = MissionRestart.Daily;
     public HashMap<Material, Integer> blockvalue = new HashMap<Material, Integer>() {{
         put(Material.DIAMOND_BLOCK, 10);
         put(Material.EMERALD_BLOCK, 20);
