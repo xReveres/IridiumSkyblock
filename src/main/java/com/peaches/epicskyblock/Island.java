@@ -233,7 +233,8 @@ public class Island {
             @Override
             public void run() {
                 try {
-                    for (int i = 0; i < EpicSkyblock.getConfiguration().layersPerTick; i++) {
+                    int lpt = EpicSkyblock.getConfiguration().layersPerTick;
+                    for (int i = 0; i < lpt; i++) {
                         if (Y <= EpicSkyblock.getIslandManager().getWorld().getMaxHeight()) {
                             for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
                                 for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
