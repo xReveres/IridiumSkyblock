@@ -305,6 +305,7 @@ public class Island {
     }
 
     public void init() {
+        if(blocks == null) blocks = new HashSet<>();
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), () -> {
             if (spawnerBooster > 0) spawnerBooster--;
