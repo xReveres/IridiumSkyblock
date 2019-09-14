@@ -168,6 +168,10 @@ public class EpicSkyblock extends JavaPlugin {
         }
     }
 
+    public void saveData() {
+        if (islandManager != null) persist.save(islandManager);
+    }
+
     public void saveConfigs() {
         if (configuration != null) persist.save(configuration);
         if (missions != null) persist.save(missions);
@@ -182,7 +186,7 @@ public class EpicSkyblock extends JavaPlugin {
         try {
             super.onDisable();
 
-            saveConfigs();
+            saveData();
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.closeInventory();
