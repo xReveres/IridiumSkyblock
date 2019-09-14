@@ -47,7 +47,7 @@ public class UpgradeGUI implements Listener {
                     sizeLore.add("&b&l * &7Level " + level + ": &b" + EpicSkyblock.getUpgrades().size.get(level).getSize() + "x" + EpicSkyblock.getUpgrades().size.get(level).getSize() + " Blocks");
                 }
                 sizeLore.add("");
-                sizeLore.add("&b&l[!] &bRight Click to Purchase this Upgrade");
+                sizeLore.add("&b&l[!] &bLeft Click to Purchase this Upgrade");
                 this.size = Utils.makeItem(Material.GRASS, 1, 0, "&b&lIsland Size", Utils.color(sizeLore));
 
 
@@ -58,7 +58,7 @@ public class UpgradeGUI implements Listener {
                     memberLore.add("&b&l * &7Level " + level + ": &b" + EpicSkyblock.getUpgrades().member.get(level).getSize() + " Members");
                 }
                 memberLore.add("");
-                memberLore.add("&b&l[!] &bRight Click to Purchase this Upgrade");
+                memberLore.add("&b&l[!] &bLeft Click to Purchase this Upgrade");
                 this.member = Utils.makeItem(Material.ARMOR_STAND, 1, 0, "&b&lIsland Member Count", Utils.color(memberLore));
 
 
@@ -69,14 +69,14 @@ public class UpgradeGUI implements Listener {
                     warpLore.add("&b&l * &7Level " + level + ": &b" + EpicSkyblock.getUpgrades().warp.get(level).getSize() + " Warps");
                 }
                 warpLore.add("");
-                warpLore.add("&b&l[!] &bRight Click to Purchase this Upgrade");
+                warpLore.add("&b&l[!] &bLeft Click to Purchase this Upgrade");
                 this.warp = Utils.makeItem(Material.ENDER_PORTAL_FRAME, 1, 0, "&b&lIsland Warp", Utils.color(warpLore));
 
                 int currentores = island.getOreLevel();
                 String orescost = EpicSkyblock.getUpgrades().ores.containsKey(currentwarp + 1) ? EpicSkyblock.getUpgrades().ores.get(currentwarp + 1).getCost() + " Crystals" : "Max Level Reached";
                 List<String> oresLore = new ArrayList<>(Arrays.asList("&7Want to improve your generator? Buy this", "&7upgrade to increase your island generator.", "", "&b&lInformation:", "&b&l * &7Current Level: &b" + currentores, "&b&l * &7Upgrade Cost: &b" + orescost));
                 oresLore.add("");
-                oresLore.add("&b&l[!] &bRight Click to Purchase this Upgrade");
+                oresLore.add("&b&l[!] &bLeft Click to Purchase this Upgrade");
                 this.ores = Utils.makeItem(Material.DIAMOND_ORE, 1, 0, "&b&lIsland Generator", Utils.color(oresLore));
                 inventory.setItem(10, size);
                 inventory.setItem(12, member);
