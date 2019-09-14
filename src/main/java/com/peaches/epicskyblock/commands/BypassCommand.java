@@ -12,7 +12,7 @@ import java.util.List;
 public class BypassCommand extends Command {
 
     public BypassCommand() {
-        super(Arrays.asList("bypass"), "Bypass all island restictions", "epicskyblock.bypass", true);
+        super(Arrays.asList("bypass"), "Bypass all island restrictions", "epicskyblock.bypass", true);
     }
 
     @Override
