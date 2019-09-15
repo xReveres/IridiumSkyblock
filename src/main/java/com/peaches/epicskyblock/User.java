@@ -33,7 +33,6 @@ public class User {
     }
 
     public static User getUser(OfflinePlayer p) {
-        return EpicSkyblock.getIslandManager().users.containsKey(p.getUniqueId().toString()) ? EpicSkyblock.getIslandManager().users.get(p.getUniqueId().toString()) : new User(p);
+        return EpicSkyblock.getIslandManager().users.getOrDefault(p.getUniqueId().toString(), new User(p));
     }
-
 }
