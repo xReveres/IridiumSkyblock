@@ -1,5 +1,5 @@
 # EpicSkyblock #
-[![Build Status](https://jenkins.hypercubemc.cf/job/EpicSkyblock/badge/icon?style=plastic)](https://jenkins.hypercubemc.cf/job/EpicSkyblock/)
+[![Build Status](https://jenkins.peachessupport.xyz/job/EpicSkyblock/badge/icon)](https://jenkins.peachessupport.xyz/job/EpicSkyblock/)
 # Current Features #
 Island Missions
 Island Upgrades
