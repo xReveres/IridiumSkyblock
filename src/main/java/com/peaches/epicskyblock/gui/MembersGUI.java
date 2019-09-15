@@ -1,6 +1,8 @@
 package com.peaches.epicskyblock.gui;
 
 import com.peaches.epicskyblock.*;
+import com.peaches.epicskyblock.api.IslandDemoteEvent;
+import com.peaches.epicskyblock.api.IslandPromoteEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -77,11 +79,15 @@ public class MembersGUI implements Listener {
                                     e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().noPermission.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                                 }
                             } else {
-                                u.role = Roles.getViaRank(u.role.getRank() - 1);
-                                for (String member : u.getIsland().getMembers()) {
-                                    Player p = Bukkit.getPlayer(User.getUser(member).name);
-                                    if (p != null) {
-                                        p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerDemoted.replace("%rank%", u.role.name()).replace("%player%", u.name).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                                IslandDemoteEvent event = new IslandDemoteEvent(u.getIsland(), u, user, Roles.getViaRank(u.role.getRank() + 1));
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (!event.isCancelled()) {
+                                    u.role = Roles.getViaRank(u.role.getRank() - 1);
+                                    for (String member : u.getIsland().getMembers()) {
+                                        Player p = Bukkit.getPlayer(User.getUser(member).name);
+                                        if (p != null) {
+                                            p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerDemoted.replace("%rank%", u.role.name()).replace("%player%", u.name).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                                        }
                                     }
                                 }
                             }
@@ -98,11 +104,15 @@ public class MembersGUI implements Listener {
                                 if (u.role.getRank() >= Roles.CoOwner.getRank()) {
                                     e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().transferOwnership.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
                                 } else {
-                                    u.role = Roles.getViaRank(u.role.getRank() + 1);
-                                    for (String member : u.getIsland().getMembers()) {
-                                        Player p = Bukkit.getPlayer(User.getUser(member).name);
-                                        if (p != null) {
-                                            p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerPromoted.replace("%rank%", u.role.name()).replace("%player%", u.name).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                                    IslandPromoteEvent event = new IslandPromoteEvent(u.getIsland(), u, user, Roles.getViaRank(u.role.getRank() + 1));
+                                    Bukkit.getPluginManager().callEvent(event);
+                                    if (!event.isCancelled()) {
+                                        u.role = Roles.getViaRank(u.role.getRank() + 1);
+                                        for (String member : u.getIsland().getMembers()) {
+                                            Player p = Bukkit.getPlayer(User.getUser(member).name);
+                                            if (p != null) {
+                                                p.sendMessage(Utils.color(EpicSkyblock.getMessages().playerPromoted.replace("%rank%", u.role.name()).replace("%player%", u.name).replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                                            }
                                         }
                                     }
                                 }
