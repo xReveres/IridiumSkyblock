@@ -2,7 +2,6 @@ package com.peaches.epicskyblock;
 
 import com.peaches.epicskyblock.commands.CommandManager;
 import com.peaches.epicskyblock.configs.*;
-import com.peaches.epicskyblock.gui.Editor;
 import com.peaches.epicskyblock.gui.TopGUI;
 import com.peaches.epicskyblock.listeners.*;
 import com.peaches.epicskyblock.placeholders.ClipPlaceholderAPIManager;
