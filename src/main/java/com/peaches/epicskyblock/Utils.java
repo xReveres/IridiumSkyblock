@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
 
 public class Utils {
 
+    public static String unColour(String string) {
+        return string.replace(ChatColor.AQUA+"", "&b");
+    }
+
     public static ItemStack makeItem(Material material, int amount, int type, String name) {
         ItemStack item = new ItemStack(material, amount, (short) type);
         ItemMeta m = item.getItemMeta();
@@ -28,7 +32,7 @@ public class Utils {
     public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore) {
         ItemStack item = new ItemStack(material, amount, (short) type);
         ItemMeta m = item.getItemMeta();
-        m.setLore(lore);
+        m.setLore(Utils.color(lore));
         m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         item.setItemMeta(m);
         return item;
@@ -37,7 +41,7 @@ public class Utils {
     public static ItemStack makeItemHidden(Material material, int amount, int type, String name, List<String> lore) {
         ItemStack item = new ItemStack(material, amount, (short) type);
         ItemMeta m = item.getItemMeta();
-        m.setLore(lore);
+        m.setLore(Utils.color(lore));
         m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
         m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         item.setItemMeta(m);

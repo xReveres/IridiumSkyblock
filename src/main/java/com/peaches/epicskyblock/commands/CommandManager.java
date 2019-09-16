@@ -21,7 +21,6 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         EpicSkyblock.getInstance().getCommand(command).setTabCompleter(this);
     }
 
-
     public void registerCommands() {
         new CreateCommand();
         new HomeCommand();
@@ -51,6 +50,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         new PrivateCommand();
         new BypassCommand();
         new SetHomeCommand();
+//        new EditorCommand();
     }
 
     public void registerCommand(com.peaches.epicskyblock.commands.Command command) {

@@ -1,6 +1,6 @@
 package com.peaches.epicskyblock.commands;
 
-import com.peaches.epicskyblock.gui.EditorGUI;
+import com.peaches.epicskyblock.EpicSkyblock;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,7 +15,7 @@ public class EditorCommand extends Command {
 
     @Override
     public void execute(CommandSender cs, String[] var2) {
-        ((Player) cs).openInventory(EditorGUI.inventory);
+//        ((Player) cs).openInventory(EpicSkyblock.getEditor().getInventory());
     }
 
     @Override

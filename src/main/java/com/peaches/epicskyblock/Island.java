@@ -77,7 +77,7 @@ public class Island {
     private int warpLevel;
     private int oreLevel;
 
-    private Integer a;
+    private int a;
 
     private int value;
 

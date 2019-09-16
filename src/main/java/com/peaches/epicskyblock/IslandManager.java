@@ -39,6 +39,7 @@ public class IslandManager {
         islands.put(nextID, island);
 
         User.getUser(player).islandID = nextID;
+        User.getUser(player).role = Roles.Owner;
 
         island.generateIsland();
         island.teleportHome(player);

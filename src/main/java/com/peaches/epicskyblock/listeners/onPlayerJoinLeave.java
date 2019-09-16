@@ -10,7 +10,6 @@ public class onPlayerJoinLeave implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        System.out.println(EpicSkyblock.getIslandManager().users.keySet());
         try {
             if (EpicSkyblock.getIslandManager().users.containsKey(e.getPlayer().getName())) {
                 User user = EpicSkyblock.getIslandManager().users.get(e.getPlayer().getName());
