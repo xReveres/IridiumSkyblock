@@ -8,9 +8,9 @@ public class Boosters {
     public Booster flightBooster = new Booster(15, true, 16);
 
     public static class Booster {
-        private int cost;
-        private boolean enabled;
-        private int slot;
+        public int cost;
+        public boolean enabled;
+        public int slot;
 
         public Booster(int cost, boolean enabled, int slot) {
             this.cost = cost;

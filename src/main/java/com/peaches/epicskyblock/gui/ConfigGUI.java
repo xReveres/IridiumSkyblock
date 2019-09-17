@@ -17,6 +17,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +32,7 @@ public class ConfigGUI implements Listener {
 
     private Class clazz;
     private Field instance;
+    private String method;
 
     private HashMap<Integer, MaterialGUI> materialGUI;
     private HashMap<Integer, StringGUI> stringGUI;
@@ -38,7 +40,7 @@ public class ConfigGUI implements Listener {
     private HashMap<Integer, ConfigGUI> configGUI;
     private HashMap<Integer, String> items;
 
-    public ConfigGUI(Class clazz, Field instance) {
+    public ConfigGUI(Class clazz, Field instance, String method) {
         try {
             rows = (int) Math.ceil(clazz.getFields().length / 9.0);
             if (rows == 0) {
@@ -47,7 +49,7 @@ public class ConfigGUI implements Listener {
             if (rows >= 6) {
                 int p = (int) Math.ceil(clazz.getFields().length / 45.0);
                 for (int page = 1; page <= p; page++) {
-                    pages.put(page, new ConfigGUI(clazz, instance, page));
+                    pages.put(page, new ConfigGUI(clazz, instance, method, page));
                 }
                 Bukkit.getPluginManager().registerEvents(this, EpicSkyblock.getInstance());
             } else {
@@ -59,6 +61,7 @@ public class ConfigGUI implements Listener {
                 arrayListGUI = new HashMap<>();
                 this.instance = instance;
                 this.clazz = clazz;
+                this.method = method;
                 Bukkit.getPluginManager().registerEvents(this, EpicSkyblock.getInstance());
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), this::addItems, 0, 5);
                 init();
@@ -68,7 +71,7 @@ public class ConfigGUI implements Listener {
         }
     }
 
-    public ConfigGUI(Class clazz, Field instance, int page) {
+    public ConfigGUI(Class clazz, Field instance, String method, int page) {
         int rows = (int) Math.ceil(clazz.getFields().length / 9.0);
         inventory = Bukkit.createInventory(null, 9 * rows, "Editing " + clazz.getSimpleName());
         items = new HashMap<>();
@@ -77,6 +80,7 @@ public class ConfigGUI implements Listener {
         arrayListGUI = new HashMap<>();
         this.instance = instance;
         this.clazz = clazz;
+        this.method = method;
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), () -> addItems(page), 0, 5);
         init();
     }
@@ -87,13 +91,15 @@ public class ConfigGUI implements Listener {
                 Field field = clazz.getFields()[i];
                 items.put(i, field.getName());
                 if (field.getType().equals(String.class)) {
-                    stringGUI.put(i, new StringGUI(field, instance.get(EpicSkyblock.getInstance())));
+                    stringGUI.put(i, new StringGUI(field, instance.get(EpicSkyblock.class.getMethod(method).invoke(null))));
                 } else if (field.getType().equals(List.class) || field.getType().equals(HashSet.class)) {
-                    arrayListGUI.put(i, new ArrayListGUI(field, instance.get(EpicSkyblock.getInstance())));
+                    arrayListGUI.put(i, new ArrayListGUI(field, instance.get(EpicSkyblock.class.getMethod(method).invoke(null))));
                 } else if (field.getType().equals(Material.class)) {
                     materialGUI.put(i, new MaterialGUI(field, instance.get(EpicSkyblock.getInstance())));
-                } else if (field.getType().equals(Missions.Mission.class) || field.getType().equals(Boosters.Booster.class)) {
-                    configGUI.put(i, new ConfigGUI(field.getType(), field));
+                } else if (field.getType().equals(Missions.Mission.class)) {
+                    configGUI.put(i, new ConfigGUI(field.getType(), field, "getMissions"));
+                } else if (field.getType().equals(Boosters.Booster.class)) {
+                    configGUI.put(i, new ConfigGUI(field.getType(), field, "getBoosters"));
                 }
             }
         } catch (Exception e) {
@@ -108,19 +114,19 @@ public class ConfigGUI implements Listener {
             try {
                 //TODO for translations
                 if (field.getType().equals(boolean.class)) {
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, field.getBoolean(instance.get(EpicSkyblock.getInstance())) ? 5 : 14, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.getBoolean(instance.get(EpicSkyblock.getInstance())), "&b&l[!]! &bLeft click to " + (field.getBoolean(instance.get(EpicSkyblock.getInstance())) ? "Enabled" : "Disable"))));
+                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, field.getBoolean(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))) ? 5 : 14, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.getBoolean(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), "&b&l[!]! &bLeft click to " + (field.getBoolean(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))) ? "Enabled" : "Disable"))));
                 } else if (field.getType().equals(int.class)) {
-                    inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.getInt(instance.get(EpicSkyblock.getInstance())), "&b&l[!]! &bLeft click to Subtract ", "&b&l[!]! &bRight click to Add")));
+                    inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.getInt(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), "&b&l[!]! &bLeft click to Subtract ", "&b&l[!]! &bRight click to Add")));
                 } else if (field.getType().equals(Biome.class)) {
-                    inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + ((Biome) field.get(instance.get(EpicSkyblock.getInstance()))).name(), "&b&l[!]! &bLeft click to Subtract ", "&b&l[!]! &bRight click to Add")));
+                    inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + ((Biome) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))).name(), "&b&l[!]! &bLeft click to Subtract ", "&b&l[!]! &bRight click to Add")));
                 } else if (field.getType().equals(MissionRestart.class)) {
-                    inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + ((MissionRestart) field.get(instance.get(EpicSkyblock.getInstance()))).name(), "&b&l[!]! &bLeft click to go to Previous ", "&b&l[!]! &bRight click to go to Next")));
+                    inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + ((MissionRestart) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))).name(), "&b&l[!]! &bLeft click to go to Previous ", "&b&l[!]! &bRight click to go to Next")));
                 } else if (field.getType().equals(Boosters.Booster.class)) {
                     inventory.setItem(i, Utils.makeItem(Material.NETHER_STAR, 1, 0, "&b&l" + field.getName(), Arrays.asList("&b&l[!]! &bLeft click to Edit")));
                 } else if (field.getType().equals(Missions.Mission.class)) {
                     inventory.setItem(i, Utils.makeItem(Material.NETHER_STAR, 1, 0, "&b&l" + field.getName(), Arrays.asList("&b&l[!]! &bLeft click to Edit")));
                 } else if (field.getType().equals(String.class)) {
-                    inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.get(instance.get(EpicSkyblock.getInstance())), "&b&l[!]! &bLeft click to Edit")));
+                    inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), "&b&l[!]! &bLeft click to Edit")));
                 } else if (field.getType().equals(List.class)) {
                     inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("", "&b&l[!]! &bLeft click to Edit")));
                 } else if (field.getType().equals(HashSet.class)) {
@@ -128,9 +134,9 @@ public class ConfigGUI implements Listener {
                 } else if (field.getType().equals(HashMap.class)) {
                     inventory.setItem(i, Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("", "&b&l[!]! &bLeft click to Edit")));
                 } else if (field.getType().equals(Material.class)) {
-                    inventory.setItem(i, Utils.makeItem((Material) field.get(instance.get(EpicSkyblock.getInstance())), 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.get(instance.get(EpicSkyblock.getInstance())), "&b&l[!]! &bLeft click to Edit")));
+                    inventory.setItem(i, Utils.makeItem((Material) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), "&b&l[!]! &bLeft click to Edit")));
                 }
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             }
         }
     }
@@ -143,19 +149,19 @@ public class ConfigGUI implements Listener {
                 try {
                     //TODO for translations
                     if (field.getType().equals(boolean.class)) {
-                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.STAINED_GLASS_PANE, 1, field.getBoolean(instance.get(EpicSkyblock.getInstance())) ? 5 : 14, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.getBoolean(instance.get(EpicSkyblock.getInstance())), "&b&l[!]! &bLeft click to " + (field.getBoolean(instance.get(EpicSkyblock.getInstance())) ? "Enabled" : "Disable"))));
+                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.STAINED_GLASS_PANE, 1, field.getBoolean(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))) ? 5 : 14, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.getBoolean(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), "&b&l[!]! &bLeft click to " + (field.getBoolean(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))) ? "Enabled" : "Disable"))));
                     } else if (field.getType().equals(int.class)) {
-                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.getInt(instance.get(EpicSkyblock.getInstance())), "&b&l[!]! &bLeft click to Subtract ", "&b&l[!]! &bRight click to Add")));
+                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.getInt(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), "&b&l[!]! &bLeft click to Subtract ", "&b&l[!]! &bRight click to Add")));
                     } else if (field.getType().equals(Biome.class)) {
-                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + ((Biome) field.get(instance.get(EpicSkyblock.getInstance()))).name(), "&b&l[!]! &bLeft click to Subtract ", "&b&l[!]! &bRight click to Add")));
+                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + ((Biome) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))).name(), "&b&l[!]! &bLeft click to Subtract ", "&b&l[!]! &bRight click to Add")));
                     } else if (field.getType().equals(MissionRestart.class)) {
-                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + ((MissionRestart) field.get(instance.get(EpicSkyblock.getInstance()))).name(), "&b&l[!]! &bLeft click to go to Previous ", "&b&l[!]! &bRight click to go to Next")));
+                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + ((MissionRestart) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))).name(), "&b&l[!]! &bLeft click to go to Previous ", "&b&l[!]! &bRight click to go to Next")));
                     } else if (field.getType().equals(Boosters.Booster.class)) {
                         inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.NETHER_STAR, 1, 0, "&b&l" + field.getName(), Arrays.asList("&b&l[!]! &bLeft click to Edit")));
                     } else if (field.getType().equals(Missions.Mission.class)) {
                         inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.NETHER_STAR, 1, 0, "&b&l" + field.getName(), Arrays.asList("&b&l[!]! &bLeft click to Edit")));
                     } else if (field.getType().equals(String.class)) {
-                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + Utils.unColour((String) field.get(instance.get(EpicSkyblock.getInstance()))), "&b&l[!]! &bLeft click to Edit")));
+                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + Utils.unColour((String) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))), "&b&l[!]! &bLeft click to Edit")));
                     } else if (field.getType().equals(List.class)) {
                         inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("", "&b&l[!]! &bLeft click to Edit")));
                     } else if (field.getType().equals(HashSet.class)) {
@@ -163,9 +169,9 @@ public class ConfigGUI implements Listener {
                     } else if (field.getType().equals(HashMap.class)) {
                         inventory.setItem(i - (45 * (page - 1)), Utils.makeItem(Material.PAPER, 1, 0, "&b&l" + field.getName(), Arrays.asList("", "&b&l[!]! &bLeft click to Edit")));
                     } else if (field.getType().equals(Material.class)) {
-                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem((Material) field.get(instance.get(EpicSkyblock.getInstance())), 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.get(instance.get(EpicSkyblock.getInstance())), "&b&l[!]! &bLeft click to Edit")));
+                        inventory.setItem(i - (45 * (page - 1)), Utils.makeItem((Material) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), 1, 0, "&b&l" + field.getName(), Arrays.asList("&bCurrent Value: &7" + field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))), "&b&l[!]! &bLeft click to Edit")));
                     }
-                } catch (IllegalAccessException e) {
+                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 }
             }
         }
@@ -198,13 +204,13 @@ public class ConfigGUI implements Listener {
                         e.getWhoClicked().openInventory(configGUI.get(e.getSlot()).getInventory());
                     }
                     if (field.getType().equals(boolean.class)) {
-                        field.setBoolean(instance.get(EpicSkyblock.getInstance()), !field.getBoolean(instance.get(EpicSkyblock.getInstance())));
+                        field.setBoolean(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), !field.getBoolean(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))));
                     } else if (field.getType().equals(int.class)) {
                         if (e.getClick().equals(ClickType.LEFT)) {
-                            if (field.getInt(instance.get(EpicSkyblock.getInstance())) > 1)
-                                field.setInt(instance.get(EpicSkyblock.getInstance()), field.getInt(instance.get(EpicSkyblock.getInstance())) - 1);
+                            if (field.getInt(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))) > 1)
+                                field.setInt(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), field.getInt(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))) - 1);
                         } else {
-                            field.setInt(instance.get(EpicSkyblock.getInstance()), field.getInt(instance.get(EpicSkyblock.getInstance())) + 1);
+                            field.setInt(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), field.getInt(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))) + 1);
                         }
                     } else if (field.getType().equals(String.class)) {
                         e.getWhoClicked().openInventory(stringGUI.get(e.getSlot()).getInventory());
@@ -218,14 +224,14 @@ public class ConfigGUI implements Listener {
                         e.getWhoClicked().openInventory(materialGUI.get(e.getSlot()).getInventory());
                     } else if (field.getType().equals(MissionRestart.class)) {
                         if (e.getClick().equals(ClickType.LEFT)) {
-                            field.set(instance.get(EpicSkyblock.getInstance()), ((MissionRestart) field.get(instance.get(EpicSkyblock.getInstance()))).getPrevious());
+                            field.set(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), ((MissionRestart) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))).getPrevious());
                         } else {
-                            field.set(instance.get(EpicSkyblock.getInstance()), ((MissionRestart) field.get(instance.get(EpicSkyblock.getInstance()))).getNext());
+                            field.set(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), ((MissionRestart) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))).getNext());
                         }
                     }
                     EpicSkyblock.getInstance().saveConfigs();
                     EpicSkyblock.getInstance().loadConfigs();
-                } catch (NoSuchFieldException | IllegalAccessException ex) {
+                } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                 }
             }
         }

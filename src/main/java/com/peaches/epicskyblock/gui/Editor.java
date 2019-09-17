@@ -35,11 +35,11 @@ public class Editor implements Listener {
         inventory = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&b&lEpicSkyblock Editor"));
 
         try {
-            config = new ConfigGUI(com.peaches.epicskyblock.configs.Config.class, EpicSkyblock.class.getField("configuration"));
-            messages = new ConfigGUI(com.peaches.epicskyblock.configs.Messages.class, EpicSkyblock.class.getField("messages"));
-            boosters = new ConfigGUI(com.peaches.epicskyblock.configs.Boosters.class, EpicSkyblock.class.getField("boosters"));
-            upgrades = new ConfigGUI(com.peaches.epicskyblock.configs.Upgrades.class, EpicSkyblock.class.getField("upgrades"));
-            missions = new ConfigGUI(com.peaches.epicskyblock.configs.Missions.class, EpicSkyblock.class.getField("missions"));
+            config = new ConfigGUI(com.peaches.epicskyblock.configs.Config.class, EpicSkyblock.class.getField("configuration"), "getInstance");
+            messages = new ConfigGUI(com.peaches.epicskyblock.configs.Messages.class, EpicSkyblock.class.getField("messages"), "getInstance");
+            boosters = new ConfigGUI(com.peaches.epicskyblock.configs.Boosters.class, EpicSkyblock.class.getField("boosters"), "getInstance");
+            upgrades = new ConfigGUI(com.peaches.epicskyblock.configs.Upgrades.class, EpicSkyblock.class.getField("upgrades"), "getInstance");
+            missions = new ConfigGUI(com.peaches.epicskyblock.configs.Missions.class, EpicSkyblock.class.getField("missions"), "getInstance");
         } catch (Exception e) {
             e.printStackTrace();
         }
