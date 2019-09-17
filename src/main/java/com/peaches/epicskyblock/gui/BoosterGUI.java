@@ -38,7 +38,7 @@ public class BoosterGUI implements Listener {
             if (EpicSkyblock.getIslandManager().islands.containsKey(islandID)) {
                 Island island = EpicSkyblock.getIslandManager().islands.get(islandID);
                 for (int i = 0; i < 27; i++) {
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 8, " "));
                 }
                 this.spawner = Utils.makeItem(Material.MOB_SPAWNER, 1, 0, "&b&lIncreased Mobs", Utils.color(new ArrayList<>(Arrays.asList("&7Are your spawners too slow? Buy this", "&7booster and increase spawner rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b" + island.getSpawnerBooster() + "s", "&b&l * &7Booster Cost: &b" + EpicSkyblock.getBoosters().spawnerBooster.getCost() + " Crystals", "", "&b&l[!] &bRight Click to Purchase this Booster."))));
                 this.farming = Utils.makeItem(Material.WHEAT, 1, 0, "&b&lIncreased Crops", Utils.color(new ArrayList<>(Arrays.asList("&7Are your crops too slow? Buy this", "&7booster and increase crop growth rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b" + island.getFarmingBooster() + "s", "&b&l * &7Booster Cost: &b" + EpicSkyblock.getBoosters().farmingBooster.getCost() + " Crystals", "", "&b&l[!] &bRight Click to Purchase this Booster."))));

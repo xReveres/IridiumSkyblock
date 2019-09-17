@@ -7,7 +7,7 @@ public class Boosters {
     public Booster experianceBooster = new Booster(15, true, 14);
     public Booster flightBooster = new Booster(15, true, 16);
 
-    public class Booster {
+    public static class Booster {
         private int cost;
         private boolean enabled;
         private int slot;

@@ -35,7 +35,7 @@ public class TopGUI implements Listener {
     public void addContent() {
         try {
             for (int i = 0; i < 27; i++) {
-                inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+                inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 8, " "));
             }
             List<Island> top = Utils.getTopIslands();
             for (int i = 1; i <= 10; i++) {
