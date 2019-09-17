@@ -176,18 +176,18 @@ public class ConfigGUI implements Listener {
             }
         }
 
-        this.inventory.setItem(45, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, " "));
-        this.inventory.setItem(46, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, " "));
+        this.inventory.setItem(45, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+        this.inventory.setItem(46, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
         this.inventory.setItem(47, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, "&c&lPrevious Page"));
-        this.inventory.setItem(48, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, " "));
-        this.inventory.setItem(49, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, " "));
+        this.inventory.setItem(48, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+        this.inventory.setItem(49, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
         if (clazz.equals(Messages.class)) {
             this.inventory.setItem(49, Utils.makeItem(Material.NETHER_STAR, 1, 0, "&b&lLanguages"));
         }
-        this.inventory.setItem(50, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, " "));
+        this.inventory.setItem(50, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
         this.inventory.setItem(51, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, "&a&lNext Page"));
-        this.inventory.setItem(52, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, " "));
-        this.inventory.setItem(53, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, " "));
+        this.inventory.setItem(52, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+        this.inventory.setItem(53, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
     }
 
     @EventHandler
@@ -217,7 +217,7 @@ public class ConfigGUI implements Listener {
                     } else if (field.getType().equals(List.class)) {
                         e.getWhoClicked().openInventory(arrayListGUI.get(e.getSlot()).pages.get(1).getInventory());
                     } else if (field.getType().equals(HashSet.class)) {
-                        //New GUI with whatever it contains and a green + button at the end to add new stuff?
+                        e.getWhoClicked().openInventory(arrayListGUI.get(e.getSlot()).pages.get(1).getInventory());
                     } else if (field.getType().equals(HashMap.class)) {
 
                     } else if (field.getType().equals(Material.class)) {
@@ -227,6 +227,12 @@ public class ConfigGUI implements Listener {
                             field.set(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), ((MissionRestart) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))).getPrevious());
                         } else {
                             field.set(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), ((MissionRestart) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)))).getNext());
+                        }
+                    } else if (field.getType().equals(Biome.class)) {
+                        if (e.getClick().equals(ClickType.LEFT)) {
+                            field.set(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), Utils.getPreviousBiome(((Biome) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))))));
+                        } else {
+                            field.set(instance.get(EpicSkyblock.class.getMethod(method).invoke(null)), Utils.getNextBiome(((Biome) field.get(instance.get(EpicSkyblock.class.getMethod(method).invoke(null))))));
                         }
                     }
                     EpicSkyblock.getInstance().saveConfigs();
