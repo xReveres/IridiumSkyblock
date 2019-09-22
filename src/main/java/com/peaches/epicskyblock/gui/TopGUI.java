@@ -67,7 +67,12 @@ public class TopGUI implements Listener {
             e.setCancelled(true);
             if (islands.containsKey(e.getSlot())) {
                 e.getWhoClicked().closeInventory();
-                EpicSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot())).teleportHome((Player) e.getWhoClicked());
+                Island island = EpicSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot()));
+                if (island.isVisit()) {
+                    island.teleportHome((Player) e.getWhoClicked());
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
             }
         }
     }
