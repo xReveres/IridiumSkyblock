@@ -24,7 +24,7 @@ public class PermissionsGUI implements Listener {
         islandid = island.getId();
         this.inventory = Bukkit.createInventory(null, 27, Utils.color(EpicSkyblock.getConfiguration().BorderColorGUITitle));
         for (int i = 0; i < 27; i++) {
-            inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+            inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
         }
         roles = new HashMap<>();
         for (int i = 1; i < Roles.Owner.getRank(); i++) {

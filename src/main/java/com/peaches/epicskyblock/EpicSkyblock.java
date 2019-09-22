@@ -2,6 +2,7 @@ package com.peaches.epicskyblock;
 
 import com.peaches.epicskyblock.commands.CommandManager;
 import com.peaches.epicskyblock.configs.*;
+import com.peaches.epicskyblock.gui.Editor;
 import com.peaches.epicskyblock.gui.TopGUI;
 import com.peaches.epicskyblock.listeners.*;
 import com.peaches.epicskyblock.placeholders.ClipPlaceholderAPIManager;
@@ -28,7 +29,7 @@ public class EpicSkyblock extends JavaPlugin {
     public static Upgrades upgrades;
     public static Boosters boosters;
 
-//    private static Editor editor;
+    private static Editor editor;
 
     private static Persist persist;
 
@@ -59,7 +60,7 @@ public class EpicSkyblock extends JavaPlugin {
             loadConfigs();
             saveConfigs();
 
-//            editor = new Editor();
+            editor = new Editor();
 
             // Call it as a delayed task to wait for the server to properly load first
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::islandValueManager);
@@ -206,9 +207,9 @@ public class EpicSkyblock extends JavaPlugin {
         }
     }
 
-//    public static Editor getEditor() {
-//        return editor;
-//    }
+    public static Editor getEditor() {
+        return editor;
+    }
 
     public static EpicSkyblock getInstance() {
         return instance;

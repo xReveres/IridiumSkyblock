@@ -15,7 +15,7 @@ public class EditorCommand extends Command {
 
     @Override
     public void execute(CommandSender cs, String[] var2) {
-//        ((Player) cs).openInventory(EpicSkyblock.getEditor().getInventory());
+        ((Player) cs).openInventory(EpicSkyblock.getEditor().getInventory());
     }
 
     @Override

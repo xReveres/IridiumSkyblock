@@ -35,7 +35,7 @@ public class TopGUI implements Listener {
     public void addContent() {
         try {
             for (int i = 0; i < 27; i++) {
-                inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+                inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
             }
             List<Island> top = Utils.getTopIslands();
             for (int i = 1; i <= 10; i++) {
@@ -67,7 +67,12 @@ public class TopGUI implements Listener {
             e.setCancelled(true);
             if (islands.containsKey(e.getSlot())) {
                 e.getWhoClicked().closeInventory();
-                EpicSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot())).teleportHome((Player) e.getWhoClicked());
+                Island island = EpicSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot()));
+                if (island.isVisit()) {
+                    island.teleportHome((Player) e.getWhoClicked());
+                } else {
+                    e.getWhoClicked().sendMessage(Utils.color(EpicSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+                }
             }
         }
     }

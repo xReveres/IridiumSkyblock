@@ -37,7 +37,7 @@ public class WarpGUI implements Listener {
             if (EpicSkyblock.getIslandManager().islands.containsKey(islandID)) {
                 Island island = EpicSkyblock.getIslandManager().islands.get(islandID);
                 for (int i = 0; i < 27; i++) {
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
                 }
                 int i = 9;
                 warps.clear();
