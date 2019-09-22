@@ -281,7 +281,10 @@ public class Island {
             teleportHome(Bukkit.getPlayer(user.name));
             user.invites.clear();
         } else {
-            Bukkit.getPlayer(user.player).sendMessage(Utils.color(EpicSkyblock.getMessages().maxMemberCount.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+            if (Bukkit.getPlayer(user.name) != null) {
+                Bukkit.getPlayer(user.name).sendMessage(Utils.color(EpicSkyblock.getMessages().maxMemberCount.replace("%prefix%", EpicSkyblock.getConfiguration().prefix)));
+
+            }
         }
     }
 
@@ -305,7 +308,7 @@ public class Island {
     }
 
     public void init() {
-        if(blocks == null) blocks = new HashSet<>();
+        if (blocks == null) blocks = new HashSet<>();
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), () -> {
             if (spawnerBooster > 0) spawnerBooster--;
