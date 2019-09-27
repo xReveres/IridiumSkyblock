@@ -27,6 +27,7 @@ public class EpicSkyblock extends JavaPlugin {
     public static Missions missions;
     public static Upgrades upgrades;
     public static Boosters boosters;
+    public static Inventories inventories;
 
 //    private static Editor editor;
 
@@ -166,6 +167,7 @@ public class EpicSkyblock extends JavaPlugin {
         messages = persist.getFile(Messages.class).exists() ? persist.load(Messages.class) : new Messages();
         upgrades = persist.getFile(Upgrades.class).exists() ? persist.load(Upgrades.class) : new Upgrades();
         boosters = persist.getFile(Boosters.class).exists() ? persist.load(Boosters.class) : new Boosters();
+        inventories = persist.getFile(Inventories.class).exists() ? persist.load(Inventories.class) : new Inventories();
 
         for (Island island : islandManager.islands.values()) {
             island.init();
@@ -183,6 +185,7 @@ public class EpicSkyblock extends JavaPlugin {
         if (messages != null) persist.save(messages);
         if (upgrades != null) persist.save(upgrades);
         if (boosters != null) persist.save(boosters);
+        if (inventories != null) persist.save(inventories);
     }
 
     @Override
@@ -245,6 +248,10 @@ public class EpicSkyblock extends JavaPlugin {
 
     public static Boosters getBoosters() {
         return boosters;
+    }
+
+    public static Inventories getInventories() {
+        return inventories;
     }
 
     public static Persist getPersist() {

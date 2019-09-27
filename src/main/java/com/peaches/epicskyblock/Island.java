@@ -47,7 +47,7 @@ public class Island {
     private transient List<Chunk> chunks;
 
     private String owner;
-    private List<String> members;
+    private HashSet<String> members;
     private Location pos1;
     private Location pos2;
     private Location center;
@@ -110,7 +110,7 @@ public class Island {
         this.pos2 = pos2;
         this.center = center;
         this.home = home;
-        this.members = new ArrayList<>(Collections.singletonList(user.player));
+        this.members = new HashSet<>(Collections.singletonList(user.player));
         this.id = id;
         upgradeGUI = new UpgradeGUI(this);
         boosterGUI = new BoosterGUI(this);
@@ -305,7 +305,7 @@ public class Island {
     }
 
     public void init() {
-        if(blocks == null) blocks = new HashSet<>();
+        if (blocks == null) blocks = new HashSet<>();
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(EpicSkyblock.getInstance(), () -> {
             if (spawnerBooster > 0) spawnerBooster--;
@@ -545,7 +545,7 @@ public class Island {
         this.crystals = crystals;
     }
 
-    public List<String> getMembers() {
+    public HashSet<String> getMembers() {
         return members;
     }
 
@@ -556,8 +556,8 @@ public class Island {
     public void setSizeLevel(int sizeLevel) {
         this.sizeLevel = sizeLevel;
 
-        pos1 = getCenter().clone().subtract(EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2, 0, EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2);
-        pos2 = getCenter().clone().add(EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2, 0, EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2);
+        pos1 = getCenter().clone().subtract(EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2.00, 0, EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2.00);
+        pos2 = getCenter().clone().add(EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2.00, 0, EpicSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2.00);
     }
 
     public int getMemberLevel() {

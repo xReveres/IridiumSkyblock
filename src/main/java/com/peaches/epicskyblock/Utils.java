@@ -1,5 +1,6 @@
 package com.peaches.epicskyblock;
 
+import com.peaches.epicskyblock.configs.Inventories;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class Utils {
 
     public static String unColour(String string) {
-        return string.replace(ChatColor.AQUA+"", "&b");
+        return string.replace(ChatColor.AQUA + "", "&b");
     }
 
     public static ItemStack makeItem(Material material, int amount, int type, String name) {
@@ -36,6 +37,14 @@ public class Utils {
         m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         item.setItemMeta(m);
         return item;
+    }
+
+    public static ItemStack makeItem(Inventories.Item item, Island island) {
+        return makeItem(item.getMaterial(), item.getAmount(), item.getType(), processIslandPlaceholders(item.getTitle(), island), color(processIslandPlaceholders(item.getLore(), island)));
+    }
+
+    public static ItemStack makeItemHidden(Inventories.Item item, Island island) {
+        return makeItemHidden(item.getMaterial(), item.getAmount(), item.getType(), processIslandPlaceholders(item.getTitle(), island), color(processIslandPlaceholders(item.getLore(), island)));
     }
 
     public static ItemStack makeItemHidden(Material material, int amount, int type, String name, List<String> lore) {
@@ -100,5 +109,44 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    public static String processIslandPlaceholders(String line, Island island) {
+        return processMultiplePlaceholders(line, new Placeholder("spawnerbooster", island.getSpawnerBooster() + ""), new Placeholder("farmingbooster", island.getFarmingBooster() + ""), new Placeholder("expbooster", island.getExpBooster() + ""), new Placeholder("flightbooster", island.getFlightBooster() + ""), new Placeholder("treasurehunterstatus", ((island.treasureHunter != -1 ? island.treasureHunter + "/" + EpicSkyblock.getMissions().treasureHunter.getAmount() : "Completed"))), new Placeholder("competitorstatus", ((island.competitor != -1 ? island.competitor + "/" + EpicSkyblock.getMissions().competitor.getAmount() : "Completed"))), new Placeholder("minerstatus", ((island.miner != -1 ? island.miner + "/" + EpicSkyblock.getMissions().miner.getAmount() : "Completed"))), new Placeholder("farmerstatus", ((island.farmer != -1 ? island.farmer + "/" + EpicSkyblock.getMissions().farmer.getAmount() : "Completed"))), new Placeholder("hunterstatus", ((island.hunter != -1 ? island.hunter + "/" + EpicSkyblock.getMissions().hunter.getAmount() : "Completed"))), new Placeholder("fishermanstatus", ((island.fisherman != -1 ? island.fisherman + "/" + EpicSkyblock.getMissions().fisherman.getAmount() : "Completed"))), new Placeholder("builderstatus", ((island.builder != -1 ? island.builder + "/" + EpicSkyblock.getMissions().builder.getAmount() : "Completed"))));
+    }
+
+    public static List<String> processIslandPlaceholders(List<String> lines, Island island) {
+        return processMultiplePlaceholders(lines, new Placeholder("spawnerbooster", island.getSpawnerBooster() + ""), new Placeholder("farmingbooster", island.getFarmingBooster() + ""), new Placeholder("expbooster", island.getExpBooster() + ""), new Placeholder("flightbooster", island.getFlightBooster() + ""), new Placeholder("treasurehunterstatus", ((island.treasureHunter != -1 ? island.treasureHunter + "/" + EpicSkyblock.getMissions().treasureHunter.getAmount() : "Completed"))), new Placeholder("competitorstatus", ((island.competitor != -1 ? island.competitor + "/" + EpicSkyblock.getMissions().competitor.getAmount() : "Completed"))), new Placeholder("minerstatus", ((island.miner != -1 ? island.miner + "/" + EpicSkyblock.getMissions().miner.getAmount() : "Completed"))), new Placeholder("farmerstatus", ((island.farmer != -1 ? island.farmer + "/" + EpicSkyblock.getMissions().farmer.getAmount() : "Completed"))), new Placeholder("hunterstatus", ((island.hunter != -1 ? island.hunter + "/" + EpicSkyblock.getMissions().hunter.getAmount() : "Completed"))), new Placeholder("fishermanstatus", ((island.fisherman != -1 ? island.fisherman + "/" + EpicSkyblock.getMissions().fisherman.getAmount() : "Completed"))), new Placeholder("builderstatus", ((island.builder != -1 ? island.builder + "/" + EpicSkyblock.getMissions().builder.getAmount() : "Completed"))));
+    }
+
+    public static String processMultiplePlaceholders(String line, Placeholder... placeholders) {
+        for (Placeholder placeholder : placeholders) {
+            line = placeholder.process(line);
+        }
+        return color(line);
+    }
+
+    public static List<String> processMultiplePlaceholders(List<String> lines, Placeholder... placeholders) {
+        List<String> newlist = new ArrayList<String>();
+        for (String string : lines) {
+            newlist.add(processMultiplePlaceholders(string, placeholders));
+        }
+        return newlist;
+//        return lines.stream().map(Utils::processMultiplePlaceholders).collect(Collectors.toList());
+    }
+
+    public static class Placeholder {
+
+        private String key;
+        private String value;
+
+        public Placeholder(String key, String value) {
+            this.key = "{" + key + "}";
+            this.value = value;
+        }
+
+        public String process(String line) {
+            return line.replace(key, value);
+        }
     }
 }
