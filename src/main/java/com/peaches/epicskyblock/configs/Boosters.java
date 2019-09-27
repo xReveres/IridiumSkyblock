@@ -7,10 +7,10 @@ public class Boosters {
     public Booster experianceBooster = new Booster(15, true, 14);
     public Booster flightBooster = new Booster(15, true, 16);
 
-    public class Booster {
-        private int cost;
-        private boolean enabled;
-        private int slot;
+    public static class Booster {
+        public int cost;
+        public boolean enabled;
+        public int slot;
 
         public Booster(int cost, boolean enabled, int slot) {
             this.cost = cost;

@@ -4,6 +4,7 @@ import com.peaches.epicskyblock.configs.Inventories;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.inventory.ItemFlag;
@@ -17,6 +18,31 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Utils {
+
+    public static Biome getNextBiome(Biome biome) {
+        boolean next = false;
+        for (Biome b : Biome.values()) {
+            if (next) {
+                return b;
+            }
+            if (b.equals(biome)) {
+                next = true;
+            }
+        }
+        return Biome.values()[0];
+    }
+
+    public static Biome getPreviousBiome(Biome biome) {
+        int id = -1;
+        for (int i = 0; i < Biome.values().length; i++) {
+            if (Biome.values()[i].equals(biome)) {
+                if (i != 0) {
+                    return Biome.values()[i - 1];
+                }
+            }
+        }
+        return Biome.values()[Biome.values().length - 1];
+    }
 
     public static String unColour(String string) {
         return string.replace(ChatColor.AQUA + "", "&b");

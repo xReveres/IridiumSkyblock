@@ -38,7 +38,7 @@ public class BoosterGUI implements Listener {
             if (EpicSkyblock.getIslandManager().islands.containsKey(islandID)) {
                 Island island = EpicSkyblock.getIslandManager().islands.get(islandID);
                 for (int i = 0; i < 27; i++) {
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 7, " "));
+                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
                 }
                 this.spawner = Utils.makeItem(EpicSkyblock.getInventories().spawner, island);
                 this.farming = Utils.makeItem(EpicSkyblock.getInventories().farming, island);

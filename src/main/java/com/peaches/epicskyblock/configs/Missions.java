@@ -1,9 +1,9 @@
 package com.peaches.epicskyblock.configs;
 
 public class Missions {
-    public class Mission {
-        int amount;
-        int reward;
+    public static class Mission {
+        public int amount;
+        public int reward;
 
         public Mission(int amount, int reward) {
             this.amount = amount;
