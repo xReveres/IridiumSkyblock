@@ -46,15 +46,18 @@ public class BorderColorGUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(inventory)) {
             e.setCancelled(true);
-            if (e.getCurrentItem().equals(blue))
-                EpicSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Blue);
-            if (e.getCurrentItem().equals(red))
-                EpicSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Red);
-            if (e.getCurrentItem().equals(green))
-                EpicSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Green);
-            if (e.getCurrentItem().equals(off))
-                EpicSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Off);
-            EpicSkyblock.getIslandManager().getIslandViaId(islandID).sendBorder();
+
+            if(e.getCurrentItem() != null) {
+                if (e.getCurrentItem().equals(blue))
+                    EpicSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Blue);
+                if (e.getCurrentItem().equals(red))
+                    EpicSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Red);
+                if (e.getCurrentItem().equals(green))
+                    EpicSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Green);
+                if (e.getCurrentItem().equals(off))
+                    EpicSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Off);
+                EpicSkyblock.getIslandManager().getIslandViaId(islandID).sendBorder();
+            }
         }
     }
 }
