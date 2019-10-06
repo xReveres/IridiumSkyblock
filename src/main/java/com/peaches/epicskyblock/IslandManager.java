@@ -79,13 +79,10 @@ public class IslandManager {
     }
 
     private void makeWorld() {
-        if (Bukkit.getWorld(worldName) == null) {
-            WorldCreator wc = new WorldCreator(worldName);
-            wc.generateStructures(false);
-            wc.generator(new SkyblockGenerator());
-            Bukkit.getServer().createWorld(wc);
-        }
-        new WorldCreator(worldName).generator(new SkyblockGenerator());
+        WorldCreator wc = new WorldCreator(worldName);
+        wc.generateStructures(false);
+        wc.generator(new SkyblockGenerator());
+        wc.createWorld();
     }
 
     public void pasteSchematic(Location loc) {
