@@ -50,7 +50,6 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         new PrivateCommand();
         new BypassCommand();
         new SetHomeCommand();
-        new EditorCommand();
     }
 
     public void registerCommand(com.peaches.epicskyblock.commands.Command command) {
