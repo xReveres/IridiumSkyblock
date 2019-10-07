@@ -94,7 +94,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             //Help Menu
             cs.sendMessage(Utils.color("&b&lEpicSkyblock: &bHelp"));
             for (com.peaches.epicskyblock.commands.Command c : commands) {
-                cs.sendMessage(Utils.color("&b&l * &7" + c.getAliases().get(0) + ": &b" + c.getDescription()));
+                if (cs.hasPermission(c.getPermission()) || c.getPermission().isEmpty()) {
+                    cs.sendMessage(Utils.color("&b&l * &7" + c.getAliases().get(0) + ": &b" + c.getDescription()));
+                }
             }
         } catch (Exception e) {
             EpicSkyblock.getInstance().sendErrorMessage(e);
