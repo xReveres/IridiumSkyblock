@@ -15,7 +15,7 @@ public class AboutCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8Plugin Name: &7EpicSkyblock"));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8Plugin Name: &7IridiumSkyblock"));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8Plugin Version: &7" + IridiumSkyblock.getInstance().getDescription().getVersion()));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8Plugin Author: &7Peaches_MLG"));
     }
