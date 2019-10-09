@@ -87,6 +87,7 @@ public class IridiumSkyblock extends JavaPlugin {
             sendErrorMessage(e);
         }
     }
+    // name change
 
     public void startCounting() {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
