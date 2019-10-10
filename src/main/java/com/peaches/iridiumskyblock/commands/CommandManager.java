@@ -63,7 +63,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 for (com.peaches.iridiumskyblock.commands.Command command : commands) {
                     if (command.getAliases().contains(args[0])) {
                         if (!command.isPlayer() || cs instanceof Player) {
-                	    	if (!(command instanceof WorldsCommand) && !IridiumSkyblock.getConfiguration().enabledWorlds.contains(((Player) cs).getLocation().getWorld().getName())) {
+            	    		if ((!(command instanceof WorldsCommand) && !IridiumSkyblock.getConfiguration().EnabledWorlds.contains(((Player) cs).getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+            	    		 || (!(command instanceof WorldsCommand) && IridiumSkyblock.getConfiguration().EnabledWorlds.contains(((Player) cs).getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)) {
+                	    			
                                 cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInValidWorld.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 	    		return true;
                 	    	}

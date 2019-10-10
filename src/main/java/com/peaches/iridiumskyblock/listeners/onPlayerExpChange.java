@@ -12,7 +12,9 @@ public class onPlayerExpChange implements Listener {
 
     @EventHandler
     public void onPlayerExpChange(PlayerExpChangeEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()))
+    	if (!IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
+    	if (IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
     		return;
         try {
             Player p = e.getPlayer();

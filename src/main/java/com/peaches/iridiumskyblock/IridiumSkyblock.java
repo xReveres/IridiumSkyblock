@@ -60,10 +60,10 @@ public class IridiumSkyblock extends JavaPlugin {
             commandManager.registerCommands();
 
             loadConfigs();
-            
-            if (getConfiguration().enabledWorlds.isEmpty())
+
+            if (getConfiguration().EnabledWorlds.isEmpty() && !getConfiguration().EnabledWorldsIsBlacklist)
             	for (World w : Bukkit.getWorlds())
-            		getConfiguration().enabledWorlds.add(w.getName());
+            		getConfiguration().EnabledWorlds.add(w.getName());
             
             saveConfigs();
 

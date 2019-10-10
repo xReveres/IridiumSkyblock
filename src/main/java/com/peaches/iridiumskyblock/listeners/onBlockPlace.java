@@ -9,7 +9,9 @@ public class onBlockPlace implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()))
+    	if (!IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
+    	if (IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
     		return;
         try {
             User u = User.getUser(e.getPlayer());

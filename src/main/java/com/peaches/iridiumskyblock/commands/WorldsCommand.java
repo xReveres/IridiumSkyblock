@@ -16,8 +16,13 @@ public class WorldsCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().validWorlds.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
-        																		.replace("%worlds%", String.join(", ", IridiumSkyblock.getConfiguration().enabledWorlds))));
+    	if (IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist) {
+	        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().invalidWorlds.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
+					.replace("%worlds%", String.join(", ", IridiumSkyblock.getConfiguration().EnabledWorlds))));
+    	} else {
+	        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().validWorlds.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
+	        																		.replace("%worlds%", String.join(", ", IridiumSkyblock.getConfiguration().EnabledWorlds))));
+    	}
     }
 
     @Override

@@ -20,7 +20,8 @@ public class Config {
     public String TopGUITitle = "&7Top Islands";
     public String BorderColorGUITitle = "&7Border Color";
     public String PermissionsGUITitle = "&7Permissions";
-    public List<String> enabledWorlds = new ArrayList<String>();
+    public boolean EnabledWorldsIsBlacklist = false;
+    public List<String> EnabledWorlds = new ArrayList<String>();
     public int distance = 200;
     public int layersPerTick = 5;
     public Biome defaultBiome = Biome.PLAINS;

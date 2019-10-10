@@ -14,7 +14,9 @@ public class onBlockGrow implements Listener {
 
     @EventHandler
     public void onBlockGrow(BlockGrowEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()))
+    	if (!IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
+    	if (IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
     		return;
         try {
             Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
