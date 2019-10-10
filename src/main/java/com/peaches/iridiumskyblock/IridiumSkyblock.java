@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -61,10 +62,14 @@ public class IridiumSkyblock extends JavaPlugin {
 
             loadConfigs();
 
-            if (getConfiguration().EnabledWorlds.isEmpty() && !getConfiguration().EnabledWorldsIsBlacklist)
-            	for (World w : Bukkit.getWorlds())
-            		getConfiguration().EnabledWorlds.add(w.getName());
-            
+            if (getConfiguration().enabledWorlds == null) {
+                getConfiguration().enabledWorlds = new ArrayList<>();
+            }
+
+            if (getConfiguration().enabledWorlds.isEmpty() && !getConfiguration().enabledWorldsIsBlacklist)
+                for (World w : Bukkit.getWorlds())
+                    getConfiguration().enabledWorlds.add(w.getName());
+
             saveConfigs();
 
             editor = new Editor();

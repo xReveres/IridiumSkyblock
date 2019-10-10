@@ -26,7 +26,7 @@ public class UpgradeGUI implements Listener {
     public int scheduler;
 
     public UpgradeGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().UpgradeGUITitle));
+        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().upgradeGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 10);
         IridiumSkyblock.getInstance().registerListeners(this);

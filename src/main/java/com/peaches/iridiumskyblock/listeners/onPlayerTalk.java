@@ -13,9 +13,9 @@ public class onPlayerTalk implements Listener {
 
     @EventHandler
     public void onPlayerTalk(AsyncPlayerChatEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
     		return;
-    	if (IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    	if (IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
     		return;
         try {
             Player p = e.getPlayer();

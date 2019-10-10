@@ -23,7 +23,7 @@ public class BorderColorGUI implements Listener {
     public ItemStack off;
 
     public BorderColorGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().BorderColorGUITitle));
+        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().borderColorGUITitle));
         islandID = island.getId();
 
         for (int i = 0; i < 27; i++) {

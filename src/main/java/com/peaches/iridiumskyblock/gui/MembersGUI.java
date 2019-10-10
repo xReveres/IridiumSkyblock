@@ -27,7 +27,7 @@ public class MembersGUI implements Listener {
 
     public MembersGUI(Island island) {
         IridiumSkyblock.getInstance().registerListeners(this);
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().MembersGUITitle));
+        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().membersGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 10);
     }

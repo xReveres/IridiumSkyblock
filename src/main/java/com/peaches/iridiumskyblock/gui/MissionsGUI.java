@@ -26,7 +26,7 @@ public class MissionsGUI implements Listener {
     public ItemStack builder;
 
     public MissionsGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().MissionsGUITitle));
+        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().missionsGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 10);
         IridiumSkyblock.getInstance().registerListeners(this);

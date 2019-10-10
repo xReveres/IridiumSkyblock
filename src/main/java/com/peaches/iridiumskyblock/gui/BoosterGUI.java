@@ -24,7 +24,7 @@ public class BoosterGUI implements Listener {
     public int scheduler;
 
     public BoosterGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().BoosterGUITitle));
+        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().boosterGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 10);
         IridiumSkyblock.getInstance().registerListeners(this);

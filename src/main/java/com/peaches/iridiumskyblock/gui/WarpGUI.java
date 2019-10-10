@@ -24,7 +24,7 @@ public class WarpGUI implements Listener {
     public HashMap<Integer, Island.Warp> warps = new HashMap<>();
 
     public WarpGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().WarpGUITitle));
+        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().warpGUITitle));
         islandID = island.getId();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 10);
         IridiumSkyblock.getInstance().registerListeners(this);

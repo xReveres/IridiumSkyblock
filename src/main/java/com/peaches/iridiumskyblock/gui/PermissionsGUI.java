@@ -20,7 +20,7 @@ public class PermissionsGUI implements Listener {
 
     public PermissionsGUI(Island island) {
         islandid = island.getId();
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().BorderColorGUITitle));
+        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().permissionsGUITitle));
         for (int i = 0; i < 27; i++) {
             inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
         }

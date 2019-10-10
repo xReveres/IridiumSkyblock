@@ -27,7 +27,7 @@ public class TopGUI implements Listener {
     public HashMap<Integer, Integer> islands = new HashMap<>();
 
     public TopGUI() {
-        inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().TopGUITitle));
+        inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().topGUITitle));
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 20);
     }
 

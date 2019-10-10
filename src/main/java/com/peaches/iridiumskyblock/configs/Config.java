@@ -12,16 +12,16 @@ import java.util.List;
 public class Config {
 
     public String prefix = "&b&lIridiumSkyblock";
-    public String UpgradeGUITitle = "&7Upgrade";
-    public String BoosterGUITitle = "&7Booster";
-    public String MissionsGUITitle = "&7Missions";
-    public String MembersGUITitle = "&7Members";
-    public String WarpGUITitle = "&7Warps";
-    public String TopGUITitle = "&7Top Islands";
-    public String BorderColorGUITitle = "&7Border Color";
-    public String PermissionsGUITitle = "&7Permissions";
-    public boolean EnabledWorldsIsBlacklist = false;
-    public List<String> EnabledWorlds = new ArrayList<String>();
+    public String upgradeGUITitle = "&7Upgrade";
+    public String boosterGUITitle = "&7Booster";
+    public String missionsGUITitle = "&7Missions";
+    public String membersGUITitle = "&7Members";
+    public String warpGUITitle = "&7Warps";
+    public String topGUITitle = "&7Top Islands";
+    public String borderColorGUITitle = "&7Border Color";
+    public String permissionsGUITitle = "&7Permissions";
+    public boolean enabledWorldsIsBlacklist = false;
+    public List<String> enabledWorlds = new ArrayList<>();
     public int distance = 200;
     public int layersPerTick = 5;
     public Biome defaultBiome = Biome.PLAINS;
@@ -46,6 +46,5 @@ public class Config {
         put(8, 23);
         put(9, 24);
         put(10, 25);
-
     }};
 }
