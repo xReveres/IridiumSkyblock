@@ -12,6 +12,14 @@ public class onEntityDamageByEntity implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+    	if (!IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getEntity().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
+    	if (!IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getDamager().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
+    	if (IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getEntity().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
+    	if (IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getDamager().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
         try {
             if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two players pvping in EpicSkyblock world
                 if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {

@@ -8,6 +8,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 public class onEntityExplode implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
+    	if (!IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
+    	if (IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
         try {
             if (e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
                 e.setCancelled(true);

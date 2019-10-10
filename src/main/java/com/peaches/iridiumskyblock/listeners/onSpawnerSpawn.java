@@ -11,6 +11,10 @@ public class onSpawnerSpawn implements Listener {
 
     @EventHandler
     public void onSpawnerSpawn(SpawnerSpawnEvent e) {
+    	if (!IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
+    	if (IridiumSkyblock.getConfiguration().EnabledWorlds.contains(e.getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().EnabledWorldsIsBlacklist)
+    		return;
         try {
             Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getLocation());
             if (island != null) {

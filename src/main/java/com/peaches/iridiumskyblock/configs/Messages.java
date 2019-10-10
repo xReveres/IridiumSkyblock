@@ -55,5 +55,8 @@ public class Messages {
     public String playerDemoted = "%prefix% &7%player% has been demoted to %rank%.";
     public String setHome = "%prefix% &7You have set your home to this location.";
     public String isNotSafe = "%prefix% &7This location is not safe.";
+	public String notInValidWorld = "%prefix% &7You can't use that command in this world. Use /is worlds for a list of valid worlds.";
+	public String validWorlds = "%prefix% &7Valid worlds are: %worlds%";
+	public String invalidWorlds = "%prefix% &7Invalid worlds are: %worlds%";
 
 }
