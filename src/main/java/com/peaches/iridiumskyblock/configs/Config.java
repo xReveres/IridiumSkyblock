@@ -2,9 +2,12 @@ package com.peaches.iridiumskyblock.configs;
 
 import com.peaches.iridiumskyblock.MissionRestart;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Config {
 
@@ -17,6 +20,7 @@ public class Config {
     public String TopGUITitle = "&7Top Islands";
     public String BorderColorGUITitle = "&7Border Color";
     public String PermissionsGUITitle = "&7Permissions";
+    public List<World> enabledWorlds = new ArrayList<World>();
     public int distance = 200;
     public int layersPerTick = 5;
     public Biome defaultBiome = Biome.PLAINS;

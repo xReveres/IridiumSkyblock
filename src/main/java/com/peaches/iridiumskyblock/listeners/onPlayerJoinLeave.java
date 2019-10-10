@@ -10,6 +10,8 @@ public class onPlayerJoinLeave implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld()))
+    		return;
         try {
             if (IridiumSkyblock.getIslandManager().users.containsKey(e.getPlayer().getName())) {
                 User user = IridiumSkyblock.getIslandManager().users.get(e.getPlayer().getName());

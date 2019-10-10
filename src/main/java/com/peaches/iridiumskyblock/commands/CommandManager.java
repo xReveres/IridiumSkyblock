@@ -49,6 +49,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         new PrivateCommand();
         new BypassCommand();
         new SetHomeCommand();
+        new WorldsCommand();
     }
 
     public void registerCommand(com.peaches.iridiumskyblock.commands.Command command) {
@@ -62,6 +63,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 for (com.peaches.iridiumskyblock.commands.Command command : commands) {
                     if (command.getAliases().contains(args[0])) {
                         if (!command.isPlayer() || cs instanceof Player) {
+                	    	if (!(command instanceof WorldsCommand) && !IridiumSkyblock.getConfiguration().enabledWorlds.contains(((Player) cs).getLocation().getWorld())) {
+                                cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInValidWorld.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                	    		return true;
+                	    	}
                             if (cs.hasPermission(command.getPermission()) || command.getPermission().isEmpty()) {
                                 command.execute(cs, args);
                                 return true;

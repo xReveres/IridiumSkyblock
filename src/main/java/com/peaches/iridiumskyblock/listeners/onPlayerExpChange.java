@@ -12,6 +12,8 @@ public class onPlayerExpChange implements Listener {
 
     @EventHandler
     public void onPlayerExpChange(PlayerExpChangeEvent e) {
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld()))
+    		return;
         try {
             Player p = e.getPlayer();
             User user = User.getUser(p);

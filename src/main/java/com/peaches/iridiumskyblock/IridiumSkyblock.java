@@ -59,6 +59,10 @@ public class IridiumSkyblock extends JavaPlugin {
             commandManager.registerCommands();
 
             loadConfigs();
+            
+            if (getConfiguration().enabledWorlds.isEmpty())
+            	getConfiguration().enabledWorlds.addAll(Bukkit.getWorlds());
+            
             saveConfigs();
 
             editor = new Editor();

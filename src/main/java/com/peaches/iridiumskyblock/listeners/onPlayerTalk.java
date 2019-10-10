@@ -13,6 +13,8 @@ public class onPlayerTalk implements Listener {
 
     @EventHandler
     public void onPlayerTalk(AsyncPlayerChatEvent e) {
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld()))
+    		return;
         try {
             Player p = e.getPlayer();
             User u = User.getUser(p);

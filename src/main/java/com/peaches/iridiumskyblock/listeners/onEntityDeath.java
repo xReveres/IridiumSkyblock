@@ -12,6 +12,8 @@ public class onEntityDeath implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getEntity().getLocation().getWorld()))
+    		return;
         try {
             if (e.getEntity().getKiller() == null) return;
             if (e.getEntity().getKiller().getPlayer() == null) return;
