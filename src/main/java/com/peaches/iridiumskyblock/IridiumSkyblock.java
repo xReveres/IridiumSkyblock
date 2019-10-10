@@ -8,6 +8,7 @@ import com.peaches.iridiumskyblock.listeners.*;
 import com.peaches.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.peaches.iridiumskyblock.serializer.Persist;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -61,7 +62,8 @@ public class IridiumSkyblock extends JavaPlugin {
             loadConfigs();
             
             if (getConfiguration().enabledWorlds.isEmpty())
-            	getConfiguration().enabledWorlds.addAll(Bukkit.getWorlds());
+            	for (World w : Bukkit.getWorlds())
+            		getConfiguration().enabledWorlds.add(w.getName());
             
             saveConfigs();
 

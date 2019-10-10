@@ -13,7 +13,7 @@ public class onBlockBreak implements Listener {
 
     @EventHandler
     public void onBreakBlock(BlockBreakEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld()))
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()))
     		return;
         try {
             User u = User.getUser(e.getPlayer());

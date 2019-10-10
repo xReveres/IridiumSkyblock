@@ -10,7 +10,7 @@ public class onPlayerMove implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld()))
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()))
     		return;
         try {
             if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {

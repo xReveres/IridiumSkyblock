@@ -11,7 +11,7 @@ public class onPlayerFish implements Listener {
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld()))
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()))
     		return;
         try {
             if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {

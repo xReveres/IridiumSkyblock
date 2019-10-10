@@ -17,7 +17,7 @@ public class onBlockFromTo implements Listener {
 
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getToBlock().getLocation().getWorld()))
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getToBlock().getLocation().getWorld().getName()))
     		return;
         try {
             if (e.getFace() != BlockFace.DOWN) {

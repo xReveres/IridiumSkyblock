@@ -1,10 +1,8 @@
 package com.peaches.iridiumskyblock.commands;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import com.peaches.iridiumskyblock.IridiumSkyblock;
@@ -18,12 +16,8 @@ public class WorldsCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        List<String> worlds = new ArrayList<String>();
-        for (World w : IridiumSkyblock.getConfiguration().enabledWorlds)
-        	worlds.add(w.getName());
-        
         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().validWorlds.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
-        																		.replace("%worlds%", String.join(", ", worlds))));
+        																		.replace("%worlds%", String.join(", ", IridiumSkyblock.getConfiguration().enabledWorlds))));
     }
 
     @Override

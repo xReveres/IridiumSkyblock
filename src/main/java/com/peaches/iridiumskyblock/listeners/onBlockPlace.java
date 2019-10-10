@@ -9,7 +9,7 @@ public class onBlockPlace implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld()))
+    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()))
     		return;
         try {
             User u = User.getUser(e.getPlayer());
