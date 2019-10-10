@@ -68,7 +68,9 @@ public class IridiumSkyblock extends JavaPlugin {
 
             if (getConfiguration().enabledWorlds.isEmpty() && !getConfiguration().enabledWorldsIsBlacklist)
                 for (World w : Bukkit.getWorlds())
-                    getConfiguration().enabledWorlds.add(w.getName());
+                    if(!w.getName().equals(getIslandManager().worldName)){
+                        getConfiguration().enabledWorlds.add(w.getName());
+                    }
 
             saveConfigs();
 
@@ -184,6 +186,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
         for (Island island : islandManager.islands.values()) {
             island.init();
+        }
+        if(getConfiguration().enabledWorlds.contains(getIslandManager().worldName) && getConfiguration().enabledWorldsIsBlacklist){
+            getConfiguration().enabledWorlds.remove(getIslandManager().worldName);
+            saveConfigs();
         }
     }
 
