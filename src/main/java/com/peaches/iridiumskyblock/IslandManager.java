@@ -16,7 +16,7 @@ public class IslandManager {
     int current = 0;
 
     public Direction direction = Direction.NORTH;
-    public String worldName = "EpicSkyblock";
+    public String worldName = "IridiumSkyblock";
     public Location nextLocation;
 
     public int nextID = 1;
