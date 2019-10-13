@@ -67,7 +67,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                                 cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInValidWorld.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 	    		return true;
                 	    	}
-                            if (cs.hasPermission(command.getPermission()) || command.getPermission().isEmpty()) {
+                            if (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
                                 command.execute(cs, args);
                                 return true;
                             } else {
@@ -98,7 +98,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             //Help Menu
             cs.sendMessage(Utils.color("&b&lEpicSkyblock: &bHelp"));
             for (com.peaches.iridiumskyblock.commands.Command c : commands) {
-                if (cs.hasPermission(c.getPermission()) || c.getPermission().isEmpty()) {
+                if (cs.hasPermission(c.getPermission()) || c.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
                     cs.sendMessage(Utils.color("&b&l * &7" + c.getAliases().get(0) + ": &b" + c.getDescription()));
                 }
             }

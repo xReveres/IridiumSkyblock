@@ -13,7 +13,7 @@ public abstract class Command {
 
     public Command(List<String> aliases, String description, String permission, boolean player) {
         this.aliases = aliases;
-        this.permission = permission;
+        this.permission = "iridiumskyblock." + permission;
         this.player = player;
         this.description = description;
         IridiumSkyblock.getCommandManager().registerCommand(this);

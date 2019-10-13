@@ -10,7 +10,7 @@ import java.util.List;
 public class EditorCommand extends Command {
 
     public EditorCommand() {
-        super(Arrays.asList("editor"), "Edits all configurable files", "EpicSkyblock.editor", true);
+        super(Arrays.asList("editor"), "Edits all configurable files", "editor", true);
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.List;
 public class RemoveCrystalsCommand extends Command {
 
     public RemoveCrystalsCommand() {
-        super(Arrays.asList("removecrystals"), "remove a player's Crystals", "EpicSkyblock.removecrystals", false);
+        super(Arrays.asList("removecrystals"), "remove a player's Crystals", "removecrystals", false);
     }
 
     @Override
