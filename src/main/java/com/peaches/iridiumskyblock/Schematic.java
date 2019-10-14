@@ -120,7 +120,9 @@ public class Schematic {
                     for (int z = 0; z < length; ++z) {
                         int index = y * width * length + z * width + x;
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-                        block.setTypeIdAndData(blocks[index], blockData[index], false);
+                        if (Material.getMaterial(blocks[index]) != null) {
+                            block.setTypeIdAndData(blocks[index], blockData[index], false);
+                        }
                     }
                 }
             }
