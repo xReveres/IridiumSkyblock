@@ -2,7 +2,6 @@ package com.peaches.iridiumskyblock;
 
 import com.peaches.iridiumskyblock.commands.CommandManager;
 import com.peaches.iridiumskyblock.configs.*;
-import com.peaches.iridiumskyblock.gui.Editor;
 import com.peaches.iridiumskyblock.gui.TopGUI;
 import com.peaches.iridiumskyblock.listeners.*;
 import com.peaches.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
@@ -32,7 +31,6 @@ public class IridiumSkyblock extends JavaPlugin {
     public static Boosters boosters;
     public static Inventories inventories;
 
-    private static Editor editor;
 
     private static Persist persist;
 
@@ -72,8 +70,6 @@ public class IridiumSkyblock extends JavaPlugin {
                 }
             }
             saveConfigs();
-
-            editor = new Editor();
 
             // Call it as a delayed task to wait for the server to properly load first
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::islandValueManager);
@@ -227,9 +223,6 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
-    public static Editor getEditor() {
-        return editor;
-    }
 
     public static IridiumSkyblock getInstance() {
         return instance;
