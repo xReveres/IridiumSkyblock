@@ -1,7 +1,7 @@
 name: IridiumSkyblock
 version: 2.1.0
 description: Skyblock Redefined
-main: com.peaches.iridiumskyblock.IridiumSkyblock
+main: com.iridium.iridiumskyblock.IridiumSkyblock
 author: [Peaches_MLG, Riches]
 softdepend: [PlaceholderAPI]
 commands:
