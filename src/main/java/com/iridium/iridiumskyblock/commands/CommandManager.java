@@ -67,6 +67,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                                 cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInValidWorld.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                 return true;
                             }
+                        } else {
+                            // Must be a player
+                            cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            return true;
                         }
                         if (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
                             command.execute(cs, args);
@@ -76,10 +80,6 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             return true;
                         }
-                    } else {
-                        // Must be a player
-                        cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                        return true;
                     }
                 }
             } else {
