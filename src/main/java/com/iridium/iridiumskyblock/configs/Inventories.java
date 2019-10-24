@@ -24,7 +24,6 @@ public class Inventories {
     public Item fisherman = new Item(Material.FISHING_ROD, 1, 0, "&b&lFisherman", new ArrayList<>(Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bCatch " + IridiumSkyblock.getMissions().fisherman.getAmount() + " Fish", "&b&l * &7Current Status: &b", "&b&l * &7Reward: &b{fishermanstatus}" + IridiumSkyblock.getMissions().fisherman.getReward() + " Island Crystals", "", "&b&l[!] &bComplete this mission for rewards.")));
     public Item builder = new Item(Material.COBBLESTONE, 1, 0, "&b&lBuilder", new ArrayList<>(Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bPlace " + IridiumSkyblock.getMissions().builder.getAmount() + " Blocks", "&b&l * &7Current Status: &b", "&b&l * &7Reward: &b{builderstatus}" + IridiumSkyblock.getMissions().builder.getReward() + " Island Crystals", "", "&b&l[!] &bComplete this mission for rewards.")));
 
-
     public static class Item {
 
         private Material material;

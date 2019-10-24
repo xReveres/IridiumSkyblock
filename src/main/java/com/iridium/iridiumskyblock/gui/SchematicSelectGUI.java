@@ -29,14 +29,16 @@ public class SchematicSelectGUI extends GUI implements Listener {
     @EventHandler
     @Override
     public void onInventoryClick(InventoryClickEvent e) {
-        int i = 0;
-        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
-            if (e.getSlot() == i && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
-                getIsland().setSchematic(fakeSchematic.name);
-                getIsland().generateIsland();
-                getIsland().teleportHome((Player) e.getWhoClicked());
+        if (e.getInventory().equals(getInventory())) {
+            int i = 0;
+            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
+                if (e.getSlot() == i && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
+                    getIsland().setSchematic(fakeSchematic.name);
+                    getIsland().generateIsland();
+                    getIsland().teleportHome((Player) e.getWhoClicked());
+                }
+                i++;
             }
-            i++;
         }
     }
 }
