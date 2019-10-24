@@ -20,7 +20,7 @@ public class WorldBorderCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            p.openInventory(user.getIsland().getBorderColorGUI().inventory);
+            p.openInventory(user.getIsland().getBorderColorGUI().getInventory());
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

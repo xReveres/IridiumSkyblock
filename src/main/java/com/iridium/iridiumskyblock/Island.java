@@ -2,8 +2,8 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
-import com.peaches.iridiumskyblock.gui.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -54,7 +54,7 @@ public class Island {
     private transient MembersGUI membersGUI;
     private transient WarpGUI warpGUI;
     private transient BorderColorGUI borderColorGUI;
-    private transient PermissionsGUI permissionsGUI;
+    private transient SchematicSelectGUI schematicSelectGUI;
 
     private int id;
 
@@ -96,6 +96,8 @@ public class Island {
 
     private HashMap<Roles, Permissions> permissions;
 
+    private String schematic;
+
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, int id) {
         User user = User.getUser(owner);
         user.role = Roles.Owner;
@@ -113,6 +115,7 @@ public class Island {
         membersGUI = new MembersGUI(this);
         warpGUI = new WarpGUI(this);
         borderColorGUI = new BorderColorGUI(this);
+        schematicSelectGUI = new SchematicSelectGUI(this);
         spawnerBooster = 0;
         farmingBooster = 0;
         expBooster = 0;
@@ -344,8 +347,16 @@ public class Island {
     public void generateIsland() {
         deleteBlocks();
         killEntities();
-        IridiumSkyblock.getIslandManager().pasteSchematic(getCenter().clone());
+        pasteSchematic();
         clearInventories();
+    }
+
+    public void pasteSchematic() {
+        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
+            if (fakeSchematic.name.equals(schematic)) {
+                IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone());
+            }
+        }
     }
 
     public void clearInventories() {
@@ -476,6 +487,10 @@ public class Island {
         return boosterGUI;
     }
 
+    public SchematicSelectGUI getSchematicSelectGUI() {
+        return schematicSelectGUI;
+    }
+
     public MissionsGUI getMissionsGUI() {
         if (missionsGUI == null) missionsGUI = new MissionsGUI(this);
         return missionsGUI;
@@ -496,11 +511,6 @@ public class Island {
             borderColorGUI = new BorderColorGUI(this);
         }
         return borderColorGUI;
-    }
-
-    public PermissionsGUI getPermissionsGUI() {
-        if (permissionsGUI == null) permissionsGUI = new PermissionsGUI(this);
-        return permissionsGUI;
     }
 
     public int getSpawnerBooster() {
@@ -608,5 +618,13 @@ public class Island {
 
     public void setVisit(boolean visit) {
         this.visit = visit;
+    }
+
+    public String getSchematic() {
+        return schematic;
+    }
+
+    public void setSchematic(String schematic) {
+        this.schematic = schematic;
     }
 }

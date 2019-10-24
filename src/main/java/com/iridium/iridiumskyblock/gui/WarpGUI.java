@@ -16,43 +16,35 @@ import org.bukkit.inventory.Inventory;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class WarpGUI implements Listener {
-
-    public Inventory inventory;
-    public int islandID;
-    public int scheduler;
+public class WarpGUI extends GUI implements Listener {
     public HashMap<Integer, Island.Warp> warps = new HashMap<>();
 
     public WarpGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().warpGUITitle));
-        islandID = island.getId();
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 10);
+        super(island, 27, IridiumSkyblock.getConfiguration().warpGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
+    @Override
     public void addContent() {
-        try {
-            if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
-                Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
-                for (int i = 0; i < 27; i++) {
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-                }
-                int i = 9;
-                warps.clear();
-                for (Island.Warp warp : island.getWarps()) {
-                    warps.put(i, warp);
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName()), Utils.color(Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."))));
-                    i++;
-                }
+        if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
+            Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
+            for (int i = 0; i < 27; i++) {
+                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
             }
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
+            int i = 9;
+            warps.clear();
+            for (Island.Warp warp : island.getWarps()) {
+                warps.put(i, warp);
+                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName()), Utils.color(Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."))));
+                i++;
+            }
         }
     }
 
     @EventHandler
+    @Override
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.getInventory().equals(inventory)) {
+        if (e.getInventory().equals(getInventory())) {
             Player p = (Player) e.getWhoClicked();
             User u = User.getUser(p);
             e.setCancelled(true);

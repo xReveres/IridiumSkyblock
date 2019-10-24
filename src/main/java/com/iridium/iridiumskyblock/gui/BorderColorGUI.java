@@ -12,10 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class BorderColorGUI implements Listener {
-
-    public Inventory inventory;
-    public int islandID;
+public class BorderColorGUI extends GUI implements Listener {
 
     public ItemStack red;
     public ItemStack green;
@@ -23,29 +20,28 @@ public class BorderColorGUI implements Listener {
     public ItemStack off;
 
     public BorderColorGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().borderColorGUITitle));
-        islandID = island.getId();
+        super(island, 27, IridiumSkyblock.getConfiguration().borderColorGUITitle);
+        IridiumSkyblock.getInstance().registerListeners(this);
+    }
 
-        for (int i = 0; i < 27; i++) {
-            inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-        }
+    @Override
+    public void addContent() {
+        super.addContent();
         this.red = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, "&c&lRed");
         this.green = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, "&a&lGreen");
         this.blue = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 11, "&b&lBlue");
         this.off = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, "&b&lOff");
 
-        inventory.setItem(10, this.red);
-        inventory.setItem(12, this.blue);
-        inventory.setItem(14, this.green);
-        inventory.setItem(16, this.off);
-        IridiumSkyblock.getInstance().registerListeners(this);
+        getInventory().setItem(10, this.red);
+        getInventory().setItem(12, this.blue);
+        getInventory().setItem(14, this.green);
+        getInventory().setItem(16, this.off);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.getInventory().equals(inventory)) {
+        if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
-
             if(e.getCurrentItem() != null) {
                 if (e.getCurrentItem().equals(blue))
                     IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Blue);

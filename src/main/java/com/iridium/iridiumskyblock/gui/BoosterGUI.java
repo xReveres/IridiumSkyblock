@@ -11,53 +11,44 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class BoosterGUI implements Listener {
-
-    public Inventory inventory;
-    public int islandID;
+public class BoosterGUI extends GUI implements Listener {
 
     public ItemStack spawner;
     public ItemStack farming;
     public ItemStack exp;
     public ItemStack flight;
 
-    public int scheduler;
-
     public BoosterGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().boosterGUITitle));
-        islandID = island.getId();
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 10);
+        super(island, 27, IridiumSkyblock.getConfiguration().boosterGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
+    @Override
     public void addContent() {
-        try {
-            if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
-                Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
-                for (int i = 0; i < 27; i++) {
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-                }
-                this.spawner = Utils.makeItem(IridiumSkyblock.getInventories().spawner, island);
-                this.farming = Utils.makeItem(IridiumSkyblock.getInventories().farming, island);
-                this.exp = Utils.makeItem(IridiumSkyblock.getInventories().exp, island);
-                this.flight = Utils.makeItem(IridiumSkyblock.getInventories().flight, island);
-                if (IridiumSkyblock.getBoosters().spawnerBooster.isEnabled())
-                    inventory.setItem(IridiumSkyblock.getBoosters().spawnerBooster.getSlot(), spawner);
-                if (IridiumSkyblock.getBoosters().farmingBooster.isEnabled())
-                    inventory.setItem(IridiumSkyblock.getBoosters().farmingBooster.getSlot(), farming);
-                if (IridiumSkyblock.getBoosters().experianceBooster.isEnabled())
-                    inventory.setItem(IridiumSkyblock.getBoosters().experianceBooster.getSlot(), exp);
-                if (IridiumSkyblock.getBoosters().flightBooster.isEnabled())
-                    inventory.setItem(IridiumSkyblock.getBoosters().flightBooster.getSlot(), flight);
+        if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
+            Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
+            for (int i = 0; i < 27; i++) {
+                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
             }
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
+            this.spawner = Utils.makeItem(IridiumSkyblock.getInventories().spawner, island);
+            this.farming = Utils.makeItem(IridiumSkyblock.getInventories().farming, island);
+            this.exp = Utils.makeItem(IridiumSkyblock.getInventories().exp, island);
+            this.flight = Utils.makeItem(IridiumSkyblock.getInventories().flight, island);
+            if (IridiumSkyblock.getBoosters().spawnerBooster.isEnabled())
+                getInventory().setItem(IridiumSkyblock.getBoosters().spawnerBooster.getSlot(), spawner);
+            if (IridiumSkyblock.getBoosters().farmingBooster.isEnabled())
+                getInventory().setItem(IridiumSkyblock.getBoosters().farmingBooster.getSlot(), farming);
+            if (IridiumSkyblock.getBoosters().experianceBooster.isEnabled())
+                getInventory().setItem(IridiumSkyblock.getBoosters().experianceBooster.getSlot(), exp);
+            if (IridiumSkyblock.getBoosters().flightBooster.isEnabled())
+                getInventory().setItem(IridiumSkyblock.getBoosters().flightBooster.getSlot(), flight);
         }
     }
 
     @EventHandler
+    @Override
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.getInventory().equals(inventory)) {
+        if (e.getInventory().equals(getInventory())) {
             Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
             e.setCancelled(true);
             if (e.getCurrentItem() == null) return;

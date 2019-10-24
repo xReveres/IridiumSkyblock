@@ -11,11 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class MissionsGUI implements Listener {
-
-    public Inventory inventory;
-    public int islandID;
-    public int scheduler;
+public class MissionsGUI extends GUI implements Listener {
 
     public ItemStack treasureHunter;
     public ItemStack competitor;
@@ -26,43 +22,40 @@ public class MissionsGUI implements Listener {
     public ItemStack builder;
 
     public MissionsGUI(Island island) {
-        this.inventory = Bukkit.createInventory(null, 27, Utils.color(IridiumSkyblock.getConfiguration().missionsGUITitle));
-        islandID = island.getId();
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 10);
+        super(island, 27, IridiumSkyblock.getConfiguration().missionsGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
+    @Override
     public void addContent() {
-        try {
-            if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
-                Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
-                for (int i = 0; i < 27; i++) {
-                    inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-                }
-                this.treasureHunter = Utils.makeItemHidden(IridiumSkyblock.getInventories().treasureHunter, island);
-                this.competitor = Utils.makeItemHidden(IridiumSkyblock.getInventories().competitor, island);
-                this.miner = Utils.makeItemHidden(IridiumSkyblock.getInventories().miner, island);
-                this.farmer = Utils.makeItemHidden(IridiumSkyblock.getInventories().farmer, island);
-                this.hunter = Utils.makeItemHidden(IridiumSkyblock.getInventories().hunter, island);
-                this.fisherman = Utils.makeItemHidden(IridiumSkyblock.getInventories().fisherman, island);
-                this.builder = Utils.makeItemHidden(IridiumSkyblock.getInventories().builder, island);
-
-                inventory.setItem(10, this.treasureHunter);
-                inventory.setItem(11, this.competitor);
-                inventory.setItem(12, this.miner);
-                inventory.setItem(13, this.farmer);
-                inventory.setItem(14, this.hunter);
-                inventory.setItem(15, this.fisherman);
-                inventory.setItem(16, this.builder);
+        super.addContent();
+        if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
+            Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
+            for (int i = 0; i < 27; i++) {
+                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
             }
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
+            this.treasureHunter = Utils.makeItemHidden(IridiumSkyblock.getInventories().treasureHunter, island);
+            this.competitor = Utils.makeItemHidden(IridiumSkyblock.getInventories().competitor, island);
+            this.miner = Utils.makeItemHidden(IridiumSkyblock.getInventories().miner, island);
+            this.farmer = Utils.makeItemHidden(IridiumSkyblock.getInventories().farmer, island);
+            this.hunter = Utils.makeItemHidden(IridiumSkyblock.getInventories().hunter, island);
+            this.fisherman = Utils.makeItemHidden(IridiumSkyblock.getInventories().fisherman, island);
+            this.builder = Utils.makeItemHidden(IridiumSkyblock.getInventories().builder, island);
+
+            getInventory().setItem(10, this.treasureHunter);
+            getInventory().setItem(11, this.competitor);
+            getInventory().setItem(12, this.miner);
+            getInventory().setItem(13, this.farmer);
+            getInventory().setItem(14, this.hunter);
+            getInventory().setItem(15, this.fisherman);
+            getInventory().setItem(16, this.builder);
         }
     }
 
     @EventHandler
+    @Override
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.getInventory().equals(inventory)) {
+        if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
         }
     }

@@ -20,7 +20,7 @@ public class MissionsCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            p.openInventory(user.getIsland().getMissionsGUI().inventory);
+            p.openInventory(user.getIsland().getMissionsGUI().getInventory());
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

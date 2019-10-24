@@ -3,9 +3,7 @@ package com.iridium.iridiumskyblock;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.listeners.*;
-import com.peaches.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.gui.TopGUI;
-import com.peaches.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.serializer.Persist;
 import org.bukkit.Bukkit;
@@ -16,9 +14,11 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -26,12 +26,15 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private static IridiumSkyblock instance;
 
+    public HashMap<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
+
     public static Config configuration;
     public static Messages messages;
     public static Missions missions;
     public static Upgrades upgrades;
     public static Boosters boosters;
     public static Inventories inventories;
+    public static Schematics schematics;
 
 
     private static Persist persist;
@@ -53,7 +56,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
             super.onEnable();
             getDataFolder().mkdir();
-            loadSchematic();
 
             persist = new Persist();
 
@@ -159,16 +161,21 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
-    public void loadSchematic() {
+    public void loadSchematics() throws IOException {
         File schematicFolder = new File(getDataFolder(), "schematics");
         if (!schematicFolder.exists()) {
             schematicFolder.mkdir();
+            if (!new File(schematicFolder, "island.schematic").exists()) {
+                if (getResource("schematics/island.schematic") != null) {
+                    saveResource("schematics/island.schematic", false);
+                }
+            }
         }
 
-        if (!new File(schematicFolder, "island.schematic").exists()) {
-            if (getResource("schematics/island.schematic") != null) {
-                saveResource("schematics/island.schematic", false);
-            }
+        schems.clear();
+
+        for (Schematics.FakeSchematic fakeSchematic : schematics.schematics) {
+            schems.put(fakeSchematic, Schematic.loadSchematic(new File(schematicFolder, fakeSchematic.name)));
         }
     }
 
@@ -180,6 +187,7 @@ public class IridiumSkyblock extends JavaPlugin {
         upgrades = persist.getFile(Upgrades.class).exists() ? persist.load(Upgrades.class) : new Upgrades();
         boosters = persist.getFile(Boosters.class).exists() ? persist.load(Boosters.class) : new Boosters();
         inventories = persist.getFile(Inventories.class).exists() ? persist.load(Inventories.class) : new Inventories();
+        schematics = persist.getFile(Schematics.class).exists() ? persist.load(Schematics.class) : new Schematics();
 
         for (Island island : islandManager.islands.values()) {
             island.init();
@@ -187,6 +195,11 @@ public class IridiumSkyblock extends JavaPlugin {
         if (getConfiguration().enabledWorlds.contains(getIslandManager().worldName) && getConfiguration().enabledWorldsIsBlacklist) {
             getConfiguration().enabledWorlds.remove(getIslandManager().worldName);
             saveConfigs();
+        }
+        try {
+            loadSchematics();
+        } catch (Exception e) {
+
         }
     }
 
@@ -202,6 +215,7 @@ public class IridiumSkyblock extends JavaPlugin {
         if (upgrades != null) persist.save(upgrades);
         if (boosters != null) persist.save(boosters);
         if (inventories != null) persist.save(inventories);
+        if (schematics != null) persist.save(schematics);
     }
 
     @Override
@@ -261,6 +275,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public static Boosters getBoosters() {
         return boosters;
+    }
+
+    public static Schematics getSchematics() {
+        return schematics;
     }
 
     public static Inventories getInventories() {

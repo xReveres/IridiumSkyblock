@@ -19,6 +19,7 @@ public class Config {
     public String topGUITitle = "&7Top Islands";
     public String borderColorGUITitle = "&7Border Color";
     public String permissionsGUITitle = "&7Permissions";
+    public String schematicselectGUITitle = "&7Select an Island";
     public boolean enabledWorldsIsBlacklist = false;
     public List<String> enabledWorlds = new ArrayList<>();
     public int distance = 200;

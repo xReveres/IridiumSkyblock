@@ -16,7 +16,7 @@ public class TopCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        p.openInventory(IridiumSkyblock.topGUI.inventory);
+        p.openInventory(IridiumSkyblock.topGUI.getInventory());
 
     }
 

@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
@@ -41,8 +42,15 @@ public class IslandManager {
         User.getUser(player).islandID = nextID;
         User.getUser(player).role = Roles.Owner;
 
-        island.generateIsland();
-        island.teleportHome(player);
+        if (IridiumSkyblock.getInstance().schems.size() == 1) {
+            for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                island.setSchematic(schematic.name);
+            }
+            island.generateIsland();
+            island.teleportHome(player);
+        } else {
+            player.openInventory(island.getSchematicSelectGUI().getInventory());
+        }
 
         NMSUtils.sendTitle(player, "&b&lIsland Created", 20, 40, 20);
 
@@ -83,16 +91,6 @@ public class IslandManager {
         wc.generateStructures(false);
         wc.generator(new SkyblockGenerator());
         wc.createWorld();
-    }
-
-    public void pasteSchematic(Location loc) {
-        File schematicFolder = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
-        File schematicFile = new File(schematicFolder, "island.schematic");
-        try {
-            Schematic.loadSchematic(schematicFile).pasteSchematic(loc);
-        } catch (IOException e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
     }
 
     public Island getIslandViaLocation(Location loc) {

@@ -20,7 +20,7 @@ public class UpgradeCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            p.openInventory(user.getIsland().getUpgradeGUI().inventory);
+            p.openInventory(user.getIsland().getUpgradeGUI().getInventory());
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

@@ -20,7 +20,7 @@ public class MembersCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            p.openInventory(user.getIsland().getMembersGUI().inventory);
+            p.openInventory(user.getIsland().getMembersGUI().getInventory());
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
