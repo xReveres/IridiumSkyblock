@@ -12,7 +12,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
     // Identifier for this expansion
     @Override
     public String getIdentifier() {
-        return "epicskyblock";
+        return "iridiumskyblock";
     }
 
     @Override

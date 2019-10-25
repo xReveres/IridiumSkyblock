@@ -96,7 +96,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 }
             }
             //Help Menu
-            cs.sendMessage(Utils.color("&b&lEpicSkyblock: &bHelp"));
+            cs.sendMessage(Utils.color("&b&lIridiumSkyblock: &bHelp"));
             for (com.iridium.iridiumskyblock.commands.Command c : commands) {
                 if (cs.hasPermission(c.getPermission()) || c.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
                     cs.sendMessage(Utils.color("&b&l * &7" + c.getAliases().get(0) + ": &b" + c.getDescription()));

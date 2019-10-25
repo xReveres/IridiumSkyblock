@@ -10,7 +10,7 @@ import java.util.List;
 public class ReloadCommand extends Command {
 
     public ReloadCommand() {
-        super(Arrays.asList("reload"), "Reload your configurations","EpicSkyblock.reload", false);
+        super(Arrays.asList("reload"), "Reload your configurations","reload", false);
     }
 
     @Override

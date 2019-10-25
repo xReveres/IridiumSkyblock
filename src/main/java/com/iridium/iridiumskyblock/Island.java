@@ -317,7 +317,7 @@ public class Island {
                 for (String player : members) {
                     Player p = Bukkit.getPlayer(player);
                     if (p != null) {
-                        if (!p.hasPermission("EpicSkyblock.Fly") && p.getGameMode().equals(GameMode.SURVIVAL)) {
+                        if (!p.hasPermission("IridiumSkyblock.Fly") && p.getGameMode().equals(GameMode.SURVIVAL)) {
                             p.setAllowFlight(false);
                             p.setFlying(false);
                         }

@@ -21,12 +21,12 @@ public class onEntityDamageByEntity implements Listener {
     	if (IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getDamager().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
     		return;
         try {
-            if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two players pvping in EpicSkyblock world
+            if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two players pvping in IridiumSkyblock world
                 if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
                     e.setCancelled(true);
                 }
             }
-            if (e.getEntity() instanceof Player && e.getDamager() instanceof Arrow) { // Deals with A player getting damaged by a bow fired from a player in EpicSkyblock world
+            if (e.getEntity() instanceof Player && e.getDamager() instanceof Arrow) { // Deals with A player getting damaged by a bow fired from a player in IridiumSkyblock world
                 Arrow arrow = (Arrow) e.getDamager();
                 if (arrow.getShooter() instanceof Player) {
                     if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
