@@ -30,48 +30,12 @@ public class UpgradeGUI extends GUI implements Listener {
     public void addContent() {
         Island island = getIsland();
         if (island != null) {
-            for (int i = 0; i < 27; i++) {
-                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-            }
 
-            int currentsize = island.getSizeLevel();
-            String sizecost = IridiumSkyblock.getUpgrades().size.containsKey(currentsize + 1) ? IridiumSkyblock.getUpgrades().size.get(currentsize + 1).getCost() + " Crystals" : "Max Level Reached";
-            List<String> sizeLore = new ArrayList<>(Arrays.asList("&7Need more room to expand? Buy this", "&7upgrade to increase your island size.", "", "&b&lInformation:", "&b&l * &7Current Level: &b" + currentsize, "&b&l * &7Current Size: &b" + IridiumSkyblock.getUpgrades().size.get(currentsize).getSize() + "x" + IridiumSkyblock.getUpgrades().size.get(currentsize).getSize() + " Blocks", "&b&l * &7Upgrade Cost: &b" + sizecost, "", "&b&lLevels:"));
-            for (int level : IridiumSkyblock.getUpgrades().size.keySet()) {
-                sizeLore.add("&b&l * &7Level " + level + ": &b" + IridiumSkyblock.getUpgrades().size.get(level).getSize() + "x" + IridiumSkyblock.getUpgrades().size.get(level).getSize() + " Blocks");
-            }
-            sizeLore.add("");
-            sizeLore.add("&b&l[!] &bLeft Click to Purchase this Upgrade");
-            this.size = Utils.makeItem(Material.GRASS, 1, 0, "&b&lIsland Size", Utils.color(sizeLore));
-
-
-            int currentmember = island.getMemberLevel();
-            String membercost = IridiumSkyblock.getUpgrades().member.containsKey(currentmember + 1) ? IridiumSkyblock.getUpgrades().member.get(currentmember + 1).getCost() + " Crystals" : "Max Level Reached";
-            List<String> memberLore = new ArrayList<>(Arrays.asList("&7Need more members? Buy this", "&7upgrade to increase your member count.", "", "&b&lInformation:", "&b&l * &7Current Level: &b" + currentmember, "&b&l * &7Current Members: &b" + IridiumSkyblock.getUpgrades().member.get(currentmember).getSize() + " Members", "&b&l * &7Upgrade Cost: &b" + membercost, "", "&b&lLevels:"));
-            for (int level : IridiumSkyblock.getUpgrades().member.keySet()) {
-                memberLore.add("&b&l * &7Level " + level + ": &b" + IridiumSkyblock.getUpgrades().member.get(level).getSize() + " Members");
-            }
-            memberLore.add("");
-            memberLore.add("&b&l[!] &bLeft Click to Purchase this Upgrade");
-            this.member = Utils.makeItem(Material.ARMOR_STAND, 1, 0, "&b&lIsland Member Count", Utils.color(memberLore));
-
-
-            int currentwarp = island.getWarpLevel();
-            String warpcost = IridiumSkyblock.getUpgrades().warp.containsKey(currentwarp + 1) ? IridiumSkyblock.getUpgrades().warp.get(currentwarp + 1).getCost() + " Crystals" : "Max Level Reached";
-            List<String> warpLore = new ArrayList<>(Arrays.asList("&7Need more island warps? Buy this", "&7upgrade to increase your warp count.", "", "&b&lInformation:", "&b&l * &7Current Level: &b" + currentwarp, "&b&l * &7Current Warps: &b" + IridiumSkyblock.getUpgrades().warp.get(currentwarp).getSize() + " Warps", "&b&l * &7Upgrade Cost: &b" + warpcost, "", "&b&lLevels:"));
-            for (int level : IridiumSkyblock.getUpgrades().warp.keySet()) {
-                warpLore.add("&b&l * &7Level " + level + ": &b" + IridiumSkyblock.getUpgrades().warp.get(level).getSize() + " Warps");
-            }
-            warpLore.add("");
-            warpLore.add("&b&l[!] &bLeft Click to Purchase this Upgrade");
-            this.warp = Utils.makeItem(Material.ENDER_PORTAL_FRAME, 1, 0, "&b&lIsland Warp", Utils.color(warpLore));
-
-            int currentores = island.getOreLevel();
-            String orescost = IridiumSkyblock.getUpgrades().ores.containsKey(currentwarp + 1) ? IridiumSkyblock.getUpgrades().ores.get(currentwarp + 1).getCost() + " Crystals" : "Max Level Reached";
-            List<String> oresLore = new ArrayList<>(Arrays.asList("&7Want to improve your generator? Buy this", "&7upgrade to increase your island generator.", "", "&b&lInformation:", "&b&l * &7Current Level: &b" + currentores, "&b&l * &7Upgrade Cost: &b" + orescost));
-            oresLore.add("");
-            oresLore.add("&b&l[!] &bLeft Click to Purchase this Upgrade");
-            this.ores = Utils.makeItem(Material.DIAMOND_ORE, 1, 0, "&b&lIsland Generator", Utils.color(oresLore));
+            this.size = Utils.makeItemHidden(IridiumSkyblock.getInventories().size, getIsland());
+            this.member = Utils.makeItemHidden(IridiumSkyblock.getInventories().member, getIsland());
+            this.warp = Utils.makeItemHidden(IridiumSkyblock.getInventories().warp, getIsland());
+            this.ores = Utils.makeItemHidden(IridiumSkyblock.getInventories().ores, getIsland());
+            
             getInventory().setItem(10, size);
             getInventory().setItem(12, member);
             getInventory().setItem(14, warp);
