@@ -48,11 +48,10 @@ public class IslandManager {
             }
             island.generateIsland();
             island.teleportHome(player);
+            NMSUtils.sendTitle(player, "&b&lIsland Created", 20, 40, 20);
         } else {
             player.openInventory(island.getSchematicSelectGUI().getInventory());
         }
-
-        NMSUtils.sendTitle(player, "&b&lIsland Created", 20, 40, 20);
 
         switch (direction) {
             case NORTH:

@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.NMSUtils;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.entity.Player;
@@ -36,6 +37,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
                     getIsland().setSchematic(fakeSchematic.name);
                     getIsland().generateIsland();
                     getIsland().teleportHome((Player) e.getWhoClicked());
+                    NMSUtils.sendTitle((Player) e.getWhoClicked(), "&b&lIsland Created", 20, 40, 20);
                 }
                 i++;
             }
