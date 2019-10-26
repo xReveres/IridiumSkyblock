@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -99,7 +100,33 @@ public class IridiumSkyblock extends JavaPlugin {
             sendErrorMessage(e);
         }
     }
-    // name change
+
+    @Override
+    public void onDisable() {
+        try {
+            super.onDisable();
+
+            saveData();
+
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.closeInventory();
+            }
+
+            getLogger().info("-------------------------------");
+            getLogger().info("");
+            getLogger().info(getDescription().getName() + " Disabled!");
+            getLogger().info("");
+            getLogger().info("-------------------------------");
+        } catch (Exception e) {
+            sendErrorMessage(e);
+        }
+    }
+
+    @Override
+    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+        if (worldName.equals(getIslandManager().worldName)) return new SkyblockGenerator();
+        return super.getDefaultWorldGenerator(worldName, id);
+    }
 
     public void startCounting() {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
@@ -217,28 +244,6 @@ public class IridiumSkyblock extends JavaPlugin {
         if (inventories != null) persist.save(inventories);
         if (schematics != null) persist.save(schematics);
     }
-
-    @Override
-    public void onDisable() {
-        try {
-            super.onDisable();
-
-            saveData();
-
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.closeInventory();
-            }
-
-            getLogger().info("-------------------------------");
-            getLogger().info("");
-            getLogger().info(getDescription().getName() + " Disabled!");
-            getLogger().info("");
-            getLogger().info("-------------------------------");
-        } catch (Exception e) {
-            sendErrorMessage(e);
-        }
-    }
-
 
     public static IridiumSkyblock getInstance() {
         return instance;
