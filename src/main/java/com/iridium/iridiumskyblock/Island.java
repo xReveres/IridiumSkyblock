@@ -226,22 +226,23 @@ public class Island {
 
     public void initBlocks() {
         this.a = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
+            double X = pos1.getX();
             double Y = 0;
+            double Z = pos1.getZ();
 
             @Override
             public void run() {
                 try {
-                    int lpt = IridiumSkyblock.getConfiguration().layersPerTick;
-                    for (int i = 0; i < lpt; i++) {
-                        if (Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight()) {
-                            for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
-                                for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                                    Location loc = new Location(getPos1().getWorld(), X, Y, Z);
-                                    if (Utils.isBlockValuable(loc.getBlock())) {
-                                        blocks.add(loc);
-                                    }
-                                }
-                            }
+                    for (int i = 0; i < IridiumSkyblock.getConfiguration().blocksPerTick; i++) {
+                        if (X < pos2.getX()) {
+                            X++;
+                        } else if (Z < pos2.getZ()) {
+                            X = pos1.getX();
+                            Z++;
+                        } else if (Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight()) {
+                            X = pos1.getX();
+                            Z = pos1.getZ();
+                            Y++;
                         } else {
                             Bukkit.getScheduler().cancelTask(a);
                             a = -1;
@@ -252,7 +253,12 @@ public class Island {
                             }
                             IridiumSkyblock.getInstance().updatingBlocks = false;
                         }
-                        Y++;
+                        if (IridiumSkyblock.getInstance().updatingBlocks) {
+                            Location loc = new Location(getPos1().getWorld(), X, Y, Z);
+                            if (Utils.isBlockValuable(loc.getBlock())) {
+                                blocks.add(loc);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     IridiumSkyblock.getInstance().sendErrorMessage(e);

@@ -23,7 +23,7 @@ public class Config {
     public boolean enabledWorldsIsBlacklist = false;
     public List<String> enabledWorlds = new ArrayList<>();
     public int distance = 200;
-    public int layersPerTick = 5;
+    public int blocksPerTick = 100;
     public Biome defaultBiome = Biome.PLAINS;
     public MissionRestart missionRestart = MissionRestart.Daily;
     public HashMap<Material, Integer> blockvalue = new HashMap<Material, Integer>() {{
