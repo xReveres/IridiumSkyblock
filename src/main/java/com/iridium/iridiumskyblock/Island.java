@@ -180,11 +180,11 @@ public class Island {
     }
 
     public void sendBorder(Player p) {
-        NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize(), getCenter());
+        NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize()-1, getCenter());
     }
 
     public void hideBorder(Player p) {
-        NMSUtils.sendWorldBorder(p, borderColor, Integer.MAX_VALUE, getCenter());
+        NMSUtils.sendWorldBorder(p, borderColor, Integer.MAX_VALUE, getCenter().clone());
     }
 
     public void completeMission(String Mission, int Reward) {
@@ -308,7 +308,7 @@ public class Island {
     }
 
     public boolean isInIsland(Location location) {
-        return (location.getX() > getPos1().getX() && location.getX() <= getPos2().getX()) && (location.getZ() > getPos1().getZ() && location.getZ() <= getPos2().getZ());
+        return (location.getX() > getPos1().getX() && location.getX() < getPos2().getX()) && (location.getZ() > getPos1().getZ() && location.getZ() < getPos2().getZ());
     }
 
     public void init() {

@@ -11,15 +11,13 @@ public class NMSUtils {
 
     public static void sendWorldBorder(Player player, Color color, double size, Location centerLocation) {
         try {
-            if (size % 2 == 1) size++;
-
             Object worldBorder = getNMSClass("WorldBorder").getConstructor().newInstance();
 
 
             Object craftWorld = getCraftClass("CraftWorld").cast(centerLocation.getWorld());
             setField(worldBorder, "world", craftWorld.getClass().getMethod("getHandle").invoke(craftWorld), false);
 
-            worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX(), centerLocation.getBlockZ());
+            worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
 
             if (color == Color.Off) {
                 worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, Integer.MAX_VALUE);
@@ -28,6 +26,7 @@ public class NMSUtils {
             }
 
             worldBorder.getClass().getMethod("setWarningTime", int.class).invoke(worldBorder, 0);
+            worldBorder.getClass().getMethod("setWarningDistance", int.class).invoke(worldBorder, 0);
 
             switch (color) {
                 case Red:
