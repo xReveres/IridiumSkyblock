@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.configs.Schematics;
@@ -208,7 +209,13 @@ public class Island {
             } else if (loc.getBlock().getState() instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner) b.getState();
                 if (IridiumSkyblock.getConfiguration().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
-                    v += IridiumSkyblock.getConfiguration().spawnervalue.get(spawner.getSpawnedType().name());
+                    int temp = IridiumSkyblock.getConfiguration().spawnervalue.get(spawner.getSpawnedType().name());
+
+                    if (IridiumSkyblock.Wildstacker) {
+                        temp *= WildStackerAPI.getSpawnersAmount((CreatureSpawner) loc.getBlock().getState());
+                    }
+
+                    v += temp;
                 } else {
                     remove.add(loc);
                 }

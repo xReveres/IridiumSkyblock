@@ -48,6 +48,9 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public boolean updatingBlocks = false;
 
+
+    public static boolean Wildstacker = false;
+
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
 
     @Override
@@ -57,6 +60,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
             super.onEnable();
             getDataFolder().mkdir();
+
+            Wildstacker = Bukkit.getPluginManager().isPluginEnabled("WildStacker");
 
             persist = new Persist();
 
