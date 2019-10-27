@@ -44,6 +44,11 @@
       <id>placeholderapi</id>
       <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
+    <repository>
+      <id>mvdw-software</id>
+      <name>MVdW Public Repositories</name>
+      <url>http://repo.mvdw-software.be/content/groups/public/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -53,16 +58,12 @@
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <artifactId>bungeecord-chat</artifactId>
-          <groupId>net.md-5</groupId>
+          <artifactId>commons-lang</artifactId>
+          <groupId>commons-lang</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>persistence-api</artifactId>
-          <groupId>javax.persistence</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>junit</artifactId>
-          <groupId>junit</groupId>
+          <artifactId>json-simple</artifactId>
+          <groupId>com.googlecode.json-simple</groupId>
         </exclusion>
         <exclusion>
           <artifactId>guava</artifactId>
@@ -73,16 +74,12 @@
           <groupId>com.google.code.gson</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>commons-lang</artifactId>
-          <groupId>commons-lang</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>json-simple</artifactId>
-          <groupId>com.googlecode.json-simple</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>snakeyaml</artifactId>
           <groupId>org.yaml</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>bungeecord-chat</artifactId>
+          <groupId>net.md-5</groupId>
         </exclusion>
       </exclusions>
     </dependency>
