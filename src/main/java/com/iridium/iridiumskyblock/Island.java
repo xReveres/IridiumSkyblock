@@ -180,7 +180,7 @@ public class Island {
     }
 
     public void sendBorder(Player p) {
-        NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize()-1, getCenter());
+        NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() - 1, getCenter());
     }
 
     public void hideBorder(Player p) {
@@ -200,21 +200,24 @@ public class Island {
 
     public void calculateIslandValue() {
         int v = 0;
+        List<Location> remove = new ArrayList<>();
         for (Location loc : blocks) {
             Block b = loc.getBlock();
             if (IridiumSkyblock.getConfiguration().blockvalue.containsKey(b.getType())) {
                 v += IridiumSkyblock.getConfiguration().blockvalue.get(b.getType());
-            }else if (loc.getBlock().getState() instanceof CreatureSpawner) {
+            } else if (loc.getBlock().getState() instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner) b.getState();
                 if (IridiumSkyblock.getConfiguration().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
                     v += IridiumSkyblock.getConfiguration().spawnervalue.get(spawner.getSpawnedType().name());
-                }else{
-                    blocks.remove(loc);
+                } else {
+                    remove.add(loc);
                 }
-            }else{
-                blocks.remove(loc);
+            } else {
+                remove.add(loc);
             }
         }
+        blocks.removeAll(remove);
+
         this.value = v;
         if (startvalue == -1) startvalue = v;
 
