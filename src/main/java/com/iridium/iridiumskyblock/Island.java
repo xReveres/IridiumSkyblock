@@ -204,12 +204,15 @@ public class Island {
             Block b = loc.getBlock();
             if (IridiumSkyblock.getConfiguration().blockvalue.containsKey(b.getType())) {
                 v += IridiumSkyblock.getConfiguration().blockvalue.get(b.getType());
-            }
-            if (loc.getBlock().getState() instanceof CreatureSpawner) {
+            }else if (loc.getBlock().getState() instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner) b.getState();
                 if (IridiumSkyblock.getConfiguration().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
                     v += IridiumSkyblock.getConfiguration().spawnervalue.get(spawner.getSpawnedType().name());
+                }else{
+                    blocks.remove(loc);
                 }
+            }else{
+                blocks.remove(loc);
             }
         }
         this.value = v;
@@ -246,11 +249,6 @@ public class Island {
                         } else {
                             Bukkit.getScheduler().cancelTask(a);
                             a = -1;
-                            for (Location location : blocks) {
-                                if (!Utils.isBlockValuable(location.getBlock())) {
-                                    blocks.remove(location);
-                                }
-                            }
                             IridiumSkyblock.getInstance().updatingBlocks = false;
                         }
                         if (IridiumSkyblock.getInstance().updatingBlocks) {
