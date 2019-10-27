@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 public class IridiumSkyblock extends JavaPlugin {
 
@@ -156,7 +157,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public void islandValueManager() {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            Iterator<Map.Entry<Integer, Island>> islands = islandManager.islands.entrySet().iterator();
+            Iterator<ConcurrentMap.Entry<Integer, Island>> islands = islandManager.islands.entrySet().iterator();
 
             @Override
             public void run() {
