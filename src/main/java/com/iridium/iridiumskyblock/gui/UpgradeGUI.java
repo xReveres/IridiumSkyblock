@@ -28,6 +28,7 @@ public class UpgradeGUI extends GUI implements Listener {
 
     @Override
     public void addContent() {
+        super.addContent();
         Island island = getIsland();
         if (island != null) {
 
