@@ -22,7 +22,7 @@ public class onClick implements Listener {
                 if (island != null) {
                     if (e.getClickedBlock() != null) {
                         if (e.getClickedBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-                            if ((e.getClickedBlock().getX() > island.getPos1().getX() && e.getClickedBlock().getX() <= island.getPos2().getX()) && (e.getClickedBlock().getZ() > island.getPos1().getZ() && e.getClickedBlock().getZ() <= island.getPos2().getZ())) {
+                            if (island.isInIsland(e.getClickedBlock().getLocation())) {
                                 // Block is in players island
                                 if (!u.bypassing && !u.getIsland().getPermissions(u.role).interact) {
                                     e.setCancelled(true);

@@ -76,6 +76,7 @@ public class Island {
     private int oreLevel;
 
     private int a;
+    private int b;
 
     private int value;
 
@@ -138,6 +139,7 @@ public class Island {
         fisherman = 0;
         builder = 0;
         startvalue = -1;
+        b = -1;
         borderColor = NMSUtils.Color.Blue;
         visit = true;
         permissions = new HashMap<Roles, Permissions>() {{
@@ -183,7 +185,7 @@ public class Island {
     }
 
     public void sendBorder(Player p) {
-        NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() - 1, getCenter());
+        NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() + 1, getCenter());
     }
 
     public void hideBorder(Player p) {
@@ -318,7 +320,7 @@ public class Island {
     }
 
     public boolean isInIsland(Location location) {
-        return (location.getX() > getPos1().getX() && location.getX() < getPos2().getX()) && (location.getZ() > getPos1().getZ() && location.getZ() < getPos2().getZ());
+        return (location.getX() >= getPos1().getX() && location.getX() <= getPos2().getX()) && (location.getZ() >= getPos1().getZ() && location.getZ() <= getPos2().getZ());
     }
 
     public void init() {
@@ -348,7 +350,7 @@ public class Island {
                 }
             }};
         }
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), this::calculateIslandValue, 0, 20);
+        b = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), this::calculateIslandValue, 0, 20);
     }
 
     public void initChunks() {
@@ -419,6 +421,7 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getWarpGUI().scheduler);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
+        if (b != -1) Bukkit.getScheduler().cancelTask(b);
         deleteBlocks();
         killEntities();
         for (String player : members) {
