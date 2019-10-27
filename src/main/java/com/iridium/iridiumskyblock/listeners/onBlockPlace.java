@@ -30,8 +30,7 @@ public class onBlockPlace implements Listener {
                             e.setCancelled(true);
                         }
                         if (Utils.isBlockValuable(e.getBlock())) {
-                            if (!island.blocks.contains(e.getBlock().getLocation()))
-                                island.blocks.add(e.getBlock().getLocation());
+                            island.blocks.add(e.getBlock().getLocation());
                         }
                         // Block is in players island
                     } else {
