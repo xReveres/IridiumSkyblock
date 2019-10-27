@@ -1,6 +1,8 @@
 package com.iridium.iridiumskyblock;
 
 import com.bgsoftware.wildstacker.api.WildStackerAPI;
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.configs.Schematics;
@@ -408,6 +410,7 @@ public class Island {
 
     public void delete() {
         Bukkit.getPluginManager().callEvent(new IslandDeleteEvent(this));
+        spawnPlayers();
 
         Bukkit.getScheduler().cancelTask(getMembersGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBoosterGUI().scheduler);
@@ -435,6 +438,24 @@ public class Island {
         IridiumSkyblock.getInstance().saveConfigs();
         Bukkit.getScheduler().cancelTask(boosterid);
         boosterid = -1;
+    }
+
+
+    public void spawnPlayers() {
+        for (Chunk c : chunks) {
+            for (Entity e : c.getEntities()) {
+                if (e instanceof Player) {
+                    Player player = (Player) e;
+                    if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
+                        EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
+                        Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+                        player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
+                    } else {
+                        player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+                    }
+                }
+            }
+        }
     }
 
     public void deleteBlocks() {
