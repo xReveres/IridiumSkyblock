@@ -57,11 +57,12 @@ public class onBlockFromTo implements Listener {
 
     public boolean isSurroundedByWater(Location fromLoc) {
         // Sets gives better performance than arrays when used wisely
-        Set<Block> blocksSet = new HashSet<>(Arrays.asList(fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() + 1, fromLoc.getBlockY(), fromLoc.getBlockZ()),
+        Set<Block> blocksSet = new HashSet<>(Arrays.asList(
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() + 1, fromLoc.getBlockY(), fromLoc.getBlockZ()),
                 fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() - 1, fromLoc.getBlockY(), fromLoc.getBlockZ()),
                 fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY(), fromLoc.getBlockZ() + 1),
-                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY(), fromLoc.getBlockZ() - 1)));
-
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY(), fromLoc.getBlockZ() - 1)
+        ));
         for (Block b : blocksSet) {
             if (b.getType().toString().contains("WATER")) return true;
             continue;
