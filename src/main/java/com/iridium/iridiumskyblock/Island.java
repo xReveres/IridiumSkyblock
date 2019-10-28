@@ -390,6 +390,13 @@ public class Island {
     }
 
     public void teleportHome(Player p) {
+        if (getSchematic() == null) {
+            User u = User.getUser(p);
+            if (u.getIsland().equals(this)) {
+                p.openInventory(getSchematicSelectGUI().getInventory());
+            }
+            return;
+        }
         p.setFallDistance(0);
         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         if (Utils.isSafe(getHome(), this)) {
