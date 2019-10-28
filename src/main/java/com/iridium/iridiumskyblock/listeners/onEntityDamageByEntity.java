@@ -22,20 +22,20 @@ public class onEntityDamageByEntity implements Listener {
     		return;
         try {
             if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two players pvping in IridiumSkyblock world
-                if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                     e.setCancelled(true);
                 }
             }
             if (e.getEntity() instanceof Player && e.getDamager() instanceof Arrow) { // Deals with A player getting damaged by a bow fired from a player in IridiumSkyblock world
                 Arrow arrow = (Arrow) e.getDamager();
                 if (arrow.getShooter() instanceof Player) {
-                    if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                    if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                         e.setCancelled(true);
                     }
                 }
             }
             if (e.getDamager() instanceof Player && !(e.getEntity() instanceof Player)) { // Deals with a player attacking animals that are not from their island
-                if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                     User user = User.getUser((Player) e.getDamager());
                     if (user.getIsland() != null) {
                         if (!user.getIsland().isInIsland(e.getEntity().getLocation())) {
@@ -47,7 +47,7 @@ public class onEntityDamageByEntity implements Listener {
                 }
             }
             if (e.getEntity() instanceof Player && !(e.getDamager() instanceof Player)) { //Deals with a mob attacking a player that doesnt belong to the island (/is home traps?)
-                if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
                     User user = User.getUser((Player) e.getEntity());
                     if (user.getIsland() != null) {
                         if (!user.getIsland().isInIsland(e.getDamager().getLocation())) {

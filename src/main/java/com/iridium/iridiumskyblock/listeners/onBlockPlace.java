@@ -9,13 +9,13 @@ public class onBlockPlace implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
-    		return;
-    	if (IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
-    		return;
+        if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
+            return;
+        if (IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getBlock().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
+            return;
         try {
             User u = User.getUser(e.getPlayer());
-            if (e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+            if (e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                 Island island = u.getIsland();
                 if (island != null) {
                     if (island.builder > -1) {
@@ -34,12 +34,12 @@ public class onBlockPlace implements Listener {
                         }
                         // Block is in players island
                     } else {
-                        if(!u.bypassing){
+                        if (!u.bypassing) {
                             e.setCancelled(true);
                         }
                     }
                 } else {
-                    if(!u.bypassing){
+                    if (!u.bypassing) {
                         e.setCancelled(true);
                     }
                 }

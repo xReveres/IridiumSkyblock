@@ -13,7 +13,7 @@ public class onEntityExplode implements Listener {
     	if (IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
     		return;
         try {
-            if (e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+            if (e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                 e.setCancelled(true);
             }
         } catch (Exception ex) {

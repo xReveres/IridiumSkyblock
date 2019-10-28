@@ -29,6 +29,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private static IridiumSkyblock instance;
 
     public HashMap<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
+    public HashMap<Schematics.FakeSchematic, Schematic> netherschems = new HashMap<>();
 
     public static Config configuration;
     public static Messages messages;
@@ -87,7 +88,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             topGUI = new TopGUI();
 
-            registerListeners(topGUI, new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+            registerListeners(new onPlayerPortal(), topGUI, new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
             new Metrics(this);
 
@@ -130,7 +131,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-        if (worldName.equals(getIslandManager().worldName)) return new SkyblockGenerator();
+        if (worldName.equals(getIslandManager().worldName) || worldName.equals(getIslandManager().netherName))
+            return new SkyblockGenerator();
         return super.getDefaultWorldGenerator(worldName, id);
     }
 
@@ -203,12 +205,21 @@ public class IridiumSkyblock extends JavaPlugin {
                     saveResource("schematics/island.schematic", false);
                 }
             }
+            if (!new File(schematicFolder, "nether.schematic").exists()) {
+                if (getResource("schematics/nether.schematic") != null) {
+                    saveResource("schematics/nether.schematic", false);
+                }
+            }
         }
 
         schems.clear();
 
         for (Schematics.FakeSchematic fakeSchematic : schematics.schematics) {
             schems.put(fakeSchematic, Schematic.loadSchematic(new File(schematicFolder, fakeSchematic.name)));
+            if (fakeSchematic.netherisland == null) {
+                fakeSchematic.netherisland = fakeSchematic.name;
+            }
+            netherschems.put(fakeSchematic, Schematic.loadSchematic(new File(schematicFolder, fakeSchematic.netherisland)));
         }
     }
 

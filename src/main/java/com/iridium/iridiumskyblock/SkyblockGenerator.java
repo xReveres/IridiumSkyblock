@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -15,7 +16,11 @@ class SkyblockGenerator extends ChunkGenerator {
         ChunkData chunkData = createChunkData(world);
         for (int x = 0; x <= 15; x++) {
             for (int z = 0; z <= 15; z++) {
-                biome.setBiome(x, z, IridiumSkyblock.getConfiguration().defaultBiome);
+                if (world.getName().equals("IridiumSkyblock_nether")) {
+                    biome.setBiome(x, z, IridiumSkyblock.getConfiguration().netherBiome);
+                } else {
+                    biome.setBiome(x, z, IridiumSkyblock.getConfiguration().defaultBiome);
+                }
             }
         }
 

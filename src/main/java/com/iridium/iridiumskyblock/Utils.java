@@ -121,14 +121,14 @@ public class Utils {
 
     public static Location getNewHome(Island island, Location loc) {
         Block b;
-        b = IridiumSkyblock.getIslandManager().getWorld().getHighestBlockAt(loc);
+        b = loc.getWorld().getHighestBlockAt(loc);
         if (isSafe(b.getLocation(), island)) {
             return b.getLocation().add(0.5, 1, 0.5);
         }
 
         for (double X = island.getPos1().getX(); X <= island.getPos2().getX(); X++) {
             for (double Z = island.getPos1().getZ(); Z <= island.getPos2().getZ(); Z++) {
-                b = IridiumSkyblock.getIslandManager().getWorld().getHighestBlockAt((int) X, (int) Z);
+                b = loc.getWorld().getHighestBlockAt((int) X, (int) Z);
                 if (isSafe(b.getLocation(), island)) {
                     return b.getLocation().add(0.5, 1, 0.5);
                 }

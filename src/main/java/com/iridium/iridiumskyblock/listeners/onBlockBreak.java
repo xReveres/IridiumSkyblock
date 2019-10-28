@@ -20,7 +20,7 @@ public class onBlockBreak implements Listener {
         try {
             if (e.isCancelled()) return;
             User u = User.getUser(e.getPlayer());
-            if (e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+            if (e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                 Island island = u.getIsland();
                 if (island != null) {
                     if (e.getBlock().getType().name().endsWith("ORE")) {

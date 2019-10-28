@@ -10,6 +10,14 @@ import java.util.List;
 
 public class Config {
 
+    public Config(){
+        try{
+            netherBiome = Biome.HELL;
+        }catch (NoSuchFieldError e){
+            netherBiome= Biome.valueOf("NETHER");
+        }
+    }
+
     public String prefix = "&b&lIridiumSkyblock";
     public String upgradeGUITitle = "&7Upgrade";
     public String boosterGUITitle = "&7Booster";
@@ -25,6 +33,7 @@ public class Config {
     public int distance = 200;
     public int blocksPerTick = 100;
     public Biome defaultBiome = Biome.PLAINS;
+    public Biome netherBiome;
     public MissionRestart missionRestart = MissionRestart.Daily;
     public HashMap<Material, Integer> blockvalue = new HashMap<Material, Integer>() {{
         put(Material.DIAMOND_BLOCK, 10);
