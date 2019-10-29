@@ -21,7 +21,7 @@ public class MembersGUI extends GUI implements Listener {
     public HashMap<Integer, User> users = new HashMap<>();
 
     public MembersGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getConfiguration().membersGUITitle);
+        super(island, 27, IridiumSkyblock.getInventories().membersGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

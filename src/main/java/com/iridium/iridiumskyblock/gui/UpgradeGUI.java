@@ -22,7 +22,7 @@ public class UpgradeGUI extends GUI implements Listener {
     public ItemStack ores;
 
     public UpgradeGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getConfiguration().upgradeGUITitle);
+        super(island, 27, IridiumSkyblock.getInventories().upgradeGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

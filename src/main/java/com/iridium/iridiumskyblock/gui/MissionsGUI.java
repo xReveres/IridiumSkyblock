@@ -22,7 +22,7 @@ public class MissionsGUI extends GUI implements Listener {
     public ItemStack builder;
 
     public MissionsGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getConfiguration().missionsGUITitle);
+        super(island, 27, IridiumSkyblock.getInventories().missionsGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

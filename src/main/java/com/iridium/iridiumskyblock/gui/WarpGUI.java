@@ -20,7 +20,7 @@ public class WarpGUI extends GUI implements Listener {
     public HashMap<Integer, Island.Warp> warps = new HashMap<>();
 
     public WarpGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getConfiguration().warpGUITitle);
+        super(island, 27, IridiumSkyblock.getInventories().warpGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class SchematicSelectGUI extends GUI implements Listener {
 
     public SchematicSelectGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getConfiguration().schematicselectGUITitle);
+        super(island, 27, IridiumSkyblock.getInventories().schematicselectGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

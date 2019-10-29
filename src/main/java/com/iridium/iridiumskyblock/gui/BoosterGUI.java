@@ -19,7 +19,7 @@ public class BoosterGUI extends GUI implements Listener {
     public ItemStack flight;
 
     public BoosterGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getConfiguration().boosterGUITitle);
+        super(island, 27, IridiumSkyblock.getInventories().boosterGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
