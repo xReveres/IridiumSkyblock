@@ -29,9 +29,7 @@ public class TopGUI extends GUI implements Listener {
 
     @Override
     public void addContent() {
-        for (int i = 0; i < 27; i++) {
-            getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-        }
+        super.addContent();
         List<Island> top = Utils.getTopIslands();
         for (int i = 1; i <= 10; i++) {
             if (top.size() >= i) {
@@ -48,7 +46,7 @@ public class TopGUI extends GUI implements Listener {
                 m.setOwner(owner.name);
                 head.setItemMeta(m);
                 islands.put(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), island.getId());
-                getInventory().setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), head);
+                setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), head);
             }
         }
     }

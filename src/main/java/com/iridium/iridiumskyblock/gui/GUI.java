@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public abstract class GUI {
 
@@ -27,7 +28,15 @@ public abstract class GUI {
 
     public void addContent() {
         for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+            if(inventory.getItem(i)==null || inventory.getItem(i).getType().equals(Material.AIR)){
+                setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+            }
+        }
+    }
+
+    public void setItem(int i, ItemStack itemStack) {
+        if (getInventory().getItem(i)==null || !getInventory().getItem(i).isSimilar(itemStack)) {
+            getInventory().setItem(i, itemStack);
         }
     }
 

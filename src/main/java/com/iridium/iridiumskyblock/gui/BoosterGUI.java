@@ -25,23 +25,21 @@ public class BoosterGUI extends GUI implements Listener {
 
     @Override
     public void addContent() {
+        super.addContent();
         if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
             Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
-            for (int i = 0; i < 27; i++) {
-                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-            }
             this.spawner = Utils.makeItem(IridiumSkyblock.getInventories().spawner, island);
             this.farming = Utils.makeItem(IridiumSkyblock.getInventories().farming, island);
             this.exp = Utils.makeItem(IridiumSkyblock.getInventories().exp, island);
             this.flight = Utils.makeItem(IridiumSkyblock.getInventories().flight, island);
             if (IridiumSkyblock.getBoosters().spawnerBooster.isEnabled())
-                getInventory().setItem(IridiumSkyblock.getBoosters().spawnerBooster.getSlot(), spawner);
+                setItem(IridiumSkyblock.getBoosters().spawnerBooster.getSlot(), spawner);
             if (IridiumSkyblock.getBoosters().farmingBooster.isEnabled())
-                getInventory().setItem(IridiumSkyblock.getBoosters().farmingBooster.getSlot(), farming);
+                setItem(IridiumSkyblock.getBoosters().farmingBooster.getSlot(), farming);
             if (IridiumSkyblock.getBoosters().experianceBooster.isEnabled())
-                getInventory().setItem(IridiumSkyblock.getBoosters().experianceBooster.getSlot(), exp);
+                setItem(IridiumSkyblock.getBoosters().experianceBooster.getSlot(), exp);
             if (IridiumSkyblock.getBoosters().flightBooster.isEnabled())
-                getInventory().setItem(IridiumSkyblock.getBoosters().flightBooster.getSlot(), flight);
+                setItem(IridiumSkyblock.getBoosters().flightBooster.getSlot(), flight);
         }
     }
 

@@ -22,7 +22,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
         super.addContent();
         int i = 0;
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
-            getInventory().setItem(i, Utils.makeItem(fakeSchematic.item, 1, 0, fakeSchematic.displayname, fakeSchematic.lore));
+            setItem(i, Utils.makeItem(fakeSchematic.item, 1, 0, fakeSchematic.displayname, fakeSchematic.lore));
             i++;
         }
     }

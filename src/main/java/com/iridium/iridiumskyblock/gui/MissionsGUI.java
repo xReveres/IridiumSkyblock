@@ -31,9 +31,6 @@ public class MissionsGUI extends GUI implements Listener {
         super.addContent();
         if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
             Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
-            for (int i = 0; i < 27; i++) {
-                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-            }
             this.treasureHunter = Utils.makeItemHidden(IridiumSkyblock.getInventories().treasureHunter, island);
             this.competitor = Utils.makeItemHidden(IridiumSkyblock.getInventories().competitor, island);
             this.miner = Utils.makeItemHidden(IridiumSkyblock.getInventories().miner, island);
@@ -42,13 +39,13 @@ public class MissionsGUI extends GUI implements Listener {
             this.fisherman = Utils.makeItemHidden(IridiumSkyblock.getInventories().fisherman, island);
             this.builder = Utils.makeItemHidden(IridiumSkyblock.getInventories().builder, island);
 
-            getInventory().setItem(10, this.treasureHunter);
-            getInventory().setItem(11, this.competitor);
-            getInventory().setItem(12, this.miner);
-            getInventory().setItem(13, this.farmer);
-            getInventory().setItem(14, this.hunter);
-            getInventory().setItem(15, this.fisherman);
-            getInventory().setItem(16, this.builder);
+            setItem(10, this.treasureHunter);
+            setItem(11, this.competitor);
+            setItem(12, this.miner);
+            setItem(13, this.farmer);
+            setItem(14, this.hunter);
+            setItem(15, this.fisherman);
+            setItem(16, this.builder);
         }
     }
 

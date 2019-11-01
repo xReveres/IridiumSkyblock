@@ -37,10 +37,10 @@ public class UpgradeGUI extends GUI implements Listener {
             this.warp = Utils.makeItemHidden(IridiumSkyblock.getInventories().warp, getIsland());
             this.ores = Utils.makeItemHidden(IridiumSkyblock.getInventories().ores, getIsland());
             
-            getInventory().setItem(10, size);
-            getInventory().setItem(12, member);
-            getInventory().setItem(14, warp);
-            getInventory().setItem(16, ores);
+            setItem(10, size);
+            setItem(12, member);
+            setItem(14, warp);
+            setItem(16, ores);
         }
     }
 

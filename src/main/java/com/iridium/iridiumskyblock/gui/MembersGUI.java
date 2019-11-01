@@ -40,7 +40,7 @@ public class MembersGUI extends GUI implements Listener {
                 m.setLore(Utils.color(Arrays.asList("&bRole: " + u.role, "", "&b&l[!] &bLeft Click to " + (u.role.equals(Roles.Visitor) ? "Kick" : "Demote") + " this Player.", "&b&l[!] &bRight Click to Promote this Player.")));
                 m.setOwner(u.name);
                 head.setItemMeta(m);
-                getInventory().setItem(i, head);
+                setItem(i, head);
                 i++;
             }
         }

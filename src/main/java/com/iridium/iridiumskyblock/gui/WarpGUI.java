@@ -26,16 +26,14 @@ public class WarpGUI extends GUI implements Listener {
 
     @Override
     public void addContent() {
+        super.addContent();
         if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
             Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
-            for (int i = 0; i < 27; i++) {
-                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-            }
             int i = 9;
             warps.clear();
             for (Island.Warp warp : island.getWarps()) {
                 warps.put(i, warp);
-                getInventory().setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName()), Utils.color(Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."))));
+                setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName()), Utils.color(Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."))));
                 i++;
             }
         }
