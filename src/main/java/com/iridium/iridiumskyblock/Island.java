@@ -418,7 +418,13 @@ public class Island {
         if (getSchematic() == null) {
             User u = User.getUser(p);
             if (u.getIsland().equals(this)) {
-                p.openInventory(getSchematicSelectGUI().getInventory());
+                if (IridiumSkyblock.getInstance().schems.size() == 1) {
+                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                        setSchematic(schematic.name);
+                    }
+                }else {
+                    p.openInventory(getSchematicSelectGUI().getInventory());
+                }
             }
             return;
         }
@@ -446,7 +452,13 @@ public class Island {
         if (getSchematic() == null) {
             User u = User.getUser(p);
             if (u.getIsland().equals(this)) {
-                p.openInventory(getSchematicSelectGUI().getInventory());
+                if (IridiumSkyblock.getInstance().schems.size() == 1) {
+                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                        setSchematic(schematic.name);
+                    }
+                }else {
+                    p.openInventory(getSchematicSelectGUI().getInventory());
+                }
             }
             return;
         }
