@@ -13,20 +13,6 @@ public enum MissionRestart {
         return i;
     }
 
-    public MissionRestart getNext(){
-        if(getViaRank(i+1) != null){
-            return getViaRank(i+1);
-        }
-        return getViaRank(0);
-    }
-
-    public MissionRestart getPrevious(){
-        if(getViaRank(i-1) != null){
-            return getViaRank(i-1);
-        }
-        return getHighestRank();
-    }
-
     public MissionRestart getViaRank(int i) {
         for (MissionRestart mr : values()) {
             if (mr.getI() == i) return mr;

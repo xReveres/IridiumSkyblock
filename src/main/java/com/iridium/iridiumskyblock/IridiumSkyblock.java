@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 public class IridiumSkyblock extends JavaPlugin {
@@ -38,7 +37,6 @@ public class IridiumSkyblock extends JavaPlugin {
     public static Boosters boosters;
     public static Inventories inventories;
     public static Schematics schematics;
-
 
     private static Persist persist;
 

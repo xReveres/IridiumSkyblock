@@ -43,11 +43,11 @@ public class Inventories {
 
     public static class Item {
 
-        private Material material;
-        private int amount;
-        private int type;
-        private String title;
-        private List<String> lore;
+        public Material material;
+        public int amount;
+        public int type;
+        public String title;
+        public List<String> lore;
 
         public Item(Material material, int amount, int type, String title, List<String> lore) {
             this.material = material;
@@ -55,26 +55,6 @@ public class Inventories {
             this.type = type;
             this.lore = lore;
             this.title = title;
-        }
-
-        public Material getMaterial() {
-            return material;
-        }
-
-        public int getAmount() {
-            return amount;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public List<String> getLore() {
-            return lore;
-        }
-
-        public String getTitle() {
-            return title;
         }
     }
 }

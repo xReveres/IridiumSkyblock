@@ -11,41 +11,86 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
 
-    public static Biome getNextBiome(Biome biome) {
-        boolean next = false;
-        for (Biome b : Biome.values()) {
-            if (next) {
-                return b;
-            }
-            if (b.equals(biome)) {
-                next = true;
-            }
-        }
-        return Biome.values()[0];
-    }
-
-    public static Biome getPreviousBiome(Biome biome) {
-        int id = -1;
-        for (int i = 0; i < Biome.values().length; i++) {
-            if (Biome.values()[i].equals(biome)) {
-                if (i != 0) {
-                    return Biome.values()[i - 1];
+    public static Object getObject(List<String> fields) {
+        Object object = IridiumSkyblock.getInstance();
+        for (String field : fields) {
+            try {
+                if (object instanceof List) {
+                    List<Object> objects = (List<Object>) object;
+                    if (objects.size() > Integer.parseInt(field)) {
+                        object = objects.get(Integer.parseInt(field));
+                    } else {
+                        return object;
+                    }
+                } else if (object instanceof HashSet) {
+                    HashSet<Object> objects = (HashSet<Object>) object;
+                    int i = 0;
+                    for (Object o : objects) {
+                        if ((i == Integer.parseInt(field))) {
+                            object = o;
+                        }
+                        i++;
+                    }
+                } else {
+                    object = object.getClass().getField(field).get(object);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        return Biome.values()[Biome.values().length - 1];
+        return object;
     }
 
-    public static String unColour(String string) {
-        return string.replace(ChatColor.AQUA + "", "&b");
+    public static Field getField(List<String> fields) {
+        Object object = IridiumSkyblock.getInstance();
+        Field f = null;
+        for (String field : fields) {
+            try {
+                if (object instanceof List) {
+                    List<Object> objects = (List<Object>) object;
+                    if (objects.size() > Integer.parseInt(field)) {
+                        f = object.getClass().getField(field);
+                        f.setAccessible(true);
+                        object = objects.get(Integer.parseInt(field));
+                    } else {
+                        return f;
+                    }
+                } else if (object instanceof HashSet) {
+                    HashSet<Object> objects = (HashSet<Object>) object;
+                    int i = 0;
+                    for (Object o : objects) {
+                        if ((i == Integer.parseInt(field))) {
+                            f = object.getClass().getField(field);
+                            f.setAccessible(true);
+                            object = o;
+                        }
+                        i++;
+                    }
+                } else {
+                    f = object.getClass().getField(field);
+                    f.setAccessible(true);
+                    object = object.getClass().getField(field).get(object);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return f;
+    }
+
+    public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Object object) {
+        ItemStack item = new ItemStack(material, amount, (short) type);
+        ItemMeta m = item.getItemMeta();
+        m.setLore(lore);
+        m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        item.setItemMeta(m);
+        return item;
     }
 
     public static ItemStack makeItem(Material material, int amount, int type, String name) {
@@ -66,11 +111,11 @@ public class Utils {
     }
 
     public static ItemStack makeItem(Inventories.Item item, Island island) {
-        return makeItem(item.getMaterial(), item.getAmount(), item.getType(), processIslandPlaceholders(item.getTitle(), island), color(processIslandPlaceholders(item.getLore(), island)));
+        return makeItem(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
     }
 
     public static ItemStack makeItemHidden(Inventories.Item item, Island island) {
-        return makeItemHidden(item.getMaterial(), item.getAmount(), item.getType(), processIslandPlaceholders(item.getTitle(), island), color(processIslandPlaceholders(item.getLore(), island)));
+        return makeItemHidden(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
     }
 
     public static ItemStack makeItemHidden(Material material, int amount, int type, String name, List<String> lore) {
