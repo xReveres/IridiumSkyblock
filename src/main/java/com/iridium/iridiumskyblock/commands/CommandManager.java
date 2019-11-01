@@ -117,7 +117,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 ArrayList<String> result = new ArrayList<>();
                 for (com.iridium.iridiumskyblock.commands.Command command : commands) {
                     for (String alias : command.getAliases()) {
-                        if (alias.toLowerCase().startsWith(args[0].toLowerCase())) {
+                        if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))) {
                             result.add(alias);
                         }
                     }
@@ -125,7 +125,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 return result;
             }
             for (com.iridium.iridiumskyblock.commands.Command command : commands) {
-                if (command.getAliases().contains(args[0])) {
+                if (command.getAliases().contains(args[0]) && (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))) {
                     return command.TabComplete(cs, cmd, s, args);
                 }
             }
