@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.gui.TopGUI;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
+import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.serializer.Persist;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -50,8 +51,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
 
     public static boolean Wildstacker = false;
-
-    private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
 
     @Override
     public void onEnable() {
@@ -186,11 +185,15 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private void setupPlaceholderAPI() {
         Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
         if (clip != null && clip.isEnabled()) {
-            this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
-            if (this.clipPlaceholderAPIManager.register()) {
+            if (new ClipPlaceholderAPIManager().register()) {
                 getLogger().info("Successfully registered placeholders with PlaceholderAPI.");
             }
+        }
+        if (mvdw != null && mvdw.isEnabled()) {
+            new MVDWPlaceholderAPIManager().register();
+            getLogger().info("Successfully registered placeholders with MVDWPlaceholderAPI.");
         }
     }
 

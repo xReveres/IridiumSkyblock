@@ -31,6 +31,11 @@
   </build>
   <repositories>
     <repository>
+      <id>mvdw-software</id>
+      <name>MVdW Public Repositories</name>
+      <url>http://repo.mvdw-software.be/content/groups/public/</url>
+    </repository>
+    <repository>
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
@@ -107,6 +112,13 @@
           <groupId>io.papermc</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>be.maximvdw</groupId>
+      <artifactId>MVdWPlaceholderAPI</artifactId>
+      <version>2.1.1-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/deps/MVdWPlaceholderAPI.jar</systemPath>
     </dependency>
   </dependencies>
 </project>
