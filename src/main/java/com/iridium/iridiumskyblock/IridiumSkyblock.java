@@ -38,6 +38,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public static Boosters boosters;
     public static Inventories inventories;
     public static Schematics schematics;
+    public static Commands commands;
 
     private static Persist persist;
 
@@ -64,10 +65,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
             persist = new Persist();
 
+            loadConfigs();
+
             commandManager = new CommandManager("island");
             commandManager.registerCommands();
-
-            loadConfigs();
 
             if (getConfiguration().enabledWorlds == null) {
                 getConfiguration().enabledWorlds = new ArrayList<>();
@@ -233,6 +234,7 @@ public class IridiumSkyblock extends JavaPlugin {
         boosters = persist.getFile(Boosters.class).exists() ? persist.load(Boosters.class) : new Boosters();
         inventories = persist.getFile(Inventories.class).exists() ? persist.load(Inventories.class) : new Inventories();
         schematics = persist.getFile(Schematics.class).exists() ? persist.load(Schematics.class) : new Schematics();
+        commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
 
         for (Island island : islandManager.islands.values()) {
             island.init();
@@ -261,6 +263,7 @@ public class IridiumSkyblock extends JavaPlugin {
         if (boosters != null) persist.save(boosters);
         if (inventories != null) persist.save(inventories);
         if (schematics != null) persist.save(schematics);
+        if (commands != null) persist.save(commands);
     }
 
     public static IridiumSkyblock getInstance() {
@@ -294,6 +297,10 @@ public class IridiumSkyblock extends JavaPlugin {
             IridiumSkyblock.getInstance().saveConfigs();
         }
         return upgrades;
+    }
+
+    public static Commands getCommands() {
+        return commands;
     }
 
     public static Boosters getBoosters() {

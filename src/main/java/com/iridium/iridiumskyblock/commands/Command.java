@@ -16,7 +16,6 @@ public abstract class Command {
         this.permission = "iridiumskyblock." + permission;
         this.player = player;
         this.description = description;
-        IridiumSkyblock.getCommandManager().registerCommand(this);
     }
 
     public boolean isPlayer() {
