@@ -57,9 +57,10 @@ public class MembersGUI extends GUI implements Listener {
                 if (e.getClick().equals(ClickType.LEFT)) {
                     if (user.getIsland().getPermissions(user.role).demote) {
                         if (u.role.getRank() < user.role.getRank()) {
-                            if (u.role.equals(Roles.Visitor)) {
+                            if (u.role.equals(Roles.Member)) {
                                 if (user.getIsland().getPermissions(user.role).kickMembers) {
                                     user.getIsland().removeUser(u);
+                                    getInventory().setItem(e.getSlot(), null);
                                     Player player = Bukkit.getPlayer(u.name);
                                     if (player != null)
                                         player.sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
