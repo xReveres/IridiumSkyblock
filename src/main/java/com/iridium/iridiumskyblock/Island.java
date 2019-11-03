@@ -403,14 +403,9 @@ public class Island {
     }
 
     public void clearInventories() {
-        for (Chunk c : chunks) {
-            for (Entity e : c.getEntities()) {
-                if (e instanceof Player) {
-                    if (isInIsland(e.getLocation())) {
-                        ((Player) e).getInventory().clear();
-                    }
-                }
-            }
+        for (String player : members) {
+            User user = User.getUser(player);
+            if (Bukkit.getPlayer(user.name) != null) Bukkit.getPlayer(user.name).getInventory().clear();
         }
     }
 
@@ -499,6 +494,7 @@ public class Island {
             User.getUser(player).islandID = 0;
             if (Bukkit.getPlayer(player) != null) Bukkit.getPlayer(player).closeInventory();
         }
+        clearInventories();
         hideBorder();
         this.owner = null;
         this.pos1 = null;
