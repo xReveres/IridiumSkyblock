@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -36,7 +37,7 @@ public class UpgradeGUI extends GUI implements Listener {
             this.member = Utils.makeItemHidden(IridiumSkyblock.getInventories().member, getIsland());
             this.warp = Utils.makeItemHidden(IridiumSkyblock.getInventories().warp, getIsland());
             this.ores = Utils.makeItemHidden(IridiumSkyblock.getInventories().ores, getIsland());
-            
+
             setItem(10, size);
             setItem(12, member);
             setItem(14, warp);
@@ -49,12 +50,18 @@ public class UpgradeGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
+            Player p = (Player) e.getWhoClicked();
+            Island island = getIsland();
             if (e.getCurrentItem() != null) {
                 if (e.getCurrentItem().equals(ores)) {
-                    if (IridiumSkyblock.getUpgrades().ores.containsKey(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getOreLevel() + 1)) {
-                        if (IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= IridiumSkyblock.getUpgrades().ores.get(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getOreLevel() + 1).getCost()) {
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - IridiumSkyblock.getUpgrades().ores.get(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getOreLevel() + 1).getCost());
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setOreLevel(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getOreLevel() + 1);
+                    if (IridiumSkyblock.getUpgrades().ores.containsKey(island.getOreLevel() + 1)) {
+                        if (IridiumSkyblock.getConfiguration().useVault ? IridiumSkyblock.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().ores.get(island.getOreLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().ores.get(island.getOreLevel() + 1).getCost()) {
+                            if (IridiumSkyblock.getConfiguration().useVault) {
+                                IridiumSkyblock.econ.withdrawPlayer(p, IridiumSkyblock.getUpgrades().ores.get(island.getOreLevel() + 1).getCost());
+                            } else {
+                                island.setCrystals(island.getCrystals() - IridiumSkyblock.getUpgrades().ores.get(island.getOreLevel() + 1).getCost());
+                            }
+                            island.setOreLevel(island.getOreLevel() + 1);
                         } else {
                             e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
@@ -63,11 +70,15 @@ public class UpgradeGUI extends GUI implements Listener {
                     }
                 }
                 if (e.getCurrentItem().equals(size)) {
-                    if (IridiumSkyblock.getUpgrades().size.containsKey(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getSizeLevel() + 1)) {
-                        if (IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= IridiumSkyblock.getUpgrades().size.get(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getSizeLevel() + 1).getCost()) {
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - IridiumSkyblock.getUpgrades().size.get(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getSizeLevel() + 1).getCost());
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setSizeLevel(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getSizeLevel() + 1);
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).sendBorder();
+                    if (IridiumSkyblock.getUpgrades().size.containsKey(island.getSizeLevel() + 1)) {
+                        if (IridiumSkyblock.getConfiguration().useVault ? IridiumSkyblock.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().size.get(island.getOreLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().size.get(island.getOreLevel() + 1).getCost()) {
+                            if (IridiumSkyblock.getConfiguration().useVault) {
+                                IridiumSkyblock.econ.withdrawPlayer(p, IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel() + 1).getCost());
+                            } else {
+                                island.setCrystals(island.getCrystals() - IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel() + 1).getCost());
+                            }
+                            island.setSizeLevel(island.getSizeLevel() + 1);
+                            island.sendBorder();
                         } else {
                             e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
@@ -76,10 +87,14 @@ public class UpgradeGUI extends GUI implements Listener {
                     }
                 }
                 if (e.getCurrentItem().equals(member)) {
-                    if (IridiumSkyblock.getUpgrades().member.containsKey(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getMemberLevel() + 1)) {
-                        if (IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= IridiumSkyblock.getUpgrades().member.get(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getMemberLevel() + 1).getCost()) {
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - IridiumSkyblock.getUpgrades().member.get(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getMemberLevel() + 1).getCost());
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setMemberLevel(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getMemberLevel() + 1);
+                    if (IridiumSkyblock.getUpgrades().member.containsKey(island.getMemberLevel() + 1)) {
+                        if (IridiumSkyblock.getConfiguration().useVault ? IridiumSkyblock.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().member.get(island.getOreLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().member.get(island.getOreLevel() + 1).getCost()) {
+                            if (IridiumSkyblock.getConfiguration().useVault) {
+                                IridiumSkyblock.econ.withdrawPlayer(p, IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel() + 1).getCost());
+                            } else {
+                                island.setCrystals(island.getCrystals() - IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel() + 1).getCost());
+                            }
+                            island.setMemberLevel(island.getMemberLevel() + 1);
                         } else {
                             e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
@@ -88,10 +103,14 @@ public class UpgradeGUI extends GUI implements Listener {
                     }
                 }
                 if (e.getCurrentItem().equals(warp)) {
-                    if (IridiumSkyblock.getUpgrades().warp.containsKey(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getWarpLevel() + 1)) {
-                        if (IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() >= IridiumSkyblock.getUpgrades().warp.get(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getWarpLevel() + 1).getCost()) {
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setCrystals(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getCrystals() - IridiumSkyblock.getUpgrades().warp.get(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getWarpLevel() + 1).getCost());
-                            IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setWarpLevel(IridiumSkyblock.getIslandManager().getIslandViaId(islandID).getWarpLevel() + 1);
+                    if (IridiumSkyblock.getUpgrades().warp.containsKey(island.getWarpLevel() + 1)) {
+                        if (IridiumSkyblock.getConfiguration().useVault ? IridiumSkyblock.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().warp.get(island.getOreLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().warp.get(island.getOreLevel() + 1).getCost()) {
+                            if (IridiumSkyblock.getConfiguration().useVault) {
+                                IridiumSkyblock.econ.withdrawPlayer(p, IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel() + 1).getCost());
+                            } else {
+                                island.setCrystals(island.getCrystals() - IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel() + 1).getCost());
+                            }
+                            island.setWarpLevel(island.getWarpLevel() + 1);
                         } else {
                             e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }

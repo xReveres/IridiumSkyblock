@@ -7,12 +7,14 @@ import com.iridium.iridiumskyblock.gui.TopGUI;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.serializer.Persist;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -55,6 +57,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public static boolean Wildstacker = false;
 
+    public static Economy econ = null;
+
     private String latest;
 
     @Override
@@ -71,9 +75,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
             loadConfigs();
 
-
             commandManager = new CommandManager("island");
             commandManager.registerCommands();
+
+            setupEconomy();
 
             if (getConfiguration().enabledWorlds == null) {
                 getConfiguration().enabledWorlds = new ArrayList<>();
@@ -133,6 +138,18 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             sendErrorMessage(e);
         }
+    }
+
+    public static boolean setupEconomy() {
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     @Override

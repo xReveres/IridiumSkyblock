@@ -21,6 +21,7 @@ public class Config {
     public String prefix = "&b&lIridiumSkyblock";
     public boolean enabledWorldsIsBlacklist = false;
     public boolean notifyAvailableUpdate = true;
+    public boolean useVault = false;
     public List<String> enabledWorlds = new ArrayList<>();
     public int distance = 150;
     public int blocksPerTick = 100;
