@@ -108,7 +108,7 @@ public class Schematic {
         short width = getWidth();
         short height = getHeight();
         loc.subtract(width / 2, height / 2, length / 2); // Centers the schematic
-        loc.getBlock().setType(Material.STONE, false);
+        loc.getBlock().setType(Material.STONE, true);//Just incase something fails ?
         if (schematicVersion == SchematicVersion.v_1_8) {
 
             byte[] blocks = getBlocks();
@@ -121,7 +121,7 @@ public class Schematic {
                         int index = y * width * length + z * width + x;
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                         if (Material.getMaterial(blocks[index]) != null) {
-                            block.setTypeIdAndData(blocks[index], blockData[index], false);
+                            block.setTypeIdAndData(blocks[index], blockData[index], true);
                         }
                     }
                 }
@@ -174,7 +174,7 @@ public class Schematic {
                                 for (String s : palette.keySet()) {
                                     int i = getChildTag(palette, s, IntTag.class).getValue();
                                     if (blockdata[index] == i) {
-                                        setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), false);
+                                        setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), true);
                                     }
                                 }
                             }
