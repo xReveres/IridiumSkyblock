@@ -11,10 +11,6 @@ public class onClick implements Listener {
 
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
-        if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
-            return;
-        if (IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
-            return;
         try {
             User u = User.getUser(e.getPlayer());
             Island island = u.getIsland();

@@ -61,18 +61,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             if (args.length != 0) {
                 for (com.iridium.iridiumskyblock.commands.Command command : commands) {
                     if (command.getAliases().contains(args[0])) {
-                        if (command.isPlayer()) {
-                            if (cs instanceof Player) {
-                                if ((!IridiumSkyblock.getConfiguration().enabledWorlds.contains(((Player) cs).getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
-                                        || (IridiumSkyblock.getConfiguration().enabledWorlds.contains(((Player) cs).getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)) {
-                                    cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInValidWorld.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                                    return true;
-                                }
-                            } else {
-                                // Must be a player
-                                cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                                return true;
-                            }
+                        if (command.isPlayer() && !(cs instanceof Player)) {
+                            // Must be a player
+                            cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            return true;
                         }
                         if (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
                             command.execute(cs, args);

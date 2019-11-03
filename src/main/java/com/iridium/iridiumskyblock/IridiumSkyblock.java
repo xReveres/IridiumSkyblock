@@ -79,16 +79,6 @@ public class IridiumSkyblock extends JavaPlugin {
             commandManager.registerCommands();
 
             setupEconomy();
-
-            if (getConfiguration().enabledWorlds == null) {
-                getConfiguration().enabledWorlds = new ArrayList<>();
-            }
-
-            if (getConfiguration().enabledWorlds.isEmpty() && !getConfiguration().enabledWorldsIsBlacklist) {
-                for (World w : Bukkit.getWorlds()) {
-                    getConfiguration().enabledWorlds.add(w.getName());
-                }
-            }
             saveConfigs();
 
             // Call it as a delayed task to wait for the server to properly load first
@@ -263,10 +253,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
         for (Island island : islandManager.islands.values()) {
             island.init();
-        }
-        if (getConfiguration().enabledWorlds.contains(getIslandManager().worldName) && getConfiguration().enabledWorldsIsBlacklist) {
-            getConfiguration().enabledWorlds.remove(getIslandManager().worldName);
-            saveConfigs();
         }
         try {
             loadSchematics();
