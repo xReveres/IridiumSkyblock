@@ -1,9 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Roles;
-import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,10 +10,16 @@ public class onPlayerJoinLeave implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-    	if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
-    		return;
-    	if (IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
-    		return;
+        if (e.getPlayer().isOp()) {
+            if (IridiumSkyblock.getConfiguration().notifyAvailableUpdate) {
+                e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix + " &7This message is only seen by opped players."));
+                e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix + " &7Newer version available: " + IridiumSkyblock.getInstance().getLatest()));
+            }
+        }
+        if (!IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
+            return;
+        if (IridiumSkyblock.getConfiguration().enabledWorlds.contains(e.getPlayer().getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
+            return;
         try {
             if (IridiumSkyblock.getIslandManager().users.containsKey(e.getPlayer().getName())) {
                 User user = IridiumSkyblock.getIslandManager().users.get(e.getPlayer().getName());

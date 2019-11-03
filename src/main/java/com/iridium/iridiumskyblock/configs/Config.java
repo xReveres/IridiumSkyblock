@@ -10,16 +10,17 @@ import java.util.List;
 
 public class Config {
 
-    public Config(){
-        try{
+    public Config() {
+        try {
             netherBiome = Biome.HELL;
-        }catch (NoSuchFieldError e){
-            netherBiome= Biome.valueOf("NETHER");
+        } catch (NoSuchFieldError e) {
+            netherBiome = Biome.valueOf("NETHER");
         }
     }
 
     public String prefix = "&b&lIridiumSkyblock";
     public boolean enabledWorldsIsBlacklist = false;
+    public boolean notifyAvailableUpdate = true;
     public List<String> enabledWorlds = new ArrayList<>();
     public int distance = 150;
     public int blocksPerTick = 100;

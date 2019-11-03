@@ -53,8 +53,9 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public boolean updatingBlocks = false;
 
-
     public static boolean Wildstacker = false;
+
+    private String latest;
 
     @Override
     public void onEnable() {
@@ -100,7 +101,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             startCounting();
 
-            String latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
+            latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
 
             getLogger().info("-------------------------------");
             getLogger().info("");
@@ -271,6 +272,10 @@ public class IridiumSkyblock extends JavaPlugin {
         if (inventories != null) persist.save(inventories);
         if (schematics != null) persist.save(schematics);
         if (commands != null) persist.save(commands);
+    }
+
+    public String getLatest() {
+        return latest;
     }
 
     public static IridiumSkyblock getInstance() {
