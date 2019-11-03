@@ -24,10 +24,10 @@ public class onPlayerJoinLeave implements Listener {
                 user.name = e.getPlayer().getName();
                 if (user.getIsland() != null) {
                     if (user.getIsland().getOwner().equalsIgnoreCase(e.getPlayer().getName())) {
-                        user.role = Roles.Owner;
+                        user.role = Role.Owner;
                         user.getIsland().setOwner(e.getPlayer().getUniqueId().toString());
                     } else {
-                        user.role = Roles.Visitor;
+                        user.role = Role.Visitor;
                     }
                     user.getIsland().getMembers().remove(e.getPlayer().getName());
                     user.getIsland().getMembers().add(e.getPlayer().getUniqueId().toString());

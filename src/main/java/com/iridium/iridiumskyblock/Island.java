@@ -59,6 +59,7 @@ public class Island {
     private transient WarpGUI warpGUI;
     private transient BorderColorGUI borderColorGUI;
     private transient SchematicSelectGUI schematicSelectGUI;
+    private transient PermissionsGUI permissionsGUI;
 
     private int id;
 
@@ -99,13 +100,13 @@ public class Island {
 
     private NMSUtils.Color borderColor;
 
-    private HashMap<Roles, Permissions> permissions;
+    private HashMap<Role, Permissions> permissions;
 
     private String schematic;
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
-        user.role = Roles.Owner;
+        user.role = Role.Owner;
         blocks = new HashSet<>();
         this.owner = user.player;
         this.pos1 = pos1;
@@ -122,6 +123,7 @@ public class Island {
         warpGUI = new WarpGUI(this);
         borderColorGUI = new BorderColorGUI(this);
         schematicSelectGUI = new SchematicSelectGUI(this);
+        permissionsGUI = new PermissionsGUI(this);
         spawnerBooster = 0;
         farmingBooster = 0;
         expBooster = 0;
@@ -144,9 +146,9 @@ public class Island {
         b = -1;
         borderColor = NMSUtils.Color.Blue;
         visit = true;
-        permissions = new HashMap<Roles, Permissions>() {{
-            for (Roles role : Roles.values()) {
-                if (role == Roles.Visitor) {
+        permissions = new HashMap<Role, Permissions>() {{
+            for (Role role : Role.values()) {
+                if (role == Role.Visitor) {
                     put(role, new Permissions(false, false, true, false, false, false, false, false, false));
                 } else {
                     put(role, new Permissions());
@@ -157,7 +159,7 @@ public class Island {
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
 
-    public Permissions getPermissions(Roles role) {
+    public Permissions getPermissions(Role role) {
         if (!permissions.containsKey(role)) {
             permissions.put(role, new Permissions());
         }
@@ -316,7 +318,7 @@ public class Island {
     public void addUser(User user) {
         if (members.size() < IridiumSkyblock.getUpgrades().member.get(memberLevel).getSize()) {
             user.islandID = id;
-            user.role = Roles.Member;
+            user.role = Role.Member;
             user.invites.clear();
             members.add(user.player);
             teleportHome(Bukkit.getPlayer(user.name));
@@ -335,7 +337,7 @@ public class Island {
         player.setFlying(false);
         player.setAllowFlight(false);
         members.remove(user.player);
-        user.role = Roles.Visitor;
+        user.role = Role.Visitor;
         for (String member : members) {
             User u = User.getUser(member);
             Player p = Bukkit.getPlayer(u.name);
@@ -351,6 +353,16 @@ public class Island {
 
     public void init() {
         if (blocks == null) blocks = new HashSet<>();
+
+        upgradeGUI = new UpgradeGUI(this);
+        boosterGUI = new BoosterGUI(this);
+        missionsGUI = new MissionsGUI(this);
+        membersGUI = new MembersGUI(this);
+        warpGUI = new WarpGUI(this);
+        borderColorGUI = new BorderColorGUI(this);
+        schematicSelectGUI = new SchematicSelectGUI(this);
+        permissionsGUI = new PermissionsGUI(this);
+
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
             if (spawnerBooster > 0) spawnerBooster--;
@@ -370,8 +382,8 @@ public class Island {
             }
         }, 0, 20);
         if (permissions == null) {
-            permissions = new HashMap<Roles, Permissions>() {{
-                for (Roles role : Roles.values()) {
+            permissions = new HashMap<Role, Permissions>() {{
+                for (Role role : Role.values()) {
                     put(role, new Permissions());
                 }
             }};
@@ -603,12 +615,10 @@ public class Island {
     }
 
     public UpgradeGUI getUpgradeGUI() {
-        if (upgradeGUI == null) upgradeGUI = new UpgradeGUI(this);
         return upgradeGUI;
     }
 
     public BoosterGUI getBoosterGUI() {
-        if (boosterGUI == null) boosterGUI = new BoosterGUI(this);
         return boosterGUI;
     }
 
@@ -617,24 +627,22 @@ public class Island {
     }
 
     public MissionsGUI getMissionsGUI() {
-        if (missionsGUI == null) missionsGUI = new MissionsGUI(this);
         return missionsGUI;
     }
 
     public MembersGUI getMembersGUI() {
-        if (membersGUI == null) membersGUI = new MembersGUI(this);
         return membersGUI;
     }
 
     public WarpGUI getWarpGUI() {
-        if (warpGUI == null) warpGUI = new WarpGUI(this);
         return warpGUI;
     }
 
+    public PermissionsGUI getPermissionsGUI() {
+        return permissionsGUI;
+    }
+
     public BorderColorGUI getBorderColorGUI() {
-        if (borderColorGUI == null) {
-            borderColorGUI = new BorderColorGUI(this);
-        }
         return borderColorGUI;
     }
 

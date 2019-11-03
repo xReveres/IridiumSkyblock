@@ -9,7 +9,7 @@ public class User {
     public String player;
     public String name;
     public int islandID;
-    public Roles role;
+    public Role role;
     public ArrayList<Integer> invites;
     public Island.Warp warp;
     public boolean bypassing;

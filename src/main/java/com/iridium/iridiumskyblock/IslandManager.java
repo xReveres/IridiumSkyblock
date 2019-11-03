@@ -46,7 +46,7 @@ public class IslandManager {
         islands.put(nextID, island);
 
         User.getUser(player).islandID = nextID;
-        User.getUser(player).role = Roles.Owner;
+        User.getUser(player).role = Role.Owner;
 
         if (IridiumSkyblock.getInstance().schems.size() == 1) {
             for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {

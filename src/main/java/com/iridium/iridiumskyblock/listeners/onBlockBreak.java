@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.hamcrest.core.Is;
 
 public class onBlockBreak implements Listener {
 
@@ -36,7 +35,7 @@ public class onBlockBreak implements Listener {
                         }
                     }
                 }
-                if ((!island.getPermissions(u.islandID == island.getId() ? u.role : Roles.Visitor).breakBlocks) && !u.bypassing)
+                if ((!island.getPermissions(u.islandID == island.getId() ? u.role : Role.Visitor).breakBlocks) && !u.bypassing)
                     e.setCancelled(true);
             } else {
                 if (!u.bypassing) {

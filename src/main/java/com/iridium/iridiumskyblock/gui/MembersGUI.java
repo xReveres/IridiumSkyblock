@@ -37,7 +37,7 @@ public class MembersGUI extends GUI implements Listener {
                 users.put(i, u);
                 ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + u.name);
                 SkullMeta m = (SkullMeta) head.getItemMeta();
-                m.setLore(Utils.color(Arrays.asList("&bRole: " + u.role, "", "&b&l[!] &bLeft Click to " + (u.role.equals(Roles.Visitor) ? "Kick" : "Demote") + " this Player.", "&b&l[!] &bRight Click to Promote this Player.")));
+                m.setLore(Utils.color(Arrays.asList("&bRole: " + u.role, "", "&b&l[!] &bLeft Click to " + (u.role.equals(Role.Visitor) ? "Kick" : "Demote") + " this Player.", "&b&l[!] &bRight Click to Promote this Player.")));
                 m.setOwner(u.name);
                 head.setItemMeta(m);
                 setItem(i, head);
@@ -57,7 +57,7 @@ public class MembersGUI extends GUI implements Listener {
                 if (e.getClick().equals(ClickType.LEFT)) {
                     if (user.getIsland().getPermissions(user.role).demote) {
                         if (u.role.getRank() < user.role.getRank()) {
-                            if (u.role.equals(Roles.Member)) {
+                            if (u.role.equals(Role.Member)) {
                                 if (user.getIsland().getPermissions(user.role).kickMembers) {
                                     user.getIsland().removeUser(u);
                                     getInventory().setItem(e.getSlot(), null);
@@ -68,10 +68,10 @@ public class MembersGUI extends GUI implements Listener {
                                     e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                 }
                             } else {
-                                IslandDemoteEvent event = new IslandDemoteEvent(u.getIsland(), u, user, Roles.getViaRank(u.role.getRank() + 1));
+                                IslandDemoteEvent event = new IslandDemoteEvent(u.getIsland(), u, user, Role.getViaRank(u.role.getRank() + 1));
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
-                                    u.role = Roles.getViaRank(u.role.getRank() - 1);
+                                    u.role = Role.getViaRank(u.role.getRank() - 1);
                                     for (String member : u.getIsland().getMembers()) {
                                         Player p = Bukkit.getPlayer(User.getUser(member).name);
                                         if (p != null) {
@@ -88,15 +88,15 @@ public class MembersGUI extends GUI implements Listener {
                     }
                 } else {
                     if (user.getIsland().getPermissions(user.role).promote) {
-                        if (!(u.role.equals(Roles.Owner))) {
+                        if (!(u.role.equals(Role.Owner))) {
                             if (u.role.getRank() < user.role.getRank()) {
-                                if (u.role.getRank() >= Roles.CoOwner.getRank()) {
+                                if (u.role.getRank() >= Role.CoOwner.getRank()) {
                                     e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().transferOwnership.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                 } else {
-                                    IslandPromoteEvent event = new IslandPromoteEvent(u.getIsland(), u, user, Roles.getViaRank(u.role.getRank() + 1));
+                                    IslandPromoteEvent event = new IslandPromoteEvent(u.getIsland(), u, user, Role.getViaRank(u.role.getRank() + 1));
                                     Bukkit.getPluginManager().callEvent(event);
                                     if (!event.isCancelled()) {
-                                        u.role = Roles.getViaRank(u.role.getRank() + 1);
+                                        u.role = Role.getViaRank(u.role.getRank() + 1);
                                         for (String member : u.getIsland().getMembers()) {
                                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                                             if (p != null) {

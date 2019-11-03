@@ -31,4 +31,5 @@ public class Commands {
     public PrivateCommand privateCommand = new PrivateCommand();
     public BypassCommand bypassCommand = new BypassCommand();
     public SetHomeCommand setHomeCommand = new SetHomeCommand();
+    public PermissionsCommand permissionsCommand = new PermissionsCommand();
 }

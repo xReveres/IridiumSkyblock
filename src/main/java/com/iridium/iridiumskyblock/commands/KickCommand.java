@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Roles;
+import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ public class KickCommand extends Command {
             User u = User.getUser(player); // Player we want to kick
             if (user.getIsland() != null) {
                 if (user.getIsland().equals(u.getIsland())) {
-                    if (user.role.equals(Roles.Owner)) {
+                    if (user.role.equals(Role.Owner)) {
                         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     } else {
                         if (user.bypassing || user.getIsland().getPermissions(u.role).kickMembers) {
