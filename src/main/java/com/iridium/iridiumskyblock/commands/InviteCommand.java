@@ -30,7 +30,7 @@ public class InviteCommand extends Command {
             User u = User.getUser(player);
             if (user.getIsland() != null) {
                 if (u.getIsland() == null) {
-                    if (user.bypassing || user.getIsland().getPermissions(u.role).inviteMembers) {
+                    if (user.bypassing || user.getIsland().getPermissions(user.role).inviteMembers) {
                         u.invites.add(user.getIsland().getId());
                         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerInvited.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         if (player.getPlayer() != null)
