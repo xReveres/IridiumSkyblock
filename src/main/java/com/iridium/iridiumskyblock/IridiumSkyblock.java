@@ -2,14 +2,13 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
-import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.gui.TopGUI;
+import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.serializer.Persist;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
@@ -24,7 +23,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
@@ -250,6 +248,11 @@ public class IridiumSkyblock extends JavaPlugin {
         inventories = persist.getFile(Inventories.class).exists() ? persist.load(Inventories.class) : new Inventories();
         schematics = persist.getFile(Schematics.class).exists() ? persist.load(Schematics.class) : new Schematics();
         commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
+
+        if (getBoosters().flightBooster.time == 0) getBoosters().flightBooster.time = 3600;
+        if (getBoosters().experianceBooster.time == 0) getBoosters().experianceBooster.time = 3600;
+        if (getBoosters().farmingBooster.time == 0) getBoosters().farmingBooster.time = 3600;
+        if (getBoosters().spawnerBooster.time == 0) getBoosters().spawnerBooster.time = 3600;
 
         for (Island island : islandManager.islands.values()) {
             island.init();

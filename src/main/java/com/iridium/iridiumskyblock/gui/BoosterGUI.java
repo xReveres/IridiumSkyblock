@@ -60,7 +60,7 @@ public class BoosterGUI extends GUI implements Listener {
                         } else {
                             island.setCrystals(island.getCrystals() - IridiumSkyblock.getBoosters().spawnerBooster.getCost());
                         }
-                        island.setSpawnerBooster(3600);
+                        island.setSpawnerBooster(IridiumSkyblock.getBoosters().spawnerBooster.time);
                     } else {
                         e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().spawnerBoosterActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
@@ -76,7 +76,7 @@ public class BoosterGUI extends GUI implements Listener {
                         } else {
                             island.setCrystals(island.getCrystals() - IridiumSkyblock.getBoosters().farmingBooster.getCost());
                         }
-                        island.setFarmingBooster(3600);
+                        island.setFarmingBooster(IridiumSkyblock.getBoosters().farmingBooster.time);
                     } else {
                         e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().farmingBoosterActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
@@ -92,7 +92,7 @@ public class BoosterGUI extends GUI implements Listener {
                         } else {
                             island.setCrystals(island.getCrystals() - IridiumSkyblock.getBoosters().experianceBooster.getCost());
                         }
-                        island.setExpBooster(3600);
+                        island.setExpBooster(IridiumSkyblock.getBoosters().experianceBooster.time);
                     } else {
                         e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().expBoosterActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
@@ -108,7 +108,7 @@ public class BoosterGUI extends GUI implements Listener {
                         } else {
                             island.setCrystals(island.getCrystals() - IridiumSkyblock.getBoosters().flightBooster.getCost());
                         }
-                        island.setFlightBooster(3600);
+                        island.setFlightBooster(IridiumSkyblock.getBoosters().flightBooster.time);
                     } else {
                         e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().flightBoosterActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
