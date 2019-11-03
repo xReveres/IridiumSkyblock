@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 public enum Roles {
-    Owner(6), CoOwner(5), Admin(4), Moderator(3), Member(2), Visitor(1);
+    Owner(5), CoOwner(4), Admin(3), Moderator(2), Member(1), Visitor(-1);
 
     int rank;
 

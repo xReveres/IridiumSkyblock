@@ -146,7 +146,11 @@ public class Island {
         visit = true;
         permissions = new HashMap<Roles, Permissions>() {{
             for (Roles role : Roles.values()) {
-                put(role, new Permissions());
+                if (role == Roles.Visitor) {
+                    put(role, new Permissions(false, false, true, false, false, false, false, false, false));
+                } else {
+                    put(role, new Permissions());
+                }
             }
         }};
         init();
@@ -312,7 +316,7 @@ public class Island {
     public void addUser(User user) {
         if (members.size() < IridiumSkyblock.getUpgrades().member.get(memberLevel).getSize()) {
             user.islandID = id;
-            user.role = Roles.Visitor;
+            user.role = Roles.Member;
             user.invites.clear();
             members.add(user.player);
             teleportHome(Bukkit.getPlayer(user.name));
@@ -331,6 +335,7 @@ public class Island {
         player.setFlying(false);
         player.setAllowFlight(false);
         members.remove(user.player);
+        user.role = Roles.Visitor;
         for (String member : members) {
             User u = User.getUser(member);
             Player p = Bukkit.getPlayer(u.name);
