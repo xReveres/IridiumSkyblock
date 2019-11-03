@@ -422,7 +422,7 @@ public class Island {
                     for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
                         setSchematic(schematic.name);
                     }
-                }else {
+                } else {
                     p.openInventory(getSchematicSelectGUI().getInventory());
                 }
             }
@@ -456,7 +456,7 @@ public class Island {
                     for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
                         setSchematic(schematic.name);
                     }
-                }else {
+                } else {
                     p.openInventory(getSchematicSelectGUI().getInventory());
                 }
             }
