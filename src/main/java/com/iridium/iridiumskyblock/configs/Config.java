@@ -21,7 +21,7 @@ public class Config {
     public String prefix = "&b&lIridiumSkyblock";
     public boolean enabledWorldsIsBlacklist = false;
     public List<String> enabledWorlds = new ArrayList<>();
-    public int distance = 200;
+    public int distance = 150;
     public int blocksPerTick = 100;
     public Biome defaultBiome = Biome.PLAINS;
     public Biome netherBiome;

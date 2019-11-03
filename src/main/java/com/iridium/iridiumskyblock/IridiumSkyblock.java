@@ -15,8 +15,11 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,6 +70,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             loadConfigs();
 
+
             commandManager = new CommandManager("island");
             commandManager.registerCommands();
 
@@ -96,9 +100,12 @@ public class IridiumSkyblock extends JavaPlugin {
 
             startCounting();
 
+            String latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
+
             getLogger().info("-------------------------------");
             getLogger().info("");
             getLogger().info(getDescription().getName() + " Enabled!");
+            if (!latest.equals(getDescription().getVersion())) getLogger().info("Newer version available: " + latest);
             getLogger().info("");
             getLogger().info("-------------------------------");
         } catch (Exception e) {
