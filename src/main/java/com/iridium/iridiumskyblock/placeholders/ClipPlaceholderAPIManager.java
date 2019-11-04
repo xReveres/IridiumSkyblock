@@ -2,10 +2,13 @@ package com.iridium.iridiumskyblock.placeholders;
 
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
 
@@ -49,8 +52,45 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 return user.getIsland() != null ? User.getUser(user.getIsland().getOwner()).name : "N/A";
             case "island_crystals":
                 return user.getIsland() != null ? user.getIsland().getCrystals() + "" : "N/A";
+            case "island_members":
+                return user.getIsland() != null ? user.getIsland().getMembers().size() + "" : "N/A";
+            case "island_upgrade_member_level":
+                return user.getIsland() != null ? user.getIsland().getMemberLevel() + "" : "N/A";
+            case "island_upgrade_member_amount":
+                return user.getIsland() != null ? IridiumSkyblock.getUpgrades().member.get(user.getIsland().getMemberLevel()).getSize() + "" : "N/A";
+            case "island_upgrade_size_level":
+                return user.getIsland() != null ? user.getIsland().getSizeLevel() + "" : "N/A";
+            case "island_upgrade_ore_level":
+                return user.getIsland() != null ? user.getIsland().getOreLevel() + "" : "N/A";
+            case "island_upgrade_warp_level":
+                return user.getIsland() != null ? user.getIsland().getWarpLevel() + "" : "N/A";
+            case "island_booster_spawner":
+                return user.getIsland() != null ? user.getIsland().getSpawnerBooster() + "" : "N/A";
+            case "island_booster_exp":
+                return user.getIsland() != null ? user.getIsland().getExpBooster() + "" : "N/A";
+            case "island_booster_farming":
+                return user.getIsland() != null ? user.getIsland().getFarmingBooster() + "" : "N/A";
+            case "island_booster_flight":
+                return user.getIsland() != null ? user.getIsland().getFlightBooster() + "" : "N/A";
         }
+        if (placeholder.startsWith("island_top_name_")) {
+            try {
+                Integer integer = Integer.getInteger(placeholder.replace("island_top_name_", ""));
+                List<Island> islands = Utils.getTopIslands();
+                return islands.size() > integer ? User.getUser(Utils.getTopIslands().get(integer).getOwner()).name : "N/A";
+            } catch (NumberFormatException ignored) {
 
+            }
+        }
+        if (placeholder.startsWith("island_top_value_")) {
+            try {
+                Integer integer = Integer.getInteger(placeholder.replace("island_top_value_", ""));
+                List<Island> islands = Utils.getTopIslands();
+                return islands.size() > integer ? Utils.getTopIslands().get(integer).getValue() + "" : "N/A";
+            } catch (NumberFormatException ignored) {
+
+            }
+        }
         return null;
     }
 }

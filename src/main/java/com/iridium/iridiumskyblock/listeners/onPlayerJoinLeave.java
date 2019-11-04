@@ -1,9 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Roles;
-import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +10,12 @@ public class onPlayerJoinLeave implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        if (e.getPlayer().isOp()) {
+            if (IridiumSkyblock.getConfiguration().notifyAvailableUpdate && !IridiumSkyblock.getInstance().getLatest().equals(IridiumSkyblock.getInstance().getDescription().getVersion())) {
+                e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix + " &7This message is only seen by opped players."));
+                e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix + " &7Newer version available: " + IridiumSkyblock.getInstance().getLatest()));
+            }
+        }
         try {
             if (IridiumSkyblock.getIslandManager().users.containsKey(e.getPlayer().getName())) {
                 User user = IridiumSkyblock.getIslandManager().users.get(e.getPlayer().getName());
@@ -21,10 +24,10 @@ public class onPlayerJoinLeave implements Listener {
                 user.name = e.getPlayer().getName();
                 if (user.getIsland() != null) {
                     if (user.getIsland().getOwner().equalsIgnoreCase(e.getPlayer().getName())) {
-                        user.role = Roles.Owner;
+                        user.role = Role.Owner;
                         user.getIsland().setOwner(e.getPlayer().getUniqueId().toString());
                     } else {
-                        user.role = Roles.Visitor;
+                        user.role = Role.Visitor;
                     }
                     user.getIsland().getMembers().remove(e.getPlayer().getName());
                     user.getIsland().getMembers().add(e.getPlayer().getUniqueId().toString());

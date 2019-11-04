@@ -20,7 +20,7 @@ public class BorderColorGUI extends GUI implements Listener {
     public ItemStack off;
 
     public BorderColorGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getConfiguration().borderColorGUITitle);
+        super(island, 27, IridiumSkyblock.getInventories().borderColorGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -32,10 +32,10 @@ public class BorderColorGUI extends GUI implements Listener {
         this.blue = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 11, "&b&lBlue");
         this.off = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, "&b&lOff");
 
-        getInventory().setItem(10, this.red);
-        getInventory().setItem(12, this.blue);
-        getInventory().setItem(14, this.green);
-        getInventory().setItem(16, this.off);
+        setItem(10, this.red);
+        setItem(12, this.blue);
+        setItem(14, this.green);
+        setItem(16, this.off);
     }
 
     @EventHandler

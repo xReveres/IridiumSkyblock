@@ -3,9 +3,8 @@ package com.iridium.iridiumskyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.World.Environment;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class IslandManager {
@@ -18,6 +17,7 @@ public class IslandManager {
 
     public Direction direction = Direction.NORTH;
     public String worldName = "IridiumSkyblock";
+    public String netherName = "IridiumSkyblock_nether";
     public Location nextLocation;
 
     public int nextID = 1;
@@ -31,16 +31,22 @@ public class IslandManager {
         return Bukkit.getWorld(worldName);
     }
 
+    public World getNetherWorld() {
+        return Bukkit.getWorld(netherName);
+    }
+
     public Island createIsland(Player player) {
         Location pos1 = nextLocation.clone().subtract(IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2, 0, IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2);
         Location pos2 = nextLocation.clone().add(IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2, 0, IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2);
         Location center = nextLocation.clone().add(0, 100, 0);
         Location home = nextLocation.clone().add(0.5, 97, -1.5);
-        Island island = new Island(player, pos1, pos2, center, home, nextID);
+        Location netherhome = home.clone();
+        netherhome.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+        Island island = new Island(player, pos1, pos2, center, home, netherhome, nextID);
         islands.put(nextID, island);
 
         User.getUser(player).islandID = nextID;
-        User.getUser(player).role = Roles.Owner;
+        User.getUser(player).role = Role.Owner;
 
         if (IridiumSkyblock.getInstance().schems.size() == 1) {
             for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
@@ -86,14 +92,20 @@ public class IslandManager {
     }
 
     private void makeWorld() {
-        WorldCreator wc = new WorldCreator(worldName);
+        makeWorld(Environment.NORMAL, worldName);
+        makeWorld(Environment.NETHER, netherName);
+    }
+
+    private void makeWorld(Environment env, String name) {
+        WorldCreator wc = new WorldCreator(name);
         wc.generateStructures(false);
         wc.generator(new SkyblockGenerator());
+        wc.environment(env);
         wc.createWorld();
     }
 
     public Island getIslandViaLocation(Location loc) {
-        if (loc.getWorld().equals(getWorld())) {
+        if (loc.getWorld().equals(getWorld()) || loc.getWorld().equals(getNetherWorld())) {
             for (Island island : islands.values()) {
                 if (island.isInIsland(loc)) {
                     return island;

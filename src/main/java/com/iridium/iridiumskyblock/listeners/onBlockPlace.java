@@ -11,9 +11,10 @@ public class onBlockPlace implements Listener {
     public void onBlockPlace(BlockPlaceEvent e) {
         try {
             User u = User.getUser(e.getPlayer());
-            if (e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-                Island island = u.getIsland();
-                if (island != null) {
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
+            if (island != null) {
+
+                if (u.islandID == island.getId()) {
                     if (island.builder > -1) {
                         island.builder++;
                         if (island.builder >= IridiumSkyblock.getMissions().builder.getAmount()) {
@@ -21,26 +22,18 @@ public class onBlockPlace implements Listener {
                             island.completeMission("Builder", IridiumSkyblock.getMissions().builder.getReward());
                         }
                     }
-                    if (island.isInIsland(e.getBlock().getLocation())) {
-                        if (!u.bypassing && !u.getIsland().getPermissions(u.role).placeBlocks) {
-                            e.setCancelled(true);
-                        }
-                        if (Utils.isBlockValuable(e.getBlock())) {
-                            island.blocks.add(e.getBlock().getLocation());
-                        }
-                        // Block is in players island
-                    } else {
-                        if(!u.bypassing){
-                            e.setCancelled(true);
-                        }
-                    }
-                } else {
-                    if(!u.bypassing){
-                        e.setCancelled(true);
-                    }
+                }
+                if ((!island.getPermissions(u.islandID == island.getId() ? u.role : Role.Visitor).placeBlocks) && !u.bypassing)
+                    e.setCancelled(true);
+                else if (Utils.isBlockValuable(e.getBlock()))
+                    island.blocks.add(e.getBlock().getLocation());
+            } else {
+                if (!u.bypassing) {
+                    e.setCancelled(true);
                 }
             }
-        } catch (Exception ex) {
+        } catch (
+                Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
     }

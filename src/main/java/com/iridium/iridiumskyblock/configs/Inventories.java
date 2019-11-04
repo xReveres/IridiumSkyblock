@@ -9,6 +9,17 @@ import java.util.List;
 
 public class Inventories {
 
+
+    public String upgradeGUITitle = "&7Upgrade";
+    public String boosterGUITitle = "&7Booster";
+    public String missionsGUITitle = "&7Missions";
+    public String membersGUITitle = "&7Members";
+    public String warpGUITitle = "&7Warps";
+    public String topGUITitle = "&7Top Islands";
+    public String borderColorGUITitle = "&7Border Color";
+    public String permissionsGUITitle = "&7Permissions";
+    public String schematicselectGUITitle = "&7Select an Island";
+
     //Boosters
     public Item spawner = new Item(Material.MOB_SPAWNER, 1, 0, "&b&lIncreased Mobs", new ArrayList<>(Arrays.asList("&7Are your spawners too slow? Buy this", "&7booster and increase spawner rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{spawnerbooster}s", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().spawnerBooster.getCost() + " Crystals", "", "&b&l[!] &bRight Click to Purchase this Booster.")));
     public Item farming = new Item(Material.WHEAT, 1, 0, "&b&lIncreased Crops", new ArrayList<>(Arrays.asList("&7Are your crops too slow? Buy this", "&7booster and increase crop growth rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{farmingbooster}s", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().farmingBooster.getCost() + " Crystals", "", "&b&l[!] &bRight Click to Purchase this Booster.")));
@@ -32,11 +43,11 @@ public class Inventories {
 
     public static class Item {
 
-        private Material material;
-        private int amount;
-        private int type;
-        private String title;
-        private List<String> lore;
+        public Material material;
+        public int amount;
+        public int type;
+        public String title;
+        public List<String> lore;
 
         public Item(Material material, int amount, int type, String title, List<String> lore) {
             this.material = material;
@@ -44,26 +55,6 @@ public class Inventories {
             this.type = type;
             this.lore = lore;
             this.title = title;
-        }
-
-        public Material getMaterial() {
-            return material;
-        }
-
-        public int getAmount() {
-            return amount;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public List<String> getLore() {
-            return lore;
-        }
-
-        public String getTitle() {
-            return title;
         }
     }
 }

@@ -10,21 +10,21 @@ import java.util.List;
 
 public class Config {
 
+    public Config() {
+        try {
+            netherBiome = Biome.HELL;
+        } catch (NoSuchFieldError e) {
+            netherBiome = Biome.valueOf("NETHER");
+        }
+    }
+
     public String prefix = "&b&lIridiumSkyblock";
-    public String upgradeGUITitle = "&7Upgrade";
-    public String boosterGUITitle = "&7Booster";
-    public String missionsGUITitle = "&7Missions";
-    public String membersGUITitle = "&7Members";
-    public String warpGUITitle = "&7Warps";
-    public String topGUITitle = "&7Top Islands";
-    public String borderColorGUITitle = "&7Border Color";
-    public String permissionsGUITitle = "&7Permissions";
-    public String schematicselectGUITitle = "&7Select an Island";
-    public boolean enabledWorldsIsBlacklist = false;
-    public List<String> enabledWorlds = new ArrayList<>();
-    public int distance = 200;
+    public boolean notifyAvailableUpdate = true;
+    public boolean useVault = false;
+    public int distance = 150;
     public int blocksPerTick = 100;
     public Biome defaultBiome = Biome.PLAINS;
+    public Biome netherBiome;
     public MissionRestart missionRestart = MissionRestart.Daily;
     public HashMap<Material, Integer> blockvalue = new HashMap<Material, Integer>() {{
         put(Material.DIAMOND_BLOCK, 10);

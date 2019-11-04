@@ -1,9 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.MissionRestart;
-import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,9 +13,9 @@ public class onBlockBreak implements Listener {
         try {
             if (e.isCancelled()) return;
             User u = User.getUser(e.getPlayer());
-            if (e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-                Island island = u.getIsland();
-                if (island != null) {
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
+            if (island != null) {
+                if (u.islandID == island.getId()) {
                     if (e.getBlock().getType().name().endsWith("ORE")) {
                         if (u.getIsland().miner > -1) {
                             u.getIsland().miner++;
@@ -37,20 +34,12 @@ public class onBlockBreak implements Listener {
                             }
                         }
                     }
-                    if (island.isInIsland(e.getBlock().getLocation())) {
-                        if (!u.bypassing && !u.getIsland().getPermissions(u.role).breakBlocks) {
-                            e.setCancelled(true);
-                        }
-                        // Block is in players island
-                    } else {
-                        if (!u.bypassing) {
-                            e.setCancelled(true);
-                        }
-                    }
-                } else {
-                    if (!u.bypassing) {
-                        e.setCancelled(true);
-                    }
+                }
+                if ((!island.getPermissions(u.islandID == island.getId() ? u.role : Role.Visitor).breakBlocks) && !u.bypassing)
+                    e.setCancelled(true);
+            } else {
+                if (!u.bypassing) {
+                    e.setCancelled(true);
                 }
             }
         } catch (Exception ex) {

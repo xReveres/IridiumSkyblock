@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.api;
 
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Roles;
+import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -11,10 +11,10 @@ public class IslandDemoteEvent extends Event {
     private Island island;
     private User target;
     private User demoter;
-    private Roles role;
+    private Role role;
     private boolean cancel;
 
-    public IslandDemoteEvent(Island island, User target, User demoter, Roles role) {
+    public IslandDemoteEvent(Island island, User target, User demoter, Role role) {
         this.island = island;
         this.target = target;
         this.demoter = demoter;
@@ -37,7 +37,7 @@ public class IslandDemoteEvent extends Event {
         return demoter;
     }
 
-    public Roles getRole() {
+    public Role getRole() {
         return role;
     }
 

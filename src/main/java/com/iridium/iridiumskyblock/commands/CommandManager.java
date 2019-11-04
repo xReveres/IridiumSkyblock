@@ -21,34 +21,35 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     }
 
     public void registerCommands() {
-        new CreateCommand();
-        new HomeCommand();
-        new DeleteCommand();
-        new ReloadCommand();
-        new RegenCommand();
-        new InviteCommand();
-        new JoinCommand();
-        new MissionsCommand();
-        new UpgradeCommand();
-        new BoosterCommand();
-        new CrystalsCommand();
-        new GiveCrystalsCommand();
-        new RemoveCrystalsCommand();
-        new MembersCommand();
-        new FlyCommand();
-        new AboutCommand();
-        new WarpsCommand();
-        new SetWarpCommand();
-        new ValueCommand();
-        new TopCommand();
-        new LeaveCommand();
-        new WorldBorderCommand();
-        new KickCommand();
-        new VisitCommand();
-        new PublicCommand();
-        new PrivateCommand();
-        new BypassCommand();
-        new SetHomeCommand();
+        registerCommand(IridiumSkyblock.getCommands().aboutCommand);
+        registerCommand(IridiumSkyblock.getCommands().boosterCommand);
+        registerCommand(IridiumSkyblock.getCommands().bypassCommand);
+        registerCommand(IridiumSkyblock.getCommands().createCommand);
+        registerCommand(IridiumSkyblock.getCommands().crystalsCommand);
+        registerCommand(IridiumSkyblock.getCommands().deleteCommand);
+        registerCommand(IridiumSkyblock.getCommands().flyCommand);
+        registerCommand(IridiumSkyblock.getCommands().homeCommand);
+        registerCommand(IridiumSkyblock.getCommands().inviteCommand);
+        registerCommand(IridiumSkyblock.getCommands().joinCommand);
+        registerCommand(IridiumSkyblock.getCommands().kickCommand);
+        registerCommand(IridiumSkyblock.getCommands().leaveCommand);
+        registerCommand(IridiumSkyblock.getCommands().membersCommand);
+        registerCommand(IridiumSkyblock.getCommands().missionsCommand);
+        registerCommand(IridiumSkyblock.getCommands().privateCommand);
+        registerCommand(IridiumSkyblock.getCommands().publicCommand);
+        registerCommand(IridiumSkyblock.getCommands().regenCommand);
+        registerCommand(IridiumSkyblock.getCommands().reloadCommand);
+        registerCommand(IridiumSkyblock.getCommands().topCommand);
+        registerCommand(IridiumSkyblock.getCommands().upgradeCommand);
+        registerCommand(IridiumSkyblock.getCommands().valueCommand);
+        registerCommand(IridiumSkyblock.getCommands().visitCommand);
+        registerCommand(IridiumSkyblock.getCommands().warpCommand);
+        registerCommand(IridiumSkyblock.getCommands().warpsCommand);
+        registerCommand(IridiumSkyblock.getCommands().giveCrystalsCommand);
+        registerCommand(IridiumSkyblock.getCommands().removeCrystalsCommand);
+        registerCommand(IridiumSkyblock.getCommands().worldBorderCommand);
+        registerCommand(IridiumSkyblock.getCommands().setHomeCommand);
+        registerCommand(IridiumSkyblock.getCommands().permissionsCommand);
     }
 
     public void registerCommand(com.iridium.iridiumskyblock.commands.Command command) {
@@ -61,18 +62,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             if (args.length != 0) {
                 for (com.iridium.iridiumskyblock.commands.Command command : commands) {
                     if (command.getAliases().contains(args[0])) {
-                        if (command.isPlayer()) {
-                            if (cs instanceof Player) {
-                                if ((!IridiumSkyblock.getConfiguration().enabledWorlds.contains(((Player) cs).getLocation().getWorld().getName()) && !IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)
-                                        || (IridiumSkyblock.getConfiguration().enabledWorlds.contains(((Player) cs).getLocation().getWorld().getName()) && IridiumSkyblock.getConfiguration().enabledWorldsIsBlacklist)) {
-                                    cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInValidWorld.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                                    return true;
-                                }
-                            } else {
-                                // Must be a player
-                                cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                                return true;
-                            }
+                        if (command.isPlayer() && !(cs instanceof Player)) {
+                            // Must be a player
+                            cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            return true;
                         }
                         if (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
                             command.execute(cs, args);
@@ -101,7 +94,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             cs.sendMessage(Utils.color("&b&lIridiumSkyblock: &bHelp"));
             for (com.iridium.iridiumskyblock.commands.Command c : commands) {
                 if (cs.hasPermission(c.getPermission()) || c.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
-                    cs.sendMessage(Utils.color("&b&l * &7" + c.getAliases().get(0) + ": &b" + c.getDescription()));
+                    cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", c.getAliases().get(0)).replace("%description%", c.getDescription())));
                 }
             }
         } catch (Exception e) {
@@ -117,7 +110,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 ArrayList<String> result = new ArrayList<>();
                 for (com.iridium.iridiumskyblock.commands.Command command : commands) {
                     for (String alias : command.getAliases()) {
-                        if (alias.toLowerCase().startsWith(args[0].toLowerCase())) {
+                        if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))) {
                             result.add(alias);
                         }
                     }
@@ -125,7 +118,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 return result;
             }
             for (com.iridium.iridiumskyblock.commands.Command command : commands) {
-                if (command.getAliases().contains(args[0])) {
+                if (command.getAliases().contains(args[0]) && (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))) {
                     return command.TabComplete(cs, cmd, s, args);
                 }
             }

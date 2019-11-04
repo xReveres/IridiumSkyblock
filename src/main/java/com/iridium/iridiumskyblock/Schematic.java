@@ -108,7 +108,7 @@ public class Schematic {
         short width = getWidth();
         short height = getHeight();
         loc.subtract(width / 2, height / 2, length / 2); // Centers the schematic
-        loc.getBlock().setType(Material.STONE, false);
+        loc.getBlock().setType(Material.STONE, true);//Just incase something fails ?
         if (schematicVersion == SchematicVersion.v_1_8) {
 
             byte[] blocks = getBlocks();
@@ -121,7 +121,7 @@ public class Schematic {
                         int index = y * width * length + z * width + x;
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                         if (Material.getMaterial(blocks[index]) != null) {
-                            block.setTypeIdAndData(blocks[index], blockData[index], false);
+                            block.setTypeIdAndData(blocks[index], blockData[index], true);
                         }
                     }
                 }
@@ -159,7 +159,6 @@ public class Schematic {
                         }
                     }
                 }
-
             }
         } else {
             //LoadBlocks
@@ -175,7 +174,45 @@ public class Schematic {
                                 for (String s : palette.keySet()) {
                                     int i = getChildTag(palette, s, IntTag.class).getValue();
                                     if (blockdata[index] == i) {
-                                        setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), false);
+                                        setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (version == 2) {
+                        //Tile Entities
+                        for (Tag tag : tileEntities) {
+                            if (!(tag instanceof CompoundTag))
+                                continue;
+                            CompoundTag t = (CompoundTag) tag;
+                            Map<String, Tag> tags = t.getValue();
+
+                            int[] pos = getChildTag(tags, "Pos", IntArrayTag.class).getValue();
+
+                            int x = pos[0];
+                            int y = pos[1];
+                            int z = pos[2];
+
+                            String id = getChildTag(tags, "Id", StringTag.class).getValue();
+                            if (id.equalsIgnoreCase("minecraft:chest")) {
+                                List<Tag> items = getChildTag(tags, "Items", ListTag.class).getValue();
+                                Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
+                                if (block.getState() instanceof Chest) {
+                                    Chest chest = (Chest) block.getState();
+                                    for (Tag item : items) {
+                                        if (!(item instanceof CompoundTag))
+                                            continue;
+                                        Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
+                                        byte slot = getChildTag(itemtag, "Slot", ByteTag.class).getValue();
+                                        String name = (getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
+                                        Byte amount = getChildTag(itemtag, "Count", ByteTag.class).getValue();
+                                        if (MultiversionMaterials.fromString(name.toUpperCase()) != null) {
+                                            Material material = MultiversionMaterials.fromString(name.toUpperCase()).parseMaterial();
+                                            if (material != null) {
+                                                chest.getBlockInventory().setItem(slot, new ItemStack(material, amount));
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -222,6 +259,9 @@ public class Schematic {
             if (version == 1) {
                 List<Tag> TileEntities = getChildTag(schematic, "TileEntities", ListTag.class).getValue();
                 return new Schematic(width, length, height, TileEntities, blockdata, palette, version);
+            } else if (version == 2) {
+                List<Tag> BlockEntities = getChildTag(schematic, "BlockEntities", ListTag.class).getValue();
+                return new Schematic(width, length, height, BlockEntities, blockdata, palette, version);
             } else {
                 return new Schematic(width, length, height, blockdata, palette, version);
             }
