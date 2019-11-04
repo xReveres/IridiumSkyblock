@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,18 +12,13 @@ public class onPlayerMove implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         try {
-            if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-                if (e.getPlayer().getLocation().getY() < 0 && e.getPlayer().hasPermission("iridiumskyblock.voidtp")) {
-                    User u = User.getUser(e.getPlayer());
-                    if (u.getIsland() != null) {
-                        u.getIsland().teleportHome(e.getPlayer());
-                    }
-                }
-            } else if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
-                if (e.getPlayer().getLocation().getY() < 0) {
-                    User u = User.getUser(e.getPlayer());
-                    if (u.getIsland() != null) {
-                        u.getIsland().teleportNetherHome(e.getPlayer());
+            if (e.getPlayer().getLocation().getY() < 0 && e.getPlayer().hasPermission("iridiumskyblock.voidtp")) {
+                Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getPlayer().getLocation());
+                if (island != null) {
+                    if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                        island.teleportHome(e.getPlayer());
+                    } else {
+                        island.teleportNetherHome(e.getPlayer());
                     }
                 }
             }
