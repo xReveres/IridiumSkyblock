@@ -149,7 +149,7 @@ public class Island {
         permissions = new HashMap<Role, Permissions>() {{
             for (Role role : Role.values()) {
                 if (role == Role.Visitor) {
-                    put(role, new Permissions(false, false, true, false, false, false, false, false, false));
+                    put(role, new Permissions(false, false, true, false, false, false, false, false, false, true));
                 } else {
                     put(role, new Permissions());
                 }
