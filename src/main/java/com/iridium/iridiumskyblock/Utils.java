@@ -111,11 +111,32 @@ public class Utils {
     }
 
     public static ItemStack makeItem(Inventories.Item item, Island island) {
-        return makeItem(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+        try {
+            return makeItem(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+        } catch (Exception e) {
+            try {
+                return makeItem(Material.getMaterial("LEGACY_" + item.material.name()), item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            } catch (Exception ex) {
+                try {
+                    return makeItem(Material.getMaterial("LEGACY_" + MultiversionMaterials.fromString(item.material.name()).name()), item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+
+                } catch (Exception ex1) {
+                    return makeItem(Material.STONE, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+                }
+            }
+        }
     }
 
     public static ItemStack makeItemHidden(Inventories.Item item, Island island) {
-        return makeItemHidden(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+        try {
+            return makeItemHidden(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+        } catch (Exception e) {
+            try {
+                return makeItemHidden(Material.getMaterial("LEGACY_" + item.material.name()), item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            } catch (Exception ex) {
+                return makeItemHidden(Material.STONE, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            }
+        }
     }
 
     public static ItemStack makeItemHidden(Material material, int amount, int type, String name, List<String> lore) {
