@@ -34,7 +34,7 @@ public class PermissionsGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
-        if (role != null) {
+        if (role != null && getIsland() != null) {
             int i = 0;
             try {
                 for (Field field : Permissions.class.getDeclaredFields()) {

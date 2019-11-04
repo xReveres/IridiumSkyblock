@@ -502,6 +502,7 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getMissionsGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getUpgradeGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getWarpGUI().scheduler);
+        Bukkit.getScheduler().cancelTask(getPermissionsGUI().scheduler);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         if (b != -1) Bukkit.getScheduler().cancelTask(b);
