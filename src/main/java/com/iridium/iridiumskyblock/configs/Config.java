@@ -19,6 +19,7 @@ public class Config {
     }
 
     public String prefix = "&b&lIridiumSkyblock";
+    public boolean voidTeleport = true;
     public boolean notifyAvailableUpdate = true;
     public boolean useVault = false;
     public int distance = 150;
