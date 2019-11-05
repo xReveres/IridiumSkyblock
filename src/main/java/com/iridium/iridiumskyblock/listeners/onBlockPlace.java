@@ -28,8 +28,10 @@ public class onBlockPlace implements Listener {
                 else if (Utils.isBlockValuable(e.getBlock()))
                     island.blocks.add(e.getBlock().getLocation());
             } else {
-                if (!u.bypassing) {
-                    e.setCancelled(true);
+                if (e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                    if (!u.bypassing) {
+                        e.setCancelled(true);
+                    }
                 }
             }
         } catch (

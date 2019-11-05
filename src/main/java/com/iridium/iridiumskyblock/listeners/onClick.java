@@ -20,8 +20,10 @@ public class onClick implements Listener {
                     if ((!island.getPermissions(u.islandID == island.getId() ? u.role : Role.Visitor).interact) && !u.bypassing)
                         e.setCancelled(true);
                 } else {
-                    if (!u.bypassing) {
-                        e.setCancelled(true);
+                    if (e.getClickedBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getClickedBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                        if (!u.bypassing) {
+                            e.setCancelled(true);
+                        }
                     }
                 }
             }
