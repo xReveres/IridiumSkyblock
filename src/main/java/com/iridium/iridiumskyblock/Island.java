@@ -1,12 +1,12 @@
 package com.iridium.iridiumskyblock;
 
-import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
+import com.iridium.iridiumskyblock.support.Wildstacker;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -229,8 +229,8 @@ public class Island {
                 if (IridiumSkyblock.getConfiguration().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
                     int temp = IridiumSkyblock.getConfiguration().spawnervalue.get(spawner.getSpawnedType().name());
 
-                    if (IridiumSkyblock.Wildstacker) {
-                        temp *= WildStackerAPI.getSpawnersAmount((CreatureSpawner) loc.getBlock().getState());
+                    if (Wildstacker.enabled) {
+                        temp *= Wildstacker.getSpawnerAmount((CreatureSpawner) loc.getBlock().getState());
                     }
 
                     v += temp;

@@ -7,13 +7,13 @@ import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.serializer.Persist;
-import net.milkbowl.vault.economy.Economy;
+import com.iridium.iridiumskyblock.support.Vault;
+import com.iridium.iridiumskyblock.support.Wildstacker;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -53,10 +53,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public boolean updatingBlocks = false;
 
-    public static boolean Wildstacker = false;
-
-    public static Economy econ = null;
-
     private String latest;
 
     @Override
@@ -67,8 +63,6 @@ public class IridiumSkyblock extends JavaPlugin {
             super.onEnable();
             getDataFolder().mkdir();
 
-            Wildstacker = Bukkit.getPluginManager().isPluginEnabled("WildStacker");
-
             persist = new Persist();
 
             loadConfigs();
@@ -76,7 +70,8 @@ public class IridiumSkyblock extends JavaPlugin {
             commandManager = new CommandManager("island");
             commandManager.registerCommands();
 
-            setupEconomy();
+            if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
+            if(Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
             saveConfigs();
 
             // Call it as a delayed task to wait for the server to properly load first
@@ -126,18 +121,6 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             sendErrorMessage(e);
         }
-    }
-
-    public static boolean setupEconomy() {
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return econ != null;
     }
 
     @Override

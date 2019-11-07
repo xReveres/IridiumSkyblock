@@ -76,12 +76,14 @@
             <groupId>com.github.OmerBenGera</groupId>
             <artifactId>WildStackerAPI</artifactId>
             <version>master</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>
             <version>1.7.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
