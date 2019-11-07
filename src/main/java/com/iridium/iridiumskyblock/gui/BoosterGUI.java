@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.support.Vault;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -53,10 +54,10 @@ public class BoosterGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getCurrentItem() == null) return;
             if (IridiumSkyblock.getBoosters().spawnerBooster.isEnabled() && e.getCurrentItem().equals(spawner)) {
-                if (IridiumSkyblock.getConfiguration().useVault ? IridiumSkyblock.econ.getBalance(p) >= IridiumSkyblock.getBoosters().spawnerBooster.getCost() : island.getCrystals() >= IridiumSkyblock.getBoosters().spawnerBooster.getCost()) {
+                if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getBoosters().spawnerBooster.getCost() : island.getCrystals() >= IridiumSkyblock.getBoosters().spawnerBooster.getCost()) {
                     if (island.getSpawnerBooster() == 0) {
                         if (IridiumSkyblock.getConfiguration().useVault) {
-                            IridiumSkyblock.econ.withdrawPlayer(p, IridiumSkyblock.getBoosters().spawnerBooster.getCost());
+                            Vault.econ.withdrawPlayer(p, IridiumSkyblock.getBoosters().spawnerBooster.getCost());
                         } else {
                             island.setCrystals(island.getCrystals() - IridiumSkyblock.getBoosters().spawnerBooster.getCost());
                         }
@@ -69,10 +70,10 @@ public class BoosterGUI extends GUI implements Listener {
                 }
             }
             if (IridiumSkyblock.getBoosters().farmingBooster.isEnabled() && e.getCurrentItem().equals(farming)) {
-                if (IridiumSkyblock.getConfiguration().useVault ? IridiumSkyblock.econ.getBalance(p) >= IridiumSkyblock.getBoosters().farmingBooster.getCost() : island.getCrystals() >= IridiumSkyblock.getBoosters().farmingBooster.getCost()) {
+                if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getBoosters().farmingBooster.getCost() : island.getCrystals() >= IridiumSkyblock.getBoosters().farmingBooster.getCost()) {
                     if (island.getFarmingBooster() == 0) {
                         if (IridiumSkyblock.getConfiguration().useVault) {
-                            IridiumSkyblock.econ.withdrawPlayer(p, IridiumSkyblock.getBoosters().farmingBooster.getCost());
+                            Vault.econ.withdrawPlayer(p, IridiumSkyblock.getBoosters().farmingBooster.getCost());
                         } else {
                             island.setCrystals(island.getCrystals() - IridiumSkyblock.getBoosters().farmingBooster.getCost());
                         }
@@ -85,10 +86,10 @@ public class BoosterGUI extends GUI implements Listener {
                 }
             }
             if (IridiumSkyblock.getBoosters().spawnerBooster.isEnabled() && e.getCurrentItem().equals(exp)) {
-                if (IridiumSkyblock.getConfiguration().useVault ? IridiumSkyblock.econ.getBalance(p) >= IridiumSkyblock.getBoosters().experianceBooster.getCost() : island.getCrystals() >= IridiumSkyblock.getBoosters().experianceBooster.getCost()) {
+                if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getBoosters().experianceBooster.getCost() : island.getCrystals() >= IridiumSkyblock.getBoosters().experianceBooster.getCost()) {
                     if (island.getExpBooster() == 0) {
                         if (IridiumSkyblock.getConfiguration().useVault) {
-                            IridiumSkyblock.econ.withdrawPlayer(p, IridiumSkyblock.getBoosters().experianceBooster.getCost());
+                            Vault.econ.withdrawPlayer(p, IridiumSkyblock.getBoosters().experianceBooster.getCost());
                         } else {
                             island.setCrystals(island.getCrystals() - IridiumSkyblock.getBoosters().experianceBooster.getCost());
                         }
@@ -101,10 +102,10 @@ public class BoosterGUI extends GUI implements Listener {
                 }
             }
             if (IridiumSkyblock.getBoosters().spawnerBooster.isEnabled() && e.getCurrentItem().equals(flight)) {
-                if (IridiumSkyblock.getConfiguration().useVault ? IridiumSkyblock.econ.getBalance(p) >= IridiumSkyblock.getBoosters().flightBooster.getCost() : island.getCrystals() >= IridiumSkyblock.getBoosters().flightBooster.getCost()) {
+                if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getBoosters().flightBooster.getCost() : island.getCrystals() >= IridiumSkyblock.getBoosters().flightBooster.getCost()) {
                     if (island.getFlightBooster() == 0) {
                         if (IridiumSkyblock.getConfiguration().useVault) {
-                            IridiumSkyblock.econ.withdrawPlayer(p, IridiumSkyblock.getBoosters().flightBooster.getCost());
+                            Vault.econ.withdrawPlayer(p, IridiumSkyblock.getBoosters().flightBooster.getCost());
                         } else {
                             island.setCrystals(island.getCrystals() - IridiumSkyblock.getBoosters().flightBooster.getCost());
                         }
