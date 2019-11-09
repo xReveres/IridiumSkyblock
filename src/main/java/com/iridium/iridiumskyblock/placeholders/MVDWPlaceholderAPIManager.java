@@ -141,13 +141,13 @@ public class MVDWPlaceholderAPIManager {
             return user.getIsland() != null ? user.getIsland().getFlightBooster() + "" : "N/A";
         });
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) { //TODO there is probabbly a more efficient way to do this?
             int finalI = i;
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_name_", e -> {
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_name_"+i, e -> {
                 List<Island> islands = Utils.getTopIslands();
                 return islands.size() > finalI ? User.getUser(Utils.getTopIslands().get(finalI).getOwner()).name : "N/A";
             });
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_value_", e -> {
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_value_"+i, e -> {
                 List<Island> islands = Utils.getTopIslands();
                 return islands.size() > finalI ? Utils.getTopIslands().get(finalI).getValue() + "" : "N/A";
             });
