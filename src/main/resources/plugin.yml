@@ -3,7 +3,7 @@ version: 2.1.7
 description: Skyblock Redefined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 author: IridiumLLC
-softdepend: [PlaceholderAPI, MVdWPlaceholderAPI, WildStacker]
+softdepend: [PlaceholderAPI, MVdWPlaceholderAPI, WildStacker, Vault, ]
 commands:
   island:
     aliases: ["is", "IridiumSkyblock"]
