@@ -71,7 +71,8 @@ public class IridiumSkyblock extends JavaPlugin {
             commandManager.registerCommands();
 
             if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
-            if(Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
+            if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
+            if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
             saveConfigs();
 
             // Call it as a delayed task to wait for the server to properly load first
@@ -121,6 +122,14 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             sendErrorMessage(e);
         }
+    }
+
+    private void registerMultiverse() {
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + getIslandManager().getWorld().getName() + " normal -g " + getName());
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + getIslandManager().getWorld().getName());
+
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + getIslandManager().getNetherWorld().getName() + " nether -g " + getName());
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + getIslandManager().getNetherWorld().getName());
     }
 
     @Override
