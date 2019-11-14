@@ -1,10 +1,12 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.*;
+import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.material.Crops;
 
 public class onBlockBreak implements Listener {
 
@@ -25,8 +27,9 @@ public class onBlockBreak implements Listener {
                             }
                         }
                     }
-                    if (e.getBlock().getType().equals(Material.CROPS)) {
-                        if (u.getIsland().farmer > -1) {
+                    if (e.getBlock().getState().getData() instanceof Crops) {
+                        CropState state = ((Crops) e.getBlock().getState().getData()).getState();
+                        if (u.getIsland().farmer > -1 && state == CropState.RIPE) {
                             u.getIsland().farmer++;
                             if (u.getIsland().farmer >= IridiumSkyblock.getMissions().farmer.getAmount()) {
                                 island.farmer = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
