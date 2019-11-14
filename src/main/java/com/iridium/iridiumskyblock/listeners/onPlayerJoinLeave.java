@@ -25,7 +25,7 @@ public class onPlayerJoinLeave implements Listener {
                 if (user.getIsland() != null) {
                     if (user.getIsland().getOwner().equalsIgnoreCase(e.getPlayer().getName())) {
                         user.role = Role.Owner;
-                        user.getIsland().setOwner(e.getPlayer().getUniqueId().toString());
+                        user.getIsland().setOwner(e.getPlayer());
                     } else {
                         user.role = Role.Visitor;
                     }
@@ -39,7 +39,7 @@ public class onPlayerJoinLeave implements Listener {
                 User user = IridiumSkyblock.getIslandManager().users.get(e.getPlayer().getUniqueId().toString());
                 if (user.getIsland() != null) {
                     if (user.getIsland().getOwner().equals(e.getPlayer().getName())) {
-                        user.getIsland().setOwner(e.getPlayer().getUniqueId().toString());
+                        user.getIsland().setOwner(e.getPlayer());
                     }
                     user.name = e.getPlayer().getName();
                     user.getIsland().getMembers().remove(e.getPlayer().getName());

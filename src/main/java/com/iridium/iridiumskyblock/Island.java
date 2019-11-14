@@ -607,8 +607,10 @@ public class Island {
         return owner;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwner(OfflinePlayer owner) {
+        User.getUser(getOwner()).role = Role.CoOwner;
+        this.owner = owner.getUniqueId().toString();
+        User.getUser(getOwner()).role = Role.Owner;
     }
 
     public int getId() {

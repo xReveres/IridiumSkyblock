@@ -50,6 +50,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(IridiumSkyblock.getCommands().worldBorderCommand);
         registerCommand(IridiumSkyblock.getCommands().setHomeCommand);
         registerCommand(IridiumSkyblock.getCommands().permissionsCommand);
+        registerCommand(IridiumSkyblock.getCommands().transferCommand);
     }
 
     public void registerCommand(com.iridium.iridiumskyblock.commands.Command command) {

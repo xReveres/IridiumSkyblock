@@ -57,5 +57,6 @@ public class Messages {
     public String isNotSafe = "%prefix% &7This location is not safe.";
     public String notInValidWorld = "%prefix% &7You can't use that command in this world. Use /is worlds for a list of valid worlds.";
     public String helpMessage = "&b&l * &7 %command% : &b %description%";
+    public String transferdOwnership = "%prefix% &7Island ownership transferred to %player%.";
 
 }

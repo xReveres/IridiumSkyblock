@@ -32,4 +32,5 @@ public class Commands {
     public BypassCommand bypassCommand = new BypassCommand();
     public SetHomeCommand setHomeCommand = new SetHomeCommand();
     public PermissionsCommand permissionsCommand = new PermissionsCommand();
+    public TransferCommand transferCommand = new TransferCommand();
 }
