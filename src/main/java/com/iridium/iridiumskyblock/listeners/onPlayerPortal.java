@@ -12,17 +12,19 @@ public class onPlayerPortal implements Listener {
 
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent e) {
-        User u = User.getUser(e.getPlayer());
-        Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getFrom());
-        if (island != null) {
-            if (e.getFrom().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-                e.setCancelled(true);
-                if (island.getPermissions(u.islandID == island.getId() ? u.getRole() : Role.Visitor).useNetherPortal || u.bypassing)
-                    island.teleportNetherHome(e.getPlayer());
-            } else if (e.getFrom().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
-                e.setCancelled(true);
-                if (island.getPermissions(u.islandID == island.getId() ? u.getRole() : Role.Visitor).useNetherPortal || u.bypassing)
-                    island.teleportHome(e.getPlayer());
+        if (IridiumSkyblock.getConfiguration().netherIslands) {
+            User u = User.getUser(e.getPlayer());
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getFrom());
+            if (island != null) {
+                if (e.getFrom().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                    e.setCancelled(true);
+                    if (island.getPermissions(u.islandID == island.getId() ? u.getRole() : Role.Visitor).useNetherPortal || u.bypassing)
+                        island.teleportNetherHome(e.getPlayer());
+                } else if (e.getFrom().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                    e.setCancelled(true);
+                    if (island.getPermissions(u.islandID == island.getId() ? u.getRole() : Role.Visitor).useNetherPortal || u.bypassing)
+                        island.teleportHome(e.getPlayer());
+                }
             }
         }
     }
