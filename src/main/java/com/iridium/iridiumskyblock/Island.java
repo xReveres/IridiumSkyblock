@@ -498,7 +498,6 @@ public class Island {
 
     public void delete() {
         Bukkit.getPluginManager().callEvent(new IslandDeleteEvent(this));
-        spawnPlayers();
 
         Bukkit.getScheduler().cancelTask(getMembersGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBoosterGUI().scheduler);
@@ -511,12 +510,13 @@ public class Island {
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         if (b != -1) Bukkit.getScheduler().cancelTask(b);
         deleteBlocks();
+        clearInventories();
+        spawnPlayers();
         killEntities();
         for (String player : members) {
             User.getUser(player).islandID = 0;
             if (Bukkit.getPlayer(player) != null) Bukkit.getPlayer(player).closeInventory();
         }
-        clearInventories();
         hideBorder();
         this.owner = null;
         this.pos1 = null;
