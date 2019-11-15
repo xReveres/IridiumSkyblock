@@ -75,18 +75,18 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         }
         if (placeholder.startsWith("island_top_name_")) {
             try {
-                Integer integer = Integer.getInteger(placeholder.replace("island_top_name_", ""));
+                Integer integer = Integer.parseInt(placeholder.replace("island_top_name_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer ? User.getUser(Utils.getTopIslands().get(integer).getOwner()).name : "N/A";
-            } catch (NumberFormatException ignored) {
-
+                return islands.size() > integer ? User.getUser(Utils.getTopIslands().get(integer - 1).getOwner()).name : "N/A";
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
             }
         }
         if (placeholder.startsWith("island_top_value_")) {
             try {
-                Integer integer = Integer.getInteger(placeholder.replace("island_top_value_", ""));
+                Integer integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer ? Utils.getTopIslands().get(integer).getValue() + "" : "N/A";
+                return islands.size() > integer ? Utils.getTopIslands().get(integer - 1).getValue() + "" : "N/A";
             } catch (NumberFormatException ignored) {
 
             }
