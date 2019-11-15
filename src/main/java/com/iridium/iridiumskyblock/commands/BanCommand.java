@@ -32,6 +32,11 @@ public class BanCommand extends Command {
                 if (!User.getUser(player).getIsland().equals(user.getIsland())) {
                     user.getIsland().addBan(User.getUser(player));
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerBanned.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    if (player.getPlayer() != null) {
+                        if (user.getIsland().isInIsland(player.getPlayer().getLocation())) {
+                            user.getIsland().spawnPlayer(player.getPlayer());
+                        }
+                    }
                 }
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

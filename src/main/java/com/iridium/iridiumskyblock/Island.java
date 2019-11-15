@@ -545,16 +545,19 @@ public class Island {
         for (Chunk c : chunks) {
             for (Entity e : c.getEntities()) {
                 if (e instanceof Player) {
-                    Player player = (Player) e;
-                    if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
-                        EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
-                        Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-                        player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
-                    } else {
-                        player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-                    }
+                    spawnPlayer((Player) e);
                 }
             }
+        }
+    }
+
+    public void spawnPlayer(Player player) {
+        if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
+            EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
+            Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+            player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
+        } else {
+            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
         }
     }
 
