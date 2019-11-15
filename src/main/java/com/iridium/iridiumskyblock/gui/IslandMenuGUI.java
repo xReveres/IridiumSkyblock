@@ -10,6 +10,7 @@ public class IslandMenuGUI extends GUI implements Listener {
 
     public IslandMenuGUI(Island island) {
         super(island, 27, IridiumSkyblock.getInventories().islandMenuGUITitle);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class IslandMenuGUI extends GUI implements Listener {
                     break;
                 case 26:
                     p.closeInventory();
-                    if (island.equals(getIsland()) || u.role == Role.Owner) {
+                    if (!(island.equals(getIsland())) || u.role == Role.Owner) {
                         getIsland().delete();
                     } else {
                         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
