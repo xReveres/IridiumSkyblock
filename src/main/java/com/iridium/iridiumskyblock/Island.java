@@ -425,7 +425,7 @@ public class Island {
     }
 
     public void teleportHome(Player p) {
-        if (bans.contains(p.getUniqueId().toString()) && !members.contains(p.getUniqueId().toString())) {
+        if (isBanned(User.getUser(p)) && !members.contains(p.getUniqueId().toString())) {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return;
         }
@@ -463,6 +463,10 @@ public class Island {
     }
 
     public void teleportNetherHome(Player p) {
+        if (isBanned(User.getUser(p)) && !members.contains(p.getUniqueId().toString())) {
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            return;
+        }
         if (getSchematic() == null) {
             User u = User.getUser(p);
             if (u.getIsland().equals(this)) {
@@ -539,6 +543,11 @@ public class Island {
     public void addBan(User user) {
         if (bans == null) bans = new HashSet<>();
         bans.add(user.player);
+    }
+
+    public boolean isBanned(User user) {
+        if (bans == null) bans = new HashSet<>();
+        return bans.contains(user.player);
     }
 
     public void spawnPlayers() {
