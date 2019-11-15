@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.*;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -53,6 +54,8 @@ public class PermissionsGUI extends GUI implements Listener {
     @Override
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        Player p = (Player) e.getWhoClicked();
+        User u = User.getUser(p);
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
             int i = 11;
@@ -67,18 +70,22 @@ public class PermissionsGUI extends GUI implements Listener {
                 PermissionsGUI gui = permissions.get(role);
                 if (e.getInventory().equals(gui.getInventory())) {
                     e.setCancelled(true);
-                    int i = 0;
-                    try {
-                        for (Field field : Permissions.class.getDeclaredFields()) {
-                            Object object = field.get(getIsland().getPermissions(role));
-                            if (i == e.getSlot()) {
-                                field.setAccessible(true);
-                                field.setBoolean(getIsland().getPermissions(role), !(Boolean) object);
+                    if (role.getRank() < u.role.getRank()) {
+                        int i = 0;
+                        try {
+                            for (Field field : Permissions.class.getDeclaredFields()) {
+                                Object object = field.get(getIsland().getPermissions(role));
+                                if (i == e.getSlot()) {
+                                    field.setAccessible(true);
+                                    field.setBoolean(getIsland().getPermissions(role), !(Boolean) object);
+                                }
+                                i++;
                             }
-                            i++;
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                    } else {
+                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 }
             }
