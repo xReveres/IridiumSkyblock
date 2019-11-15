@@ -12,7 +12,7 @@ public class onPlayerMove implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         try {
-            if (e.getPlayer().getLocation().getY() < 0 && e.getPlayer().hasPermission("iridiumskyblock.voidteleport") && IridiumSkyblock.getConfiguration().voidTeleport) {
+            if (e.getPlayer().getLocation().getY() < 0 && IridiumSkyblock.getConfiguration().voidTeleport) {
                 Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getPlayer().getLocation());
                 if (island != null) {
                     if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {

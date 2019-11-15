@@ -98,6 +98,7 @@ public class IslandManager {
 
     private void makeWorld(Environment env, String name) {
         WorldCreator wc = new WorldCreator(name);
+        wc.type(WorldType.FLAT);
         wc.generateStructures(false);
         wc.generator(new SkyblockGenerator());
         wc.environment(env);
