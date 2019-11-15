@@ -34,4 +34,5 @@ public class Commands {
     public PermissionsCommand permissionsCommand = new PermissionsCommand();
     public TransferCommand transferCommand = new TransferCommand();
     public AdminCommand adminCommand = new AdminCommand();
+    public GiveBoosterCommand giveBoosterCommand = new GiveBoosterCommand();
 }
