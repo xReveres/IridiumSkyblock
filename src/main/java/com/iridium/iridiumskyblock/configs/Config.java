@@ -1,6 +1,8 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.MissionRestart;
+import com.iridium.iridiumskyblock.Permissions;
+import com.iridium.iridiumskyblock.Role;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 
@@ -28,6 +30,15 @@ public class Config {
     public Biome defaultBiome = Biome.PLAINS;
     public Biome netherBiome;
     public MissionRestart missionRestart = MissionRestart.Daily;
+    public HashMap<Role, Permissions> defaultPermissions = new HashMap<Role, Permissions>() {{
+        for (Role role : Role.values()) {
+            if (role == Role.Visitor) {
+                put(role, new Permissions(false, false, false, false, false, false, false, false, false, true, true));
+            } else {
+                put(role, new Permissions());
+            }
+        }
+    }};
     public HashMap<Material, Integer> blockvalue = new HashMap<Material, Integer>() {{
         put(Material.DIAMOND_BLOCK, 10);
         put(Material.EMERALD_BLOCK, 20);

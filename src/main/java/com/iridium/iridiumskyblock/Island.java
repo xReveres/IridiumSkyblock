@@ -148,15 +148,7 @@ public class Island {
         b = -1;
         borderColor = NMSUtils.Color.Blue;
         visit = true;
-        permissions = new HashMap<Role, Permissions>() {{
-            for (Role role : Role.values()) {
-                if (role == Role.Visitor) {
-                    put(role, new Permissions(false, false, false, false, false, false, false, false, false, true, true));
-                } else {
-                    put(role, new Permissions());
-                }
-            }
-        }};
+        permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
         init();
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
