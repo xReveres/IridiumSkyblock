@@ -83,7 +83,11 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     Player p = (Player) cs;
                     User u = User.getUser(p);
                     if (u.getIsland() != null) {
-                        u.getIsland().teleportHome(p);
+                        if (IridiumSkyblock.getConfiguration().islandMenu) {
+                            p.openInventory(u.getIsland().getIslandMenuGUI().getInventory());
+                        } else {
+                            u.getIsland().teleportHome(p);
+                        }
                         return true;
                     } else {
                         IridiumSkyblock.getIslandManager().createIsland(p);

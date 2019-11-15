@@ -60,6 +60,7 @@ public class Island {
     private transient BorderColorGUI borderColorGUI;
     private transient SchematicSelectGUI schematicSelectGUI;
     private transient PermissionsGUI permissionsGUI;
+    private transient IslandMenuGUI islandMenuGUI;
 
     private int id;
 
@@ -124,6 +125,7 @@ public class Island {
         borderColorGUI = new BorderColorGUI(this);
         schematicSelectGUI = new SchematicSelectGUI(this);
         permissionsGUI = new PermissionsGUI(this);
+        islandMenuGUI = new IslandMenuGUI(this);
         spawnerBooster = 0;
         farmingBooster = 0;
         expBooster = 0;
@@ -362,6 +364,7 @@ public class Island {
         borderColorGUI = new BorderColorGUI(this);
         schematicSelectGUI = new SchematicSelectGUI(this);
         permissionsGUI = new PermissionsGUI(this);
+        islandMenuGUI = new IslandMenuGUI(this);
 
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
@@ -503,6 +506,7 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getUpgradeGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getWarpGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getPermissionsGUI().scheduler);
+        Bukkit.getScheduler().cancelTask(getIslandMenuGUI().scheduler);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         if (b != -1) Bukkit.getScheduler().cancelTask(b);
@@ -643,6 +647,10 @@ public class Island {
 
     public PermissionsGUI getPermissionsGUI() {
         return permissionsGUI;
+    }
+
+    public IslandMenuGUI getIslandMenuGUI() {
+        return islandMenuGUI;
     }
 
     public BorderColorGUI getBorderColorGUI() {
