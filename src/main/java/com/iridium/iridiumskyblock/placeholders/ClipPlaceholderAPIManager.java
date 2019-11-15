@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.Utils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
@@ -45,17 +46,17 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
 
         switch (placeholder) {
             case "island_value":
-                return user.getIsland() != null ? user.getIsland().getValue() + "" : "N/A";
+                return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getValue()) + "" : "N/A";
             case "island_rank":
-                return user.getIsland() != null ? Utils.getIslandRank(user.getIsland()) + "" : "N/A";
+                return user.getIsland() != null ? NumberFormat.getInstance().format(Utils.getIslandRank(user.getIsland())) + "" : "N/A";
             case "island_owner":
                 return user.getIsland() != null ? User.getUser(user.getIsland().getOwner()).name : "N/A";
             case "island_crystals":
-                return user.getIsland() != null ? user.getIsland().getCrystals() + "" : "N/A";
+                return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getCrystals()) + "" : "N/A";
             case "island_members":
                 return user.getIsland() != null ? user.getIsland().getMembers().size() + "" : "N/A";
             case "island_upgrade_member_level":
-                return user.getIsland() != null ? user.getIsland().getMemberLevel() + "" : "N/A";
+                return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getMemberLevel()) + "" : "N/A";
             case "island_upgrade_member_amount":
                 return user.getIsland() != null ? IridiumSkyblock.getUpgrades().member.get(user.getIsland().getMemberLevel()).getSize() + "" : "N/A";
             case "island_upgrade_size_level":
@@ -86,7 +87,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 Integer integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer ? Utils.getTopIslands().get(integer - 1).getValue() + "" : "N/A";
+                return islands.size() > integer ? NumberFormat.getInstance().format(Utils.getTopIslands().get(integer - 1).getValue()) + "" : "N/A";
             } catch (NumberFormatException ignored) {
 
             }
