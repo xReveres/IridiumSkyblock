@@ -33,4 +33,5 @@ public class Commands {
     public SetHomeCommand setHomeCommand = new SetHomeCommand();
     public PermissionsCommand permissionsCommand = new PermissionsCommand();
     public TransferCommand transferCommand = new TransferCommand();
+    public AdminCommand adminCommand = new AdminCommand();
 }
