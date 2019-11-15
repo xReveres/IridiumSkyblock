@@ -35,4 +35,6 @@ public class Commands {
     public TransferCommand transferCommand = new TransferCommand();
     public AdminCommand adminCommand = new AdminCommand();
     public GiveBoosterCommand giveBoosterCommand = new GiveBoosterCommand();
+    public BanCommand banCommand = new BanCommand();
+    public UnBanCommand unBanCommand = new UnBanCommand();
 }

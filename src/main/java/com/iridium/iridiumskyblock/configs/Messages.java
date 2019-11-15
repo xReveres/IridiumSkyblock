@@ -58,5 +58,8 @@ public class Messages {
     public String notInValidWorld = "%prefix% &7You can't use that command in this world. Use /is worlds for a list of valid worlds.";
     public String helpMessage = "&b&l * &7 %command% : &b %description%";
     public String transferdOwnership = "%prefix% &7Island ownership transferred to %player%.";
+    public String bannedFromIsland = "%prefix% &7You have been banned from vising this island.";
+    public String playerBanned = "%prefix% &7You have banned %player% from vising your island.";
+    public String playerUnBanned = "%prefix% &7You have un-banned %player% from vising your island.";
 
 }
