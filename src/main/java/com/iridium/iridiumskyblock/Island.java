@@ -105,7 +105,7 @@ public class Island {
 
     private String schematic;
 
-    private List<String> bans;
+    private HashSet<String> bans;
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
@@ -151,7 +151,7 @@ public class Island {
         borderColor = NMSUtils.Color.Blue;
         visit = true;
         permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
-        this.bans = new ArrayList<>();
+        this.bans = new HashSet<>();
         init();
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
@@ -532,12 +532,12 @@ public class Island {
     }
 
     public void removeBan(User user) {
-        if (bans == null) bans = new ArrayList<>();
+        if (bans == null) bans = new HashSet<>();
         bans.remove(user.player);
     }
 
     public void addBan(User user) {
-        if (bans == null) bans = new ArrayList<>();
+        if (bans == null) bans = new HashSet<>();
         bans.add(user.player);
     }
 
