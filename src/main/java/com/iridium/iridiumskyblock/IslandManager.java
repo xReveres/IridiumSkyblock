@@ -55,7 +55,7 @@ public class IslandManager {
         if (IridiumSkyblock.getInstance().schems.size() == 1) {
             for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
                 island.setSchematic(schematic.name);
-                island.setHome(island.getHome().add(schematic.getSpawn()));
+                island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
             }
             island.generateIsland();
             island.teleportHome(player);
