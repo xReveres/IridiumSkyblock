@@ -15,6 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ public class TopGUI extends GUI implements Listener {
                 User owner = User.getUser(island.getOwner());
                 lore.add("&b&l * &7Leader: &b" + owner.name);
                 lore.add("&b&l * &7Rank: &b" + i);
-                lore.add("&b&l * &7Value: &b" + island.getValue());
+                lore.add("&b&l * &7Value: &b" + NumberFormat.getInstance().format(island.getValue()));
                 lore.add("");
                 lore.add("&b&l[!] &bLeft Click to Teleport to this island.");
                 ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + owner.name, Utils.color(lore));
