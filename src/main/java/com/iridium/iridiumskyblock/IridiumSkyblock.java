@@ -66,6 +66,7 @@ public class IridiumSkyblock extends JavaPlugin {
             persist = new Persist();
 
             loadConfigs();
+            saveConfigs();
 
             commandManager = new CommandManager("island");
             commandManager.registerCommands();
@@ -73,7 +74,6 @@ public class IridiumSkyblock extends JavaPlugin {
             if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
             if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
             if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
-            saveConfigs();
 
             // Call it as a delayed task to wait for the server to properly load first
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::islandValueManager);
@@ -89,13 +89,14 @@ public class IridiumSkyblock extends JavaPlugin {
             setupPlaceholderAPI();
 
             startCounting();
-
             latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
+
 
             getLogger().info("-------------------------------");
             getLogger().info("");
             getLogger().info(getDescription().getName() + " Enabled!");
-            if (!latest.equals(getDescription().getVersion())) getLogger().info("Newer version available: " + latest);
+            if (!latest.equals(getDescription().getVersion()))
+                getLogger().info("Newer version available: " + latest);
             getLogger().info("");
             getLogger().info("-------------------------------");
         } catch (Exception e) {
