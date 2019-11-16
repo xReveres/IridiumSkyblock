@@ -369,7 +369,7 @@ public class Island {
         permissionsGUI = new PermissionsGUI(this);
         islandMenuGUI = new IslandMenuGUI(this);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), this::initChunks);
+        initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
             if (spawnerBooster > 0) spawnerBooster--;
             if (farmingBooster > 0) farmingBooster--;

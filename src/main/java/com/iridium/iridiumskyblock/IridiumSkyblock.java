@@ -65,42 +65,47 @@ public class IridiumSkyblock extends JavaPlugin {
 
             persist = new Persist();
 
-            loadConfigs();
-            saveConfigs();
+            Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
 
-            commandManager = new CommandManager("island");
-            commandManager.registerCommands();
+                loadConfigs();
+                saveConfigs();
 
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
-            if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
-            if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
+                commandManager = new CommandManager("island");
+                commandManager.registerCommands();
 
-            // Call it as a delayed task to wait for the server to properly load first
-            Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::islandValueManager);
+                if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
+                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
+                if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
 
-            topGUI = new TopGUI();
+                // Call it as a delayed task to wait for the server to properly load first
+                Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
 
-            registerListeners(new onPlayerCommandPreprocess(), new onPlayerPortal(), topGUI, new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+                topGUI = new TopGUI();
 
-            new Metrics(this);
+                registerListeners(new onPlayerCommandPreprocess(), new onPlayerPortal(), topGUI, new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
-            Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
-                if (islandManager != null && islandManager.getWorld() != null) persist.save(islandManager);
-            }, 0, 20);
+                new Metrics(IridiumSkyblock.getInstance());
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::setupPlaceholderAPI);
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> getPersist().save(islandManager), 0, 20);
 
-            startCounting();
-            latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
+                setupPlaceholderAPI();
+
+                startCounting();
+                try {
+                    latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
-            getLogger().info("-------------------------------");
-            getLogger().info("");
-            getLogger().info(getDescription().getName() + " Enabled!");
-            if (!latest.equals(getDescription().getVersion()))
-                getLogger().info("Newer version available: " + latest);
-            getLogger().info("");
-            getLogger().info("-------------------------------");
+                getLogger().info("-------------------------------");
+                getLogger().info("");
+                getLogger().info(getDescription().getName() + " Enabled!");
+                if (!latest.equals(getDescription().getVersion()))
+                    getLogger().info("Newer version available: " + latest);
+                getLogger().info("");
+                getLogger().info("-------------------------------");
+            });
         } catch (Exception e) {
             sendErrorMessage(e);
         }
@@ -268,7 +273,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public void saveConfigs() {
         if (configuration != null) persist.save(configuration);
         if (missions != null) persist.save(missions);
-        if (islandManager != null && islandManager.getWorld() != null) persist.save(islandManager);
+        if (islandManager != null) persist.save(islandManager);
         if (messages != null) persist.save(messages);
         if (upgrades != null) persist.save(upgrades);
         if (boosters != null) persist.save(boosters);

@@ -24,7 +24,7 @@ public class IslandManager {
 
     public IslandManager() {
         makeWorld();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> nextLocation = new Location(getWorld(), 0, 0, 0));
+        nextLocation = new Location(getWorld(), 0, 0, 0);
     }
 
     public World getWorld() {
@@ -97,10 +97,8 @@ public class IslandManager {
     }
 
     private void makeWorld() {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
-            makeWorld(Environment.NORMAL, worldName);
-            if (IridiumSkyblock.getConfiguration().netherIslands) makeWorld(Environment.NETHER, netherName);
-        });
+        makeWorld(Environment.NORMAL, worldName);
+        if (IridiumSkyblock.getConfiguration().netherIslands) makeWorld(Environment.NETHER, netherName);
     }
 
     private void makeWorld(Environment env, String name) {
