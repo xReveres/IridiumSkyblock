@@ -4,18 +4,18 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BanCommand extends Command {
 
     public BanCommand() {
-        super(Arrays.asList("ban"), "Ban a player from visiting your island", "", true);
+        super(Collections.singletonList("ban"), "Ban a player from visiting your island", "", true);
     }
 
     @Override

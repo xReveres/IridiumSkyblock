@@ -9,12 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class DeleteCommand extends Command {
 
     public DeleteCommand() {
-        super(Arrays.asList("delete"), "Delete you island", "", true);
+        super(Collections.singletonList("delete"), "Delete you island", "", true);
     }
 
     @Override

@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CrystalsCommand extends Command {
 
     public CrystalsCommand() {
-        super(Arrays.asList("crystals"),"Shows you how many crystals you have", "", true);
+        super(Collections.singletonList("crystals"),"Shows you how many crystals you have", "", true);
     }
 
     @Override

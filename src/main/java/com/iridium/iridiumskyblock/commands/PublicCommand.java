@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PublicCommand extends Command {
 
     public PublicCommand() {
-        super(Arrays.asList("public"), "allow players to visit your island", "", true);
+        super(Collections.singletonList("public"), "allow players to visit your island", "", true);
     }
 
     @Override

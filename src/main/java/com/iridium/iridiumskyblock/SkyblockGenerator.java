@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock;
 
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 

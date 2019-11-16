@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.UUID;
 
 public class MembersGUI extends GUI implements Listener {
 

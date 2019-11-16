@@ -10,12 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class JoinCommand extends Command {
 
     public JoinCommand() {
-        super(Arrays.asList("join"),"Join another players island", "", true);
+        super(Collections.singletonList("join"),"Join another players island", "", true);
     }
 
     @Override

@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SetHomeCommand extends Command {
 
     public SetHomeCommand() {
-        super(Arrays.asList("sethome"), "Set your island home", "", true);
+        super(Collections.singletonList("sethome"), "Set your island home", "", true);
     }
 
     @Override

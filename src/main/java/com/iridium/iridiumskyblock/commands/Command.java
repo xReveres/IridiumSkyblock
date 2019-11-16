@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

@@ -3,10 +3,11 @@ package com.iridium.iridiumskyblock.configs;
 import org.bukkit.Material;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Schematics {
-    public List<FakeSchematic> schematics = Arrays.asList(new FakeSchematic("island.schematic", "nether.schematic", 0.5, 97.00, -1.5, "", Material.GRASS, "&b&lDefault Island", Arrays.asList("&7The default island")));
+    public List<FakeSchematic> schematics = Collections.singletonList(new FakeSchematic("island.schematic", "nether.schematic", 0.5, 97.00, -1.5, "", Material.GRASS, "&b&lDefault Island", Collections.singletonList("&7The default island")));
 
     public static class FakeSchematic {
         public String name;

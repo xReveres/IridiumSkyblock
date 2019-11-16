@@ -10,12 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class AdminCommand extends Command {
 
     public AdminCommand() {
-        super(Arrays.asList("admin"), "Control a players Island", "admin", true);
+        super(Collections.singletonList("admin"), "Control a players Island", "admin", true);
     }
 
     @Override

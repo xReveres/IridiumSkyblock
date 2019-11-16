@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BypassCommand extends Command {
 
     public BypassCommand() {
-        super(Arrays.asList("bypass"), "Bypass all island restrictions", "bypass", true);
+        super(Collections.singletonList("bypass"), "Bypass all island restrictions", "bypass", true);
     }
 
     @Override

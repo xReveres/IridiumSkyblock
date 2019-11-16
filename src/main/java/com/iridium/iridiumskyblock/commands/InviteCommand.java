@@ -10,12 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class InviteCommand extends Command {
 
     public InviteCommand() {
-        super(Arrays.asList("invite"), "Invite a player to your island", "", true);
+        super(Collections.singletonList("invite"), "Invite a player to your island", "", true);
     }
 
     @Override

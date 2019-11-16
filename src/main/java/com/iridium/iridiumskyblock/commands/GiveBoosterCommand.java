@@ -9,12 +9,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GiveBoosterCommand extends Command {
 
     public GiveBoosterCommand() {
-        super(Arrays.asList("givebooster"), "Give an Island a Booster", "givebooster", false);
+        super(Collections.singletonList("givebooster"), "Give an Island a Booster", "givebooster", false);
     }
 
     @Override

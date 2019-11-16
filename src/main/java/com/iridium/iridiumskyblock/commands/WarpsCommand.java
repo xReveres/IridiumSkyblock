@@ -5,12 +5,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class WarpsCommand extends Command {
 
     public WarpsCommand() {
-        super(Arrays.asList("warps"), "opens the Warp GUI", "", true);
+        super(Collections.singletonList("warps"), "opens the Warp GUI", "", true);
     }
 
     @Override

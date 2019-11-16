@@ -10,12 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class KickCommand extends Command {
 
     public KickCommand() {
-        super(Arrays.asList("kick"), "Kick a player from your island", "", true);
+        super(Collections.singletonList("kick"), "Kick a player from your island", "", true);
     }
 
     @Override

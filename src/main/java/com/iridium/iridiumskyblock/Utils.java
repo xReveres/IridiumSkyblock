@@ -4,7 +4,6 @@ import com.iridium.iridiumskyblock.configs.Inventories;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.inventory.ItemFlag;

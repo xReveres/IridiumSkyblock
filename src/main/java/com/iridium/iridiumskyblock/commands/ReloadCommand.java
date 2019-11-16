@@ -5,12 +5,13 @@ import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ReloadCommand extends Command {
 
     public ReloadCommand() {
-        super(Arrays.asList("reload"), "Reload your configurations","reload", false);
+        super(Collections.singletonList("reload"), "Reload your configurations","reload", false);
     }
 
     @Override

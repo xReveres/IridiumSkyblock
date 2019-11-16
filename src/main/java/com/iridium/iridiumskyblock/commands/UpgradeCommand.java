@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class UpgradeCommand extends Command {
 
     public UpgradeCommand() {
-        super(Arrays.asList("upgrade"), "Opens the Upgrade GUI", "", true);
+        super(Collections.singletonList("upgrade"), "Opens the Upgrade GUI", "", true);
     }
 
     @Override

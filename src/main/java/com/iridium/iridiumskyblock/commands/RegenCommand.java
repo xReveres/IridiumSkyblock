@@ -9,12 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class RegenCommand extends Command {
 
     public RegenCommand() {
-        super(Arrays.asList("regen"), "Regenerate your island", "", true);
+        super(Collections.singletonList("regen"), "Regenerate your island", "", true);
     }
 
     @Override

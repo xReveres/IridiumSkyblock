@@ -9,12 +9,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class UnBanCommand extends Command {
 
     public UnBanCommand() {
-        super(Arrays.asList("unban"), "Un-ban a player from visiting your island", "", true);
+        super(Collections.singletonList("unban"), "Un-ban a player from visiting your island", "", true);
     }
 
     @Override

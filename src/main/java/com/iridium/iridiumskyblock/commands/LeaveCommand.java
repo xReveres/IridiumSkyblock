@@ -8,12 +8,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LeaveCommand extends Command {
 
     public LeaveCommand() {
-        super(Arrays.asList("leave"), "Leave an island", "", true);
+        super(Collections.singletonList("leave"), "Leave an island", "", true);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.*;
 import org.bukkit.CropState;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;

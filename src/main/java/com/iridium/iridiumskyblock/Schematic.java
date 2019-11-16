@@ -29,7 +29,6 @@ public class Schematic {
     private byte[] blocks;
     private byte[] data;
     private byte[] blockdata;
-    private List<Tag> entities;
     private Map<String, Tag> palette;
 
     private Integer version;
@@ -43,7 +42,6 @@ public class Schematic {
         this.length = length;
         this.height = height;
         this.tileEntities = tileEntities;
-        this.entities = entities;
         this.schematicVersion = SchematicVersion.v_1_8;
     }
 

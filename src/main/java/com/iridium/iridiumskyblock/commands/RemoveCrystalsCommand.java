@@ -9,12 +9,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class RemoveCrystalsCommand extends Command {
 
     public RemoveCrystalsCommand() {
-        super(Arrays.asList("removecrystals"), "remove a player's Crystals", "removecrystals", false);
+        super(Collections.singletonList("removecrystals"), "remove a player's Crystals", "removecrystals", false);
     }
 
     @Override

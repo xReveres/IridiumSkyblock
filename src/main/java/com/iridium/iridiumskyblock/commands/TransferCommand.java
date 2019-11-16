@@ -11,12 +11,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class TransferCommand extends Command {
 
     public TransferCommand() {
-        super(Arrays.asList("transfer"), "Transfer island ownership", "", true);
+        super(Collections.singletonList("transfer"), "Transfer island ownership", "", true);
     }
 
     @Override

@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BoosterCommand extends Command {
 
     public BoosterCommand() {
-        super(Arrays.asList("booster"),"Opens the booster GUI", "", true);
+        super(Collections.singletonList("booster"),"Opens the booster GUI", "", true);
     }
 
     @Override

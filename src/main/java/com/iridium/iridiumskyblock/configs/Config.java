@@ -6,9 +6,7 @@ import com.iridium.iridiumskyblock.Role;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Config {
 

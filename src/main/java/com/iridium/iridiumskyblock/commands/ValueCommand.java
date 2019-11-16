@@ -10,12 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ValueCommand extends Command {
 
     public ValueCommand() {
-        super(Arrays.asList("value"), "Shows your island value", "", true);
+        super(Collections.singletonList("value"), "Shows your island value", "", true);
     }
 
     @Override

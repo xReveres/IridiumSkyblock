@@ -18,7 +18,7 @@ import java.util.*;
 
 public class Island {
 
-    public class Warp {
+    public static class Warp {
         Location location;
         String name;
         String password;

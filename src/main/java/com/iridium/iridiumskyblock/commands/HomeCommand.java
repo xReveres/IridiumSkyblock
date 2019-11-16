@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeCommand extends Command {
 
     public HomeCommand() {
-        super(Arrays.asList("home"),"Teleport to your island home", "", true);
+        super(Collections.singletonList("home"),"Teleport to your island home", "", true);
     }
 
     @Override

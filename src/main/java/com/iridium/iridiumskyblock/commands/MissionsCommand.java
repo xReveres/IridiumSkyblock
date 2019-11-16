@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MissionsCommand extends Command {
 
     public MissionsCommand() {
-        super(Arrays.asList("missions"),"Opens the missions GUI", "", true);
+        super(Collections.singletonList("missions"),"Opens the missions GUI", "", true);
     }
 
     @Override

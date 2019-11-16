@@ -3,8 +3,8 @@ package com.iridium.iridiumskyblock.configs;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Inventories {
@@ -44,17 +44,17 @@ public class Inventories {
     public Item ores = new Item(Material.DIAMOND_ORE, 1, 0, "&b&lIsland Generator", Arrays.asList("&7Want to improve your generator? Buy this", "&7upgrade to increase your island generator.", "", "&b&lInformation:", "&b&l * &7Current Level: &b{generatorlevel}", "&b&l * &7Upgrade Cost: &b{generatorcost} Crystals", "", "&b&l[!] &bLeft Click to Purchase this Upgrade"));
 
     //Menu
-    public Item home = new Item(Material.BED, 1, 0, "&b&lIsland Home", Arrays.asList("&7Teleport to your island home"));
-    public Item members = new Item(Material.SKULL_ITEM, 1, 0, "&b&lIsland Members", Arrays.asList("&7View your island Members."));
-    public Item regen = new Item(Material.GRASS, 1, 0, "&b&lIsland Regen", Arrays.asList("&7Regenerate your island."));
-    public Item upgrades = new Item(Material.BREWING_STAND, 1, 0, "&b&lIsland Upgrades", Arrays.asList("&7Upgrade your island."));
-    public Item missions = new Item(Material.IRON_SWORD, 1, 0, "&b&lIsland Missions", Arrays.asList("&7View island missions."));
-    public Item boosters = new Item(Material.GLOWSTONE_DUST, 1, 0, "&b&lIsland Boosters", Arrays.asList("&7Boost your island."));
-    public Item permissions = new Item(Material.IRON_FENCE, 1, 0, "&b&lIsland Permissions", Arrays.asList("&7Change island permissions."));
-    public Item top = new Item(Material.DIAMOND, 1, 0, "&b&lIsland Top", Arrays.asList("&7View top islands."));
-    public Item warps = new Item(Material.ENDER_PORTAL_FRAME, 1, 0, "&b&lIsland Warps", Arrays.asList("&7View your island warps."));
-    public Item border = new Item(Material.BLAZE_POWDER, 1, 0, "&b&lIsland Border", Arrays.asList("&7Change your island border."));
-    public Item delete = new Item(Material.BARRIER, 1, 0, "&b&lIsland Delete", Arrays.asList("&7Delete your island."));
+    public Item home = new Item(Material.BED, 1, 0, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home"));
+    public Item members = new Item(Material.SKULL_ITEM, 1, 0, "&b&lIsland Members", Collections.singletonList("&7View your island Members."));
+    public Item regen = new Item(Material.GRASS, 1, 0, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island."));
+    public Item upgrades = new Item(Material.BREWING_STAND, 1, 0, "&b&lIsland Upgrades", Collections.singletonList("&7Upgrade your island."));
+    public Item missions = new Item(Material.IRON_SWORD, 1, 0, "&b&lIsland Missions", Collections.singletonList("&7View island missions."));
+    public Item boosters = new Item(Material.GLOWSTONE_DUST, 1, 0, "&b&lIsland Boosters", Collections.singletonList("&7Boost your island."));
+    public Item permissions = new Item(Material.IRON_FENCE, 1, 0, "&b&lIsland Permissions", Collections.singletonList("&7Change island permissions."));
+    public Item top = new Item(Material.DIAMOND, 1, 0, "&b&lIsland Top", Collections.singletonList("&7View top islands."));
+    public Item warps = new Item(Material.ENDER_PORTAL_FRAME, 1, 0, "&b&lIsland Warps", Collections.singletonList("&7View your island warps."));
+    public Item border = new Item(Material.BLAZE_POWDER, 1, 0, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
+    public Item delete = new Item(Material.BARRIER, 1, 0, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
 
     public static class Item {
 

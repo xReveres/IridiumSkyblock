@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CreateCommand extends Command {
 
     public CreateCommand() {
-        super(Arrays.asList("create"),"Creates a new island", "", true);
+        super(Collections.singletonList("create"),"Creates a new island", "", true);
     }
 
     @Override
