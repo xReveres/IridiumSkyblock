@@ -646,6 +646,15 @@ public class Island {
     }
 
     public void setOwner(OfflinePlayer owner) {
+
+        for (String player : members) {
+            User user = User.getUser(player);
+            Player p = Bukkit.getPlayer(user.name);
+            if (p != null) {
+                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().transferdOwnership.replace("%player%", owner.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+
+            }
+        }
         User.getUser(getOwner()).role = Role.CoOwner;
         this.owner = owner.getUniqueId().toString();
         User.getUser(getOwner()).role = Role.Owner;

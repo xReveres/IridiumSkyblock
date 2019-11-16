@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -28,8 +29,9 @@ public class TransferCommand extends Command {
                 OfflinePlayer player = Bukkit.getPlayer(args[1]);
                 if (player != null) {
                     if (User.getUser(player).getIsland() == island) {
-                        island.setOwner(player);
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().transferdOwnership.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
+                            island.setOwner(player);
+                        }).getInventory());
                     } else {
                         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }

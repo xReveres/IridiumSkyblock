@@ -93,7 +93,7 @@ public class MembersGUI extends GUI implements Listener {
                             if (!(u.getRole().equals(Role.Owner))) {
                                 if (u.getRole().getRank() < user.role.getRank()) {
                                     if (u.getRole().getRank() >= Role.CoOwner.getRank()) {
-                                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().transferOwnership.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                        Bukkit.dispatchCommand(e.getWhoClicked(), "is transfer " + u.name);
                                     } else {
                                         IslandPromoteEvent event = new IslandPromoteEvent(u.getIsland(), u, user, Role.getViaRank(u.getRole().getRank() + 1));
                                         Bukkit.getPluginManager().callEvent(event);
