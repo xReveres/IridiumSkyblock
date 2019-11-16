@@ -3,6 +3,7 @@ version: 2.1.7
 description: Skyblock Redefined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 author: IridiumLLC
+load: STARTUP
 softdepend: [PlaceholderAPI, MVdWPlaceholderAPI, WildStacker, Vault, Multiverse-Core]
 commands:
   island:
