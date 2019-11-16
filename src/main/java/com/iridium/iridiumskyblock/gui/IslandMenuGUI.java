@@ -21,17 +21,19 @@ public class IslandMenuGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
-        setItem(0, Utils.makeItem(IridiumSkyblock.getInventories().home, getIsland()));
-        setItem(1, Utils.makeItem(IridiumSkyblock.getInventories().members, getIsland()));
-        setItem(2, Utils.makeItem(IridiumSkyblock.getInventories().regen, getIsland()));
-        setItem(3, Utils.makeItem(IridiumSkyblock.getInventories().upgrades, getIsland()));
-        setItem(4, Utils.makeItem(IridiumSkyblock.getInventories().missions, getIsland()));
-        setItem(5, Utils.makeItem(IridiumSkyblock.getInventories().boosters, getIsland()));
-        setItem(6, Utils.makeItem(IridiumSkyblock.getInventories().permissions, getIsland()));
-        setItem(7, Utils.makeItem(IridiumSkyblock.getInventories().top, getIsland()));
-        setItem(8, Utils.makeItem(IridiumSkyblock.getInventories().warps, getIsland()));
-        setItem(9, Utils.makeItem(IridiumSkyblock.getInventories().border, getIsland()));
-        setItem(26, Utils.makeItem(IridiumSkyblock.getInventories().delete, getIsland()));
+        if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
+            setItem(0, Utils.makeItem(IridiumSkyblock.getInventories().home, getIsland()));
+            setItem(1, Utils.makeItem(IridiumSkyblock.getInventories().members, getIsland()));
+            setItem(2, Utils.makeItem(IridiumSkyblock.getInventories().regen, getIsland()));
+            setItem(3, Utils.makeItem(IridiumSkyblock.getInventories().upgrades, getIsland()));
+            setItem(4, Utils.makeItem(IridiumSkyblock.getInventories().missions, getIsland()));
+            setItem(5, Utils.makeItem(IridiumSkyblock.getInventories().boosters, getIsland()));
+            setItem(6, Utils.makeItem(IridiumSkyblock.getInventories().permissions, getIsland()));
+            setItem(7, Utils.makeItem(IridiumSkyblock.getInventories().top, getIsland()));
+            setItem(8, Utils.makeItem(IridiumSkyblock.getInventories().warps, getIsland()));
+            setItem(9, Utils.makeItem(IridiumSkyblock.getInventories().border, getIsland()));
+            setItem(26, Utils.makeItem(IridiumSkyblock.getInventories().delete, getIsland()));
+        }
     }
 
     @Override
