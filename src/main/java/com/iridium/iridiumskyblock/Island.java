@@ -402,6 +402,13 @@ public class Island {
     }
 
     public void generateIsland() {
+        for (String player : members) {
+            User user = User.getUser(player);
+            Player p = Bukkit.getPlayer(user.name);
+            if (p != null) {
+                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+        }
         deleteBlocks();
         killEntities();
         pasteSchematic();
