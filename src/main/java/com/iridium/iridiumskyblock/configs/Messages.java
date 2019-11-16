@@ -61,5 +61,5 @@ public class Messages {
     public String bannedFromIsland = "%prefix% &7You have been banned from vising this island.";
     public String playerBanned = "%prefix% &7You have banned %player% from vising your island.";
     public String playerUnBanned = "%prefix% &7You have un-banned %player% from vising your island.";
-
+    public String playerJoinedYourIsland = "%prefix% &7%player% has joined your island.";
 }
