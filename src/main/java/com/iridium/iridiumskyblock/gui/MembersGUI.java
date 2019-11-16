@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class MembersGUI extends GUI implements Listener {
 
@@ -93,7 +94,12 @@ public class MembersGUI extends GUI implements Listener {
                             if (!(u.getRole().equals(Role.Owner))) {
                                 if (u.getRole().getRank() < user.role.getRank()) {
                                     if (u.getRole().getRank() >= Role.CoOwner.getRank()) {
-                                        Bukkit.dispatchCommand(e.getWhoClicked(), "is transfer " + u.name);
+                                        e.getWhoClicked().openInventory(new ConfirmationGUI(user.getIsland(), () -> {
+                                            OfflinePlayer p = Bukkit.getOfflinePlayer(u.name);
+                                            if (p != null) {
+                                                u.getIsland().setOwner(p);
+                                            }
+                                        }).getInventory());
                                     } else {
                                         IslandPromoteEvent event = new IslandPromoteEvent(u.getIsland(), u, user, Role.getViaRank(u.getRole().getRank() + 1));
                                         Bukkit.getPluginManager().callEvent(event);

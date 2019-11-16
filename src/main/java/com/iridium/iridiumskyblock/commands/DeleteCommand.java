@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class DeleteCommand extends Command {
 
     public DeleteCommand() {
-        super(Arrays.asList("delete"),"Delete you island",  "", true);
+        super(Arrays.asList("delete"), "Delete you island", "", true);
     }
 
     @Override
@@ -22,7 +23,9 @@ public class DeleteCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
-                user.getIsland().delete();
+                p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
+                    user.getIsland().delete();
+                }).getInventory());
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }

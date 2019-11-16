@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,7 +24,9 @@ public class RegenCommand extends Command {
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
-                    user.getIsland().generateIsland();
+                    p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
+                        user.getIsland().generateIsland();
+                    }).getInventory());
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }

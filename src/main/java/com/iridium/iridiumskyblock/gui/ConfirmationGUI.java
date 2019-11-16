@@ -19,13 +19,15 @@ public class ConfirmationGUI extends GUI implements Listener {
         super(island, 27, IridiumSkyblock.getInventories().confirmationGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
         this.runnable = runnable;
+        for (int i = 0; i < getInventory().getSize(); i++) {
+            setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+        }
+        setItem(12, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, "&a&lYes"));
+        setItem(14, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, "&c&lNo"));
     }
 
     @Override
     public void addContent() {
-        super.addContent();
-        setItem(12, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, "&a&lYes"));
-        setItem(14, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, "&c&lNo"));
     }
 
     @EventHandler

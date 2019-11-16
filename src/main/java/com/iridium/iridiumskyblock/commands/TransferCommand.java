@@ -26,7 +26,7 @@ public class TransferCommand extends Command {
         if (user.getIsland() != null) {
             Island island = user.getIsland();
             if (island.getOwner().equals(p.getUniqueId().toString())) {
-                OfflinePlayer player = Bukkit.getPlayer(args[1]);
+                OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
                 if (player != null) {
                     if (User.getUser(player).getIsland() == island) {
                         p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
