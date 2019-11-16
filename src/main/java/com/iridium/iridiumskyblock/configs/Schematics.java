@@ -1,14 +1,12 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Schematics {
-    public List<FakeSchematic> schematics = Arrays.asList(new FakeSchematic("island.schematic", "nether.schematic", 0.5, 97, -1.5, "", Material.GRASS, "&b&lDefault Island", Arrays.asList("&7The default island")));
+    public List<FakeSchematic> schematics = Arrays.asList(new FakeSchematic("island.schematic", "nether.schematic", 0.5, 97.00, -1.5, "", Material.GRASS, "&b&lDefault Island", Arrays.asList("&7The default island")));
 
     public static class FakeSchematic {
         public String name;
@@ -28,6 +26,9 @@ public class Schematics {
             this.item = item;
             this.displayname = displayname;
             this.lore = lore;
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
     }
 }
