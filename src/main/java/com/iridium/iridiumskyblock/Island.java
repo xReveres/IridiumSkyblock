@@ -314,6 +314,14 @@ public class Island {
 
     public void addUser(User user) {
         if (members.size() < IridiumSkyblock.getUpgrades().member.get(memberLevel).getSize()) {
+
+            for (String player : members) {
+                User u = User.getUser(player);
+                Player p = Bukkit.getPlayer(u.name);
+                if (p != null) {
+                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerJoinedYourIsland.replace("%player%", user.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                }
+            }
             bans.remove(user.player);
             user.islandID = id;
             user.role = Role.Member;
@@ -321,14 +329,6 @@ public class Island {
             members.add(user.player);
             teleportHome(Bukkit.getPlayer(user.name));
             user.invites.clear();
-
-            for (String player : members) {
-                User u = User.getUser(player);
-                Player p = Bukkit.getPlayer(u.name);
-                if (p != null) {
-                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerJoinedYourIsland.replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
-            }
         } else {
             if (Bukkit.getPlayer(user.name) != null) {
                 Bukkit.getPlayer(user.name).sendMessage(Utils.color(IridiumSkyblock.getMessages().maxMemberCount.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
