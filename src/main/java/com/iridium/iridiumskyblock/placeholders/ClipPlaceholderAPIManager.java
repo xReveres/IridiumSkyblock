@@ -47,6 +47,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         switch (placeholder) {
             case "island_value":
                 return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getValue()) + "" : "N/A";
+            case "island_level":
+                return user.getIsland() != null ? NumberFormat.getInstance().format(Math.floor(user.getIsland().getValue() / 100.00)) + "" : "N/A";
             case "island_rank":
                 return user.getIsland() != null ? NumberFormat.getInstance().format(Utils.getIslandRank(user.getIsland())) + "" : "N/A";
             case "island_owner":

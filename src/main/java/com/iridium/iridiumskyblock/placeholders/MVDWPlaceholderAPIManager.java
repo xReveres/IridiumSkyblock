@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.entity.Player;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 public class MVDWPlaceholderAPIManager {
@@ -21,7 +22,16 @@ public class MVDWPlaceholderAPIManager {
                 return "N/A";
             }
             User user = User.getUser(player);
-            return user.getIsland() != null ? user.getIsland().getValue() + "" : "N/A";
+            return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getValue()) + "" : "N/A";
+        });
+
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_level", e -> {
+            Player player = e.getPlayer();
+            if (player == null) {
+                return "N/A";
+            }
+            User user = User.getUser(player);
+            return user.getIsland() != null ? NumberFormat.getInstance().format(Math.floor(user.getIsland().getValue() / 100.00)) + "" : "N/A";
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_rank", e -> {
@@ -30,7 +40,7 @@ public class MVDWPlaceholderAPIManager {
                 return "N/A";
             }
             User user = User.getUser(player);
-            return user.getIsland() != null ? Utils.getIslandRank(user.getIsland()) + "" : "N/A";
+            return user.getIsland() != null ? NumberFormat.getInstance().format(Utils.getIslandRank(user.getIsland())) + "" : "N/A";
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_owner", e -> {
@@ -48,7 +58,7 @@ public class MVDWPlaceholderAPIManager {
                 return "N/A";
             }
             User user = User.getUser(player);
-            return user.getIsland() != null ? user.getIsland().getCrystals() + "" : "N/A";
+            return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getCrystals()) + "" : "N/A";
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_members", e -> {
@@ -143,11 +153,11 @@ public class MVDWPlaceholderAPIManager {
 
         for (int i = 0; i < 10; i++) { //TODO there is probabbly a more efficient way to do this?
             int finalI = i;
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_name_"+i, e -> {
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_name_" + i, e -> {
                 List<Island> islands = Utils.getTopIslands();
                 return islands.size() > finalI ? User.getUser(Utils.getTopIslands().get(finalI).getOwner()).name : "N/A";
             });
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_value_"+i, e -> {
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_value_" + i, e -> {
                 List<Island> islands = Utils.getTopIslands();
                 return islands.size() > finalI ? Utils.getTopIslands().get(finalI).getValue() + "" : "N/A";
             });
