@@ -20,6 +20,7 @@ public class onPlayerTalk implements Listener {
                 if (u.warp.getPassword().equals(e.getMessage())) {
                     Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> p.teleport(u.warp.getLocation()));
                     p.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleporting.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    u.warp = null;
                 } else {
                     p.sendMessage(Utils.color(IridiumSkyblock.getMessages().wrongPassword.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     u.warp = null;
