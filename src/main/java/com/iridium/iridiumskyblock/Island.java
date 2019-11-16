@@ -2,8 +2,8 @@ package com.iridium.iridiumskyblock;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
-import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
+import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.support.Wildstacker;
@@ -426,8 +426,8 @@ public class Island {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
             if (fakeSchematic.name.equals(schematic)) {
                 IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone());
+                IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone());
                 Location center = getCenter().clone();
-
                 if (IridiumSkyblock.getConfiguration().netherIslands) {
                     center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
                     IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center);

@@ -1,15 +1,13 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.NMSUtils;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 
 public class SchematicSelectGUI extends GUI implements Listener {
 
@@ -53,5 +51,19 @@ public class SchematicSelectGUI extends GUI implements Listener {
                 i++;
             }
         }
+    }
+
+    @Override
+    public Inventory getInventory() {
+        if (getIsland().getSchematic() == null) {
+            if (IridiumSkyblock.getInstance().schems.size() == 1) {
+                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                    getIsland().setSchematic(schematic.name);
+                }
+            } else {
+                return getIsland().getSchematicSelectGUI().getInventory();
+            }
+        }
+        return super.getInventory();
     }
 }
