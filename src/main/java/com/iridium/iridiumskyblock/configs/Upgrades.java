@@ -1,5 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,6 +55,7 @@ public class Upgrades {
         public List<String> getNetherores() {
             if (netherores == null) {
                 netherores = ores;
+                IridiumSkyblock.getInstance().saveConfigs();
             }
             return netherores;
         }

@@ -39,7 +39,7 @@ public class IslandManager {
         Location pos1 = nextLocation.clone().subtract(IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2, 0, IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2);
         Location pos2 = nextLocation.clone().add(IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2, 0, IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2);
         Location center = nextLocation.clone().add(0, 100, 0);
-        Location home = nextLocation.clone().add(0.5, 97, -1.5);
+        Location home = nextLocation.clone();
 
         Location netherhome = home.clone();
 
@@ -55,6 +55,7 @@ public class IslandManager {
         if (IridiumSkyblock.getInstance().schems.size() == 1) {
             for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
                 island.setSchematic(schematic.name);
+                island.setHome(island.getHome().add(schematic.getSpawn()));
             }
             island.generateIsland();
             island.teleportHome(player);
