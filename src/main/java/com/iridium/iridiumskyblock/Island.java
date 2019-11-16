@@ -217,6 +217,8 @@ public class Island {
     public void calculateIslandValue() {
         int v = 0;
         List<Location> remove = new ArrayList<>();
+        if (blocks == null) blocks = new HashSet<>();
+        if (blocks.contains(null)) blocks.remove(null);
         for (Location loc : blocks) {
             Block b = loc.getBlock();
             if (IridiumSkyblock.getConfiguration().blockvalue.containsKey(b.getType())) {
