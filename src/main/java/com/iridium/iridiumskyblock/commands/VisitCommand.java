@@ -28,7 +28,7 @@ public class VisitCommand extends Command {
         if (player != null) {
             User user = User.getUser(player);
             if (user.getIsland() != null) {
-                if (user.getIsland().isVisit()) {
+                if (user.getIsland().isVisit() || User.getUser(p).bypassing) {
                     user.getIsland().teleportHome(p);
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

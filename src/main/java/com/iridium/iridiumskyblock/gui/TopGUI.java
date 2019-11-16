@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -59,7 +60,7 @@ public class TopGUI extends GUI implements Listener {
             if (islands.containsKey(e.getSlot())) {
                 e.getWhoClicked().closeInventory();
                 Island island = IridiumSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot()));
-                if (island.isVisit()) {
+                if (island.isVisit() || User.getUser((OfflinePlayer) e.getWhoClicked()).bypassing) {
                     island.teleportHome((Player) e.getWhoClicked());
                 } else {
                     e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
