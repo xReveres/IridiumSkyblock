@@ -8,9 +8,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class IslandMenuGUI extends GUI implements Listener {
 
+    public ConfirmationGUI delete;
+    public ConfirmationGUI regen;
+
     public IslandMenuGUI(Island island) {
         super(island, 27, IridiumSkyblock.getInventories().islandMenuGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
+        this.delete = new ConfirmationGUI(island, () -> getIsland().delete());
+        this.regen = new ConfirmationGUI(island, () -> getIsland().generateIsland());
     }
 
     @Override
@@ -36,7 +41,6 @@ public class IslandMenuGUI extends GUI implements Listener {
             e.setCancelled(true);
             Player p = (Player) e.getWhoClicked();
             User u = User.getUser(p);
-            Island island = User.getUser(p).getIsland();
             switch (e.getSlot()) {
                 case 0:
                     p.closeInventory();
@@ -48,9 +52,8 @@ public class IslandMenuGUI extends GUI implements Listener {
                     break;
                 case 2:
                     p.closeInventory();
-                    if (u.bypassing || getIsland().getPermissions(u.role).kickMembers) {
-                        getIsland().generateIsland();
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    if (u.bypassing || getIsland().getPermissions(u.role).regen) {
+                        p.openInventory(regen.getInventory());
                     } else {
                         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
@@ -86,7 +89,7 @@ public class IslandMenuGUI extends GUI implements Listener {
                 case 26:
                     p.closeInventory();
                     if (u.bypassing || getIsland().getOwner().equalsIgnoreCase(u.player)) {
-                        getIsland().delete();
+                        p.openInventory(delete.getInventory());
                     } else {
                         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
