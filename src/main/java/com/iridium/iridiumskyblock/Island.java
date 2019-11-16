@@ -314,6 +314,7 @@ public class Island {
 
     public void addUser(User user) {
         if (members.size() < IridiumSkyblock.getUpgrades().member.get(memberLevel).getSize()) {
+            bans.remove(user.player);
             user.islandID = id;
             user.role = Role.Member;
             user.invites.clear();

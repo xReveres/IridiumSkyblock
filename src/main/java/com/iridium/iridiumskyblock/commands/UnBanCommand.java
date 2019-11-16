@@ -28,10 +28,8 @@ public class UnBanCommand extends Command {
         if (user.getIsland() != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
             if (player != null) {
-                if (!User.getUser(player).getIsland().equals(user.getIsland())) {
-                    user.getIsland().removeBan(User.getUser(player));
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerUnBanned.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
+                user.getIsland().removeBan(User.getUser(player));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerUnBanned.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }

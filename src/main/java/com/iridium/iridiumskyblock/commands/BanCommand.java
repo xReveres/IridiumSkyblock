@@ -29,11 +29,12 @@ public class BanCommand extends Command {
         if (user.getIsland() != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
             if (player != null) {
-                if (!User.getUser(player).getIsland().equals(user.getIsland())) {
+                if (!user.getIsland().equals(User.getUser(player).getIsland())) {
                     user.getIsland().addBan(User.getUser(player));
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerBanned.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     if (player.getPlayer() != null) {
                         if (user.getIsland().isInIsland(player.getPlayer().getLocation())) {
+                            player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             user.getIsland().spawnPlayer(player.getPlayer());
                         }
                     }
