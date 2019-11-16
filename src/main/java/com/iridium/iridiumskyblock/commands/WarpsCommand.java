@@ -19,7 +19,7 @@ public class WarpsCommand extends Command {
         User user = User.getUser(p);
         Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(p.getLocation());
         if (island != null) {
-            if (island.getPermissions(user.islandID == island.getId() ? user.role : Role.Visitor).useNetherPortal || user.bypassing) {
+            if (island.getPermissions(user.islandID == island.getId() ? user.role : Role.Visitor).useWarps || user.bypassing) {
                 p.openInventory(island.getWarpGUI().getInventory());
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
