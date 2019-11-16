@@ -57,15 +57,6 @@ public class SchematicSelectGUI extends GUI implements Listener {
 
     @Override
     public Inventory getInventory() {
-        if (getIsland().getSchematic() == null) {
-            if (IridiumSkyblock.getInstance().schems.size() == 1) {
-                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
-                    getIsland().setSchematic(schematic.name);
-                }
-            } else {
-                return getIsland().getSchematicSelectGUI().getInventory();
-            }
-        }
         return super.getInventory();
     }
 }
