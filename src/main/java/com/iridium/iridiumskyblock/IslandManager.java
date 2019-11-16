@@ -40,8 +40,12 @@ public class IslandManager {
         Location pos2 = nextLocation.clone().add(IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2, 0, IridiumSkyblock.getUpgrades().size.get(1).getSize() / 2);
         Location center = nextLocation.clone().add(0, 100, 0);
         Location home = nextLocation.clone().add(0.5, 97, -1.5);
+
         Location netherhome = home.clone();
-        netherhome.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+
+        if (IridiumSkyblock.getConfiguration().netherIslands) {
+            netherhome.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+        }
         Island island = new Island(player, pos1, pos2, center, home, netherhome, nextID);
         islands.put(nextID, island);
 
@@ -93,7 +97,7 @@ public class IslandManager {
 
     private void makeWorld() {
         makeWorld(Environment.NORMAL, worldName);
-        makeWorld(Environment.NETHER, netherName);
+        if (IridiumSkyblock.getConfiguration().netherIslands) makeWorld(Environment.NETHER, netherName);
     }
 
     private void makeWorld(Environment env, String name) {

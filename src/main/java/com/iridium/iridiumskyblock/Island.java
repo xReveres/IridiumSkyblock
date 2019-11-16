@@ -192,7 +192,7 @@ public class Island {
     public void sendBorder(Player p) {
         if (p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
             NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() + 1, getCenter());
-        } else {
+        } else if (IridiumSkyblock.getConfiguration().netherIslands) {
             Location loc = getCenter().clone();
             loc.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
             NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() + 1, loc);
@@ -272,7 +272,7 @@ public class Island {
                             X = pos1.getX();
                             Z = pos1.getZ();
                             Y++;
-                        } else if (world <= 1) {
+                        } else if (world <= 1 && IridiumSkyblock.getConfiguration().netherIslands) {
                             world++;
                             X = pos1.getX();
                             Y = 0;
@@ -288,7 +288,7 @@ public class Island {
                                 if (Utils.isBlockValuable(loc.getBlock())) {
                                     blocks.add(loc);
                                 }
-                            } else {
+                            } else if (IridiumSkyblock.getConfiguration().netherIslands) {
                                 Location loc = new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z);
                                 if (Utils.isBlockValuable(loc.getBlock())) {
                                     blocks.add(loc);
@@ -394,7 +394,8 @@ public class Island {
         for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
             for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
                 chunks.add(IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
-                chunks.add(IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z));
+                if (IridiumSkyblock.getConfiguration().netherIslands)
+                    chunks.add(IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z));
             }
         }
     }
@@ -411,8 +412,11 @@ public class Island {
             if (fakeSchematic.name.equals(schematic)) {
                 IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone());
                 Location center = getCenter().clone();
-                center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-                IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center);
+
+                if (IridiumSkyblock.getConfiguration().netherIslands) {
+                    center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+                    IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center);
+                }
             }
         }
     }
@@ -578,10 +582,12 @@ public class Island {
                 }
             }
         }
-        for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
-            for (double Y = 0; Y <= IridiumSkyblock.getIslandManager().getNetherWorld().getMaxHeight(); Y++) {
-                for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                    new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z).getBlock().setType(Material.AIR, false);
+        if (IridiumSkyblock.getConfiguration().netherIslands) {
+            for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
+                for (double Y = 0; Y <= IridiumSkyblock.getIslandManager().getNetherWorld().getMaxHeight(); Y++) {
+                    for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
+                        new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z).getBlock().setType(Material.AIR, false);
+                    }
                 }
             }
         }

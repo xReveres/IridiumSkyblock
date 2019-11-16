@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.api.IslandDemoteEvent;
 import com.iridium.iridiumskyblock.api.IslandPromoteEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -51,68 +52,70 @@ public class MembersGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
-            if (users.containsKey(e.getSlot())) {
-                User u = users.get(e.getSlot());
-                User user = User.getUser((Player) e.getWhoClicked());
-                if (e.getClick().equals(ClickType.LEFT)) {
-                    if (user.getIsland().getPermissions(user.role).demote) {
-                        if (u.getRole().getRank() < user.role.getRank()) {
-                            if (u.getRole().equals(Role.Member)) {
-                                if (user.getIsland().getPermissions(user.role).kickMembers) {
-                                    user.getIsland().removeUser(u);
-                                    getInventory().setItem(e.getSlot(), null);
-                                    Player player = Bukkit.getPlayer(u.name);
-                                    if (player != null)
-                                        player.sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                                } else {
-                                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                                }
-                            } else {
-                                IslandDemoteEvent event = new IslandDemoteEvent(u.getIsland(), u, user, Role.getViaRank(u.getRole().getRank() + 1));
-                                Bukkit.getPluginManager().callEvent(event);
-                                if (!event.isCancelled()) {
-                                    u.role = Role.getViaRank(u.getRole().getRank() - 1);
-                                    for (String member : u.getIsland().getMembers()) {
-                                        Player p = Bukkit.getPlayer(User.getUser(member).name);
-                                        if (p != null) {
-                                            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerDemoted.replace("%rank%", u.getRole().name()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantDemoteUser.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                        }
-                    } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
-                } else {
-                    if (user.getIsland().getPermissions(user.role).promote) {
-                        if (!(u.getRole().equals(Role.Owner))) {
+            if (User.getUser((OfflinePlayer) e.getWhoClicked()).bypassing || getIsland().equals(User.getUser((OfflinePlayer) e.getWhoClicked()).getIsland())) {
+                if (users.containsKey(e.getSlot())) {
+                    User u = users.get(e.getSlot());
+                    User user = User.getUser((Player) e.getWhoClicked());
+                    if (e.getClick().equals(ClickType.LEFT)) {
+                        if (user.getIsland().getPermissions(user.role).demote) {
                             if (u.getRole().getRank() < user.role.getRank()) {
-                                if (u.getRole().getRank() >= Role.CoOwner.getRank()) {
-                                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().transferOwnership.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                if (u.getRole().equals(Role.Member)) {
+                                    if (user.getIsland().getPermissions(user.role).kickMembers) {
+                                        user.getIsland().removeUser(u);
+                                        getInventory().clear();
+                                        Player player = Bukkit.getPlayer(u.name);
+                                        if (player != null)
+                                            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    } else {
+                                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    }
                                 } else {
-                                    IslandPromoteEvent event = new IslandPromoteEvent(u.getIsland(), u, user, Role.getViaRank(u.getRole().getRank() + 1));
+                                    IslandDemoteEvent event = new IslandDemoteEvent(u.getIsland(), u, user, Role.getViaRank(u.getRole().getRank() + 1));
                                     Bukkit.getPluginManager().callEvent(event);
                                     if (!event.isCancelled()) {
-                                        u.role = Role.getViaRank(u.getRole().getRank() + 1);
+                                        u.role = Role.getViaRank(u.getRole().getRank() - 1);
                                         for (String member : u.getIsland().getMembers()) {
                                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                                             if (p != null) {
-                                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerPromoted.replace("%rank%", u.getRole().name()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerDemoted.replace("%rank%", u.getRole().name()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                             }
                                         }
                                     }
                                 }
                             } else {
-                                e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantPromoteUser.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantDemoteUser.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         } else {
                             e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantDemoteOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        if (user.getIsland().getPermissions(user.role).promote) {
+                            if (!(u.getRole().equals(Role.Owner))) {
+                                if (u.getRole().getRank() < user.role.getRank()) {
+                                    if (u.getRole().getRank() >= Role.CoOwner.getRank()) {
+                                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().transferOwnership.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    } else {
+                                        IslandPromoteEvent event = new IslandPromoteEvent(u.getIsland(), u, user, Role.getViaRank(u.getRole().getRank() + 1));
+                                        Bukkit.getPluginManager().callEvent(event);
+                                        if (!event.isCancelled()) {
+                                            u.role = Role.getViaRank(u.getRole().getRank() + 1);
+                                            for (String member : u.getIsland().getMembers()) {
+                                                Player p = Bukkit.getPlayer(User.getUser(member).name);
+                                                if (p != null) {
+                                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerPromoted.replace("%rank%", u.getRole().name()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantPromoteUser.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                }
+                            } else {
+                                e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            }
+                        } else {
+                            e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantDemoteOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        }
                     }
                 }
             }

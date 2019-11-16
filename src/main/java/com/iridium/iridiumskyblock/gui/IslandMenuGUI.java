@@ -85,7 +85,7 @@ public class IslandMenuGUI extends GUI implements Listener {
                     break;
                 case 26:
                     p.closeInventory();
-                    if (!(island.equals(getIsland())) || u.role == Role.Owner) {
+                    if (u.bypassing || getIsland().getOwner().equalsIgnoreCase(u.player)) {
                         getIsland().delete();
                     } else {
                         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
