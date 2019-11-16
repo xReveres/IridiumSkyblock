@@ -88,7 +88,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (islandManager != null && islandManager.getWorld() != null) persist.save(islandManager);
             }, 0, 20);
 
-            setupPlaceholderAPI();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::setupPlaceholderAPI);
 
             startCounting();
             latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
