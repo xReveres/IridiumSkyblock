@@ -84,7 +84,9 @@ public class IridiumSkyblock extends JavaPlugin {
 
             new Metrics(this);
 
-            Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> getPersist().save(islandManager), 0, 20);
+            Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
+                if (islandManager != null && islandManager.getWorld() != null) persist.save(islandManager);
+            }, 0, 20);
 
             setupPlaceholderAPI();
 
@@ -266,7 +268,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public void saveConfigs() {
         if (configuration != null) persist.save(configuration);
         if (missions != null) persist.save(missions);
-        if (islandManager != null) persist.save(islandManager);
+        if (islandManager != null && islandManager.getWorld() != null) persist.save(islandManager);
         if (messages != null) persist.save(messages);
         if (upgrades != null) persist.save(upgrades);
         if (boosters != null) persist.save(boosters);
