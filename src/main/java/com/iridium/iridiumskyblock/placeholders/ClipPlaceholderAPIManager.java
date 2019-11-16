@@ -80,7 +80,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 Integer integer = Integer.parseInt(placeholder.replace("island_top_name_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer ? User.getUser(Utils.getTopIslands().get(integer - 1).getOwner()).name : "N/A";
+                return islands.size() > integer-1 ? User.getUser(Utils.getTopIslands().get(integer - 1).getOwner()).name : "N/A";
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -89,7 +89,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 Integer integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer ? NumberFormat.getInstance().format(Utils.getTopIslands().get(integer - 1).getValue()) + "" : "N/A";
+                return islands.size() > integer-1 ? NumberFormat.getInstance().format(Utils.getTopIslands().get(integer - 1).getValue()) + "" : "N/A";
             } catch (NumberFormatException ignored) {
 
             }
