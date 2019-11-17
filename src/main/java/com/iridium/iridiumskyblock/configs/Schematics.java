@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.configs;
 
 import org.bukkit.Material;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

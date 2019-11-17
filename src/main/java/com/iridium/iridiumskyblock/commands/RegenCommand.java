@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

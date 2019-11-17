@@ -1,12 +1,10 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.*;
-import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 
 public class IslandMenuGUI extends GUI implements Listener {
 

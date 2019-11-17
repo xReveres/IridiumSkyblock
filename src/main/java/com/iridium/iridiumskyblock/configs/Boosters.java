@@ -10,7 +10,7 @@ public class Boosters {
     public static class Booster {
         public int cost;
         public int time;
-        public boolean enabled;
+        boolean enabled;
         public int slot;
 
         public Booster(int cost, int time, boolean enabled, int slot) {
