@@ -608,6 +608,7 @@ public class Island {
 
     public boolean isCoop(Island island) {
         if (coop == null) coop = new HashSet<>();
+        if (island == null) return false;
         return coop.contains(island.id);
     }
 
