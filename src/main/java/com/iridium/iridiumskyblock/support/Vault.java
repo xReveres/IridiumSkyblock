@@ -11,7 +11,7 @@ public class Vault {
     public Vault() {
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
         if (rsp != null) {
-            this.econ = rsp.getProvider();
+            econ = rsp.getProvider();
         }
     }
 }
