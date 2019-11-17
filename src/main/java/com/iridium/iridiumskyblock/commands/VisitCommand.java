@@ -19,11 +19,11 @@ public class VisitCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+        Player p = (Player) sender;
         if (args.length != 2) {
-            sender.sendMessage("/is visit <player>");
+            p.openInventory(IridiumSkyblock.visitGUI.get(1).getInventory());
             return;
         }
-        Player p = (Player) sender;
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         if (player != null) {
             User user = User.getUser(player);

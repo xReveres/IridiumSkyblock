@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.gui.TopGUI;
+import com.iridium.iridiumskyblock.gui.VisitGUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
@@ -51,6 +52,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public static TopGUI topGUI;
 
+    public static HashMap<Integer, VisitGUI> visitGUI;
+
     public boolean updatingBlocks = false;
 
     private String latest;
@@ -80,12 +83,15 @@ public class IridiumSkyblock extends JavaPlugin {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
 
                 topGUI = new TopGUI();
+                visitGUI = new HashMap<>();
 
                 registerListeners(new onPlayerCommandPreprocess(), new onPlayerPortal(), new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
                 new Metrics(IridiumSkyblock.getInstance());
 
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> getPersist().save(islandManager), 0, 20);
+
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20);
 
                 setupPlaceholderAPI();
 
@@ -136,6 +142,14 @@ public class IridiumSkyblock extends JavaPlugin {
         if (worldName.equals(getIslandManager().worldName) || worldName.equals(getIslandManager().netherName))
             return new SkyblockGenerator();
         return super.getDefaultWorldGenerator(worldName, id);
+    }
+
+    private void addPages() {
+        for (int i = 1; i <= Math.floor(Utils.getIslands().size() / 45.00) + 1; i++) {
+            if (!visitGUI.containsKey(i)) {
+                visitGUI.put(i, new VisitGUI(i));
+            }
+        }
     }
 
     public void startCounting() {

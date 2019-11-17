@@ -107,6 +107,8 @@ public class Island {
 
     private HashSet<String> bans;
 
+    private HashSet<String> votes;
+
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
@@ -152,6 +154,7 @@ public class Island {
         visit = true;
         permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
         this.bans = new HashSet<>();
+        this.votes = new HashSet<>();
         init();
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
@@ -563,6 +566,26 @@ public class Island {
     public void addBan(User user) {
         if (bans == null) bans = new HashSet<>();
         bans.add(user.player);
+    }
+
+    public void removeVote(User user) {
+        if (votes == null) votes = new HashSet<>();
+        votes.remove(user.player);
+    }
+
+    public void addVote(User user) {
+        if (votes == null) votes = new HashSet<>();
+        votes.add(user.player);
+    }
+
+    public boolean hasVoted(User user) {
+        if (votes == null) votes = new HashSet<>();
+        return votes.contains(user.player);
+    }
+
+    public int getVotes() {
+        if (votes == null) votes = new HashSet<>();
+        return votes.size();
     }
 
     public boolean isBanned(User user) {

@@ -167,6 +167,12 @@ public class Utils {
         return islands;
     }
 
+    public static List<Island> getIslands() {
+        List<Island> islands = new ArrayList<>(IridiumSkyblock.getIslandManager().islands.values());
+        islands.sort(Comparator.comparingInt(Island::getVotes));
+        Collections.reverse(islands);
+        return islands;
+    }
 
     public static boolean isSafe(Location loc, Island island) {
         return (island.isInIsland(loc) && loc.getBlock().getType().equals(Material.AIR)
