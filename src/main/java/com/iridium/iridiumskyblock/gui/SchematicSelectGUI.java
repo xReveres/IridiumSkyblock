@@ -54,9 +54,4 @@ public class SchematicSelectGUI extends GUI implements Listener {
             }
         }
     }
-
-    @Override
-    public Inventory getInventory() {
-        return super.getInventory();
-    }
 }
