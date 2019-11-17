@@ -37,4 +37,6 @@ public class Commands {
     public GiveBoosterCommand giveBoosterCommand = new GiveBoosterCommand();
     public BanCommand banCommand = new BanCommand();
     public UnBanCommand unBanCommand = new UnBanCommand();
+    public CoopCommand coopCommand = new CoopCommand();
+    public UnCoopCommand unCoopCommand = new UnCoopCommand();
 }

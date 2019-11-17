@@ -56,6 +56,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(IridiumSkyblock.getCommands().giveBoosterCommand);
         registerCommand(IridiumSkyblock.getCommands().banCommand);
         registerCommand(IridiumSkyblock.getCommands().unBanCommand);
+        registerCommand(IridiumSkyblock.getCommands().coopCommand);
+        registerCommand(IridiumSkyblock.getCommands().unCoopCommand);
     }
 
     public void registerCommand(com.iridium.iridiumskyblock.commands.Command command) {

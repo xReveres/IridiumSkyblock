@@ -17,7 +17,7 @@ public class onClick implements Listener {
             if (e.getClickedBlock() != null) {
                 Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getClickedBlock().getLocation());
                 if (island != null) {
-                    if ((!island.getPermissions(u.islandID == island.getId() ? u.getRole() : Role.Visitor).interact) && !u.bypassing)
+                    if ((!island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).interact) && !u.bypassing)
                         e.setCancelled(true);
                 } else {
                     if (e.getClickedBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getClickedBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {

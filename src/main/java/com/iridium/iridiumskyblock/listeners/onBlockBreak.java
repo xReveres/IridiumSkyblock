@@ -37,7 +37,7 @@ public class onBlockBreak implements Listener {
                         }
                     }
                 }
-                if ((!island.getPermissions(u.islandID == island.getId() ? u.getRole() : Role.Visitor).breakBlocks) && !u.bypassing)
+                if ((!island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).breakBlocks) && !u.bypassing)
                     e.setCancelled(true);
             } else {
                 if (e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {

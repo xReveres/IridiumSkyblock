@@ -109,6 +109,8 @@ public class Island {
 
     private HashSet<String> votes;
 
+    private HashSet<Integer> coop;
+
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
@@ -153,6 +155,7 @@ public class Island {
         borderColor = NMSUtils.Color.Blue;
         visit = true;
         permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
+        this.coop = new HashSet<>();
         this.bans = new HashSet<>();
         this.votes = new HashSet<>();
         init();
@@ -591,6 +594,21 @@ public class Island {
     public boolean isBanned(User user) {
         if (bans == null) bans = new HashSet<>();
         return bans.contains(user.player);
+    }
+
+    public void addCoop(Island island) {
+        if (coop == null) coop = new HashSet<>();
+        coop.add(island.id);
+    }
+
+    public void removeCoop(Island island) {
+        if (coop == null) coop = new HashSet<>();
+        coop.remove(island.id);
+    }
+
+    public boolean isCoop(Island island) {
+        if (coop == null) coop = new HashSet<>();
+        return coop.contains(island.id);
     }
 
     public void spawnPlayers() {

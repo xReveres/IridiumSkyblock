@@ -18,11 +18,11 @@ public class onPlayerPortal implements Listener {
             if (island != null) {
                 if (e.getFrom().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
                     e.setCancelled(true);
-                    if (island.getPermissions(u.islandID == island.getId() ? u.getRole() : Role.Visitor).useNetherPortal || u.bypassing)
+                    if (island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).useNetherPortal || u.bypassing)
                         island.teleportNetherHome(e.getPlayer());
                 } else if (e.getFrom().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                     e.setCancelled(true);
-                    if (island.getPermissions(u.islandID == island.getId() ? u.getRole() : Role.Visitor).useNetherPortal || u.bypassing)
+                    if (island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).useNetherPortal || u.bypassing)
                         island.teleportHome(e.getPlayer());
                 }
             }
