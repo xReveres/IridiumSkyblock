@@ -173,7 +173,6 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void islandValueManager() {
-
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             Iterator<ConcurrentMap.Entry<Integer, Island>> islands = islandManager.islands.entrySet().iterator();
 
