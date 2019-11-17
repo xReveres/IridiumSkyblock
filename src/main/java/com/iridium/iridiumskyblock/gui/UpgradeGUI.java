@@ -65,7 +65,7 @@ public class UpgradeGUI extends GUI implements Listener {
                 }
                 if (e.getCurrentItem().equals(size)) {
                     if (IridiumSkyblock.getUpgrades().size.containsKey(island.getSizeLevel() + 1)) {
-                        if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().size.get(island.getOreLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().size.get(island.getOreLevel() + 1).getCost()) {
+                        if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel() + 1).getCost()) {
                             if (IridiumSkyblock.getConfiguration().useVault) {
                                 Vault.econ.withdrawPlayer(p, IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel() + 1).getCost());
                             } else {
@@ -82,7 +82,7 @@ public class UpgradeGUI extends GUI implements Listener {
                 }
                 if (e.getCurrentItem().equals(member)) {
                     if (IridiumSkyblock.getUpgrades().member.containsKey(island.getMemberLevel() + 1)) {
-                        if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().member.get(island.getOreLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().member.get(island.getOreLevel() + 1).getCost()) {
+                        if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel() + 1).getCost()) {
                             if (IridiumSkyblock.getConfiguration().useVault) {
                                 Vault.econ.withdrawPlayer(p, IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel() + 1).getCost());
                             } else {
@@ -98,7 +98,7 @@ public class UpgradeGUI extends GUI implements Listener {
                 }
                 if (e.getCurrentItem().equals(warp)) {
                     if (IridiumSkyblock.getUpgrades().warp.containsKey(island.getWarpLevel() + 1)) {
-                        if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().warp.get(island.getOreLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().warp.get(island.getOreLevel() + 1).getCost()) {
+                        if (IridiumSkyblock.getConfiguration().useVault ? Vault.econ.getBalance(p) >= IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel() + 1).getCost() : island.getCrystals() >= IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel() + 1).getCost()) {
                             if (IridiumSkyblock.getConfiguration().useVault) {
                                 Vault.econ.withdrawPlayer(p, IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel() + 1).getCost());
                             } else {
