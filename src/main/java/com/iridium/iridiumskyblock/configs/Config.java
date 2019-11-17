@@ -25,7 +25,7 @@ public class Config {
     public boolean notifyAvailableUpdate = true;
     public boolean useVault = false;
     public int distance = 150;
-    public int blocksPerTick = 100;
+    public int blocksPerTick = 50;
     public Biome defaultBiome = Biome.PLAINS;
     public Biome netherBiome;
     public MissionRestart missionRestart = MissionRestart.Daily;
