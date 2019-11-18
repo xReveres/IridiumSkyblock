@@ -17,6 +17,7 @@ public class Inventories {
     public String confirmationGUITitle = "&7Are you sure?";
     public String missionsGUITitle = "&7Missions";
     public String membersGUITitle = "&7Members";
+    public String coopGUITitle = "&7Co-op Islands";
     public String islandMenuGUITitle = "&7Menu";
     public String warpGUITitle = "&7Warps";
     public String topGUITitle = "&7Top Islands";
@@ -57,6 +58,7 @@ public class Inventories {
     public Item warps = new Item(Material.ENDER_PORTAL_FRAME, 1, 0, "&b&lIsland Warps", Collections.singletonList("&7View your island warps."));
     public Item border = new Item(Material.BLAZE_POWDER, 1, 0, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
     public Item delete = new Item(Material.BARRIER, 1, 0, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
+    public Item coop = new Item(Material.REDSTONE, 1, 0, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands."));
 
     public Item background = new Item(Material.STAINED_GLASS_PANE, 1, 15, " ", new ArrayList<>());
 

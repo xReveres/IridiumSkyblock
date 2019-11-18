@@ -32,6 +32,7 @@ public class IslandMenuGUI extends GUI implements Listener {
             setItem(7, Utils.makeItemHidden(IridiumSkyblock.getInventories().top, getIsland()));
             setItem(8, Utils.makeItemHidden(IridiumSkyblock.getInventories().warps, getIsland()));
             setItem(9, Utils.makeItemHidden(IridiumSkyblock.getInventories().border, getIsland()));
+            setItem(10, Utils.makeItemHidden(IridiumSkyblock.getInventories().coop, getIsland()));
             setItem(26, Utils.makeItemHidden(IridiumSkyblock.getInventories().delete, getIsland()));
         }
     }
@@ -87,6 +88,10 @@ public class IslandMenuGUI extends GUI implements Listener {
                 case 9:
                     p.closeInventory();
                     p.openInventory(getIsland().getBorderColorGUI().getInventory());
+                    break;
+                case 10:
+                    p.closeInventory();
+                    p.openInventory(getIsland().getCoopGUI().getInventory());
                     break;
                 case 26:
                     p.closeInventory();

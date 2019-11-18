@@ -61,6 +61,7 @@ public class Island {
     private transient SchematicSelectGUI schematicSelectGUI;
     private transient PermissionsGUI permissionsGUI;
     private transient IslandMenuGUI islandMenuGUI;
+    private transient CoopGUI coopGUI;
 
     private int id;
 
@@ -123,15 +124,6 @@ public class Island {
         this.netherhome = netherhome;
         this.members = new HashSet<>(Collections.singletonList(user.player));
         this.id = id;
-        upgradeGUI = new UpgradeGUI(this);
-        boosterGUI = new BoosterGUI(this);
-        missionsGUI = new MissionsGUI(this);
-        membersGUI = new MembersGUI(this);
-        warpGUI = new WarpGUI(this);
-        borderColorGUI = new BorderColorGUI(this);
-        schematicSelectGUI = new SchematicSelectGUI(this);
-        permissionsGUI = new PermissionsGUI(this);
-        islandMenuGUI = new IslandMenuGUI(this);
         spawnerBooster = 0;
         farmingBooster = 0;
         expBooster = 0;
@@ -376,6 +368,7 @@ public class Island {
         schematicSelectGUI = new SchematicSelectGUI(this);
         permissionsGUI = new PermissionsGUI(this);
         islandMenuGUI = new IslandMenuGUI(this);
+        coopGUI = new CoopGUI(this);
 
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
@@ -535,6 +528,7 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getWarpGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getPermissionsGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getIslandMenuGUI().scheduler);
+        Bukkit.getScheduler().cancelTask(getCoopGUI().scheduler);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         if (b != -1) Bukkit.getScheduler().cancelTask(b);
@@ -610,6 +604,11 @@ public class Island {
         if (coop == null) coop = new HashSet<>();
         if (island == null) return false;
         return coop.contains(island.id);
+    }
+
+    public HashSet<Integer> getCoop() {
+        if (coop == null) coop = new HashSet<>();
+        return coop;
     }
 
     public void spawnPlayers() {
@@ -712,6 +711,10 @@ public class Island {
 
     public int getId() {
         return id;
+    }
+
+    public CoopGUI getCoopGUI() {
+        return coopGUI;
     }
 
     public UpgradeGUI getUpgradeGUI() {

@@ -19,13 +19,13 @@ public class CoopCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length != 2) {
-            sender.sendMessage("/is coop <player>");
-            return;
-        }
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
+            if (args.length != 2) {
+                p.openInventory(user.getIsland().getCoopGUI().getInventory());
+                return;
+            }
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
             if (player != null) {
                 if (!user.getIsland().equals(User.getUser(player).getIsland()) && User.getUser(player).getIsland() != null) {
