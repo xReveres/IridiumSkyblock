@@ -48,7 +48,7 @@ public class TopGUI extends GUI implements Listener {
                 islands.put(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), island.getId());
                 setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), head);
             } else {
-                setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+                setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
             }
         }
     }

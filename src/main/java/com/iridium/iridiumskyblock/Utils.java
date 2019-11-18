@@ -126,6 +126,18 @@ public class Utils {
         }
     }
 
+    public static ItemStack makeItemHidden(Inventories.Item item) {
+        try {
+            return makeItemHidden(item.material, item.amount, item.type, item.title, item.lore);
+        } catch (Exception e) {
+            try {
+                return makeItemHidden(Material.getMaterial("LEGACY_" + item.material.name()), item.amount, item.type, item.title, item.lore);
+            } catch (Exception ex) {
+                return makeItemHidden(Material.STONE, item.amount, item.type, item.title, item.lore);
+            }
+        }
+    }
+
     public static ItemStack makeItemHidden(Inventories.Item item, Island island) {
         try {
             return makeItemHidden(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));

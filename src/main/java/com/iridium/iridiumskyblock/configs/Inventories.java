@@ -1,8 +1,10 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Material;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,6 +57,8 @@ public class Inventories {
     public Item warps = new Item(Material.ENDER_PORTAL_FRAME, 1, 0, "&b&lIsland Warps", Collections.singletonList("&7View your island warps."));
     public Item border = new Item(Material.BLAZE_POWDER, 1, 0, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
     public Item delete = new Item(Material.BARRIER, 1, 0, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
+
+    public Item background = new Item(Material.STAINED_GLASS_PANE, 1, 15, " ", new ArrayList<>());
 
     public static class Item {
 

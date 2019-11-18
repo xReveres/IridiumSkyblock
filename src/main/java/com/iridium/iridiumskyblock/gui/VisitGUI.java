@@ -58,11 +58,11 @@ public class VisitGUI extends GUI implements Listener {
                     setItem(slot, head);
                     slot++;
                 } else {
-                    setItem(slot, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+                    setItem(slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
                 }
                 i++;
             } else {
-                setItem(slot, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+                setItem(slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
                 slot++;
             }
         }

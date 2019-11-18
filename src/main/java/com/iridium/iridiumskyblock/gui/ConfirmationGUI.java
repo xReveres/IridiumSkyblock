@@ -17,7 +17,7 @@ public class ConfirmationGUI extends GUI implements Listener {
         IridiumSkyblock.getInstance().registerListeners(this);
         this.runnable = runnable;
         for (int i = 0; i < getInventory().getSize(); i++) {
-            setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+            setItem(i, Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
         }
         setItem(12, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, IridiumSkyblock.getMessages().yes));
         setItem(14, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, IridiumSkyblock.getMessages().no));

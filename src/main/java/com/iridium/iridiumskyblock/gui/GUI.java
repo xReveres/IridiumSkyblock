@@ -29,7 +29,7 @@ public abstract class GUI {
     public void addContent() {
         for (int i = 0; i < inventory.getSize(); i++) {
             if(inventory.getItem(i)==null || inventory.getItem(i).getType().equals(Material.AIR)){
-                setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+                setItem(i, Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
             }
         }
     }
