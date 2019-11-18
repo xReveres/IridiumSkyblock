@@ -39,4 +39,5 @@ public class Commands {
     public UnBanCommand unBanCommand = new UnBanCommand();
     public CoopCommand coopCommand = new CoopCommand();
     public UnCoopCommand unCoopCommand = new UnCoopCommand();
+    public SetNameCommand setNameCommand = new SetNameCommand();
 }

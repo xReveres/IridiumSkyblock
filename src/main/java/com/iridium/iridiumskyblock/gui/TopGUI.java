@@ -36,7 +36,7 @@ public class TopGUI extends GUI implements Listener {
                 ArrayList<String> lore = new ArrayList<>();
                 Island island = top.get(i - 1);
                 User owner = User.getUser(island.getOwner());
-                lore.add("&b&l * &7Leader: &b" + owner.name);
+                lore.add("&b&l * &7Island: &b" + island.getName());
                 lore.add("&b&l * &7Rank: &b" + i);
                 lore.add("&b&l * &7Value: &b" + NumberFormat.getInstance().format(island.getValue()));
                 lore.add("");

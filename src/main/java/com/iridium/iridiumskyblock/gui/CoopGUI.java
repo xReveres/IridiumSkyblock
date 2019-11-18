@@ -40,7 +40,7 @@ public class CoopGUI extends GUI implements Listener {
                 islands.put(i, id);
                 User user = User.getUser(is.getOwner());
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add("&b&l * &7Leader: &b" + user.name);
+                lore.add("&b&l * &7Island: &b" + island.getName());
                 lore.add("&b&l * &7Rank: &b" + i);
                 lore.add("&b&l * &7Value: &b" + NumberFormat.getInstance().format(island.getValue()));
                 lore.add("");

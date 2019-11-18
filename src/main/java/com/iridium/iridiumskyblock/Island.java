@@ -112,11 +112,14 @@ public class Island {
 
     private HashSet<Integer> coop;
 
+    private String name;
+
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
         blocks = new HashSet<>();
         this.owner = user.player;
+        this.name = user.name;
         this.pos1 = pos1;
         this.pos2 = pos2;
         this.center = center;
@@ -866,5 +869,14 @@ public class Island {
 
     public void setSchematic(String schematic) {
         this.schematic = schematic;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        if(name == null)name = User.getUser(getOwner()).name;
+        return name;
     }
 }

@@ -43,7 +43,7 @@ public class VisitGUI extends GUI implements Listener {
                 if (island.isVisit()) {
                     ArrayList<String> lore = new ArrayList<>();
                     User owner = User.getUser(island.getOwner());
-                    lore.add("&b&l * &7Leader: &b" + owner.name);
+                    lore.add("&b&l * &7Island: &b" + island.getName());
                     lore.add("&b&l * &7Rank: &b" + Utils.getIslandRank(island));
                     lore.add("&b&l * &7Value: &b" + NumberFormat.getInstance().format(island.getValue()));
                     lore.add("&b&l * &7Votes: &b" + NumberFormat.getInstance().format(island.getVotes()));
