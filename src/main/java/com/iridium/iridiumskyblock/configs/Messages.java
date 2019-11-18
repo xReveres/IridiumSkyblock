@@ -66,4 +66,6 @@ public class Messages {
     public String coopRemoved = "%prefix% &7You have revoked %player%'s Island member permissions.";
     public String islandCreated = "&b&lIsland Created";
     public String maxlevelreached = "Max Level Reached";
+    public String yes = "&a&lYes";
+    public String no = "&c&lno";
 }
