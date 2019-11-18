@@ -47,7 +47,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
                     getIsland().generateIsland();
                     getIsland().setHome(getIsland().getHome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
                     getIsland().teleportHome((Player) e.getWhoClicked());
-                    NMSUtils.sendTitle((Player) e.getWhoClicked(), "&b&lIsland Created", 20, 40, 20);
+                    NMSUtils.sendTitle((Player) e.getWhoClicked(), IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);
                 }
                 i++;
             }

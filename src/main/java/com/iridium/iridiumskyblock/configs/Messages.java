@@ -64,4 +64,5 @@ public class Messages {
     public String playerJoinedYourIsland = "%prefix% &7%player% has joined your island.";
     public String coopAdded = "%prefix% &7You have granted %player%'s Island member permissions.";
     public String coopRemoved = "%prefix% &7You have revoked %player%'s Island member permissions.";
+    public String islandCreated = "&b&lIsland Created";
 }
