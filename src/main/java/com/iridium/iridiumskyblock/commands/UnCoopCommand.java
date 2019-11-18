@@ -29,8 +29,12 @@ public class UnCoopCommand extends Command {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
             if (player != null) {
                 if (!user.getIsland().equals(User.getUser(player).getIsland()) && User.getUser(player).getIsland() != null) {
-                    user.getIsland().removeCoop(User.getUser(player).getIsland());
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopRemoved.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    if (user.bypassing || user.getIsland().getPermissions(user.getRole()).coop) {
+                        user.getIsland().removeCoop(User.getUser(player).getIsland());
+                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopRemoved.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    } else {
+                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    }
                 }
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

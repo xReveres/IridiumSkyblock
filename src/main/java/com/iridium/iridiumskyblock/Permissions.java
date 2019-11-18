@@ -14,8 +14,9 @@ public class Permissions {
     public boolean demote;
     public boolean useNetherPortal;
     public boolean useWarps;
+    public boolean coop;
 
-    public Permissions(boolean breakBlocks, boolean placeBlocks, boolean interact, boolean kickMembers, boolean inviteMembers, boolean regen, boolean islandprivate, boolean promote, boolean demote, boolean useNetherPortal, boolean useWarps) {
+    public Permissions(boolean breakBlocks, boolean placeBlocks, boolean interact, boolean kickMembers, boolean inviteMembers, boolean regen, boolean islandprivate, boolean promote, boolean demote, boolean useNetherPortal, boolean useWarps, boolean coop) {
         this.breakBlocks = breakBlocks;
         this.placeBlocks = placeBlocks;
         this.interact = interact;
@@ -27,6 +28,7 @@ public class Permissions {
         this.demote = demote;
         this.useNetherPortal = useNetherPortal;
         this.useWarps = useWarps;
+        this.coop = coop;
     }
 
     public Permissions() {
@@ -41,5 +43,6 @@ public class Permissions {
         demote = true;
         useNetherPortal = true;
         useWarps = true;
+        coop = true;
     }
 }
