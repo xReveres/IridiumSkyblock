@@ -17,6 +17,7 @@ public class onBlockFromTo implements Listener {
 
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent e) {
+        if (!IridiumSkyblock.getUpgrades().oresUpgrade.enabled) return;
         try {
             if (e.getFace() != BlockFace.DOWN) {
                 Block b = e.getToBlock();
@@ -31,7 +32,7 @@ public class onBlockFromTo implements Listener {
                         if (island != null) {
                             Random r = new Random();
                             ArrayList<String> items = new ArrayList<>();
-                            for (String item : e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) ? IridiumSkyblock.getUpgrades().ores.get(island.getOreLevel()).getOres() : IridiumSkyblock.getUpgrades().ores.get(island.getOreLevel()).getNetherores()) {
+                            for (String item : e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) ? IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.get(island.getOreLevel()).ores : IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.get(island.getOreLevel()).netherores) {
                                 Integer i1 = Integer.parseInt(item.split(":")[1]);
                                 for (int i = 0; i <= i1; i++) {
                                     items.add(item.split(":")[0]);

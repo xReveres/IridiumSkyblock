@@ -1,11 +1,13 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.configs.Inventories;
+import com.iridium.iridiumskyblock.support.Vault;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -221,11 +223,48 @@ public class Utils {
     }
 
     public static String processIslandPlaceholders(String line, Island island) {
-        return processMultiplePlaceholders(line, new Placeholder("generatorcost", IridiumSkyblock.getUpgrades().ores.containsKey(island.getOreLevel() + 1) ? IridiumSkyblock.getUpgrades().ores.get(island.getOreLevel() + 1).getCost() + "" : IridiumSkyblock.getMessages().maxlevelreached), new Placeholder("generatorlevel", island.getOreLevel() + ""), new Placeholder("warpcost", IridiumSkyblock.getUpgrades().warp.containsKey(island.getWarpLevel() + 1) ? IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel() + 1).getCost() + "" : IridiumSkyblock.getMessages().maxlevelreached), new Placeholder("warpcount", IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel()).getSize() + ""), new Placeholder("warplevel", island.getWarpLevel() + ""), new Placeholder("membercost", IridiumSkyblock.getUpgrades().member.containsKey(island.getMemberLevel() + 1) ? IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel() + 1).getCost() + "" : IridiumSkyblock.getMessages().maxlevelreached), new Placeholder("membercount", IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel()).getSize() + ""), new Placeholder("memberlevel", island.getMemberLevel() + ""), new Placeholder("sizecost", IridiumSkyblock.getUpgrades().size.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel() + 1).getCost() + "" : IridiumSkyblock.getMessages().maxlevelreached), new Placeholder("sizeblocks", IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel()).getSize() + ""), new Placeholder("sizelevel", island.getSizeLevel() + ""), new Placeholder("spawnerbooster", island.getSpawnerBooster() + ""), new Placeholder("farmingbooster", island.getFarmingBooster() + ""), new Placeholder("expbooster", island.getExpBooster() + ""), new Placeholder("flightbooster", island.getFlightBooster() + ""), new Placeholder("treasurehunterstatus", ((island.treasureHunter != -1 ? island.treasureHunter + "/" + IridiumSkyblock.getMissions().treasureHunter.getAmount() : "Completed"))), new Placeholder("competitorstatus", ((island.competitor != Integer.MIN_VALUE ? island.competitor + "/" + IridiumSkyblock.getMissions().competitor.getAmount() : "Completed"))), new Placeholder("minerstatus", ((island.miner != -1 ? island.miner + "/" + IridiumSkyblock.getMissions().miner.getAmount() : "Completed"))), new Placeholder("farmerstatus", ((island.farmer != -1 ? island.farmer + "/" + IridiumSkyblock.getMissions().farmer.getAmount() : "Completed"))), new Placeholder("hunterstatus", ((island.hunter != -1 ? island.hunter + "/" + IridiumSkyblock.getMissions().hunter.getAmount() : "Completed"))), new Placeholder("fishermanstatus", ((island.fisherman != -1 ? island.fisherman + "/" + IridiumSkyblock.getMissions().fisherman.getAmount() : "Completed"))), new Placeholder("builderstatus", ((island.builder != -1 ? island.builder + "/" + IridiumSkyblock.getMissions().builder.getAmount() : "Completed"))));
+        return processMultiplePlaceholders(line,
+                // Upgrades
+                new Placeholder("sizevaultcost", IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(island.getSizeLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
+                new Placeholder("membervaultcost", IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.containsKey(island.getMemberLevel() + 1) ? IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(island.getMemberLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
+                new Placeholder("warpvaultcost", IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.containsKey(island.getWarpLevel() + 1) ? IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.get(island.getWarpLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
+                new Placeholder("oresvaultcost", IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.containsKey(island.getOreLevel() + 1) ? IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.get(island.getOreLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
+
+                new Placeholder("sizecrystalscost", IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(island.getSizeLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
+                new Placeholder("membercrystalscost", IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.containsKey(island.getMemberLevel() + 1) ? IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(island.getMemberLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
+                new Placeholder("warpcrystalscost", IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.containsKey(island.getWarpLevel() + 1) ? IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.get(island.getWarpLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
+                new Placeholder("orescrystalscost", IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.containsKey(island.getOreLevel() + 1) ? IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.get(island.getOreLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
+
+                new Placeholder("sizeblocks", IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(island.getSizeLevel()).size + ""),
+                new Placeholder("membercount", IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(island.getMemberLevel()).size + ""),
+                new Placeholder("warpcount", IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.get(island.getMemberLevel()).size + ""),
+
+                new Placeholder("sizelevel", island.getSizeLevel() + ""),
+                new Placeholder("memberlevel", island.getMemberLevel() + ""),
+                new Placeholder("warplevel", island.getWarpLevel() + ""),
+                new Placeholder("oreslevel", island.getOreLevel() + ""),
+                // Boosters
+                new Placeholder("spawnerbooster", island.getSpawnerBooster() + ""),
+                new Placeholder("farmingbooster", island.getFarmingBooster() + ""),
+                new Placeholder("expbooster", island.getExpBooster() + ""),
+                new Placeholder("flightbooster", island.getFlightBooster() + ""),
+                // Missions
+                new Placeholder("treasurehunterstatus", ((island.treasureHunter != -1 ? island.treasureHunter + "/" + IridiumSkyblock.getMissions().treasureHunter.getAmount() : "Completed"))),
+                new Placeholder("competitorstatus", ((island.competitor != Integer.MIN_VALUE ? island.competitor + "/" + IridiumSkyblock.getMissions().competitor.getAmount() : "Completed"))),
+                new Placeholder("minerstatus", ((island.miner != -1 ? island.miner + "/" + IridiumSkyblock.getMissions().miner.getAmount() : "Completed"))),
+                new Placeholder("farmerstatus", ((island.farmer != -1 ? island.farmer + "/" + IridiumSkyblock.getMissions().farmer.getAmount() : "Completed"))),
+                new Placeholder("hunterstatus", ((island.hunter != -1 ? island.hunter + "/" + IridiumSkyblock.getMissions().hunter.getAmount() : "Completed"))),
+                new Placeholder("fishermanstatus", ((island.fisherman != -1 ? island.fisherman + "/" + IridiumSkyblock.getMissions().fisherman.getAmount() : "Completed"))),
+                new Placeholder("builderstatus", ((island.builder != -1 ? island.builder + "/" + IridiumSkyblock.getMissions().builder.getAmount() : "Completed"))))
+                ;
     }
 
     public static List<String> processIslandPlaceholders(List<String> lines, Island island) {
-        return processMultiplePlaceholders(lines, new Placeholder("generatorcost", IridiumSkyblock.getUpgrades().ores.containsKey(island.getOreLevel() + 1) ? IridiumSkyblock.getUpgrades().ores.get(island.getOreLevel() + 1).getCost() + "" : IridiumSkyblock.getMessages().maxlevelreached), new Placeholder("generatorlevel", island.getOreLevel() + ""), new Placeholder("warpcost", IridiumSkyblock.getUpgrades().warp.containsKey(island.getWarpLevel() + 1) ? IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel() + 1).getCost() + "" : IridiumSkyblock.getMessages().maxlevelreached), new Placeholder("warpcount", IridiumSkyblock.getUpgrades().warp.get(island.getWarpLevel()).getSize() + ""), new Placeholder("warplevel", island.getWarpLevel() + ""), new Placeholder("membercost", IridiumSkyblock.getUpgrades().member.containsKey(island.getMemberLevel() + 1) ? IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel() + 1).getCost() + "" : IridiumSkyblock.getMessages().maxlevelreached), new Placeholder("membercount", IridiumSkyblock.getUpgrades().member.get(island.getMemberLevel()).getSize() + ""), new Placeholder("memberlevel", island.getMemberLevel() + ""), new Placeholder("sizecost", IridiumSkyblock.getUpgrades().size.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel() + 1).getCost() + "" : IridiumSkyblock.getMessages().maxlevelreached), new Placeholder("sizeblocks", IridiumSkyblock.getUpgrades().size.get(island.getSizeLevel()).getSize() + ""), new Placeholder("sizelevel", island.getSizeLevel() + ""), new Placeholder("spawnerbooster", island.getSpawnerBooster() + ""), new Placeholder("farmingbooster", island.getFarmingBooster() + ""), new Placeholder("expbooster", island.getExpBooster() + ""), new Placeholder("flightbooster", island.getFlightBooster() + ""), new Placeholder("treasurehunterstatus", ((island.treasureHunter != -1 ? island.treasureHunter + "/" + IridiumSkyblock.getMissions().treasureHunter.getAmount() : "Completed"))), new Placeholder("competitorstatus", ((island.competitor != Integer.MIN_VALUE ? island.competitor + "/" + IridiumSkyblock.getMissions().competitor.getAmount() : "Completed"))), new Placeholder("minerstatus", ((island.miner != -1 ? island.miner + "/" + IridiumSkyblock.getMissions().miner.getAmount() : "Completed"))), new Placeholder("farmerstatus", ((island.farmer != -1 ? island.farmer + "/" + IridiumSkyblock.getMissions().farmer.getAmount() : "Completed"))), new Placeholder("hunterstatus", ((island.hunter != -1 ? island.hunter + "/" + IridiumSkyblock.getMissions().hunter.getAmount() : "Completed"))), new Placeholder("fishermanstatus", ((island.fisherman != -1 ? island.fisherman + "/" + IridiumSkyblock.getMissions().fisherman.getAmount() : "Completed"))), new Placeholder("builderstatus", ((island.builder != -1 ? island.builder + "/" + IridiumSkyblock.getMissions().builder.getAmount() : "Completed"))));
+        List<String> newlist = new ArrayList<String>();
+        for (String string : lines) {
+            newlist.add(processIslandPlaceholders(string, island));
+        }
+        return newlist;
     }
 
     public static String processMultiplePlaceholders(String line, Placeholder... placeholders) {
@@ -235,13 +274,25 @@ public class Utils {
         return color(line);
     }
 
-    public static List<String> processMultiplePlaceholders(List<String> lines, Placeholder... placeholders) {
-        List<String> newlist = new ArrayList<String>();
-        for (String string : lines) {
-            newlist.add(processMultiplePlaceholders(string, placeholders));
+    public static boolean canBuy(Player p, int vault, int crystals) {
+        User u = User.getUser(p);
+        if (u.getIsland() != null) {
+            if (Vault.econ != null) {
+                boolean canbuy = Vault.econ.getBalance(p) >= vault && u.getIsland().getCrystals() >= crystals;
+                if (canbuy) {
+                    u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
+                    Vault.econ.withdrawPlayer(p, vault);
+                }
+                return canbuy;
+            } else {
+                boolean canbuy = u.getIsland().getCrystals() >= crystals;
+                if (canbuy) {
+                    u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
+                }
+                return canbuy;
+            }
         }
-        return newlist;
-//        return lines.stream().map(Utils::processMultiplePlaceholders).collect(Collectors.toList());
+        return false;
     }
 
     public static class Placeholder {

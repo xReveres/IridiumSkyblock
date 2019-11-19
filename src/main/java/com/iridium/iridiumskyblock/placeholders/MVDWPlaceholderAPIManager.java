@@ -85,7 +85,7 @@ public class MVDWPlaceholderAPIManager {
                 return "N/A";
             }
             User user = User.getUser(player);
-            return user.getIsland() != null ? IridiumSkyblock.getUpgrades().member.get(user.getIsland().getMemberLevel()).getSize() + "" : "N/A";
+            return user.getIsland() != null ? IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(user.getIsland().getMemberLevel()).size + "" : "N/A";
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_upgrade_size_level", e -> {

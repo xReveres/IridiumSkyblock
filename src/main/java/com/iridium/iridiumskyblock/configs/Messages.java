@@ -50,12 +50,10 @@ public class Messages {
     public String noLongerBypassing = "%prefix% &7You are no longer bypassing island restrictions.";
     public String cantDemoteUser = "%prefix% &7You cannot demote this user.";
     public String cantPromoteUser = "%prefix% &7You cannot promote this user.";
-    public String transferOwnership = "%prefix% &7To transfer ownership issue the command /is transfer <PlayerName>.";
     public String playerPromoted = "%prefix% &7%player% has been promoted to %rank%.";
     public String playerDemoted = "%prefix% &7%player% has been demoted to %rank%.";
     public String setHome = "%prefix% &7You have set your home to this location.";
     public String isNotSafe = "%prefix% &7This location is not safe.";
-    public String notInValidWorld = "%prefix% &7You can't use that command in this world. Use /is worlds for a list of valid worlds.";
     public String helpMessage = "&b&l * &7 %command% : &b %description%";
     public String transferdOwnership = "%prefix% &7Island ownership transferred to %player%.";
     public String bannedFromIsland = "%prefix% &7You have been banned from vising this island.";
@@ -65,7 +63,7 @@ public class Messages {
     public String coopAdded = "%prefix% &7You have granted %player%'s Island member permissions.";
     public String coopRemoved = "%prefix% &7You have revoked %player%'s Island member permissions.";
     public String islandCreated = "&b&lIsland Created";
-    public String maxlevelreached = "Max Level Reached";
+    public String maxlevelreached = "N/A";
     public String yes = "&a&lYes";
     public String no = "&c&lno";
 }

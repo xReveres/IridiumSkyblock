@@ -192,11 +192,11 @@ public class Island {
 
     public void sendBorder(Player p) {
         if (p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-            NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() + 1, getCenter());
+            NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + 1, getCenter());
         } else if (IridiumSkyblock.getConfiguration().netherIslands) {
             Location loc = getCenter().clone();
             loc.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-            NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() + 1, loc);
+            NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + 1, loc);
         }
     }
 
@@ -307,7 +307,7 @@ public class Island {
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
-        if (warps.size() < IridiumSkyblock.getUpgrades().warp.get(warpLevel).getSize()) {
+        if (warps.size() < IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.get(warpLevel).size) {
             warps.add(new Warp(location, name, password));
             player.sendMessage(Utils.color(IridiumSkyblock.getMessages().warpAdded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
@@ -316,7 +316,7 @@ public class Island {
     }
 
     public void addUser(User user) {
-        if (members.size() < IridiumSkyblock.getUpgrades().member.get(memberLevel).getSize()) {
+        if (members.size() < IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(memberLevel).size) {
 
             for (String player : members) {
                 User u = User.getUser(player);
@@ -807,8 +807,9 @@ public class Island {
     public void setSizeLevel(int sizeLevel) {
         this.sizeLevel = sizeLevel;
 
-        pos1 = getCenter().clone().subtract(IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2.00, 0, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2.00);
-        pos2 = getCenter().clone().add(IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2.00, 0, IridiumSkyblock.getUpgrades().size.get(sizeLevel).getSize() / 2.00);
+        pos1 = getCenter().clone().subtract(IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00, 0, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00);
+        pos2 = getCenter().clone().add(IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00, 0, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00);
+        sendBorder();
     }
 
     public int getMemberLevel() {
@@ -876,7 +877,7 @@ public class Island {
     }
 
     public String getName() {
-        if(name == null)name = User.getUser(getOwner()).name;
+        if (name == null) name = User.getUser(getOwner()).name;
         return name;
     }
 }
