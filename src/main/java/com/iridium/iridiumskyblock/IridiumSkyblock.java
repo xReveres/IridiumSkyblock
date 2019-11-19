@@ -258,6 +258,15 @@ public class IridiumSkyblock extends JavaPlugin {
         if (getBoosters().farmingBooster.time == 0) getBoosters().farmingBooster.time = 3600;
         if (getBoosters().spawnerBooster.time == 0) getBoosters().spawnerBooster.time = 3600;
 
+        if (getBoosters().spawnerBooster.crystalsCost == 0 && getBoosters().spawnerBooster.vaultCost == 0)
+            getBoosters().spawnerBooster.crystalsCost = 15;
+        if (getBoosters().farmingBooster.crystalsCost == 0 && getBoosters().farmingBooster.vaultCost == 0)
+            getBoosters().farmingBooster.crystalsCost = 15;
+        if (getBoosters().experianceBooster.crystalsCost == 0 && getBoosters().experianceBooster.vaultCost == 0)
+            getBoosters().experianceBooster.crystalsCost = 15;
+        if (getBoosters().flightBooster.crystalsCost == 0 && getBoosters().flightBooster.vaultCost == 0)
+            getBoosters().flightBooster.crystalsCost = 15;
+
         for (Island island : islandManager.islands.values()) {
             island.init();
         }
