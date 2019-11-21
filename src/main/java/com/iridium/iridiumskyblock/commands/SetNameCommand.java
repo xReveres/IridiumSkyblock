@@ -33,7 +33,7 @@ public class SetNameCommand extends Command {
                     for (String member : user.getIsland().getMembers()) {
                         Player player = Bukkit.getPlayer(User.getUser(member).name);
                         if (player != null) {
-                            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().changesIslandName.replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().changesIslandName.replace("%player%", p.getName()).replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     }
                 } else {
