@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,6 +30,12 @@ public class SetNameCommand extends Command {
             if (user.role.equals(Role.Owner)) {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
                     user.getIsland().setName(args[1]);
+                    for (String member : user.getIsland().getMembers()) {
+                        Player player = Bukkit.getPlayer(User.getUser(member).name);
+                        if (player != null) {
+                            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().changesIslandName.replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        }
+                    }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
