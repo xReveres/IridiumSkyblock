@@ -9,7 +9,7 @@ public class onEntityExplode implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
         try {
-            if (e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+            if (IridiumSkyblock.getConfiguration().disableExplosions && (e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))) {
                 e.setCancelled(true);
             }
         } catch (Exception ex) {
