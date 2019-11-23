@@ -209,8 +209,8 @@ public class Island {
         for (String member : members) {
             Player p = Bukkit.getPlayer(member);
             if (p != null) {
-                NMSUtils.sendTitle(p, "&b&lMission Complete: &7" + Mission, 20, 40, 20);
-                NMSUtils.sendSubTitle(p, "&bReward: &7" + Reward, 20, 40, 20);
+                NMSUtils.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", Mission), 20, 40, 20);
+                NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%reward%", Reward + ""), 20, 40, 20);
             }
         }
     }
