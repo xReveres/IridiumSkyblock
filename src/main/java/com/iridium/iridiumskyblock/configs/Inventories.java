@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ public class Inventories {
     public String borderColorGUITitle = "&7Border Color";
     public String permissionsGUITitle = "&7Permissions";
     public String schematicselectGUITitle = "&7Select an Island";
+    public String bankGUITitle = "&7Island Bank";
 
     //Boosters
     public Item spawner = new Item(Material.MOB_SPAWNER, 1, 0, "&b&lIncreased Mobs", Arrays.asList("&7Are your spawners too slow? Buy this", "&7booster and increase spawner rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{spawnerbooster}s", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().spawnerBooster.crystalsCost + " Crystals and $" + IridiumSkyblock.getBoosters().spawnerBooster.vaultCost, "", "&b&l[!] &bRight Click to Purchase this Booster."));
@@ -59,6 +59,14 @@ public class Inventories {
     public Item border = new Item(Material.BLAZE_POWDER, 1, 0, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
     public Item delete = new Item(Material.BARRIER, 1, 0, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
     public Item coop = new Item(Material.REDSTONE, 1, 0, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands."));
+    public Item bank = new Item(Material.PAPER, 1, 0, "&b&lIsland Bank", Collections.singletonList("&7View your Island Bank."));
+
+    //Bank
+    public Item experience = new Item(Material.EXP_BOTTLE, 1, 0, "&b&lIsland Experience", Arrays.asList("&7{experience} Experience", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
+    public Item crystals = new Item(Material.NETHER_STAR, 1, 0, "&b&lIsland Crystals", Arrays.asList("&7{crystals} Crystals", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
+    public Item money = new Item(Material.PAPER, 1, 0, "&b&lIsland Money", Arrays.asList("&7${money}", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
+
+    public Item crystal = new Item(Material.NETHER_STAR, 1, 0, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b&l[!] &bto Redeem, go to your Island Bank"));
 
     public Item background = new Item(Material.STAINED_GLASS_PANE, 1, 15, " ", new ArrayList<>());
 

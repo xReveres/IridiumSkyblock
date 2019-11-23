@@ -1,6 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,6 +36,7 @@ public class IslandMenuGUI extends GUI implements Listener {
             setItem(8, Utils.makeItemHidden(IridiumSkyblock.getInventories().warps, getIsland()));
             setItem(9, Utils.makeItemHidden(IridiumSkyblock.getInventories().border, getIsland()));
             setItem(10, Utils.makeItemHidden(IridiumSkyblock.getInventories().coop, getIsland()));
+            setItem(11, Utils.makeItemHidden(IridiumSkyblock.getInventories().bank, getIsland()));
             setItem(26, Utils.makeItemHidden(IridiumSkyblock.getInventories().delete, getIsland()));
         }
     }
@@ -92,6 +96,10 @@ public class IslandMenuGUI extends GUI implements Listener {
                 case 10:
                     p.closeInventory();
                     p.openInventory(getIsland().getCoopGUI().getInventory());
+                    break;
+                case 11:
+                    p.closeInventory();
+                    p.openInventory(getIsland().getBankGUI().getInventory());
                     break;
                 case 26:
                     p.closeInventory();

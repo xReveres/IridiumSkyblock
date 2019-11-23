@@ -62,6 +62,7 @@ public class Island {
     private transient PermissionsGUI permissionsGUI;
     private transient IslandMenuGUI islandMenuGUI;
     private transient CoopGUI coopGUI;
+    private transient BankGUI bankGUI;
 
     private int id;
 
@@ -113,6 +114,9 @@ public class Island {
     private HashSet<Integer> coop;
 
     private String name;
+
+    public int money;
+    public int exp;
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
@@ -372,6 +376,7 @@ public class Island {
         permissionsGUI = new PermissionsGUI(this);
         islandMenuGUI = new IslandMenuGUI(this);
         coopGUI = new CoopGUI(this);
+        bankGUI = new BankGUI(this);
 
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
@@ -534,6 +539,7 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getPermissionsGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getIslandMenuGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getCoopGUI().scheduler);
+        Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         if (b != -1) Bukkit.getScheduler().cancelTask(b);
@@ -716,6 +722,10 @@ public class Island {
 
     public int getId() {
         return id;
+    }
+
+    public BankGUI getBankGUI() {
+        return bankGUI;
     }
 
     public CoopGUI getCoopGUI() {
