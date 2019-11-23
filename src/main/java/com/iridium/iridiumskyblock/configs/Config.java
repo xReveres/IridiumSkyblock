@@ -24,6 +24,7 @@ public class Config {
     public boolean voidTeleport = true;
     public boolean notifyAvailableUpdate = true;
     public boolean disableExplosions = true;
+    public boolean clearInventories = true;
     public int distance = 150;
     public double valuePerLevel = 100.00;
     public int blocksPerTick = 50;

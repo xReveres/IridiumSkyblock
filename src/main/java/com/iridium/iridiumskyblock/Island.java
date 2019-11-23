@@ -440,9 +440,11 @@ public class Island {
     }
 
     public void clearInventories() {
-        for (String player : members) {
-            User user = User.getUser(player);
-            if (Bukkit.getPlayer(user.name) != null) Bukkit.getPlayer(user.name).getInventory().clear();
+        if (IridiumSkyblock.getConfiguration().clearInventories) {
+            for (String player : members) {
+                User user = User.getUser(player);
+                if (Bukkit.getPlayer(user.name) != null) Bukkit.getPlayer(user.name).getInventory().clear();
+            }
         }
     }
 
