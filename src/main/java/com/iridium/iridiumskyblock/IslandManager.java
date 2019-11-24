@@ -2,8 +2,8 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
 import org.bukkit.World.Environment;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
@@ -16,8 +16,8 @@ public class IslandManager {
     int current = 0;
 
     public Direction direction = Direction.NORTH;
-    public String worldName = "IridiumSkyblock";
-    public String netherName = "IridiumSkyblock_nether";
+    public String worldName = IridiumSkyblock.getConfiguration().worldName;
+    public String netherName = IridiumSkyblock.getConfiguration().worldName + "_nether";
     public Location nextLocation;
 
     public int nextID = 1;

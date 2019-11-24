@@ -19,6 +19,7 @@ public class Config {
     }
 
     public String prefix = "&b&lIridiumSkyblock";
+    public String worldName = "IridiumSkyblock";
     public boolean netherIslands = true;
     public boolean islandMenu = true;
     public boolean voidTeleport = true;
