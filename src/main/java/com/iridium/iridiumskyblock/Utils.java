@@ -287,10 +287,14 @@ public class Utils {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
             if (Vault.econ != null) {
-                boolean canbuy = Vault.econ.getBalance(p) >= vault && u.getIsland().getCrystals() >= crystals;
+                boolean canbuy = (Vault.econ.getBalance(p) >= vault || u.getIsland().money >= vault) && u.getIsland().getCrystals() >= crystals;
                 if (canbuy) {
                     u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
-                    Vault.econ.withdrawPlayer(p, vault);
+                    if (u.getIsland().money >= vault) {
+                        u.getIsland().money -= vault;
+                    } else {
+                        Vault.econ.withdrawPlayer(p, vault);
+                    }
                 }
                 return canbuy;
             } else {
