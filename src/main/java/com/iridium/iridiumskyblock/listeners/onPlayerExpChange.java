@@ -19,9 +19,9 @@ public class onPlayerExpChange implements Listener {
             if (user.getIsland() != null) {
                 if (user.getIsland().treasureHunter > -1) {
                     user.getIsland().treasureHunter += e.getAmount();
-                    if (user.getIsland().treasureHunter >= IridiumSkyblock.getMissions().treasureHunter.getAmount()) {
+                    if (user.getIsland().treasureHunter >= IridiumSkyblock.getMissions().treasureHunter.amount) {
                         user.getIsland().treasureHunter = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                        user.getIsland().completeMission("Treasure Hunter", IridiumSkyblock.getMissions().treasureHunter.getReward());
+                        user.getIsland().completeMission("Treasure Hunter", IridiumSkyblock.getMissions().treasureHunter.crystalReward, IridiumSkyblock.getMissions().treasureHunter.vaultReward);
                     }
                 }
             }

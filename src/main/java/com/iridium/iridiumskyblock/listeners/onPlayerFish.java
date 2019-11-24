@@ -17,9 +17,9 @@ public class onPlayerFish implements Listener {
                 if (u.getIsland() != null) {
                     if (u.getIsland().fisherman > -1) {
                         u.getIsland().fisherman++;
-                        if (u.getIsland().fisherman >= IridiumSkyblock.getMissions().fisherman.getAmount()) {
+                        if (u.getIsland().fisherman >= IridiumSkyblock.getMissions().fisherman.amount) {
                             u.getIsland().fisherman = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                            u.getIsland().completeMission("Fisherman", IridiumSkyblock.getMissions().fisherman.getReward());
+                            u.getIsland().completeMission("Fisherman", IridiumSkyblock.getMissions().fisherman.crystalReward, IridiumSkyblock.getMissions().fisherman.vaultReward);
                         }
                     }
                 }

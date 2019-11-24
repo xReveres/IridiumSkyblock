@@ -17,9 +17,9 @@ public class onBlockPlace implements Listener {
                 if (u.islandID == island.getId()) {
                     if (island.builder > -1) {
                         island.builder++;
-                        if (island.builder >= IridiumSkyblock.getMissions().builder.getAmount()) {
+                        if (island.builder >= IridiumSkyblock.getMissions().builder.amount) {
                             island.builder = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                            island.completeMission("Builder", IridiumSkyblock.getMissions().builder.getReward());
+                            island.completeMission("Builder", IridiumSkyblock.getMissions().builder.crystalReward, IridiumSkyblock.getMissions().builder.vaultReward);
                         }
                     }
                 }

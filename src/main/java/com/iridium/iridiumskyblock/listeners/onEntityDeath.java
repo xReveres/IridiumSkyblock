@@ -19,9 +19,9 @@ public class onEntityDeath implements Listener {
             if (island != null) {
                 if (island.hunter > -1) {
                     island.hunter++;
-                    if (island.hunter >= IridiumSkyblock.getMissions().hunter.getAmount()) {
+                    if (island.hunter >= IridiumSkyblock.getMissions().hunter.amount) {
                         island.hunter = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                        island.completeMission("Hunter", IridiumSkyblock.getMissions().hunter.getReward());
+                        island.completeMission("Hunter", IridiumSkyblock.getMissions().hunter.crystalReward, IridiumSkyblock.getMissions().hunter.vaultReward);
                     }
                 }
                 if (island.getExpBooster() != 0) {

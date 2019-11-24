@@ -68,5 +68,5 @@ public class Messages {
     public String no = "&c&lno";
     public String changesIslandName = "%prefix% &7%player% changed your Island name to %name%";
     public String missionComplete = "&b&lMission Complete: &7%mission%";
-    public String rewards = "&b&lReward: &7%reward% Crystals";
+    public String rewards = "&b&lReward: &7%crystalsReward% Crystals and $%vaultReward%";
 }

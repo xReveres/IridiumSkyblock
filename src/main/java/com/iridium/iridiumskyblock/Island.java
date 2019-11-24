@@ -208,13 +208,14 @@ public class Island {
         NMSUtils.sendWorldBorder(p, borderColor, Integer.MAX_VALUE, getCenter().clone());
     }
 
-    public void completeMission(String Mission, int Reward) {
-        crystals += Reward;
+    public void completeMission(String Mission, int crystals, int vault) {
+        this.crystals += crystals;
+        money += vault;
         for (String member : members) {
             Player p = Bukkit.getPlayer(member);
             if (p != null) {
                 NMSUtils.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", Mission), 20, 40, 20);
-                NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%reward%", Reward + ""), 20, 40, 20);
+                NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", crystals + "").replace("vaultReward", vault + ""), 20, 40, 20);
             }
         }
     }
@@ -252,9 +253,9 @@ public class Island {
 
         if (competitor != Integer.MIN_VALUE) {
             this.competitor = v - startvalue;
-            if (competitor >= IridiumSkyblock.getMissions().competitor.getAmount()) {
+            if (competitor >= IridiumSkyblock.getMissions().competitor.amount) {
                 competitor = Integer.MIN_VALUE;
-                completeMission("Competitor", IridiumSkyblock.getMissions().competitor.getReward());
+                completeMission("Competitor", IridiumSkyblock.getMissions().competitor.crystalReward, IridiumSkyblock.getMissions().competitor.vaultReward);
             }
         }
     }

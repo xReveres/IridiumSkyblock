@@ -20,9 +20,9 @@ public class onBlockBreak implements Listener {
                     if (e.getBlock().getType().name().endsWith("ORE")) {
                         if (u.getIsland().miner > -1) {
                             u.getIsland().miner++;
-                            if (u.getIsland().miner >= IridiumSkyblock.getMissions().miner.getAmount()) {
+                            if (u.getIsland().miner >= IridiumSkyblock.getMissions().miner.amount) {
                                 island.miner = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                                u.getIsland().completeMission("Miner", IridiumSkyblock.getMissions().miner.getReward());
+                                island.completeMission("Miner", IridiumSkyblock.getMissions().miner.crystalReward, IridiumSkyblock.getMissions().miner.vaultReward);
                             }
                         }
                     }
@@ -30,9 +30,9 @@ public class onBlockBreak implements Listener {
                         CropState state = ((Crops) e.getBlock().getState().getData()).getState();
                         if (u.getIsland().farmer > -1 && state == CropState.RIPE) {
                             u.getIsland().farmer++;
-                            if (u.getIsland().farmer >= IridiumSkyblock.getMissions().farmer.getAmount()) {
+                            if (u.getIsland().farmer >= IridiumSkyblock.getMissions().farmer.amount) {
                                 island.farmer = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                                u.getIsland().completeMission("Farmer", IridiumSkyblock.getMissions().farmer.getReward());
+                                island.completeMission("Farmer", IridiumSkyblock.getMissions().farmer.crystalReward, IridiumSkyblock.getMissions().farmer.vaultReward);
                             }
                         }
                     }
