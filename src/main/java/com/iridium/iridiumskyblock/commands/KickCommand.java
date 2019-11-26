@@ -31,7 +31,7 @@ public class KickCommand extends Command {
             User u = User.getUser(player); // Player we want to kick
             if (user.getIsland() != null) {
                 if (user.getIsland().equals(u.getIsland())) {
-                    if (user.role.equals(Role.Owner)) {
+                    if (u.role.equals(Role.Owner)) {
                         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     } else {
                         if (user.bypassing || user.getIsland().getPermissions(u.getRole()).kickMembers) {
