@@ -68,6 +68,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
             persist = new Persist();
 
+            configuration = persist.getFile(Config.class).exists() ? persist.load(Config.class) : new Config();
+            
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
 
                 loadConfigs();
@@ -150,7 +152,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-        if (worldName.equals(getIslandManager().worldName) || worldName.equals(getIslandManager().netherName))
+        if (worldName.equals(getConfiguration().worldName) || worldName.equals(getConfiguration().worldName + "_nether"))
             return new SkyblockGenerator();
         return super.getDefaultWorldGenerator(worldName, id);
     }

@@ -16,8 +16,6 @@ public class IslandManager {
     int current = 0;
 
     public Direction direction = Direction.NORTH;
-    public String worldName = IridiumSkyblock.getConfiguration().worldName;
-    public String netherName = IridiumSkyblock.getConfiguration().worldName + "_nether";
     public Location nextLocation;
 
     public int nextID = 1;
@@ -28,11 +26,11 @@ public class IslandManager {
     }
 
     public World getWorld() {
-        return Bukkit.getWorld(worldName);
+        return Bukkit.getWorld(IridiumSkyblock.getConfiguration().worldName);
     }
 
     public World getNetherWorld() {
-        return Bukkit.getWorld(netherName);
+        return Bukkit.getWorld(IridiumSkyblock.getConfiguration().worldName + "_nether");
     }
 
     public Island createIsland(Player player) {
@@ -97,8 +95,9 @@ public class IslandManager {
     }
 
     private void makeWorld() {
-        makeWorld(Environment.NORMAL, worldName);
-        if (IridiumSkyblock.getConfiguration().netherIslands) makeWorld(Environment.NETHER, netherName);
+        makeWorld(Environment.NORMAL, IridiumSkyblock.getConfiguration().worldName);
+        if (IridiumSkyblock.getConfiguration().netherIslands)
+            makeWorld(Environment.NETHER, IridiumSkyblock.getConfiguration().worldName + "_nether");
     }
 
     private void makeWorld(Environment env, String name) {
