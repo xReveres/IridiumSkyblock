@@ -215,7 +215,7 @@ public class Island {
             Player p = Bukkit.getPlayer(User.getUser(member).name);
             if (p != null) {
                 NMSUtils.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", Mission), 20, 40, 20);
-                NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", crystals + "").replace("vaultReward", vault + ""), 20, 40, 20);
+                NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", crystals + "").replace("%vaultReward%", vault + ""), 20, 40, 20);
             }
         }
     }
