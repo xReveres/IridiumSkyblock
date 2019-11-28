@@ -26,6 +26,21 @@ public class onEntityDamageByEntity implements Listener {
                     }
                 }
             }
+            if (e.getDamager() instanceof Arrow && !(e.getEntity() instanceof Player)) { // Deals with a player attacking animals with bows that are not from their island
+                Arrow arrow = (Arrow) e.getDamager();
+                if (arrow.getShooter() instanceof Player) {
+                    if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                        User user = User.getUser((Player) arrow.getShooter());
+                        if (user.getIsland() != null) {
+                            if (!user.getIsland().isInIsland(e.getEntity().getLocation())) {
+                                e.setCancelled(true);
+                            }
+                        } else {
+                            e.setCancelled(true);
+                        }
+                    }
+                }
+            }
             if (e.getDamager() instanceof Player && !(e.getEntity() instanceof Player)) { // Deals with a player attacking animals that are not from their island
                 if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                     User user = User.getUser((Player) e.getDamager());
