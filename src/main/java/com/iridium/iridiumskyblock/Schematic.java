@@ -105,7 +105,7 @@ public class Schematic {
         short length = getLength();
         short width = getWidth();
         short height = getHeight();
-        loc.subtract(width / 2, height / 2, length / 2); // Centers the schematic
+        loc.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
         loc.getBlock().setType(Material.STONE, true);//Just incase something fails ?
         if (schematicVersion == SchematicVersion.v_1_8) {
 

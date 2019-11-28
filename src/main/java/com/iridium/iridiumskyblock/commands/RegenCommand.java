@@ -24,9 +24,7 @@ public class RegenCommand extends Command {
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
-                    p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
-                        user.getIsland().generateIsland();
-                    }).getInventory());
+                    p.openInventory(new ConfirmationGUI(user.getIsland(), () -> user.getIsland().generateIsland()).getInventory());
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }

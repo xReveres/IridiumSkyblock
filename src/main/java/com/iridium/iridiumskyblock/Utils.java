@@ -294,7 +294,7 @@ public class Utils {
     }
 
     public static List<String> processIslandPlaceholders(List<String> lines, Island island) {
-        List<String> newlist = new ArrayList<String>();
+        List<String> newlist = new ArrayList<>();
         for (String string : lines) {
             newlist.add(processIslandPlaceholders(string, island));
         }

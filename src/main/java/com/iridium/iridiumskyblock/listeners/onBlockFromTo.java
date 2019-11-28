@@ -33,7 +33,7 @@ public class onBlockFromTo implements Listener {
                             Random r = new Random();
                             ArrayList<String> items = new ArrayList<>();
                             for (String item : e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) ? IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.get(island.getOreLevel()).ores : IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.get(island.getOreLevel()).netherores) {
-                                Integer i1 = Integer.parseInt(item.split(":")[1]);
+                                int i1 = Integer.parseInt(item.split(":")[1]);
                                 for (int i = 0; i <= i1; i++) {
                                     items.add(item.split(":")[0]);
                                 }
@@ -62,7 +62,6 @@ public class onBlockFromTo implements Listener {
         ));
         for (Block b : blocksSet) {
             if (b.getType().toString().contains("WATER")) return true;
-            continue;
         }
         return false;
 

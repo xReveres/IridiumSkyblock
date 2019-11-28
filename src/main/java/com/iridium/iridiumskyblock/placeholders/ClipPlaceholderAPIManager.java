@@ -89,7 +89,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         }
         if (placeholder.startsWith("island_top_value_")) {
             try {
-                Integer integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
+                int integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
                 List<Island> islands = Utils.getTopIslands();
                 return islands.size() > integer-1 ? NumberFormat.getInstance().format(Utils.getTopIslands().get(integer - 1).getValue()) + "" : "N/A";
             } catch (NumberFormatException ignored) {

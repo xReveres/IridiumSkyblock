@@ -4,7 +4,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
-import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
