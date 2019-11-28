@@ -349,6 +349,7 @@ public class Island {
     public void removeUser(User user) {
         user.islandID = 0;
         Player player = Bukkit.getPlayer(user.name);
+        spawnPlayer(player);
         player.setFlying(false);
         player.setAllowFlight(false);
         members.remove(user.player);
