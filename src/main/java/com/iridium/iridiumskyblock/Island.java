@@ -162,6 +162,8 @@ public class Island {
     }
 
     public Permissions getPermissions(Role role) {
+        if (permissions == null)
+            permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
         if (!permissions.containsKey(role)) {
             permissions.put(role, new Permissions());
         }
