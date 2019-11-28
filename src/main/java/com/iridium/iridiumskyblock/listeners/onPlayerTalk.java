@@ -5,12 +5,13 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class onPlayerTalk implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerTalk(AsyncPlayerChatEvent e) {
         String format = e.getFormat();
         User u = User.getUser(e.getPlayer());
