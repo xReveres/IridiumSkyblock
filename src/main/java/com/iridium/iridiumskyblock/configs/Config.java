@@ -20,6 +20,9 @@ public class Config {
 
     public String prefix = "&b&lIridiumSkyblock";
     public String worldName = "IridiumSkyblock";
+    public String chatRankPlaceholder = "[ISLAND_RANK]";
+    public String chatValuePlaceholder = "[ISLAND_VALUE]";
+    public String chatNAMEPlaceholder = "[ISLAND_NAME]";
     public boolean netherIslands = true;
     public boolean islandMenu = true;
     public boolean voidTeleport = true;

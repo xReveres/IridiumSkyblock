@@ -69,7 +69,7 @@ public class IridiumSkyblock extends JavaPlugin {
             persist = new Persist();
 
             configuration = persist.getFile(Config.class).exists() ? persist.load(Config.class) : new Config();
-            
+
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
 
                 loadConfigs();
@@ -88,7 +88,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 topGUI = new TopGUI();
                 visitGUI = new HashMap<>();
 
-                registerListeners(new onItemCraft(), new onPlayerCommandPreprocess(), new onPlayerPortal(), new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+                registerListeners(new onPlayerTalk(), new onItemCraft(), new onPlayerCommandPreprocess(), new onPlayerPortal(), new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
                 new Metrics(IridiumSkyblock.getInstance());
 
