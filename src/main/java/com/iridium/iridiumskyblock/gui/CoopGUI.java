@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
-import com.iridium.iridiumskyblock.api.IslandDemoteEvent;
-import com.iridium.iridiumskyblock.api.IslandPromoteEvent;
-import org.bukkit.Bukkit;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class CoopGUI extends GUI implements Listener {
@@ -50,6 +49,7 @@ public class CoopGUI extends GUI implements Listener {
                 SkullMeta m = (SkullMeta) head.getItemMeta();
                 m.setOwner(user.name);
                 head.setItemMeta(m);
+                setItem(i, head);
                 i++;
             }
         }
