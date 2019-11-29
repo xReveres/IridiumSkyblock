@@ -73,4 +73,7 @@ public class Messages {
     public String chatFormat = "&b&l%player% &7» %message%";
     public String chatDisabled = "%prefix% &7Your Island Chat has been disabled.";
     public String chatEnabled = "%prefix% &7Your Island Chat has been enabled.";
+    public String transferAction = "Transfer ownership to %player%";
+    public String resetAction = "Reset your Island";
+    public String deleteAction = "Delete your Island";
 }

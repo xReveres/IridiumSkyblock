@@ -98,7 +98,7 @@ public class MembersGUI extends GUI implements Listener {
                                             if (p != null) {
                                                 u.getIsland().setOwner(p);
                                             }
-                                        }).getInventory());
+                                        }, IridiumSkyblock.getMessages().transferAction.replace("%player%", u.name)).getInventory());
                                     } else {
                                         IslandPromoteEvent event = new IslandPromoteEvent(u.getIsland(), u, user, Role.getViaRank(u.getRole().getRank() + 1));
                                         Bukkit.getPluginManager().callEvent(event);

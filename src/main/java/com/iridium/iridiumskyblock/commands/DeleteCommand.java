@@ -23,7 +23,7 @@ public class DeleteCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
-                p.openInventory(new ConfirmationGUI(user.getIsland(), () -> user.getIsland().delete()).getInventory());
+                p.openInventory(new ConfirmationGUI(user.getIsland(), () -> user.getIsland().delete(), IridiumSkyblock.getMessages().deleteAction).getInventory());
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
