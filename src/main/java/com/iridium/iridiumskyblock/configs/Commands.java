@@ -41,4 +41,5 @@ public class Commands {
     public UnCoopCommand unCoopCommand = new UnCoopCommand();
     public SetNameCommand setNameCommand = new SetNameCommand();
     public BankCommand bankCommand = new BankCommand();
+    public ChatCommand chatCommand = new ChatCommand();
 }

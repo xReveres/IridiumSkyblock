@@ -4,6 +4,8 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -37,6 +39,17 @@ public class onPlayerTalk implements Listener {
                 format = format.replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, "");
             }
         }
+
+        if (island != null && u.islandChat) {
+            for (String p : island.getMembers()) {
+                Player player = Bukkit.getPlayer(User.getUser(p).name);
+                if (player != null) {
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat).replace("%player%", e.getPlayer().getName()).replace("%message%", e.getMessage()));
+                }
+            }
+            e.setCancelled(true);
+        }
+
         e.setFormat(Utils.color(format));
     }
 }

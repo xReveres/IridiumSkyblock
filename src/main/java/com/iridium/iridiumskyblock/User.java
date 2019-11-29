@@ -13,6 +13,7 @@ public class User {
     public ArrayList<Integer> invites;
     public Island.Warp warp;
     public boolean bypassing;
+    public boolean islandChat;
 
     public User(OfflinePlayer p) {
         invites = new ArrayList<>();
@@ -20,6 +21,7 @@ public class User {
         this.name = p.getName();
         this.islandID = 0;
         bypassing = false;
+        islandChat = false;
         IridiumSkyblock.getIslandManager().users.put(this.player, this);
     }
 
@@ -30,9 +32,9 @@ public class User {
     public Role getRole() {
         if (role == null) {
             if (getIsland() != null) {
-                if(getIsland().getOwner().equals(player)){
+                if (getIsland().getOwner().equals(player)) {
                     role = Role.Owner;
-                }else{
+                } else {
                     role = Role.Member;
                 }
             } else {
