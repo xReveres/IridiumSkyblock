@@ -55,6 +55,7 @@ public class Messages {
     public String setHome = "%prefix% &7You have set your home to this location.";
     public String isNotSafe = "%prefix% &7This location is not safe.";
     public String helpMessage = "&b&l * &7 %command% : &b %description%";
+    public String helpHeader = "&b&lIridiumSkyblock: &bHelp";
     public String transferdOwnership = "%prefix% &7Island ownership transferred to %player%.";
     public String bannedFromIsland = "%prefix% &7You have been banned from vising this island.";
     public String playerBanned = "%prefix% &7You have banned %player% from vising your island.";
