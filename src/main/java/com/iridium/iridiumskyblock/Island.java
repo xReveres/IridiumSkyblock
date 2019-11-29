@@ -81,11 +81,10 @@ public class Island {
     private int oreLevel;
 
     private int a;
-    private int b;
 
     private int value;
 
-    public HashSet<Location> blocks;
+    public List<Location> blocks;
 
     private List<Warp> warps;
 
@@ -121,7 +120,7 @@ public class Island {
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
-        blocks = new HashSet<>();
+        blocks = new ArrayList<>();
         this.owner = user.player;
         this.name = user.name;
         this.pos1 = pos1;
@@ -150,7 +149,6 @@ public class Island {
         fisherman = 0;
         builder = 0;
         startvalue = -1;
-        b = -1;
         borderColor = NMSUtils.Color.Blue;
         visit = true;
         permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
@@ -223,38 +221,33 @@ public class Island {
     }
 
     public void calculateIslandValue() {
-        int v = 0;
-        List<Location> remove = new ArrayList<>();
-        if (blocks == null) blocks = new HashSet<>();
-        blocks.remove(null);
-        for (Location loc : blocks) {
-            Block b = loc.getBlock();
-            if (IridiumSkyblock.getConfiguration().blockvalue.containsKey(b.getType())) {
-                v += IridiumSkyblock.getConfiguration().blockvalue.get(b.getType());
+        int value = 0;
+        if (blocks == null) blocks = new ArrayList<>();
+        ListIterator<Location> locations = blocks.listIterator();
+        while (locations.hasNext()) {
+            Location loc = locations.next();
+            Block block = loc.getBlock();
+            if (IridiumSkyblock.getConfiguration().blockvalue.containsKey(block.getType())) {
+                value += IridiumSkyblock.getConfiguration().blockvalue.get(block.getType());
             } else if (loc.getBlock().getState() instanceof CreatureSpawner) {
-                CreatureSpawner spawner = (CreatureSpawner) b.getState();
+                CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 if (IridiumSkyblock.getConfiguration().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
                     int temp = IridiumSkyblock.getConfiguration().spawnervalue.get(spawner.getSpawnedType().name());
-
                     if (Wildstacker.enabled) {
                         temp *= Wildstacker.getSpawnerAmount((CreatureSpawner) loc.getBlock().getState());
                     }
-
-                    v += temp;
+                    value += temp;
                 } else {
-                    remove.add(loc);
+                    locations.remove();
                 }
             } else {
-                remove.add(loc);
+                locations.remove();
             }
         }
-        blocks.removeAll(remove);
-
-        this.value = v;
-        if (startvalue == -1) startvalue = v;
-
+        this.value = value;
+        if (startvalue == -1) startvalue = value;
         if (competitor != Integer.MIN_VALUE) {
-            this.competitor = v - startvalue;
+            competitor = value - startvalue;
             if (competitor >= IridiumSkyblock.getMissions().competitor.amount) {
                 competitor = Integer.MIN_VALUE;
                 completeMission("Competitor", IridiumSkyblock.getMissions().competitor.crystalReward, IridiumSkyblock.getMissions().competitor.vaultReward);
@@ -368,7 +361,7 @@ public class Island {
     }
 
     public void init() {
-        if (blocks == null) blocks = new HashSet<>();
+        if (blocks == null) blocks = new ArrayList<>();
 
         upgradeGUI = new UpgradeGUI(this);
         boosterGUI = new BoosterGUI(this);
@@ -407,7 +400,6 @@ public class Island {
                 }
             }};
         }
-        b = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), this::calculateIslandValue, 0, 20);
     }
 
     public void initChunks() {
@@ -546,7 +538,6 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
-        if (b != -1) Bukkit.getScheduler().cancelTask(b);
         deleteBlocks();
         clearInventories();
         spawnPlayers();

@@ -202,6 +202,19 @@ public class IridiumSkyblock extends JavaPlugin {
                 }
             }
         }, 0, 0);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            Iterator<Island> islands = islandManager.islands.values().iterator();
+
+            @Override
+            public void run() {
+                if (!islands.hasNext()) {
+                    islands = islandManager.islands.values().iterator();
+                }
+                if (islands.hasNext()) {
+                    islands.next().calculateIslandValue();
+                }
+            }
+        }, 0, 0);
     }
 
     public void sendErrorMessage(Exception e) {
