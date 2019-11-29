@@ -73,7 +73,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         try {
             if (args.length != 0) {
                 for (com.iridium.iridiumskyblock.commands.Command command : commands) {
-                    if (command.getAliases().contains(args[0])) {
+                    if (command.getAliases().contains(args[0]) && command.isEnabled()) {
                         if (command.isPlayer() && !(cs instanceof Player)) {
                             // Must be a player
                             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
@@ -119,7 +119,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             //Help Menu
             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpHeader));
             for (com.iridium.iridiumskyblock.commands.Command c : commands) {
-                if (cs.hasPermission(c.getPermission()) || c.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
+                if (c.isEnabled() && (cs.hasPermission(c.getPermission()) || c.getPermission().equalsIgnoreCase("iridiumskyblock."))) {
                     cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", c.getAliases().get(0)).replace("%description%", c.getDescription())));
                 }
             }
@@ -136,7 +136,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 ArrayList<String> result = new ArrayList<>();
                 for (com.iridium.iridiumskyblock.commands.Command command : commands) {
                     for (String alias : command.getAliases()) {
-                        if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))) {
+                        if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && (command.isEnabled() && (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")))) {
                             result.add(alias);
                         }
                     }
@@ -144,7 +144,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 return result;
             }
             for (com.iridium.iridiumskyblock.commands.Command command : commands) {
-                if (command.getAliases().contains(args[0]) && (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))) {
+                if (command.getAliases().contains(args[0]) && (command.isEnabled() && (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")))) {
                     return command.TabComplete(cs, cmd, s, args);
                 }
             }

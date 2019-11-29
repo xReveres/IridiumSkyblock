@@ -9,12 +9,17 @@ public abstract class Command {
     private final List<String> aliases;
     private final String permission;
     private final String description;
+    private final boolean enabled = true;
 
     public Command(List<String> aliases, String description, String permission, boolean player) {
         this.aliases = aliases;
         this.permission = "iridiumskyblock." + permission;
         this.player = player;
         this.description = description;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public boolean isPlayer() {
