@@ -55,5 +55,6 @@ public class onPlayerJoinLeave implements Listener {
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
+        User.getUser(e.getPlayer()).name = e.getPlayer().getName();
     }
 }
