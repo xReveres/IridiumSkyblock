@@ -1,6 +1,8 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -13,6 +15,7 @@ public class onEntityDamageByEntity implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         try {
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getEntity().getLocation());
             if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two players pvping in IridiumSkyblock world
                 if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                     e.setCancelled(true);
@@ -29,28 +32,18 @@ public class onEntityDamageByEntity implements Listener {
             if (e.getDamager() instanceof Arrow && !(e.getEntity() instanceof Player)) { // Deals with a player attacking animals with bows that are not from their island
                 Arrow arrow = (Arrow) e.getDamager();
                 if (arrow.getShooter() instanceof Player) {
-                    if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                    if (island != null) {
                         User user = User.getUser((Player) arrow.getShooter());
-                        if (user.getIsland() != null) {
-                            if (!user.getIsland().isInIsland(e.getEntity().getLocation())) {
-                                e.setCancelled(true);
-                            }
-                        } else {
+                        if ((!island.getPermissions((user.islandID == island.getId() || island.isCoop(user.getIsland())) ? (island.isCoop(user.getIsland()) ? Role.Member : user.getRole()) : Role.Visitor).killMobs) && !user.bypassing)
                             e.setCancelled(true);
-                        }
                     }
                 }
             }
             if (e.getDamager() instanceof Player && !(e.getEntity() instanceof Player)) { // Deals with a player attacking animals that are not from their island
-                if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                if (island != null) {
                     User user = User.getUser((Player) e.getDamager());
-                    if (user.getIsland() != null) {
-                        if (!user.getIsland().isInIsland(e.getEntity().getLocation())) {
-                            e.setCancelled(true);
-                        }
-                    } else {
+                    if ((!island.getPermissions((user.islandID == island.getId() || island.isCoop(user.getIsland())) ? (island.isCoop(user.getIsland()) ? Role.Member : user.getRole()) : Role.Visitor).killMobs) && !user.bypassing)
                         e.setCancelled(true);
-                    }
                 }
             }
             if (e.getEntity() instanceof Player && !(e.getDamager() instanceof Player)) { //Deals with a mob attacking a player that doesnt belong to the island (/is home traps?)
