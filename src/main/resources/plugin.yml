@@ -4,7 +4,7 @@ description: Skyblock Redefined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 author: IridiumLLC
 load: STARTUP
-softdepend: [PlaceholderAPI, MVdWPlaceholderAPI, WildStacker, Vault, Multiverse-Core]
+softdepend: [PlaceholderAPI, MVdWPlaceholderAPI, WildStacker, Vault, Multiverse-Core, Essentials, EssentialsChat, ChatManager, DeluxeChat]
 commands:
   island:
     aliases: ["is", "IridiumSkyblock"]
