@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumskyblock.*;
 import org.bukkit.CropState;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.material.Crops;
@@ -37,6 +38,7 @@ public class onBlockBreak implements Listener {
                         }
                     }
                 }
+                island.blocks.remove(e.getBlock().getLocation());
                 if ((!island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).breakBlocks) && !u.bypassing)
                     e.setCancelled(true);
             } else {
@@ -49,5 +51,11 @@ public class onBlockBreak implements Listener {
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onMonitorBreakBlock(BlockBreakEvent e) {
+        Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
+        island.blocks.remove(e.getBlock().getLocation());
     }
 }
