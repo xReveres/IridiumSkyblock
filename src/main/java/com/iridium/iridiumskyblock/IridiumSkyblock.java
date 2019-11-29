@@ -26,7 +26,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentMap;
 
 public class IridiumSkyblock extends JavaPlugin {
 
@@ -187,17 +186,17 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public void islandValueManager() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            Iterator<ConcurrentMap.Entry<Integer, Island>> islands = islandManager.islands.entrySet().iterator();
+            Iterator<Island> islands = islandManager.islands.values().iterator();
 
             @Override
             public void run() {
                 if (!updatingBlocks) {
                     if (!islands.hasNext()) {
-                        islands = islandManager.islands.entrySet().iterator();
+                        islands = islandManager.islands.values().iterator();
                     }
                     if (islands.hasNext()) {
                         updatingBlocks = true;
-                        islands.next().getValue().initBlocks();
+                        islands.next().initBlocks();
                     }
                 }
             }

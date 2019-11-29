@@ -13,7 +13,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class onPlayerTalk implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTalk(AsyncPlayerChatEvent e) {
         String format = e.getFormat();
         User u = User.getUser(e.getPlayer());
