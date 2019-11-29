@@ -36,21 +36,25 @@ public class CoopGUI extends GUI implements Listener {
             int i = 0;
             for (int id : island.getCoop()) {
                 Island is = IridiumSkyblock.getIslandManager().getIslandViaId(id);
-                islands.put(i, id);
-                User user = User.getUser(is.getOwner());
-                ArrayList<String> lore = new ArrayList<>();
-                lore.add("&b&l * &7Island: &b" + island.getName());
-                lore.add("&b&l * &7Rank: &b" + i);
-                lore.add("&b&l * &7Value: &b" + NumberFormat.getInstance().format(island.getValue()));
-                lore.add("");
-                lore.add("&b&l[!] &bLeft Click to Teleport to this island.");
-                lore.add("&b&l[!] &bRight Click to un co-op this island.");
-                ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + user.name, Utils.color(lore));
-                SkullMeta m = (SkullMeta) head.getItemMeta();
-                m.setOwner(user.name);
-                head.setItemMeta(m);
-                setItem(i, head);
-                i++;
+                if (is != null) {
+                    islands.put(i, id);
+                    User user = User.getUser(is.getOwner());
+                    ArrayList<String> lore = new ArrayList<>();
+                    lore.add("&b&l * &7Island: &b" + island.getName());
+                    lore.add("&b&l * &7Rank: &b" + i);
+                    lore.add("&b&l * &7Value: &b" + NumberFormat.getInstance().format(island.getValue()));
+                    lore.add("");
+                    lore.add("&b&l[!] &bLeft Click to Teleport to this island.");
+                    lore.add("&b&l[!] &bRight Click to un co-op this island.");
+                    ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + user.name, Utils.color(lore));
+                    SkullMeta m = (SkullMeta) head.getItemMeta();
+                    m.setOwner(user.name);
+                    head.setItemMeta(m);
+                    setItem(i, head);
+                    i++;
+                } else {
+                    island.removeCoop(id);
+                }
             }
         }
     }

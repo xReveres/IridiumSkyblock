@@ -615,6 +615,11 @@ public class Island {
         coop.remove(island.id);
     }
 
+    public void removeCoop(int id) {
+        if (coop == null) coop = new HashSet<>();
+        coop.remove(id);
+    }
+
     public boolean isCoop(Island island) {
         if (coop == null) coop = new HashSet<>();
         if (island == null) return false;
