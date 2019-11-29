@@ -160,6 +160,24 @@ public class MVDWPlaceholderAPIManager {
             return user.getIsland() != null ? user.getIsland().getFlightBooster() + "" : "N/A";
         });
 
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_bank_vault", e -> {
+            Player player = e.getPlayer();
+            if (player == null) {
+                return "N/A";
+            }
+            User user = User.getUser(player);
+            return user.getIsland() != null ? user.getIsland().money + "" : "N/A";
+        });
+
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_bank_experience", e -> {
+            Player player = e.getPlayer();
+            if (player == null) {
+                return "N/A";
+            }
+            User user = User.getUser(player);
+            return user.getIsland() != null ? user.getIsland().exp + "" : "N/A";
+        });
+
         for (int i = 0; i < 10; i++) { //TODO there is probabbly a more efficient way to do this?
             int finalI = i;
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_name_" + (i + 1), e -> {

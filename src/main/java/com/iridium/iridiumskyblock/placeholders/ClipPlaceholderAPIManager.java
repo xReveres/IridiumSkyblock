@@ -77,12 +77,16 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 return user.getIsland() != null ? user.getIsland().getFarmingBooster() + "" : "N/A";
             case "island_booster_flight":
                 return user.getIsland() != null ? user.getIsland().getFlightBooster() + "" : "N/A";
+            case "island_bank_vault":
+                return user.getIsland() != null ? user.getIsland().money + "" : "N/A";
+            case "island_bank_experience":
+                return user.getIsland() != null ? user.getIsland().exp + "" : "N/A";
         }
         if (placeholder.startsWith("island_top_name_")) {
             try {
                 Integer integer = Integer.parseInt(placeholder.replace("island_top_name_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer-1 ? User.getUser(Utils.getTopIslands().get(integer - 1).getOwner()).name : "N/A";
+                return islands.size() > integer - 1 ? User.getUser(Utils.getTopIslands().get(integer - 1).getOwner()).name : "N/A";
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -91,7 +95,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 int integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer-1 ? NumberFormat.getInstance().format(Utils.getTopIslands().get(integer - 1).getValue()) + "" : "N/A";
+                return islands.size() > integer - 1 ? NumberFormat.getInstance().format(Utils.getTopIslands().get(integer - 1).getValue()) + "" : "N/A";
             } catch (NumberFormatException ignored) {
 
             }
@@ -100,7 +104,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer-1 ? NumberFormat.getInstance().format(Math.floor(Utils.getTopIslands().get(integer - 1).getValue() / IridiumSkyblock.getConfiguration().valuePerLevel)) + "" : "N/A";
+                return islands.size() > integer - 1 ? NumberFormat.getInstance().format(Math.floor(Utils.getTopIslands().get(integer - 1).getValue() / IridiumSkyblock.getConfiguration().valuePerLevel)) + "" : "N/A";
             } catch (NumberFormatException ignored) {
 
             }
