@@ -20,8 +20,8 @@ public class GiveUpgradeCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length != 3) {
-            sender.sendMessage("/is giveupgrade <player> <upgrade>");
+        if (args.length != 4 && args.length != 3) {
+            sender.sendMessage("/is giveupgrade <player> <upgrade> <level>");
             return;
         }
 
@@ -30,25 +30,33 @@ public class GiveUpgradeCommand extends Command {
             if (player != null) {
                 Island island = User.getUser(player).getIsland();
                 if (island != null) {
-                    if (args[2].equalsIgnoreCase("size")) {
-                        if (IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.containsKey(island.getSizeLevel() + 1)) {
-                            island.setSizeLevel(island.getSizeLevel() + 1);
+                    try {
+                        if (args[2].equalsIgnoreCase("size")) {
+                            int amount = args.length == 3 ? island.getSizeLevel() + 1 : Integer.parseInt(args[3]);
+                            if (IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.containsKey(amount)) {
+                                island.setSizeLevel(amount);
+                            }
                         }
-                    }
-                    if (args[2].equalsIgnoreCase("member")) {
-                        if (IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.containsKey(island.getMemberLevel() + 1)) {
-                            island.setMemberLevel(island.getMemberLevel() + 1);
+                        if (args[2].equalsIgnoreCase("member")) {
+                            int amount = args.length == 3 ? island.getMemberLevel() + 1 : Integer.parseInt(args[3]);
+                            if (IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.containsKey(amount)) {
+                                island.setMemberLevel(amount);
+                            }
                         }
-                    }
-                    if (args[2].equalsIgnoreCase("warp")) {
-                        if (IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.containsKey(island.getWarpLevel() + 1)) {
-                            island.setWarpLevel(island.getWarpLevel() + 1);
+                        if (args[2].equalsIgnoreCase("warp")) {
+                            int amount = args.length == 3 ? island.getWarpLevel() + 1 : Integer.parseInt(args[3]);
+                            if (IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.containsKey(amount)) {
+                                island.setWarpLevel(amount);
+                            }
                         }
-                    }
-                    if (args[2].equalsIgnoreCase("ores")) {
-                        if (IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.containsKey(island.getOreLevel() + 1)) {
-                            island.setOreLevel(island.getOreLevel() + 1);
+                        if (args[2].equalsIgnoreCase("ores")) {
+                            int amount = args.length == 3 ? island.getOreLevel() + 1 : Integer.parseInt(args[3]);
+                            if (IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.containsKey(amount)) {
+                                island.setOreLevel(amount);
+                            }
                         }
+                    } catch (NumberFormatException e) {
+                        sender.sendMessage(args[2] + "is not a number");
                     }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
