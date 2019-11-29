@@ -96,6 +96,15 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
 
             }
         }
+        if (placeholder.startsWith("island_top_level_")) {
+            try {
+                int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
+                List<Island> islands = Utils.getTopIslands();
+                return islands.size() > integer-1 ? NumberFormat.getInstance().format(Math.floor(Utils.getTopIslands().get(integer - 1).getValue() / IridiumSkyblock.getConfiguration().valuePerLevel)) + "" : "N/A";
+            } catch (NumberFormatException ignored) {
+
+            }
+        }
         return null;
     }
 }
