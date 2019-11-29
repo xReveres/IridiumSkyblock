@@ -387,8 +387,7 @@ public class Island {
             if (spawnerBooster > 0) spawnerBooster--;
             if (farmingBooster > 0) farmingBooster--;
             if (expBooster > 0) expBooster--;
-            if (flightBooster > 0) flightBooster--;
-            if (flightBooster == 0) {
+            if (flightBooster == 1) {
                 for (String player : members) {
                     Player p = Bukkit.getPlayer(player);
                     if (p != null) {
@@ -399,6 +398,7 @@ public class Island {
                     }
                 }
             }
+            if (flightBooster > 0) flightBooster--;
         }, 0, 20);
         if (permissions == null) {
             permissions = new HashMap<Role, Permissions>() {{
