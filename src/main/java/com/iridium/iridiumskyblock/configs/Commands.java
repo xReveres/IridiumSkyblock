@@ -35,6 +35,7 @@ public class Commands {
     public TransferCommand transferCommand = new TransferCommand();
     public AdminCommand adminCommand = new AdminCommand();
     public GiveBoosterCommand giveBoosterCommand = new GiveBoosterCommand();
+    public GiveUpgradeCommand giveUpgradeCommand = new GiveUpgradeCommand();
     public BanCommand banCommand = new BanCommand();
     public UnBanCommand unBanCommand = new UnBanCommand();
     public CoopCommand coopCommand = new CoopCommand();

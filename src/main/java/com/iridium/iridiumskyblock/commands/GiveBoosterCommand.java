@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,6 +58,6 @@ public class GiveBoosterCommand extends Command {
 
     @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
-        return null;
+        return Arrays.asList("exp", "farming", "flight", "spawner");
     }
 }
