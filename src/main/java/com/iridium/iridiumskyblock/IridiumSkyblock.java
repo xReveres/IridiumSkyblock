@@ -210,12 +210,7 @@ public class IridiumSkyblock extends JavaPlugin {
                     islands = islandManager.islands.values().iterator();
                 }
                 if (islands.hasNext()) {
-                    long startTime = System.nanoTime();
                     islands.next().calculateIslandValue();
-                    long endTime = System.nanoTime();
-
-                    double duration = (endTime - startTime) / 1000000.00;
-                    IridiumSkyblock.getInstance().getLogger().info("Finished Task, Took: " + duration + "ms");
                 }
             }
         }, 0, IridiumSkyblock.getConfiguration().islandsUpdateInterval);
