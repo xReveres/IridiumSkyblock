@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -101,7 +102,8 @@ public class Schematic {
         return height;
     }
 
-    public void pasteSchematic(Location loc) {
+    public List<Location> pasteSchematic(Location loc) {
+        List<Location> locations = new ArrayList<>();
         short length = getLength();
         short width = getWidth();
         short height = getHeight();
@@ -120,6 +122,9 @@ public class Schematic {
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                         if (Material.getMaterial(blocks[index]) != null) {
                             block.setTypeIdAndData(blocks[index], blockData[index], true);
+                            if (IridiumSkyblock.getConfiguration().blockvalue.containsKey(Material.getMaterial(blocks[index])) || Material.getMaterial(blocks[index]) == Material.MOB_SPAWNER) {
+                                locations.add(block.getLocation());
+                            }
                         }
                     }
                 }
@@ -173,6 +178,9 @@ public class Schematic {
                                     int i = getChildTag(palette, s, IntTag.class).getValue();
                                     if (blockdata[index] == i) {
                                         setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), true);
+                                        if (Utils.isBlockValuable(block)) {
+                                            locations.add(block.getLocation());
+                                        }
                                     }
                                 }
                             }
@@ -221,6 +229,7 @@ public class Schematic {
                 }
             }
         }
+        return locations;
     }
 
     public static void debugSchematic(File file) throws IOException {
