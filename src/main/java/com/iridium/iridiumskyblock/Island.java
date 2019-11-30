@@ -85,7 +85,7 @@ public class Island {
     private int value;
 
     public List<Location> blocks;
-    public transient List<Location> lastblocks;
+    public transient int lastblocks = 0;
 
     private List<Warp> warps;
 
@@ -223,8 +223,7 @@ public class Island {
 
     public void calculateIslandValue() {
         if (blocks == null) blocks = new ArrayList<>();
-        if (lastblocks == null) lastblocks = new ArrayList<>();
-        if (lastblocks.equals(blocks)) return;
+        if (blocks.hashCode() == lastblocks) return;
         int value = 0;
         ListIterator<Location> locations = blocks.listIterator();
         while (locations.hasNext()) {
@@ -256,7 +255,7 @@ public class Island {
                 completeMission("Competitor", IridiumSkyblock.getMissions().competitor.crystalReward, IridiumSkyblock.getMissions().competitor.vaultReward);
             }
         }
-        lastblocks = new ArrayList<>(blocks);
+        lastblocks = blocks.hashCode();
     }
 
     public void initBlocks() {
@@ -404,7 +403,6 @@ public class Island {
                 }
             }};
         }
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), this::calculateIslandValue, 0, 20);
     }
 
     public void initChunks() {
@@ -648,6 +646,7 @@ public class Island {
     }
 
     public void deleteBlocks() {
+        blocks.clear();
         for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
             for (double Y = 0; Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight(); Y++) {
                 for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
