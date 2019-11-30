@@ -56,6 +56,6 @@ public class onBlockBreak implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMonitorBreakBlock(BlockBreakEvent e) {
         Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
-        island.blocks.remove(e.getBlock().getLocation());
+        if (island != null) island.blocks.remove(e.getBlock().getLocation());
     }
 }

@@ -23,8 +23,10 @@ public class onEntityExplode implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMonitorEntityExplode(EntityExplodeEvent e) {
         Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getLocation());
-        for (Block b : e.blockList()) {
-            island.blocks.remove(b.getLocation());
+        if (island != null) {
+            for (Block b : e.blockList()) {
+                island.blocks.remove(b.getLocation());
+            }
         }
     }
 }
