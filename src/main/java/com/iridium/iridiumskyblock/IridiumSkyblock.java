@@ -98,20 +98,21 @@ public class IridiumSkyblock extends JavaPlugin {
                 setupPlaceholderAPI();
 
                 startCounting();
-                try {
-                    latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
                 getLogger().info("-------------------------------");
                 getLogger().info("");
                 getLogger().info(getDescription().getName() + " Enabled!");
-                if (!latest.equals(getDescription().getVersion()))
-                    getLogger().info("Newer version available: " + latest);
                 getLogger().info("");
                 getLogger().info("-------------------------------");
+                
+                Bukkit.getScheduler().scheduleAsyncDelayedTask(this, () -> {
+                    try {
+                        latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (!latest.equals(getDescription().getVersion()))
+                        getLogger().info("Newer version available: " + latest);
+                });
             });
         } catch (Exception e) {
             sendErrorMessage(e);
