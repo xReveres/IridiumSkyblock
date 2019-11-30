@@ -20,6 +20,7 @@ public class RemoveCrystalsCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 3) {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is removecrystals <player> <amount>");
             sender.sendMessage("/is removecrystals <player> <amount>");
             return;
         }

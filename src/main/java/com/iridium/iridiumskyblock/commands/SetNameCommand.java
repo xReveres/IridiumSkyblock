@@ -22,7 +22,7 @@ public class SetNameCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (args.length != 2) {
-            p.sendMessage("/is setname <Island Name>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is setname <Island Name>");
             return;
         }
         if (user.getIsland() != null) {

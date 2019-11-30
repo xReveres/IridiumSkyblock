@@ -20,7 +20,7 @@ public class GiveCrystalsCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            sender.sendMessage("/is givecrystals <player> <amount>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is givecrystals <player> <amount>");
             return;
         }
 

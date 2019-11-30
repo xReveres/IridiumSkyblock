@@ -21,7 +21,7 @@ public class InviteCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is invite <player>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is invite player");
             return;
         }
         Player p = (Player) sender;

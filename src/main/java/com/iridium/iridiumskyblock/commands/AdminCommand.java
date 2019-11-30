@@ -26,7 +26,7 @@ public class AdminCommand extends Command {
             if (island != null) {
                 p.openInventory(island.getIslandMenuGUI().getInventory());
             } else {
-                sender.sendMessage("/is admin <player>");
+                sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is admin <player>");
             }
             return;
         }

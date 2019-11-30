@@ -18,7 +18,7 @@ public class Config {
         }
     }
 
-    public String prefix = "&b&lIridiumSkyblock";
+    public String prefix = "&b&lIridiumSkyblock &8»";
     public String worldName = "IridiumSkyblock";
     public String chatRankPlaceholder = "[ISLAND_RANK]";
     public String chatValuePlaceholder = "[ISLAND_VALUE]";

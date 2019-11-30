@@ -20,7 +20,7 @@ public class UnBanCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is unban <player>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is unban <player>");
             return;
         }
         Player p = (Player) sender;

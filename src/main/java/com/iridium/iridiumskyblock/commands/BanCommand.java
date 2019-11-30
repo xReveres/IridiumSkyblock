@@ -20,6 +20,7 @@ public class BanCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is ban <player>");
             sender.sendMessage("/is ban <player>");
             return;
         }

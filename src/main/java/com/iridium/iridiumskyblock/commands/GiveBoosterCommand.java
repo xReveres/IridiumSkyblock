@@ -21,7 +21,7 @@ public class GiveBoosterCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 4 && args.length != 3) {
-            sender.sendMessage("/is givebooster <player> <booster> <amount>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is givebooster <player> <booster> <amount>");
             return;
         }
 

@@ -20,7 +20,7 @@ public class UnCoopCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is uncoop <player>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is uncoop <player>");
             return;
         }
         Player p = (Player) sender;

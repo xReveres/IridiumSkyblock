@@ -21,7 +21,7 @@ public class GiveUpgradeCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 4 && args.length != 3) {
-            sender.sendMessage("/is giveupgrade <player> <upgrade> <level>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is giveupgrade <player> <upgrade> <level>");
             return;
         }
 

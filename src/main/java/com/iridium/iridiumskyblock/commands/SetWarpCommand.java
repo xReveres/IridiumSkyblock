@@ -31,7 +31,7 @@ public class SetWarpCommand extends Command {
                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage("/is setwarp <Name> (Password)");
+            p.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is setwarp <name> (password)");
         }
     }
 

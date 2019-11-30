@@ -21,7 +21,7 @@ public class KickCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is kick <player>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is kick <player>");
             return;
         }
         Player p = (Player) sender;

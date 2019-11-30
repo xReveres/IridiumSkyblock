@@ -21,7 +21,7 @@ public class JoinCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is join <player>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is join <player>");
             return;
         }
         Player p = (Player) sender;
