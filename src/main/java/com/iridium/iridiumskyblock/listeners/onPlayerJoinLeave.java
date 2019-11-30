@@ -10,8 +10,6 @@ public class onPlayerJoinLeave implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        e.getPlayer().setAllowFlight(false);
-        e.getPlayer().setFlying(false);
         if (e.getPlayer().isOp()) {
             if (IridiumSkyblock.getConfiguration().notifyAvailableUpdate && !IridiumSkyblock.getInstance().getLatest().equals(IridiumSkyblock.getInstance().getDescription().getVersion())) {
                 e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix + " &7This message is only seen by opped players."));
@@ -57,6 +55,13 @@ public class onPlayerJoinLeave implements Listener {
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
-        User.getUser(e.getPlayer()).name = e.getPlayer().getName();
+        User u = User.getUser(e.getPlayer());
+        u.name = e.getPlayer().getName();
+
+        if (u.flying && (u.getIsland() == null || u.getIsland().getFlightBooster() == 0)) {
+            e.getPlayer().setAllowFlight(false);
+            e.getPlayer().setFlying(false);
+            u.flying = false;
+        }
     }
 }

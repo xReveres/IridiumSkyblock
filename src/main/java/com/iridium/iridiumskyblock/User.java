@@ -14,6 +14,7 @@ public class User {
     public Island.Warp warp;
     public boolean bypassing;
     public boolean islandChat;
+    public boolean flying;
 
     public User(OfflinePlayer p) {
         invites = new ArrayList<>();
@@ -22,6 +23,7 @@ public class User {
         this.islandID = 0;
         bypassing = false;
         islandChat = false;
+        flying = false;
         IridiumSkyblock.getIslandManager().users.put(this.player, this);
     }
 

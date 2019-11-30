@@ -30,6 +30,7 @@ public class FlyCommand extends Command {
                     p.setFlying(true);
                     p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightEnabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
+                user.flying = p.isFlying();
             } else {
                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightBoosterNotActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
