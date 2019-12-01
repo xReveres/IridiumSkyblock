@@ -1,9 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +21,21 @@ public class RegenCommand extends Command {
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
-                    p.openInventory(new ConfirmationGUI(user.getIsland(), () -> user.getIsland().generateIsland(), IridiumSkyblock.getMessages().resetAction).getInventory());
+                    p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
+                        Island island = user.getIsland();
+                        island.generateIsland();
+                        if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
+                            island.resetMissions();
+                            island.setSizeLevel(1);
+                            island.setMemberLevel(1);
+                            island.setWarpLevel(1);
+                            island.setOreLevel(1);
+                            island.setFlightBooster(0);
+                            island.setExpBooster(0);
+                            island.setFarmingBooster(0);
+                            island.setSpawnerBooster(0);
+                        }
+                    }, IridiumSkyblock.getMessages().resetAction).getInventory());
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }

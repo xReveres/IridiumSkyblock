@@ -18,7 +18,20 @@ public class IslandMenuGUI extends GUI implements Listener {
         super(island, 27, IridiumSkyblock.getInventories().islandMenuGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
         this.delete = new ConfirmationGUI(island, () -> getIsland().delete(), IridiumSkyblock.getMessages().deleteAction);
-        this.regen = new ConfirmationGUI(island, () -> getIsland().generateIsland(), IridiumSkyblock.getMessages().resetAction);
+        this.regen = new ConfirmationGUI(island, () -> {
+            getIsland().generateIsland();
+            if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
+                getIsland().resetMissions();
+                getIsland().setSizeLevel(1);
+                getIsland().setMemberLevel(1);
+                getIsland().setWarpLevel(1);
+                getIsland().setOreLevel(1);
+                getIsland().setFlightBooster(0);
+                getIsland().setExpBooster(0);
+                getIsland().setFarmingBooster(0);
+                getIsland().setSpawnerBooster(0);
+            }
+        }, IridiumSkyblock.getMessages().resetAction);
     }
 
     @Override

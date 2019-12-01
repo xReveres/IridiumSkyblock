@@ -30,6 +30,7 @@ public class Config {
     public boolean disableExplosions = true;
     public boolean clearInventories = true;
     public boolean debugSchematics = false;
+    public boolean restartUpgradesOnRegen = false;
     public int distance = 151;
     public double valuePerLevel = 100.00;
     public int blocksPerTick = 50;
