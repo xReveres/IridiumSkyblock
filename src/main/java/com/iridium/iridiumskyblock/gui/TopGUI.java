@@ -23,7 +23,7 @@ public class TopGUI extends GUI implements Listener {
     public HashMap<Integer, Integer> islands = new HashMap<>();
 
     public TopGUI() {
-        super(27, IridiumSkyblock.getInventories().topGUITitle);
+        super(IridiumSkyblock.getInventories().topGUISize, IridiumSkyblock.getInventories().topGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

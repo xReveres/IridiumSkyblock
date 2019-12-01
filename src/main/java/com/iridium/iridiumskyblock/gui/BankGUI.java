@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 public class BankGUI extends GUI implements Listener {
 
     public BankGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getInventories().bankGUITitle);
+        super(island, IridiumSkyblock.getInventories().bankGUISize, IridiumSkyblock.getInventories().bankGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

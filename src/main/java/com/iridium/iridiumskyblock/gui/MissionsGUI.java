@@ -11,7 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class MissionsGUI extends GUI implements Listener {
 
     public MissionsGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getInventories().missionsGUITitle);
+        super(island, IridiumSkyblock.getInventories().missionsGUISize, IridiumSkyblock.getInventories().missionsGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

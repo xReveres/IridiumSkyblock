@@ -24,6 +24,21 @@ public class Inventories {
     public String permissionsGUITitle = "&7Permissions";
     public String schematicselectGUITitle = "&7Select an Island";
     public String bankGUITitle = "&7Island Bank";
+    public String visitGUITitle = "&7Visit an Island";
+
+    public int upgradeGUISize = 27;
+    public int boosterGUISize = 27;
+    public int missionsGUISize = 27;
+    public int membersGUISize = 27;
+    public int coopGUISize = 27;
+    public int islandMenuGUISize = 27;
+    public int warpGUISize = 27;
+    public int topGUISize = 27;
+    public int borderColorGUISize = 27;
+    public int permissionsGUISize = 27;
+    public int schematicselectGUISize = 27;
+    public int bankGUISize = 27;
+    public int visitGUISize = 54;
 
     //Boosters
     public Item spawner = new Item(Material.MOB_SPAWNER, 1, 0, "&b&lIncreased Mobs", Arrays.asList("&7Are your spawners too slow? Buy this", "&7booster and increase spawner rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{spawnerbooster_minutes} minutes and {spawnerbooster_seconds}seconds", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().spawnerBooster.crystalsCost + " Crystals and $" + IridiumSkyblock.getBoosters().spawnerBooster.vaultCost, "", "&b&l[!] &bRight Click to Purchase this Booster."));

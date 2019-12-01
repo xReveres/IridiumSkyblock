@@ -17,7 +17,7 @@ public class PermissionsGUI extends GUI implements Listener {
     private HashMap<Role, PermissionsGUI> permissions = new HashMap<>();
 
     public PermissionsGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getInventories().permissionsGUITitle);
+        super(island, IridiumSkyblock.getInventories().permissionsGUISize, IridiumSkyblock.getInventories().permissionsGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
         int i = 11;
         for (Role role : Role.values()) {

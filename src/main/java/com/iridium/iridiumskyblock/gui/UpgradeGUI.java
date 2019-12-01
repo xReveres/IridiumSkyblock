@@ -12,7 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class UpgradeGUI extends GUI implements Listener {
 
     public UpgradeGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getInventories().upgradeGUITitle);
+        super(island, IridiumSkyblock.getInventories().upgradeGUISize, IridiumSkyblock.getInventories().upgradeGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 

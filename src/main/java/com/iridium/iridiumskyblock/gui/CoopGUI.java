@@ -23,7 +23,7 @@ public class CoopGUI extends GUI implements Listener {
     public HashMap<Integer, Integer> islands = new HashMap<>();
 
     public CoopGUI(Island island) {
-        super(island, 27, IridiumSkyblock.getInventories().coopGUITitle);
+        super(island, IridiumSkyblock.getInventories().coopGUISize, IridiumSkyblock.getInventories().coopGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
