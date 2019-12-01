@@ -26,6 +26,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentMap;
 
 public class IridiumSkyblock extends JavaPlugin {
 
@@ -103,7 +104,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 getLogger().info(getDescription().getName() + " Enabled!");
                 getLogger().info("");
                 getLogger().info("-------------------------------");
-                
+
                 Bukkit.getScheduler().scheduleAsyncDelayedTask(this, () -> {
                     try {
                         latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
@@ -187,31 +188,31 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public void islandValueManager() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            Iterator<Island> islands = islandManager.islands.values().iterator();
+            Iterator<ConcurrentMap.Entry<Integer, Island>> islands = islandManager.islands.entrySet().iterator();
 
             @Override
             public void run() {
                 if (!updatingBlocks) {
                     if (!islands.hasNext()) {
-                        islands = islandManager.islands.values().iterator();
+                        islands = islandManager.islands.entrySet().iterator();
                     }
                     if (islands.hasNext()) {
                         updatingBlocks = true;
-                        islands.next().initBlocks();
+                        islands.next().getValue().initBlocks();
                     }
                 }
             }
         }, 0, 0);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            Iterator<Island> islands = islandManager.islands.values().iterator();
+            Iterator<ConcurrentMap.Entry<Integer, Island>> islands = islandManager.islands.entrySet().iterator();
 
             @Override
             public void run() {
                 if (!islands.hasNext()) {
-                    islands = islandManager.islands.values().iterator();
+                    islands = islandManager.islands.entrySet().iterator();
                 }
                 if (islands.hasNext()) {
-                    islands.next().calculateIslandValue();
+                    islands.next().getValue().calculateIslandValue();
                 }
             }
         }, 0, IridiumSkyblock.getConfiguration().islandsUpdateInterval);
