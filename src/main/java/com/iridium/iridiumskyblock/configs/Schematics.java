@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Schematics {
-    public List<FakeSchematic> schematics = Collections.singletonList(new FakeSchematic("island.schematic", "nether.schematic", 0.5, 96.00, -2.5, "", Material.GRASS, "&b&lDefault Island", Collections.singletonList("&7The default island")));
+    public List<FakeSchematic> schematics = Collections.singletonList(new FakeSchematic("island.schematic", "nether.schematic", -0.5, 96.00, -2.5, "", Material.GRASS, "&b&lDefault Island", Collections.singletonList("&7The default island")));
 
     public static class FakeSchematic {
         public String name;
