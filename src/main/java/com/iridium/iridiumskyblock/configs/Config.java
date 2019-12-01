@@ -29,6 +29,7 @@ public class Config {
     public boolean notifyAvailableUpdate = true;
     public boolean disableExplosions = true;
     public boolean clearInventories = true;
+    public boolean debugSchematics = false;
     public int distance = 151;
     public double valuePerLevel = 100.00;
     public int blocksPerTick = 50;
@@ -57,7 +58,7 @@ public class Config {
         put(9, 24);
         put(10, 25);
     }};
-    
+
     public HashMap<Material, Integer> blockvalue = null;
     public HashMap<String, Integer> spawnervalue = null;
 }

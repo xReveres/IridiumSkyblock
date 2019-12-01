@@ -153,10 +153,11 @@ public class Schematic {
                             byte slot = getChildTag(itemtag, "Slot", ByteTag.class).getValue();
                             String name = (getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
                             Byte amount = getChildTag(itemtag, "Count", ByteTag.class).getValue();
+                            short damage = getChildTag(itemtag, "Damage", ShortTag.class).getValue();
                             if (MultiversionMaterials.fromString(name.toUpperCase()) != null) {
                                 Material material = MultiversionMaterials.fromString(name.toUpperCase()).parseMaterial();
                                 if (material != null) {
-                                    chest.getBlockInventory().setItem(slot, new ItemStack(material, amount));
+                                    chest.getBlockInventory().setItem(slot, new ItemStack(material, amount, damage));
                                 }
                             }
                         }

@@ -15,6 +15,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class Island {
@@ -464,6 +466,15 @@ public class Island {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
             if (fakeSchematic.name.equals(schematic)) {
                 blocks.addAll(IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone()));
+                if (IridiumSkyblock.getConfiguration().debugSchematics) {
+                    File schematicFolder = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
+                    try {
+                        Schematic.debugSchematic(new File(schematicFolder, fakeSchematic.name));
+                        if (IridiumSkyblock.getConfiguration().netherIslands)
+                            Schematic.debugSchematic(new File(schematicFolder, fakeSchematic.netherisland));
+                    } catch (IOException e) {
+                    }
+                }
                 Location center = getCenter().clone();
                 if (IridiumSkyblock.getConfiguration().netherIslands) {
                     center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
