@@ -35,6 +35,9 @@ public class Config {
     public double valuePerLevel = 100.00;
     public int blocksPerTick = 50;
     public int islandsUpdateInterval = 5;
+    public double dailyMoneyIntest = 0.5;
+    public double dailyCrystalsIntest = 5;
+    public double dailyExpIntest = 0.01;
     public Biome defaultBiome = Biome.PLAINS;
     public Biome netherBiome;
     public MissionRestart missionRestart = MissionRestart.Daily;

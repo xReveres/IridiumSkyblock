@@ -190,10 +190,17 @@ public class IridiumSkyblock extends JavaPlugin {
                         island.resetMissions();
                     }
                 }
+                if (LocalDateTime.now().getHour() == 0 && LocalDateTime.now().getMinute() == 0 && LocalDateTime.now().getSecond() == 0) {
+                    for (Island island : getIslandManager().islands.values()) {
+                        island.money = (int) Math.floor(island.money * (1 + (getConfiguration().dailyMoneyIntest / 100.00)));
+                        island.setCrystals((int) Math.floor(island.getCrystals() * (1 + (getConfiguration().dailyCrystalsIntest / 100.00))));
+                        island.exp = (int) Math.floor(island.exp * (1 + (getConfiguration().dailyExpIntest / 100.00)));
+                    }
+                }
             } catch (Exception e) {
                 sendErrorMessage(e);
             }
-        }, 20, 20);
+        }, 0, 10);
     }
 
     public void islandValueManager() {
