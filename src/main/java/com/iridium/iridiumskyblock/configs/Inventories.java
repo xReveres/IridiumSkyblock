@@ -30,16 +30,6 @@ public class Inventories {
     public Item farming = new Item(Material.WHEAT, 1, 0, "&b&lIncreased Crops", Arrays.asList("&7Are your crops too slow? Buy this", "&7booster and increase crop growth rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{farmingbooster_minutes} minutes and {farmingbooster_seconds}seconds", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().farmingBooster.crystalsCost + " Crystals and $" + IridiumSkyblock.getBoosters().farmingBooster.vaultCost, "", "&b&l[!] &bRight Click to Purchase this Booster."));
     public Item exp = new Item(Material.EXP_BOTTLE, 1, 0, "&b&lIncreased Experience", Arrays.asList("&7Takes too long to get exp? Buy this", "&7booster and exp rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{expbooster_minutes} minutes and {expbooster_seconds}seconds", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().experianceBooster.crystalsCost + " Crystals and $" + IridiumSkyblock.getBoosters().experianceBooster.vaultCost, "", "&b&l[!] &bRight Click to Purchase this Booster."));
     public Item flight = new Item(Material.FEATHER, 1, 0, "&b&lIncreased Flight", Arrays.asList("&7Tired of falling off your island? Buy this", "&7booster and allow all members to fly.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{flightbooster_minutes} minutes and {flightbooster_seconds}seconds", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().flightBooster.crystalsCost + " Crystals and $" + IridiumSkyblock.getBoosters().flightBooster.vaultCost, "", "&b&l[!] &bRight Click to Purchase this Booster."));
-
-    //Missions
-    public Item treasureHunter = new Item(Material.EXP_BOTTLE, 1, 0, "&b&lTreasure Hunter", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bCollect {treasurehunteramount} Experience", "&b&l * &7Current Status: &b{treasurehunterstatus}", "&b&l * &7Reward: &b{treasurehuntercrystals} Island Crystals and ${treasurehuntervault}", "", "&b&l[!] &bComplete this mission for rewards."));
-    public Item competitor = new Item(Material.GOLD_INGOT, 1, 0, "&b&lCompetitor", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bGain {competitoramount} Island Value", "&b&l * &7Current Status: &b{competitorstatus}", "&b&l * &7Reward: &b{competitorcrystals} Island Crystals and ${competitorvault}", "", "&b&l[!] &bComplete this mission for rewards."));
-    public Item miner = new Item(Material.DIAMOND_ORE, 1, 0, "&b&lMiner", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bDestroy {mineramount} Ores", "&b&l * &7Current Status: &b{minerstatus}", "&b&l * &7Reward: &b{minercrystals} Island Crystals and ${minervault}", "", "&b&l[!] &bComplete this mission for rewards."));
-    public Item farmer = new Item(Material.SUGAR_CANE, 1, 0, "&b&lFarmer", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bHarvest {farmeramount} Crops", "&b&l * &7Current Status: &b{farmerstatus}", "&b&l * &7Reward: &b{farmercrystals} Island Crystals and ${farmervault}", "", "&b&l[!] &bComplete this mission for rewards."));
-    public Item hunter = new Item(Material.BLAZE_POWDER, 1, 0, "&b&lHunter", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bKill {hunteramount} Mobs", "&b&l * &7Current Status: &b{hunterstatus}", "&b&l * &7Reward: &b{huntercrystals} Island Crystals and ${huntervault}", "", "&b&l[!] &bComplete this mission for rewards."));
-    public Item fisherman = new Item(Material.FISHING_ROD, 1, 0, "&b&lFisherman", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bCatch {fishermanamount} Fish", "&b&l * &7Current Status: &b{fishermanstatus}", "&b&l * &7Reward: &b{fishermancrystals} Island Crystals and ${fishermanvault}", "", "&b&l[!] &bComplete this mission for rewards."));
-    public Item builder = new Item(Material.COBBLESTONE, 1, 0, "&b&lBuilder", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bPlace {builderamount} Blocks", "&b&l * &7Current Status: &b{builderstatus}", "&b&l * &7Reward: &b{buildercrystals} Island Crystals and ${buildervault}", "", "&b&l[!] &bComplete this mission for rewards."));
-
     //Upgrade
     public Item size = new Item(Material.GRASS, 1, 0, "&b&lIsland Size", Arrays.asList("&7Need more room to expand? Buy this", "&7upgrade to increase your island size.", "", "&b&lInformation:", "&b&l * &7Current Level: &b{sizelevel}", "&b&l * &7Current Size: &b{sizeblocks}x{sizeblocks} Blocks", "&b&l * &7Upgrade Cost: &b{sizecrystalscost} Crystals and ${sizevaultcost}", "&b&lLevels:", "&b&l * &7Level 1: &b50x50 Blocks", "&b&l * &7Level 2: &b100x100 Blocks", "&b&l * &7Level 3: &b150x150 Blocks", "", "&b&l[!] &bLeft Click to Purchase this Upgrade"));
     public Item member = new Item(Material.ARMOR_STAND, 1, 0, "&b&lMember Count", Arrays.asList("&7Need more members? Buy this", "&7upgrade to increase your member count.", "", "&b&lInformation:", "&b&l * &7Current Level: &b{memberlevel}", "&b&l * &7Current Members: &b{membercount} Members", "&b&l * &7Upgrade Cost: &b{membercrystalscost} Crystals and ${membervaultcost}", "&b&lLevels:", "&b&l * &7Level 1: &b9 Members", "&b&l * &7Level 2: &b18 Members", "&b&l * &7Level 3: &b27 Members", "", "&b&l[!] &bLeft Click to Purchase this Upgrade"));
@@ -70,6 +60,16 @@ public class Inventories {
 
     public Item background = new Item(Material.STAINED_GLASS_PANE, 1, 15, " ", new ArrayList<>());
 
+    public List<Item> missionsItems = Arrays.asList(
+            new Item(Material.EXP_BOTTLE, 10, 1, 0, "&b&lTreasure Hunter", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bCollect {Treasure Hunteramount} Experience", "&b&l * &7Current Status: &b{Treasure Hunterstatus}", "&b&l * &7Reward: &b{Treasure Huntercrystals} Island Crystals and ${Treasure Huntervault}", "", "&b&l[!] &bComplete this mission for rewards.")),
+            new Item(Material.GOLD_INGOT, 11, 1, 0, "&b&lCompetitor", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bGain {Competitoramount} Island Value", "&b&l * &7Current Status: &b{Competitorstatus}", "&b&l * &7Reward: &b{Competitorcrystals} Island Crystals and ${Competitorvault}", "", "&b&l[!] &bComplete this mission for rewards.")),
+            new Item(Material.DIAMOND_ORE, 12, 1, 0, "&b&lMiner", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bDestroy {Mineramount} Ores", "&b&l * &7Current Status: &b{Minerstatus}", "&b&l * &7Reward: &b{Minercrystals} Island Crystals and ${Minervault}", "", "&b&l[!] &bComplete this mission for rewards.")),
+            new Item(Material.SUGAR_CANE, 13, 1, 0, "&b&lFarmer", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bHarvest {Farmeramount} Crops", "&b&l * &7Current Status: &b{Farmerstatus}", "&b&l * &7Reward: &b{Farmercrystals} Island Crystals and ${Farmervault}", "", "&b&l[!] &bComplete this mission for rewards.")),
+            new Item(Material.BLAZE_POWDER, 14, 1, 0, "&b&lHunter", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bKill {Hunteramount} Mobs", "&b&l * &7Current Status: &b{Hunterstatus}", "&b&l * &7Reward: &b{Huntercrystals} Island Crystals and ${Huntervault}", "", "&b&l[!] &bComplete this mission for rewards.")),
+            new Item(Material.FISHING_ROD, 15, 1, 0, "&b&lFisherman", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bCatch {Fishermanamount} Fish", "&b&l * &7Current Status: &b{Fishermanstatus}", "&b&l * &7Reward: &b{Fishermancrystals} Island Crystals and ${Fishermanvault}", "", "&b&l[!] &bComplete this mission for rewards.")),
+            new Item(Material.COBBLESTONE, 16, 1, 0, "&b&lBuilder", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bPlace {Builderamount} Blocks", "&b&l * &7Current Status: &b{Builderstatus}", "&b&l * &7Reward: &b{Buildercrystals} Island Crystals and ${Buildervault}", "", "&b&l[!] &bComplete this mission for rewards."))
+    );
+
     public static class Item {
 
         public Material material;
@@ -77,6 +77,7 @@ public class Inventories {
         public int type;
         public String title;
         public List<String> lore;
+        public int slot;
 
         public Item(Material material, int amount, int type, String title, List<String> lore) {
             this.material = material;
@@ -84,6 +85,15 @@ public class Inventories {
             this.type = type;
             this.lore = lore;
             this.title = title;
+        }
+
+        public Item(Material material, int slot, int amount, int type, String title, List<String> lore) {
+            this.material = material;
+            this.amount = amount;
+            this.type = type;
+            this.lore = lore;
+            this.title = title;
+            this.slot = slot;
         }
     }
 }

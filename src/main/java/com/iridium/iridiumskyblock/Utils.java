@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.configs.Inventories;
+import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.support.Vault;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -223,7 +224,7 @@ public class Utils {
     }
 
     public static String processIslandPlaceholders(String line, Island island) {
-        return processMultiplePlaceholders(line,
+        List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
                 // Upgrades
                 new Placeholder("sizevaultcost", IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(island.getSizeLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
                 new Placeholder("membervaultcost", IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.containsKey(island.getMemberLevel() + 1) ? IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(island.getMemberLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
@@ -259,47 +260,24 @@ public class Utils {
                 new Placeholder("farmingbooster_seconds", island.getFarmingBooster() % 60 + ""),
                 new Placeholder("expbooster_seconds", island.getExpBooster() % 60 + ""),
                 new Placeholder("flightbooster_seconds", island.getFlightBooster() % 60 + ""),
-                new Placeholder("spawnerbooster_minutes", (int)Math.floor(island.getSpawnerBooster() / 60.00) + ""),
-                new Placeholder("farmingbooster_minutes", (int)Math.floor(island.getFarmingBooster() / 60.00) + ""),
-                new Placeholder("expbooster_minutes", (int)Math.floor(island.getExpBooster() / 60.00) + ""),
-                new Placeholder("flightbooster_minutes", (int)Math.floor(island.getFlightBooster() / 60.00) + ""),
-                // Missions
-                new Placeholder("treasurehunterstatus", ((island.treasureHunter != -1 ? island.treasureHunter + "/" + IridiumSkyblock.getMissions().treasureHunter.amount : "Completed"))),
-                new Placeholder("competitorstatus", ((island.competitor != Integer.MIN_VALUE ? island.competitor + "/" + IridiumSkyblock.getMissions().competitor.amount : "Completed"))),
-                new Placeholder("minerstatus", ((island.miner != -1 ? island.miner + "/" + IridiumSkyblock.getMissions().miner.amount : "Completed"))),
-                new Placeholder("farmerstatus", ((island.farmer != -1 ? island.farmer + "/" + IridiumSkyblock.getMissions().farmer.amount : "Completed"))),
-                new Placeholder("hunterstatus", ((island.hunter != -1 ? island.hunter + "/" + IridiumSkyblock.getMissions().hunter.amount : "Completed"))),
-                new Placeholder("fishermanstatus", ((island.fisherman != -1 ? island.fisherman + "/" + IridiumSkyblock.getMissions().fisherman.amount : "Completed"))),
-                new Placeholder("builderstatus", ((island.builder != -1 ? island.builder + "/" + IridiumSkyblock.getMissions().builder.amount : "Completed"))),
-
-                new Placeholder("treasurehunteramount", island.treasureHunter + ""),
-                new Placeholder("competitoramount", island.competitor + ""),
-                new Placeholder("mineramount", island.miner + ""),
-                new Placeholder("farmeramount", island.fisherman + ""),
-                new Placeholder("hunteramount", island.hunter + ""),
-                new Placeholder("fishermanamount", island.fisherman + ""),
-                new Placeholder("builderamount", island.builder + ""),
-
-                new Placeholder("treasurehuntercrystals", IridiumSkyblock.getMissions().treasureHunter.crystalReward + ""),
-                new Placeholder("competitorcrystals", IridiumSkyblock.getMissions().competitor.crystalReward + ""),
-                new Placeholder("minercrystals", IridiumSkyblock.getMissions().miner.crystalReward + ""),
-                new Placeholder("farmercrystals", IridiumSkyblock.getMissions().farmer.crystalReward + ""),
-                new Placeholder("huntercrystals", IridiumSkyblock.getMissions().hunter.crystalReward + ""),
-                new Placeholder("fishermancrystals", IridiumSkyblock.getMissions().fisherman.crystalReward + ""),
-                new Placeholder("buildercrystals", IridiumSkyblock.getMissions().builder.crystalReward + ""),
-
-                new Placeholder("treasurehuntervault", IridiumSkyblock.getMissions().treasureHunter.vaultReward + ""),
-                new Placeholder("competitorvault", IridiumSkyblock.getMissions().competitor.vaultReward + ""),
-                new Placeholder("minervault", IridiumSkyblock.getMissions().miner.vaultReward + ""),
-                new Placeholder("farmervault", IridiumSkyblock.getMissions().farmer.vaultReward + ""),
-                new Placeholder("huntervault", IridiumSkyblock.getMissions().hunter.vaultReward + ""),
-                new Placeholder("fishermanvault", IridiumSkyblock.getMissions().fisherman.vaultReward + ""),
-                new Placeholder("buildervault", IridiumSkyblock.getMissions().builder.vaultReward + ""),
+                new Placeholder("spawnerbooster_minutes", (int) Math.floor(island.getSpawnerBooster() / 60.00) + ""),
+                new Placeholder("farmingbooster_minutes", (int) Math.floor(island.getFarmingBooster() / 60.00) + ""),
+                new Placeholder("expbooster_minutes", (int) Math.floor(island.getExpBooster() / 60.00) + ""),
+                new Placeholder("flightbooster_minutes", (int) Math.floor(island.getFlightBooster() / 60.00) + ""),
 
                 //Bank
                 new Placeholder("experience", island.exp + ""),
                 new Placeholder("crystals", island.getCrystals() + ""),
-                new Placeholder("money", island.money + ""));
+                new Placeholder("money", island.money + "")));
+        //Status amount crystals vault
+        for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+            int amount = island.getMission(mission.name);
+            placeholders.add(new Placeholder(mission.name + "status", amount == Integer.MIN_VALUE ? "Completed" : amount + "/" + mission.amount));
+            placeholders.add(new Placeholder(mission.name + "amount", mission.amount + ""));
+            placeholders.add(new Placeholder(mission.name + "crystals", mission.crystalReward + ""));
+            placeholders.add(new Placeholder(mission.name + "vault", mission.vaultReward + ""));
+        }
+        return processMultiplePlaceholders(line, placeholders);
     }
 
     public static List<String> processIslandPlaceholders(List<String> lines, Island island) {
@@ -310,7 +288,7 @@ public class Utils {
         return newlist;
     }
 
-    public static String processMultiplePlaceholders(String line, Placeholder... placeholders) {
+    public static String processMultiplePlaceholders(String line, List<Placeholder> placeholders) {
         for (Placeholder placeholder : placeholders) {
             line = placeholder.process(line);
         }

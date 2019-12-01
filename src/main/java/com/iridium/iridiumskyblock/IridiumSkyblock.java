@@ -171,13 +171,7 @@ public class IridiumSkyblock extends JavaPlugin {
             try {
                 if ((LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.MONDAY) || configuration.missionRestart == MissionRestart.Daily) && LocalDateTime.now().getHour() == 0 && LocalDateTime.now().getMinute() == 0 && LocalDateTime.now().getSecond() == 0) {
                     for (Island island : getIslandManager().islands.values()) {
-                        island.treasureHunter = 0;
-                        island.competitor = 0;
-                        island.miner = 0;
-                        island.farmer = 0;
-                        island.hunter = 0;
-                        island.fisherman = 0;
-                        island.builder = 0;
+                        island.resetMissions();
                     }
                 }
             } catch (Exception e) {

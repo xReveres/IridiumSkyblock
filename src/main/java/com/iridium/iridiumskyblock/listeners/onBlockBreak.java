@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.*;
-import org.bukkit.CropState;
+import com.iridium.iridiumskyblock.configs.Missions;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,22 +18,10 @@ public class onBlockBreak implements Listener {
             Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
             if (island != null) {
                 if (u.islandID == island.getId()) {
-                    if (e.getBlock().getType().name().endsWith("ORE")) {
-                        if (u.getIsland().miner > -1) {
-                            u.getIsland().miner++;
-                            if (u.getIsland().miner >= IridiumSkyblock.getMissions().miner.amount) {
-                                island.miner = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                                island.completeMission("Miner", IridiumSkyblock.getMissions().miner.crystalReward, IridiumSkyblock.getMissions().miner.vaultReward);
-                            }
-                        }
-                    }
-                    if (e.getBlock().getState().getData() instanceof Crops) {
-                        CropState state = ((Crops) e.getBlock().getState().getData()).getState();
-                        if (u.getIsland().farmer > -1 && state == CropState.RIPE) {
-                            u.getIsland().farmer++;
-                            if (u.getIsland().farmer >= IridiumSkyblock.getMissions().farmer.amount) {
-                                island.farmer = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                                island.completeMission("Farmer", IridiumSkyblock.getMissions().farmer.crystalReward, IridiumSkyblock.getMissions().farmer.vaultReward);
+                    for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+                        if (mission.type == MissionType.BLOCK_BREAK) {
+                            if (mission.conditions.isEmpty() || mission.conditions.contains(e.getBlock().getType().toString()) || (e.getBlock().getState().getData() instanceof Crops && mission.conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
+                                island.addMission(mission.name, 1);
                             }
                         }
                     }

@@ -4,6 +4,7 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
+import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.support.Wildstacker;
@@ -91,13 +92,7 @@ public class Island {
 
     private int startvalue;
 
-    public int treasureHunter;
-    public int competitor;
-    public int miner;
-    public int farmer;
-    public int hunter;
-    public int fisherman;
-    public int builder;
+    private HashMap<String, Integer> missions = new HashMap<>();
 
     private boolean visit;
 
@@ -142,13 +137,6 @@ public class Island {
         oreLevel = 1;
         value = 0;
         warps = new ArrayList<>();
-        treasureHunter = 0;
-        competitor = 0;
-        miner = 0;
-        farmer = 0;
-        hunter = 0;
-        fisherman = 0;
-        builder = 0;
         startvalue = -1;
         borderColor = NMSUtils.Color.Blue;
         visit = true;
@@ -158,6 +146,47 @@ public class Island {
         this.votes = new HashSet<>();
         init();
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
+    }
+
+    public void resetMissions() {
+        if (missions == null) missions = new HashMap<>();
+        missions.clear();
+    }
+
+    public int getMission(String mission) {
+        if (missions == null) missions = new HashMap<>();
+        if (!missions.containsKey(mission)) missions.put(mission, 0);
+        return missions.get(mission);
+    }
+
+    public void addMission(String mission, int amount) {
+        if (missions == null) missions = new HashMap<>();
+        if (!missions.containsKey(mission)) missions.put(mission, 0);
+        if (missions.get(mission) == Integer.MIN_VALUE) return;
+        missions.put(mission, missions.get(mission) + amount);
+        for (Missions.Mission m : IridiumSkyblock.getMissions().missions) {
+            if (m.name.equals(mission)) {
+                if (m.amount <= missions.get(mission)) {
+                    completeMission(m);
+                }
+                break;
+            }
+        }
+    }
+
+    public void setMission(String mission, int amount) {
+        if (missions == null) missions = new HashMap<>();
+        if (!missions.containsKey(mission)) missions.put(mission, 0);
+        if (missions.get(mission) == Integer.MIN_VALUE) return;
+        missions.put(mission, amount);
+        for (Missions.Mission m : IridiumSkyblock.getMissions().missions) {
+            if (m.name.equals(mission)) {
+                if (m.amount <= missions.get(mission)) {
+                    completeMission(m);
+                }
+                break;
+            }
+        }
     }
 
     public Permissions getPermissions(Role role) {
@@ -209,14 +238,15 @@ public class Island {
         NMSUtils.sendWorldBorder(p, borderColor, Integer.MAX_VALUE, getCenter().clone());
     }
 
-    public void completeMission(String Mission, int crystals, int vault) {
-        this.crystals += crystals;
-        money += vault;
+    public void completeMission(Missions.Mission mission) {
+        missions.put(mission.name, (IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : Integer.MIN_VALUE));
+        this.crystals += mission.crystalReward;
+        money += mission.vaultReward;
         for (String member : members) {
             Player p = Bukkit.getPlayer(User.getUser(member).name);
             if (p != null) {
-                NMSUtils.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", Mission), 20, 40, 20);
-                NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", crystals + "").replace("%vaultReward%", vault + ""), 20, 40, 20);
+                NMSUtils.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", mission.name), 20, 40, 20);
+                NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", mission.crystalReward + "").replace("%vaultReward%", mission.vaultReward + ""), 20, 40, 20);
             }
         }
     }
@@ -248,11 +278,9 @@ public class Island {
         }
         this.value = value;
         if (startvalue == -1) startvalue = value;
-        if (competitor != Integer.MIN_VALUE) {
-            competitor = value - startvalue;
-            if (competitor >= IridiumSkyblock.getMissions().competitor.amount) {
-                competitor = Integer.MIN_VALUE;
-                completeMission("Competitor", IridiumSkyblock.getMissions().competitor.crystalReward, IridiumSkyblock.getMissions().competitor.vaultReward);
+        for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+            if (mission.type.equals(MissionType.VALUE_INCREASE)) {
+                setMission(mission.name, value - startvalue);
             }
         }
         lastblocks = blocks.hashCode();

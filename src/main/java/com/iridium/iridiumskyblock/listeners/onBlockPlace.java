@@ -1,9 +1,11 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.configs.Missions;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.material.Crops;
 
 public class onBlockPlace implements Listener {
 
@@ -15,11 +17,11 @@ public class onBlockPlace implements Listener {
             if (island != null) {
 
                 if (u.islandID == island.getId()) {
-                    if (island.builder > -1) {
-                        island.builder++;
-                        if (island.builder >= IridiumSkyblock.getMissions().builder.amount) {
-                            island.builder = IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : -1;
-                            island.completeMission("Builder", IridiumSkyblock.getMissions().builder.crystalReward, IridiumSkyblock.getMissions().builder.vaultReward);
+                    for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+                        if (mission.type == MissionType.BLOCK_PLACE) {
+                            if (mission.conditions.isEmpty() || mission.conditions.contains(e.getBlock().getType().toString()) || (e.getBlock().getState().getData() instanceof Crops && mission.conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
+                                island.addMission(mission.name, 1);
+                            }
                         }
                     }
                 }
