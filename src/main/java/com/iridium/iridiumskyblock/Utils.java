@@ -254,6 +254,15 @@ public class Utils {
                 new Placeholder("farmingbooster", island.getFarmingBooster() + ""),
                 new Placeholder("expbooster", island.getExpBooster() + ""),
                 new Placeholder("flightbooster", island.getFlightBooster() + ""),
+
+                new Placeholder("spawnerbooster_seconds", island.getSpawnerBooster() % 60 + ""),
+                new Placeholder("farmingbooster_seconds", island.getFarmingBooster() % 60 + ""),
+                new Placeholder("expbooster_seconds", island.getExpBooster() % 60 + ""),
+                new Placeholder("flightbooster_seconds", island.getFlightBooster() % 60 + ""),
+                new Placeholder("spawnerbooster_minutes", (int)Math.floor(island.getSpawnerBooster() / 60.00) + ""),
+                new Placeholder("farmingbooster_minutes", (int)Math.floor(island.getFarmingBooster() / 60.00) + ""),
+                new Placeholder("expbooster_minutes", (int)Math.floor(island.getExpBooster() / 60.00) + ""),
+                new Placeholder("flightbooster_minutes", (int)Math.floor(island.getFlightBooster() / 60.00) + ""),
                 // Missions
                 new Placeholder("treasurehunterstatus", ((island.treasureHunter != -1 ? island.treasureHunter + "/" + IridiumSkyblock.getMissions().treasureHunter.amount : "Completed"))),
                 new Placeholder("competitorstatus", ((island.competitor != Integer.MIN_VALUE ? island.competitor + "/" + IridiumSkyblock.getMissions().competitor.amount : "Completed"))),
