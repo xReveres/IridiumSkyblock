@@ -83,6 +83,8 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
                 if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
                 if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
+                if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+                    registerListeners(new onExpansionUnregister());
 
                 // Call it as a delayed task to wait for the server to properly load first
                 Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
@@ -233,16 +235,20 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     private void setupPlaceholderAPI() {
-        Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
+        if (mvdw != null && mvdw.isEnabled()) {
+            new MVDWPlaceholderAPIManager().register();
+            getLogger().info("Successfully registered placeholders with MVDWPlaceholderAPI.");
+        }
+        setupClipsPlaceholderAPI();
+    }
+
+    public void setupClipsPlaceholderAPI() {
+        Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         if (clip != null && clip.isEnabled()) {
             if (new ClipPlaceholderAPIManager().register()) {
                 getLogger().info("Successfully registered placeholders with PlaceholderAPI.");
             }
-        }
-        if (mvdw != null && mvdw.isEnabled()) {
-            new MVDWPlaceholderAPIManager().register();
-            getLogger().info("Successfully registered placeholders with MVDWPlaceholderAPI.");
         }
     }
 
