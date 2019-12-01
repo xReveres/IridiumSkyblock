@@ -172,7 +172,7 @@ public class Utils {
     }
 
     public static boolean isBlockValuable(Block b) {
-        return IridiumSkyblock.getConfiguration().blockvalue.containsKey(b.getType()) || b.getState() instanceof CreatureSpawner;
+        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(b.getType()) || b.getState() instanceof CreatureSpawner;
     }
 
     public static List<Island> getTopIslands() {

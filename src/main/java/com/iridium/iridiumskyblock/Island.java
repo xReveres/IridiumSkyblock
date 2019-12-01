@@ -259,12 +259,12 @@ public class Island {
         while (locations.hasNext()) {
             Location loc = locations.next();
             Block block = loc.getBlock();
-            if (IridiumSkyblock.getConfiguration().blockvalue.containsKey(block.getType())) {
-                value += IridiumSkyblock.getConfiguration().blockvalue.get(block.getType());
+            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(block.getType())) {
+                value += IridiumSkyblock.getBlockValues().blockvalue.get(block.getType());
             } else if (loc.getBlock().getState() instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
-                if (IridiumSkyblock.getConfiguration().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
-                    int temp = IridiumSkyblock.getConfiguration().spawnervalue.get(spawner.getSpawnedType().name());
+                if (IridiumSkyblock.getBlockValues().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
+                    int temp = IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name());
                     if (Wildstacker.enabled) {
                         temp *= Wildstacker.getSpawnerAmount((CreatureSpawner) loc.getBlock().getState());
                     }

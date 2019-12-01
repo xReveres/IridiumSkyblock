@@ -11,6 +11,7 @@ import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.Vault;
 import com.iridium.iridiumskyblock.support.Wildstacker;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
@@ -43,6 +44,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public static Inventories inventories;
     public static Schematics schematics;
     public static Commands commands;
+    public static BlockValues blockValues;
 
     private static Persist persist;
 
@@ -281,6 +283,7 @@ public class IridiumSkyblock extends JavaPlugin {
         inventories = persist.getFile(Inventories.class).exists() ? persist.load(Inventories.class) : new Inventories();
         schematics = persist.getFile(Schematics.class).exists() ? persist.load(Schematics.class) : new Schematics();
         commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
+        blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
 
         if (getBoosters().flightBooster.time == 0) getBoosters().flightBooster.time = 3600;
         if (getBoosters().experianceBooster.time == 0) getBoosters().experianceBooster.time = 3600;
@@ -295,6 +298,15 @@ public class IridiumSkyblock extends JavaPlugin {
             getBoosters().experianceBooster.crystalsCost = 15;
         if (getBoosters().flightBooster.crystalsCost == 0 && getBoosters().flightBooster.vaultCost == 0)
             getBoosters().flightBooster.crystalsCost = 15;
+
+        if (getConfiguration().blockvalue != null) {
+            getBlockValues().blockvalue = (HashMap<Material, Integer>) getConfiguration().blockvalue.clone();
+            getConfiguration().blockvalue = null;
+        }
+        if (getConfiguration().spawnervalue != null) {
+            getBlockValues().spawnervalue = (HashMap<String, Integer>) getConfiguration().spawnervalue.clone();
+            getConfiguration().spawnervalue = null;
+        }
 
         for (Island island : islandManager.islands.values()) {
             island.init();
@@ -320,6 +332,7 @@ public class IridiumSkyblock extends JavaPlugin {
         if (inventories != null) persist.save(inventories);
         if (schematics != null) persist.save(schematics);
         if (commands != null) persist.save(commands);
+        if (blockValues != null) persist.save(blockValues);
     }
 
     public String getLatest() {
@@ -348,6 +361,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public static Messages getMessages() {
         return messages;
+    }
+
+    public static BlockValues getBlockValues() {
+        return blockValues;
     }
 
     public static Upgrades getUpgrades() {
