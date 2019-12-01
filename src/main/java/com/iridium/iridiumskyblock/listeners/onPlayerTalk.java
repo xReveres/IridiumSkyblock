@@ -27,7 +27,7 @@ public class onPlayerTalk implements Listener {
         }
         if (format.contains(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder)) {
             if (island != null) {
-                format = format.replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName() + "");
+                format = format.replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName());
             } else {
                 format = format.replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, "");
             }
@@ -44,7 +44,7 @@ public class onPlayerTalk implements Listener {
             for (String p : island.getMembers()) {
                 Player player = Bukkit.getPlayer(User.getUser(p).name);
                 if (player != null) {
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat).replace("%player%", e.getPlayer().getName()).replace("%message%", e.getMessage()));
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat).replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getValue() + "").replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName()).replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "").replace("%player%", e.getPlayer().getName()).replace("%message%", e.getMessage()));
                 }
             }
             e.setCancelled(true);
