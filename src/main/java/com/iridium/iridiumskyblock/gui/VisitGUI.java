@@ -23,7 +23,7 @@ public class VisitGUI extends GUI implements Listener {
 
     public HashMap<Integer, Integer> islands = new HashMap<>();
 
-    public int page;
+    private int page;
 
     public VisitGUI(int page) {
         super(54, IridiumSkyblock.getInventories().topGUITitle);
@@ -38,7 +38,7 @@ public class VisitGUI extends GUI implements Listener {
         int slot = 0;
         int i = 45 * (page - 1);
         while (slot < 45) {
-            if (top.size() > i) {
+            if (top.size() > i && i > 0) {
                 Island island = top.get(i);
                 if (island.isVisit()) {
                     ArrayList<String> lore = new ArrayList<>();
