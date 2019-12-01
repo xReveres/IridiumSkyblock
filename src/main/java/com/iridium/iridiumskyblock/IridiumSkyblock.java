@@ -163,7 +163,6 @@ public class IridiumSkyblock extends JavaPlugin {
     private void addPages() {
         for (int i = 1; i <= Math.floor(Utils.getIslands().size() / 45.00) + 1; i++) {
             if (!visitGUI.containsKey(i)) {
-                System.out.println(i);
                 visitGUI.put(i, new VisitGUI(i));
             }
         }
