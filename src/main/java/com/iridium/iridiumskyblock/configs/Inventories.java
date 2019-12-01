@@ -37,24 +37,24 @@ public class Inventories {
     public Item ores = new Item(Material.DIAMOND_ORE, 1, 0, "&b&lIsland Generator", Arrays.asList("&7Want to improve your generator? Buy this", "&7upgrade to increase your island generator.", "", "&b&lInformation:", "&b&l * &7Current Level: &b{oreslevel}", "&b&l * &7Upgrade Cost: &b{orescrystalscost} Crystals and ${oresvaultcost}", "", "&b&l[!] &bLeft Click to Purchase this Upgrade"));
 
     //Menu
-    public Item home = new Item(Material.BED, 1, 0, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home"));
-    public Item members = new Item(Material.SKULL_ITEM, 1, 0, "&b&lIsland Members", Collections.singletonList("&7View your island Members."));
-    public Item regen = new Item(Material.GRASS, 1, 0, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island."));
-    public Item upgrades = new Item(Material.BREWING_STAND, 1, 0, "&b&lIsland Upgrades", Collections.singletonList("&7Upgrade your island."));
-    public Item missions = new Item(Material.IRON_SWORD, 1, 0, "&b&lIsland Missions", Collections.singletonList("&7View island missions."));
-    public Item boosters = new Item(Material.GLOWSTONE_DUST, 1, 0, "&b&lIsland Boosters", Collections.singletonList("&7Boost your island."));
-    public Item permissions = new Item(Material.IRON_FENCE, 1, 0, "&b&lIsland Permissions", Collections.singletonList("&7Change island permissions."));
-    public Item top = new Item(Material.DIAMOND, 1, 0, "&b&lIsland Top", Collections.singletonList("&7View top islands."));
-    public Item warps = new Item(Material.ENDER_PORTAL_FRAME, 1, 0, "&b&lIsland Warps", Collections.singletonList("&7View your island warps."));
-    public Item border = new Item(Material.BLAZE_POWDER, 1, 0, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
-    public Item delete = new Item(Material.BARRIER, 1, 0, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
-    public Item coop = new Item(Material.REDSTONE, 1, 0, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands."));
-    public Item bank = new Item(Material.PAPER, 1, 0, "&b&lIsland Bank", Collections.singletonList("&7View your Island Bank."));
+    public Item home = new Item(Material.BED, 0, 1, 0, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home"));
+    public Item members = new Item(Material.SKULL_ITEM, 1, 1, 0, "&b&lIsland Members", Collections.singletonList("&7View your island Members."));
+    public Item regen = new Item(Material.GRASS, 2, 1, 0, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island."));
+    public Item upgrades = new Item(Material.BREWING_STAND, 3, 1, 0, "&b&lIsland Upgrades", Collections.singletonList("&7Upgrade your island."));
+    public Item missions = new Item(Material.IRON_SWORD, 4, 1, 0, "&b&lIsland Missions", Collections.singletonList("&7View island missions."));
+    public Item boosters = new Item(Material.GLOWSTONE_DUST, 5, 1, 0, "&b&lIsland Boosters", Collections.singletonList("&7Boost your island."));
+    public Item permissions = new Item(Material.IRON_FENCE, 6, 1, 0, "&b&lIsland Permissions", Collections.singletonList("&7Change island permissions."));
+    public Item top = new Item(Material.DIAMOND, 1, 7, 0, "&b&lIsland Top", Collections.singletonList("&7View top islands."));
+    public Item warps = new Item(Material.ENDER_PORTAL_FRAME, 8, 1, 0, "&b&lIsland Warps", Collections.singletonList("&7View your island warps."));
+    public Item border = new Item(Material.BLAZE_POWDER, 9, 1, 0, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
+    public Item coop = new Item(Material.REDSTONE, 10, 1, 0, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands."));
+    public Item bank = new Item(Material.PAPER, 11, 1, 0, "&b&lIsland Bank", Collections.singletonList("&7View your Island Bank."));
+    public Item delete = new Item(Material.BARRIER, 16, 1, 0, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
 
     //Bank
-    public Item experience = new Item(Material.EXP_BOTTLE, 1, 0, "&b&lIsland Experience", Arrays.asList("&7{experience} Experience", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
-    public Item crystals = new Item(Material.NETHER_STAR, 1, 0, "&b&lIsland Crystals", Arrays.asList("&7{crystals} Crystals", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
-    public Item money = new Item(Material.PAPER, 1, 0, "&b&lIsland Money", Arrays.asList("&7${money}", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
+    public Item experience = new Item(Material.EXP_BOTTLE, 11, 1, 0, "&b&lIsland Experience", Arrays.asList("&7{experience} Experience", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
+    public Item crystals = new Item(Material.NETHER_STAR, 13, 1, 0, "&b&lIsland Crystals", Arrays.asList("&7{crystals} Crystals", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
+    public Item money = new Item(Material.PAPER, 15, 1, 0, "&b&lIsland Money", Arrays.asList("&7${money}", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
 
     public Item crystal = new Item(Material.NETHER_STAR, 1, 0, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b&l[!] &bto Redeem, go to your Island Bank"));
 
@@ -77,7 +77,7 @@ public class Inventories {
         public int type;
         public String title;
         public List<String> lore;
-        public int slot;
+        public int slot = -1;
 
         public Item(Material material, int amount, int type, String title, List<String> lore) {
             this.material = material;
