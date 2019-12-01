@@ -329,6 +329,15 @@ public class IridiumSkyblock extends JavaPlugin {
         for (Island island : islandManager.islands.values()) {
             island.init();
         }
+        int max = 0;
+        for (Upgrades.IslandUpgrade size : getUpgrades().sizeUpgrade.upgrades.values()) {
+            if (max < size.size) {
+                max = size.size;
+            }
+        }
+        if (getConfiguration().distance <= max) {
+            getConfiguration().distance = max + 1;
+        }
         try {
             loadSchematics();
         } catch (Exception e) {
