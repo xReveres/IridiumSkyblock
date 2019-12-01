@@ -79,7 +79,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             return true;
                         }
-                        if (cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) {
+                        if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))&&command.isEnabled()) {
                             command.execute(cs, args);
                             return true;
                         } else {
@@ -118,9 +118,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             }
             //Help Menu
             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpHeader));
-            for (com.iridium.iridiumskyblock.commands.Command c : commands) {
-                if (c.isEnabled() && (cs.hasPermission(c.getPermission()) || c.getPermission().equalsIgnoreCase("iridiumskyblock."))) {
-                    cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", c.getAliases().get(0)).replace("%description%", c.getDescription())));
+            for (com.iridium.iridiumskyblock.commands.Command command : commands) {
+                if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))&&command.isEnabled()) {
+                    cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", command.getAliases().get(0)).replace("%description%", command.getDescription())));
                 }
             }
         } catch (Exception e) {
