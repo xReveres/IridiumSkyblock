@@ -92,7 +92,7 @@ public class Inventories {
         public int type;
         public String title;
         public List<String> lore;
-        public int slot = -1;
+        public Integer slot;
 
         public Item(Material material, int amount, int type, String title, List<String> lore) {
             this.material = material;

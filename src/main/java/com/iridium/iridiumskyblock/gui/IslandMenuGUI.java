@@ -38,19 +38,19 @@ public class IslandMenuGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
-            setItem(IridiumSkyblock.getInventories().home.slot == -1 ? 0 : IridiumSkyblock.getInventories().home.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().home, getIsland()));
-            setItem(IridiumSkyblock.getInventories().members.slot == -1 ? 1 : IridiumSkyblock.getInventories().members.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().members, getIsland()));
-            setItem(IridiumSkyblock.getInventories().regen.slot == -1 ? 2 : IridiumSkyblock.getInventories().regen.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().regen, getIsland()));
-            setItem(IridiumSkyblock.getInventories().upgrades.slot == -1 ? 3 : IridiumSkyblock.getInventories().upgrades.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().upgrades, getIsland()));
-            setItem(IridiumSkyblock.getInventories().missions.slot == -1 ? 4 : IridiumSkyblock.getInventories().missions.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().missions, getIsland()));
-            setItem(IridiumSkyblock.getInventories().boosters.slot == -1 ? 5 : IridiumSkyblock.getInventories().boosters.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().boosters, getIsland()));
-            setItem(IridiumSkyblock.getInventories().permissions.slot == -1 ? 6 : IridiumSkyblock.getInventories().permissions.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().permissions, getIsland()));
-            setItem(IridiumSkyblock.getInventories().top.slot == -1 ? 7 : IridiumSkyblock.getInventories().top.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().top, getIsland()));
-            setItem(IridiumSkyblock.getInventories().warps.slot == -1 ? 8 : IridiumSkyblock.getInventories().warps.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().warps, getIsland()));
-            setItem(IridiumSkyblock.getInventories().border.slot == -1 ? 9 : IridiumSkyblock.getInventories().border.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().border, getIsland()));
-            setItem(IridiumSkyblock.getInventories().coop.slot == -1 ? 10 : IridiumSkyblock.getInventories().coop.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().coop, getIsland()));
-            setItem(IridiumSkyblock.getInventories().bank.slot == -1 ? 11 : IridiumSkyblock.getInventories().bank.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().bank, getIsland()));
-            setItem(IridiumSkyblock.getInventories().delete.slot == -1 ? 26 : IridiumSkyblock.getInventories().delete.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().delete, getIsland()));
+            setItem(IridiumSkyblock.getInventories().home.slot == null ? 0 : IridiumSkyblock.getInventories().home.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().home, getIsland()));
+            setItem(IridiumSkyblock.getInventories().members.slot == null ? 1 : IridiumSkyblock.getInventories().members.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().members, getIsland()));
+            setItem(IridiumSkyblock.getInventories().regen.slot == null ? 2 : IridiumSkyblock.getInventories().regen.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().regen, getIsland()));
+            setItem(IridiumSkyblock.getInventories().upgrades.slot == null ? 3 : IridiumSkyblock.getInventories().upgrades.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().upgrades, getIsland()));
+            setItem(IridiumSkyblock.getInventories().missions.slot == null ? 4 : IridiumSkyblock.getInventories().missions.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().missions, getIsland()));
+            setItem(IridiumSkyblock.getInventories().boosters.slot == null ? 5 : IridiumSkyblock.getInventories().boosters.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().boosters, getIsland()));
+            setItem(IridiumSkyblock.getInventories().permissions.slot == null ? 6 : IridiumSkyblock.getInventories().permissions.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().permissions, getIsland()));
+            setItem(IridiumSkyblock.getInventories().top.slot == null ? 7 : IridiumSkyblock.getInventories().top.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().top, getIsland()));
+            setItem(IridiumSkyblock.getInventories().warps.slot == null ? 8 : IridiumSkyblock.getInventories().warps.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().warps, getIsland()));
+            setItem(IridiumSkyblock.getInventories().border.slot == null ? 9 : IridiumSkyblock.getInventories().border.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().border, getIsland()));
+            setItem(IridiumSkyblock.getInventories().coop.slot == null ? 10 : IridiumSkyblock.getInventories().coop.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().coop, getIsland()));
+            setItem(IridiumSkyblock.getInventories().bank.slot == null ? 11 : IridiumSkyblock.getInventories().bank.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().bank, getIsland()));
+            setItem(IridiumSkyblock.getInventories().delete.slot == null ? 26 : IridiumSkyblock.getInventories().delete.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().delete, getIsland()));
         }
     }
 
@@ -61,47 +61,47 @@ public class IslandMenuGUI extends GUI implements Listener {
             e.setCancelled(true);
             Player p = (Player) e.getWhoClicked();
             User u = User.getUser(p);
-            if (e.getSlot() == (IridiumSkyblock.getInventories().home.slot == -1 ? 0 : IridiumSkyblock.getInventories().home.slot)) {
+            if (e.getSlot() == (IridiumSkyblock.getInventories().home.slot == null ? 0 : IridiumSkyblock.getInventories().home.slot)) {
                 p.closeInventory();
                 getIsland().teleportHome(p);
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().members.slot == -1 ? 1 : IridiumSkyblock.getInventories().members.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().members.slot == null ? 1 : IridiumSkyblock.getInventories().members.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getMembersGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().regen.slot == -1 ? 2 : IridiumSkyblock.getInventories().regen.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().regen.slot == null ? 2 : IridiumSkyblock.getInventories().regen.slot)) {
                 p.closeInventory();
                 if (u.bypassing || getIsland().getPermissions(u.role).regen) {
                     p.openInventory(regen.getInventory());
                 } else {
                     p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().upgrades.slot == -1 ? 3 : IridiumSkyblock.getInventories().upgrades.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().upgrades.slot == null ? 3 : IridiumSkyblock.getInventories().upgrades.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getUpgradeGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().missions.slot == -1 ? 4 : IridiumSkyblock.getInventories().missions.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().missions.slot == null ? 4 : IridiumSkyblock.getInventories().missions.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getMissionsGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().boosters.slot == -1 ? 5 : IridiumSkyblock.getInventories().boosters.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().boosters.slot == null ? 5 : IridiumSkyblock.getInventories().boosters.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getBoosterGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().permissions.slot == -1 ? 6 : IridiumSkyblock.getInventories().permissions.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().permissions.slot == null ? 6 : IridiumSkyblock.getInventories().permissions.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getPermissionsGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().top.slot == -1 ? 7 : IridiumSkyblock.getInventories().top.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().top.slot == null ? 7 : IridiumSkyblock.getInventories().top.slot)) {
                 p.closeInventory();
                 p.openInventory(IridiumSkyblock.topGUI.getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().warps.slot == -1 ? 8 : IridiumSkyblock.getInventories().warps.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().warps.slot == null ? 8 : IridiumSkyblock.getInventories().warps.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getWarpGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().border.slot == -1 ? 9 : IridiumSkyblock.getInventories().border.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().border.slot == null ? 9 : IridiumSkyblock.getInventories().border.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getBorderColorGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().coop.slot == -1 ? 10 : IridiumSkyblock.getInventories().coop.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().coop.slot == null ? 10 : IridiumSkyblock.getInventories().coop.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getCoopGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().bank.slot == -1 ? 11 : IridiumSkyblock.getInventories().bank.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().bank.slot == null ? 11 : IridiumSkyblock.getInventories().bank.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getBankGUI().getInventory());
-            } else if (e.getSlot() == (IridiumSkyblock.getInventories().delete.slot == -1 ? 26 : IridiumSkyblock.getInventories().delete.slot)) {
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().delete.slot == null ? 26 : IridiumSkyblock.getInventories().delete.slot)) {
                 p.closeInventory();
                 if (u.bypassing || getIsland().getOwner().equalsIgnoreCase(u.player)) {
                     p.openInventory(delete.getInventory());

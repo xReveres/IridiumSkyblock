@@ -20,9 +20,9 @@ public class BankGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
-            setItem(IridiumSkyblock.getInventories().experience.slot == -1 ? 11 : IridiumSkyblock.getInventories().experience.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().experience, getIsland()));
-            setItem(IridiumSkyblock.getInventories().crystals.slot == -1 ? 13 : IridiumSkyblock.getInventories().crystals.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().crystals, getIsland()));
-            setItem(IridiumSkyblock.getInventories().money.slot == -1 ? 15 : IridiumSkyblock.getInventories().money.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().money, getIsland()));
+            setItem(IridiumSkyblock.getInventories().experience.slot == null ? 11 : IridiumSkyblock.getInventories().experience.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().experience, getIsland()));
+            setItem(IridiumSkyblock.getInventories().crystals.slot == null ? 13 : IridiumSkyblock.getInventories().crystals.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().crystals, getIsland()));
+            setItem(IridiumSkyblock.getInventories().money.slot == null ? 15 : IridiumSkyblock.getInventories().money.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().money, getIsland()));
         }
     }
 
@@ -34,7 +34,7 @@ public class BankGUI extends GUI implements Listener {
             Player p = (Player) e.getWhoClicked();
             Island island = getIsland();
             User u = User.getUser(p);
-            if (e.getSlot() == (IridiumSkyblock.getInventories().experience.slot == -1 ? 11 : IridiumSkyblock.getInventories().experience.slot)) {
+            if (e.getSlot() == (IridiumSkyblock.getInventories().experience.slot == null ? 11 : IridiumSkyblock.getInventories().experience.slot)) {
                 if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                         Utils.setTotalExperience(p, Utils.getTotalExperience(p) + island.exp);
@@ -63,7 +63,7 @@ public class BankGUI extends GUI implements Listener {
                     }
                 }
             }
-            if (e.getSlot() == (IridiumSkyblock.getInventories().crystals.slot == -1 ? 13 : IridiumSkyblock.getInventories().crystals.slot)) {
+            if (e.getSlot() == (IridiumSkyblock.getInventories().crystals.slot == null ? 13 : IridiumSkyblock.getInventories().crystals.slot)) {
                 if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                         for (int i = 0; i < island.getCrystals(); i++) {
@@ -104,7 +104,7 @@ public class BankGUI extends GUI implements Listener {
                     }
                 }
             }
-            if (e.getSlot() == (IridiumSkyblock.getInventories().money.slot == -1 ? 15 : IridiumSkyblock.getInventories().money.slot)) {
+            if (e.getSlot() == (IridiumSkyblock.getInventories().money.slot == null ? 15 : IridiumSkyblock.getInventories().money.slot)) {
                 if (Vault.econ != null) {
                     if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                         if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
