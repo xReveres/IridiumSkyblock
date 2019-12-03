@@ -96,7 +96,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 new Metrics(IridiumSkyblock.getInstance());
 
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20);
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> getPersist().save(islandManager), 0, 20);
 
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20);
 
@@ -122,18 +122,6 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             sendErrorMessage(e);
         }
-    }
-
-    private void saveIslandManager() {
-        IslandManager manager = new IslandManager();
-        manager.islands = (HashMap<Integer, Island>) getIslandManager().islands.clone();
-        manager.users = (HashMap<String, User>) getIslandManager().users.clone();
-        manager.nextLocation = manager.nextLocation.clone();
-        manager.current = getIslandManager().current;
-        manager.direction = getIslandManager().direction;
-        manager.length = getIslandManager().length;
-        manager.nextID = getIslandManager().nextID;
-        getPersist().save(manager);
     }
 
     private void registerMultiverse() {
