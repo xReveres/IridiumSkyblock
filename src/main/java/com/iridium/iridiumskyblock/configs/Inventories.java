@@ -59,7 +59,7 @@ public class Inventories {
     public Item missions = new Item(Material.IRON_SWORD, 4, 1, 0, "&b&lIsland Missions", Collections.singletonList("&7View island missions."));
     public Item boosters = new Item(Material.GLOWSTONE_DUST, 5, 1, 0, "&b&lIsland Boosters", Collections.singletonList("&7Boost your island."));
     public Item permissions = new Item(Material.IRON_FENCE, 6, 1, 0, "&b&lIsland Permissions", Collections.singletonList("&7Change island permissions."));
-    public Item top = new Item(Material.DIAMOND, 1, 7, 0, "&b&lIsland Top", Collections.singletonList("&7View top islands."));
+    public Item top = new Item(Material.DIAMOND, 7, 1, 0, "&b&lIsland Top", Collections.singletonList("&7View top islands."));
     public Item warps = new Item(Material.ENDER_PORTAL_FRAME, 8, 1, 0, "&b&lIsland Warps", Collections.singletonList("&7View your island warps."));
     public Item border = new Item(Material.BLAZE_POWDER, 9, 1, 0, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
     public Item coop = new Item(Material.REDSTONE, 10, 1, 0, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands."));
