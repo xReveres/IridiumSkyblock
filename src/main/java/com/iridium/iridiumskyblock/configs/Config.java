@@ -23,6 +23,7 @@ public class Config {
     public String chatRankPlaceholder = "[ISLAND_RANK]";
     public String chatValuePlaceholder = "[ISLAND_VALUE]";
     public String chatNAMEPlaceholder = "[ISLAND_NAME]";
+    public boolean doIslandBackup = true;
     public boolean netherIslands = true;
     public boolean islandMenu = true;
     public boolean voidTeleport = true;
