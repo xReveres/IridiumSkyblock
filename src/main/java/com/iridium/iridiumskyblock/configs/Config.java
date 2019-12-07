@@ -32,6 +32,7 @@ public class Config {
     public boolean clearInventories = false;
     public boolean debugSchematics = false;
     public boolean restartUpgradesOnRegen = false;
+    public boolean allowWaterInNether = true;
     public int distance = 151;
     public double valuePerLevel = 100.00;
     public int blocksPerTick = 50;
