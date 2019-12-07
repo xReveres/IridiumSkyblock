@@ -20,19 +20,21 @@ public class FlyCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            if (user.getIsland().getFlightBooster() != 0 || p.hasPermission("iridiumskyblock.Fly")) {
-                if (p.getAllowFlight()) {
-                    p.setAllowFlight(false);
-                    p.setFlying(false);
-                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            if (user.getIsland().isInIsland(p.getLocation())) {
+                if (user.getIsland().getFlightBooster() != 0 || p.hasPermission("iridiumskyblock.Fly")) {
+                    if (p.getAllowFlight()) {
+                        p.setAllowFlight(false);
+                        p.setFlying(false);
+                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    } else {
+                        p.setAllowFlight(true);
+                        p.setFlying(true);
+                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightEnabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    }
+                    user.flying = p.isFlying();
                 } else {
-                    p.setAllowFlight(true);
-                    p.setFlying(true);
-                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightEnabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightBoosterNotActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
-                user.flying = p.isFlying();
-            } else {
-                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightBoosterNotActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

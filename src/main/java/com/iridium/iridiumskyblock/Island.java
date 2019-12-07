@@ -422,6 +422,7 @@ public class Island {
                         if (!p.hasPermission("IridiumSkyblock.Fly") && p.getGameMode().equals(GameMode.SURVIVAL)) {
                             p.setAllowFlight(false);
                             p.setFlying(false);
+                            User.getUser(p).flying=false;
                         }
                     }
                 }
