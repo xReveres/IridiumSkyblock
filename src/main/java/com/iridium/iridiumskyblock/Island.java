@@ -642,12 +642,26 @@ public class Island {
 
     public void addCoop(Island island) {
         if (coop == null) coop = new HashSet<>();
+        for (String member : island.getMembers()) {
+            Player pl = Bukkit.getPlayer(User.getUser(member).name);
+            if (pl != null) {
+                pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopGiven.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+        }
         coop.add(island.id);
     }
 
     public void removeCoop(Island island) {
         if (coop == null) coop = new HashSet<>();
+        for (String member : island.getMembers()) {
+            Player pl = Bukkit.getPlayer(User.getUser(member).name);
+            if (pl != null) {
+                pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopTaken.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+        }
         coop.remove(island.id);
+        getCoopGUI().getInventory().clear();
+        getCoopGUI().addContent();
     }
 
     public void removeCoop(int id) {

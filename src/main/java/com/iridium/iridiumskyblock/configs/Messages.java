@@ -62,7 +62,9 @@ public class Messages {
     public String playerUnBanned = "%prefix% &7You have un-banned %player% from vising your island.";
     public String playerJoinedYourIsland = "%prefix% &7%player% has joined your island.";
     public String coopAdded = "%prefix% &7You have granted %player%'s Island member permissions.";
-    public String coopRemoved = "%prefix% &7You have revoked %player%'s Island member permissions.";
+    public String coopGiven = "%prefix% &7You have been granted Member permissions to %player%'s Island.";
+    public String coopTaken = "%prefix% &7Your Member permissions have been removed for %player%'s Island.";
+    public String coopRemoved = "%prefix% &7Your have revoked %player%'s Island member permissions.";
     public String islandCreated = "&b&lIsland Created";
     public String maxlevelreached = "N/A";
     public String yes = "&a&lYes";
