@@ -29,7 +29,7 @@ public class Config {
     public boolean voidTeleport = true;
     public boolean notifyAvailableUpdate = true;
     public boolean disableExplosions = true;
-    public boolean clearInventories = true;
+    public boolean clearInventories = false;
     public boolean debugSchematics = false;
     public boolean restartUpgradesOnRegen = false;
     public int distance = 151;
