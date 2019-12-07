@@ -7,13 +7,12 @@ import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class onPlayerTalk implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerTalk(AsyncPlayerChatEvent e) {
         String format = e.getFormat();
         User u = User.getUser(e.getPlayer());
