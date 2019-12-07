@@ -201,8 +201,8 @@ public class Schematic {
                             int y = pos[1];
                             int z = pos[2];
 
-                            String id = getChildTag(tags, "Id", StringTag.class).getValue();
-                            if (id.equalsIgnoreCase("minecraft:chest")) {
+                            String id = getChildTag(tags, "Id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
+                            if (id.equalsIgnoreCase("chest")) {
                                 List<Tag> items = getChildTag(tags, "Items", ListTag.class).getValue();
                                 Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                                 if (block.getState() instanceof Chest) {
