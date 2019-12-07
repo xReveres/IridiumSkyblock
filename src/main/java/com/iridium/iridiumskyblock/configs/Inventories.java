@@ -64,7 +64,7 @@ public class Inventories {
     public Item border = new Item(Material.BLAZE_POWDER, 9, 1, 0, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
     public Item coop = new Item(Material.REDSTONE, 10, 1, 0, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands."));
     public Item bank = new Item(Material.PAPER, 11, 1, 0, "&b&lIsland Bank", Collections.singletonList("&7View your Island Bank."));
-    public Item delete = new Item(Material.BARRIER, 16, 1, 0, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
+    public Item delete = new Item(Material.BARRIER, 27, 1, 0, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
 
     //Bank
     public Item experience = new Item(Material.EXP_BOTTLE, 11, 1, 0, "&b&lIsland Experience", Arrays.asList("&7{experience} Experience", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
