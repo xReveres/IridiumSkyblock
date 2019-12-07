@@ -422,7 +422,7 @@ public class Island {
                         if (!p.hasPermission("IridiumSkyblock.Fly") && p.getGameMode().equals(GameMode.SURVIVAL)) {
                             p.setAllowFlight(false);
                             p.setFlying(false);
-                            User.getUser(p).flying=false;
+                            User.getUser(p).flying = false;
                         }
                     }
                 }
@@ -513,7 +513,11 @@ public class Island {
             return;
         }
         p.setFallDistance(0);
-        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        if (members.contains(p.getUniqueId().toString())) {
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        } else {
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        }
         if (Utils.isSafe(getHome(), this)) {
             p.teleport(getHome());
             sendBorder(p);

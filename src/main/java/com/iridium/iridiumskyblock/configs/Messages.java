@@ -78,4 +78,5 @@ public class Messages {
     public String transferAction = "Transfer ownership to %player%";
     public String resetAction = "Reset your Island";
     public String deleteAction = "Delete your Island";
+    public String visitingIsland = "%prefix% &7Teleporting to %player%'s Island";
 }
