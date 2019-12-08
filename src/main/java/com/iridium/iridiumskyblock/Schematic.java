@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
 import org.jnbt.*;
 
@@ -139,11 +140,11 @@ public class Schematic {
                 int x = getChildTag(tags, "x", IntTag.class).getValue();
                 int y = getChildTag(tags, "y", IntTag.class).getValue();
                 int z = getChildTag(tags, "z", IntTag.class).getValue();
+                Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
 
                 String id = getChildTag(tags, "id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
                 if (id.equalsIgnoreCase("chest")) {
                     List<Tag> items = getChildTag(tags, "Items", ListTag.class).getValue();
-                    Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                     if (block.getState() instanceof Chest) {
                         Chest chest = (Chest) block.getState();
                         for (Tag item : items) {
@@ -161,6 +162,15 @@ public class Schematic {
                                 }
                             }
                         }
+                    }
+                } else if (id.equalsIgnoreCase("sign")) {
+                    if (block.getState() instanceof Sign) {
+                        Sign sign = (Sign) block.getState();
+                        sign.setLine(0, getChildTag(tags, "Text1", StringTag.class).getValue());
+                        sign.setLine(1, getChildTag(tags, "Text2", StringTag.class).getValue());
+                        sign.setLine(2, getChildTag(tags, "Text3", StringTag.class).getValue());
+                        sign.setLine(3, getChildTag(tags, "Text4", StringTag.class).getValue());
+                        sign.update(true);
                     }
                 }
             }
@@ -201,10 +211,10 @@ public class Schematic {
                             int y = pos[1];
                             int z = pos[2];
 
+                            Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                             String id = getChildTag(tags, "Id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
                             if (id.equalsIgnoreCase("chest")) {
                                 List<Tag> items = getChildTag(tags, "Items", ListTag.class).getValue();
-                                Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                                 if (block.getState() instanceof Chest) {
                                     Chest chest = (Chest) block.getState();
                                     for (Tag item : items) {
@@ -221,6 +231,15 @@ public class Schematic {
                                             }
                                         }
                                     }
+                                }
+                            } else if (id.equalsIgnoreCase("sign")) {
+                                if (block.getState() instanceof Sign) {
+                                    Sign sign = (Sign) block.getState();
+                                    sign.setLine(0, getChildTag(tags, "Text1", StringTag.class).getValue());
+                                    sign.setLine(1, getChildTag(tags, "Text2", StringTag.class).getValue());
+                                    sign.setLine(2, getChildTag(tags, "Text3", StringTag.class).getValue());
+                                    sign.setLine(3, getChildTag(tags, "Text4", StringTag.class).getValue());
+                                    sign.update(true);
                                 }
                             }
                         }
