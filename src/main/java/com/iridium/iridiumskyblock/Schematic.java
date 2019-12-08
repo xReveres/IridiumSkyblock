@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -172,6 +173,14 @@ public class Schematic {
                         String line2 = parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
                         String line3 = parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
                         String line4 = parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                        if (parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                            line1 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
+                        if (parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                            line2 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
+                        if (parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                            line3 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
+                        if (parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                            line4 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
                         sign.setLine(0, line1);
                         sign.setLine(1, line2);
                         sign.setLine(2, line3);
@@ -246,6 +255,14 @@ public class Schematic {
                                     String line2 = parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
                                     String line3 = parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
                                     String line4 = parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                    if (parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                        line1 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
+                                    if (parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                        line2 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
+                                    if (parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                        line3 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
+                                    if (parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                        line4 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
                                     sign.setLine(0, line1);
                                     sign.setLine(1, line2);
                                     sign.setLine(2, line3);
