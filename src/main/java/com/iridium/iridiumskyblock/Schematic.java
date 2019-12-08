@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -103,7 +104,7 @@ public class Schematic {
         return height;
     }
 
-    public List<Location> pasteSchematic(Location loc) {
+    public List<Location> pasteSchematic(Location loc, Island island) {
         List<Location> locations = new ArrayList<>();
         short length = getLength();
         short width = getWidth();
@@ -166,10 +167,15 @@ public class Schematic {
                 } else if (id.equalsIgnoreCase("sign")) {
                     if (block.getState() instanceof Sign) {
                         Sign sign = (Sign) block.getState();
-                        sign.setLine(0, getChildTag(tags, "Text1", StringTag.class).getValue());
-                        sign.setLine(1, getChildTag(tags, "Text2", StringTag.class).getValue());
-                        sign.setLine(2, getChildTag(tags, "Text3", StringTag.class).getValue());
-                        sign.setLine(3, getChildTag(tags, "Text4", StringTag.class).getValue());
+                        JsonParser parser = new JsonParser();
+                        String line1 = parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                        String line2 = parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                        String line3 = parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                        String line4 = parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                        sign.setLine(0, line1);
+                        sign.setLine(1, line2);
+                        sign.setLine(2, line3);
+                        sign.setLine(3, line4);
                         sign.update(true);
                     }
                 }
@@ -235,10 +241,15 @@ public class Schematic {
                             } else if (id.equalsIgnoreCase("sign")) {
                                 if (block.getState() instanceof Sign) {
                                     Sign sign = (Sign) block.getState();
-                                    sign.setLine(0, getChildTag(tags, "Text1", StringTag.class).getValue());
-                                    sign.setLine(1, getChildTag(tags, "Text2", StringTag.class).getValue());
-                                    sign.setLine(2, getChildTag(tags, "Text3", StringTag.class).getValue());
-                                    sign.setLine(3, getChildTag(tags, "Text4", StringTag.class).getValue());
+                                    JsonParser parser = new JsonParser();
+                                    String line1 = parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                    String line2 = parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                    String line3 = parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                    String line4 = parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                    sign.setLine(0, line1);
+                                    sign.setLine(1, line2);
+                                    sign.setLine(2, line3);
+                                    sign.setLine(3, line4);
                                     sign.update(true);
                                 }
                             }

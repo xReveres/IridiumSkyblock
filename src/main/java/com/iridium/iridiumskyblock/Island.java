@@ -466,7 +466,7 @@ public class Island {
     public void pasteSchematic() {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
             if (fakeSchematic.name.equals(schematic)) {
-                blocks.addAll(IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone()));
+                blocks.addAll(IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), this));
                 if (IridiumSkyblock.getConfiguration().debugSchematics) {
                     File schematicFolder = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
                     try {
@@ -479,7 +479,7 @@ public class Island {
                 Location center = getCenter().clone();
                 if (IridiumSkyblock.getConfiguration().netherIslands) {
                     center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-                    blocks.addAll(IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center));
+                    blocks.addAll(IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center, this));
                 }
             }
         }
