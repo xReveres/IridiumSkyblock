@@ -321,12 +321,12 @@ public class Island {
                         if (IridiumSkyblock.getInstance().updatingBlocks) {
                             if (world == 0) {
                                 Location loc = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z);
-                                if (Utils.isBlockValuable(loc.getBlock())) {
+                                if (Utils.isBlockValuable(loc.getBlock()) && !blocks.contains(loc)) {
                                     blocks.add(loc);
                                 }
                             } else if (IridiumSkyblock.getConfiguration().netherIslands) {
                                 Location loc = new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z);
-                                if (Utils.isBlockValuable(loc.getBlock())) {
+                                if (Utils.isBlockValuable(loc.getBlock()) && !blocks.contains(loc)) {
                                     blocks.add(loc);
                                 }
                             }
@@ -397,6 +397,8 @@ public class Island {
 
     public void init() {
         if (blocks == null) blocks = new ArrayList<>();
+
+        blocks = new ArrayList<>(new HashSet<>(blocks));
 
         upgradeGUI = new UpgradeGUI(this);
         boosterGUI = new BoosterGUI(this);
