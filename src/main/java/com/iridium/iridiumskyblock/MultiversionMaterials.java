@@ -972,4 +972,7 @@ public enum MultiversionMaterials {
         return mat != null ? mat : Material.matchMaterial(m);
     }
 
+    public int getData() {
+        return data;
+    }
 }
