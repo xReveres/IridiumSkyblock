@@ -340,7 +340,7 @@ public class IridiumSkyblock extends JavaPlugin {
             getBoosters().flightBooster.crystalsCost = 15;
 
         if (getConfiguration().blockvalue != null) {
-            getBlockValues().blockvalue = (HashMap<Material, Integer>) getConfiguration().blockvalue.clone();
+            getBlockValues().blockvalue = (HashMap<MultiversionMaterials, Integer>) getConfiguration().blockvalue.clone();
             getConfiguration().blockvalue = null;
         }
         if (getConfiguration().spawnervalue != null) {

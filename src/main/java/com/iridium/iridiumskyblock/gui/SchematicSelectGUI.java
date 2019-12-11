@@ -26,13 +26,9 @@ public class SchematicSelectGUI extends GUI implements Listener {
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (fakeSchematic.slot == null) fakeSchematic.slot = i;
                 try {
-                    setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1, 0, fakeSchematic.displayname, fakeSchematic.lore));
+                    setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item.parseMaterial(), 1, fakeSchematic.item.data, fakeSchematic.displayname, fakeSchematic.lore));
                 } catch (Exception e) {
-                    try {
-                        setItem(fakeSchematic.slot, Utils.makeItem(Material.getMaterial("LEGACY_" + fakeSchematic.item.name()), 1, 0, fakeSchematic.displayname, fakeSchematic.lore));
-                    } catch (Exception ex) {
-                        setItem(fakeSchematic.slot, Utils.makeItem(Material.STONE, 1, 0, fakeSchematic.displayname, fakeSchematic.lore));
-                    }
+                    setItem(fakeSchematic.slot, Utils.makeItem(Material.STONE, 1, 0, fakeSchematic.displayname, fakeSchematic.lore));
                 }
                 i++;
             }

@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.MissionRestart;
+import com.iridium.iridiumskyblock.MultiversionMaterials;
 import com.iridium.iridiumskyblock.Permissions;
 import com.iridium.iridiumskyblock.Role;
 import org.bukkit.Material;
@@ -65,6 +66,6 @@ public class Config {
         put(10, 25);
     }};
 
-    public HashMap<Material, Integer> blockvalue = null;
+    public HashMap<MultiversionMaterials, Integer> blockvalue = null;
     public HashMap<String, Integer> spawnervalue = null;
 }

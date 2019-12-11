@@ -863,7 +863,7 @@ public enum MultiversionMaterials {
     static int newV = -1;
     private static HashMap<String, MultiversionMaterials> cachedSearch = new HashMap<>();
     String m;
-    int data;
+    public int data;
 
     MultiversionMaterials(String m, int data) {
         this.m = m;
@@ -930,7 +930,7 @@ public enum MultiversionMaterials {
         return false;
     }
 
-    public MultiversionMaterials fromMaterial(Material mat) {
+    public static MultiversionMaterials fromMaterial(Material mat) {
         try {
             return MultiversionMaterials.valueOf(mat.toString());
         } catch (IllegalArgumentException e) {
@@ -970,9 +970,5 @@ public enum MultiversionMaterials {
     public Material parseMaterial() {
         Material mat = Material.matchMaterial(this.toString());
         return mat != null ? mat : Material.matchMaterial(m);
-    }
-
-    public int getData() {
-        return data;
     }
 }

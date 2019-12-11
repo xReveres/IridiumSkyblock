@@ -44,7 +44,7 @@ public class onBlockFromTo implements Listener {
                             if (material == null) return;
                             e.setCancelled(true);
                             b.setType(material.parseMaterial());
-                            b.setData((byte) material.getData());
+                            b.setData((byte) material.data);
                             b.getState().update(true);
                         }
                     }

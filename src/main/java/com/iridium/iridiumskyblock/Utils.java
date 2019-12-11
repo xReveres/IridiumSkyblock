@@ -114,42 +114,25 @@ public class Utils {
 
     public static ItemStack makeItem(Inventories.Item item, Island island) {
         try {
-            return makeItem(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            return makeItem(item.material.parseMaterial(), item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         } catch (Exception e) {
-            try {
-                return makeItem(Material.getMaterial("LEGACY_" + item.material.name()), item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-            } catch (Exception ex) {
-                try {
-                    return makeItem(Material.getMaterial("LEGACY_" + MultiversionMaterials.fromString(item.material.name()).name()), item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-
-                } catch (Exception ex1) {
-                    return makeItem(Material.STONE, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-                }
-            }
+            return makeItem(Material.STONE, item.amount, 0, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         }
     }
 
     public static ItemStack makeItemHidden(Inventories.Item item) {
         try {
-            return makeItemHidden(item.material, item.amount, item.type, item.title, item.lore);
+            return makeItemHidden(item.material.parseMaterial(), item.amount, item.material.data, item.title, item.lore);
         } catch (Exception e) {
-            try {
-                return makeItemHidden(Material.getMaterial("LEGACY_" + item.material.name()), item.amount, item.type, item.title, item.lore);
-            } catch (Exception ex) {
-                return makeItemHidden(Material.STONE, item.amount, item.type, item.title, item.lore);
-            }
+            return makeItemHidden(Material.STONE, item.amount, item.material.data, item.title, item.lore);
         }
     }
 
     public static ItemStack makeItemHidden(Inventories.Item item, Island island) {
         try {
-            return makeItemHidden(item.material, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            return makeItemHidden(item.material.parseMaterial(), item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         } catch (Exception e) {
-            try {
-                return makeItemHidden(Material.getMaterial("LEGACY_" + item.material.name()), item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-            } catch (Exception ex) {
-                return makeItemHidden(Material.STONE, item.amount, item.type, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-            }
+            return makeItemHidden(Material.STONE, item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         }
     }
 
@@ -172,7 +155,7 @@ public class Utils {
     }
 
     public static boolean isBlockValuable(Block b) {
-        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(b.getType()) || b.getState() instanceof CreatureSpawner;
+        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(MultiversionMaterials.fromMaterial(b.getType())) || b.getState() instanceof CreatureSpawner;
     }
 
     public static List<Island> getTopIslands() {
