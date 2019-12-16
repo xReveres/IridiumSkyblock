@@ -1,10 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
-import org.bukkit.Material;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,7 +42,7 @@ public class CoopGUI extends GUI implements Listener {
                     lore.add("");
                     lore.add("&b&l[!] &bLeft Click to Teleport to this island.");
                     lore.add("&b&l[!] &bRight Click to un co-op this island.");
-                    ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + user.name, Utils.color(lore));
+                    ItemStack head = Utils.makeItem(MultiversionMaterials.PLAYER_HEAD, 1,  "&b&l" + user.name, Utils.color(lore));
                     SkullMeta m = (SkullMeta) head.getItemMeta();
                     m.setOwner(user.name);
                     head.setItemMeta(m);

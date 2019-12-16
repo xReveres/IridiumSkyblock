@@ -1,10 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
-import org.bukkit.Material;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,7 +27,7 @@ public class WarpGUI extends GUI implements Listener {
             warps.clear();
             for (Island.Warp warp : island.getWarps()) {
                 warps.put(i, warp);
-                setItem(i, Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 4, Utils.color("&b&l" + warp.getName()), Utils.color(Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."))));
+                setItem(i, Utils.makeItem(MultiversionMaterials.YELLOW_STAINED_GLASS_PANE, 1, Utils.color("&b&l" + warp.getName()), Utils.color(Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."))));
                 i++;
             }
         }

@@ -25,9 +25,9 @@ public class Upgrades {
     }});
 
     public Upgrade oresUpgrade = new Upgrade(true, 16, new HashMap<Integer, IslandUpgrade>() {{
-        put(1, new IslandUpgrade(15, 0, Arrays.asList("COBBLESTONE:30", "IRON_ORE:30", "COAL_ORE:30", "DIAMOND_ORE:10")));
-        put(2, new IslandUpgrade(15, 0, Arrays.asList("COBBLESTONE:15", "IRON_ORE:40", "COAL_ORE:40", "DIAMOND_ORE:20")));
-        put(3, new IslandUpgrade(15, 0, Arrays.asList("COBBLESTONE:5", "IRON_ORE:50", "COAL_ORE:50", "DIAMOND_ORE:30")));
+        put(1, new IslandUpgrade(15, 0, Arrays.asList("COBBLESTONE:80", "IRON_ORE:30", "COAL_ORE:30", "DIAMOND_ORE:10", "REDSTONE_ORE:30", "LAPIS_ORE:30", "GOLD_ORE:30", "EMERALD_ORE:10"), Arrays.asList("NETHERRACK:80", "GLOWSTONE:30", "NETHER_QUARTZ_ORE:30", "SOUL_SAND:30")));
+        put(2, new IslandUpgrade(15, 0, Arrays.asList("COBBLESTONE:55", "IRON_ORE:30", "COAL_ORE:30", "DIAMOND_ORE:20", "REDSTONE_ORE:30", "LAPIS_ORE:30", "GOLD_ORE:30", "EMERALD_ORE:20"), Arrays.asList("NETHERRACK:50", "GLOWSTONE:30", "NETHER_QUARTZ_ORE:30", "SOUL_SAND:30")));
+        put(3, new IslandUpgrade(15, 0, Arrays.asList("COBBLESTONE:30", "IRON_ORE:30", "COAL_ORE:30", "DIAMOND_ORE:30", "REDSTONE_ORE:30", "LAPIS_ORE:30", "GOLD_ORE:30", "EMERALD_ORE:30"), Arrays.asList("NETHERRACK:30", "GLOWSTONE:30", "NETHER_QUARTZ_ORE:30", "SOUL_SAND:30")));
     }});
 
     public static class Upgrade {
@@ -49,11 +49,11 @@ public class Upgrades {
         public List<String> ores;
         public List<String> netherores;
 
-        public IslandUpgrade(int crystalsCost, int vaultCost, List<String> ores) {
+        public IslandUpgrade(int crystalsCost, int vaultCost, List<String> ores, List<String> netherores) {
             this.crystalsCost = crystalsCost;
             this.vaultCost = vaultCost;
             this.ores = ores;
-            this.netherores = ores;
+            this.netherores = netherores;
         }
 
         public IslandUpgrade(int crystalsCost, int vaultCost, int size) {

@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.*;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +21,7 @@ public class PermissionsGUI extends GUI implements Listener {
         int i = 11;
         for (Role role : Role.values()) {
             permissions.put(role, new PermissionsGUI(island, role));
-            setItem(i, Utils.makeItem(Material.STAINED_CLAY, 1, 14, "&b&l" + role.name()));
+            setItem(i, Utils.makeItem(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&b&l" + role.name()));
             i++;
         }
     }
@@ -41,7 +40,7 @@ public class PermissionsGUI extends GUI implements Listener {
                 for (Field field : Permissions.class.getDeclaredFields()) {
                     Object object = field.get(getIsland().getPermissions(role));
                     if (object instanceof Boolean) {
-                        setItem(i, Utils.makeItem(Material.STAINED_CLAY, 1, (Boolean) object ? 5 : 14, "&b&l" + field.getName()));
+                        setItem(i, Utils.makeItem((Boolean) object ? MultiversionMaterials.GREEN_STAINED_GLASS_PANE : MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&b&l" + field.getName()));
                     }
                     i++;
                 }

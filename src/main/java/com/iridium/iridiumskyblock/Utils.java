@@ -95,16 +95,16 @@ public class Utils {
         return item;
     }
 
-    public static ItemStack makeItem(Material material, int amount, int type, String name) {
-        ItemStack item = new ItemStack(material, amount, (short) type);
+    public static ItemStack makeItem(MultiversionMaterials material, int amount, String name) {
+        ItemStack item = new ItemStack(material.parseMaterial(), amount, (short) material.data);
         ItemMeta m = item.getItemMeta();
         m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         item.setItemMeta(m);
         return item;
     }
 
-    public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore) {
-        ItemStack item = new ItemStack(material, amount, (short) type);
+    public static ItemStack makeItem(MultiversionMaterials material, int amount, String name, List<String> lore) {
+        ItemStack item = new ItemStack(material.parseMaterial(), amount, (short) material.data);
         ItemMeta m = item.getItemMeta();
         m.setLore(Utils.color(lore));
         m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
@@ -114,9 +114,9 @@ public class Utils {
 
     public static ItemStack makeItem(Inventories.Item item, Island island) {
         try {
-            return makeItem(item.material.parseMaterial(), item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            return makeItem(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         } catch (Exception e) {
-            return makeItem(Material.STONE, item.amount, 0, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            return makeItem(MultiversionMaterials.STONE, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         }
     }
 

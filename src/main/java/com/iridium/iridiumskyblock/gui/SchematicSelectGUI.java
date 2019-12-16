@@ -1,11 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.NMSUtils;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,9 +22,9 @@ public class SchematicSelectGUI extends GUI implements Listener {
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (fakeSchematic.slot == null) fakeSchematic.slot = i;
                 try {
-                    setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item.parseMaterial(), 1, fakeSchematic.item.data, fakeSchematic.displayname, fakeSchematic.lore));
+                    setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1,  fakeSchematic.displayname, fakeSchematic.lore));
                 } catch (Exception e) {
-                    setItem(fakeSchematic.slot, Utils.makeItem(Material.STONE, 1, 0, fakeSchematic.displayname, fakeSchematic.lore));
+                    setItem(fakeSchematic.slot, Utils.makeItem(MultiversionMaterials.STONE, 1,  fakeSchematic.displayname, fakeSchematic.lore));
                 }
                 i++;
             }

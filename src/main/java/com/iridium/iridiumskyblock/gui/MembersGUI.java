@@ -4,7 +4,6 @@ import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.api.IslandDemoteEvent;
 import com.iridium.iridiumskyblock.api.IslandPromoteEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,7 +35,7 @@ public class MembersGUI extends GUI implements Listener {
             for (String member : island.getMembers()) {
                 User u = User.getUser(member);
                 users.put(i, u);
-                ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + u.name);
+                ItemStack head = Utils.makeItem(MultiversionMaterials.PLAYER_HEAD, 1, "&b&l" + u.name);
                 SkullMeta m = (SkullMeta) head.getItemMeta();
                 m.setLore(Utils.color(Arrays.asList("&bRole: " + u.getRole(), "", "&b&l[!] &bLeft Click to " + (u.getRole().equals(Role.Visitor) ? "Kick" : "Demote") + " this Player.", "&b&l[!] &bRight Click to Promote this Player.")));
                 m.setOwner(u.name);

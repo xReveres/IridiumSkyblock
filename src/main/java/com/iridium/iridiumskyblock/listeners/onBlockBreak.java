@@ -20,7 +20,7 @@ public class onBlockBreak implements Listener {
                 if (u.islandID == island.getId()) {
                     for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
                         if (mission.type == MissionType.BLOCK_BREAK) {
-                            if (mission.conditions.isEmpty() || mission.conditions.contains(e.getBlock().getType().toString()) || (e.getBlock().getState().getData() instanceof Crops && mission.conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
+                            if (mission.conditions.isEmpty() || mission.conditions.contains(MultiversionMaterials.fromMaterial(e.getBlock().getType()).toString()) || (e.getBlock().getState().getData() instanceof Crops && mission.conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
                                 island.addMission(mission.name, 1);
                             }
                         }

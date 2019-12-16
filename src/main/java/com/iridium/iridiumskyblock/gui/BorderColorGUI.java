@@ -1,10 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.NMSUtils;
-import com.iridium.iridiumskyblock.Utils;
-import org.bukkit.Material;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -25,10 +21,10 @@ public class BorderColorGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
-        this.red = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 14, "&c&lRed");
-        this.green = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 5, "&a&lGreen");
-        this.blue = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 11, "&b&lBlue");
-        this.off = Utils.makeItem(Material.STAINED_GLASS_PANE, 1, 0, "&b&lOff");
+        this.red = Utils.makeItem(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&c&lRed");
+        this.green = Utils.makeItem(MultiversionMaterials.GREEN_STAINED_GLASS_PANE, 1, "&a&lGreen");
+        this.blue = Utils.makeItem(MultiversionMaterials.BLUE_STAINED_GLASS_PANE, 1, "&b&lBlue");
+        this.off = Utils.makeItem(MultiversionMaterials.WHITE_STAINED_GLASS_PANE, 1, "&b&lOff");
 
         setItem(10, this.red);
         setItem(12, this.blue);
@@ -40,7 +36,7 @@ public class BorderColorGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
-            if(e.getCurrentItem() != null) {
+            if (e.getCurrentItem() != null) {
                 if (e.getCurrentItem().equals(blue))
                     IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Blue);
                 if (e.getCurrentItem().equals(red))

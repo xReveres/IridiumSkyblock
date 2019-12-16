@@ -1,10 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
-import org.bukkit.Material;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,7 +37,7 @@ public class TopGUI extends GUI implements Listener {
                 lore.add("&b&l * &7Value: &b" + NumberFormat.getInstance().format(island.getValue()));
                 lore.add("");
                 lore.add("&b&l[!] &bLeft Click to Teleport to this island.");
-                ItemStack head = Utils.makeItem(Material.SKULL_ITEM, 1, 3, "&b&l" + owner.name, Utils.color(lore));
+                ItemStack head = Utils.makeItem(MultiversionMaterials.PLAYER_HEAD, 1, "&b&l" + owner.name, Utils.color(lore));
                 SkullMeta m = (SkullMeta) head.getItemMeta();
                 m.setOwner(owner.name);
                 head.setItemMeta(m);
