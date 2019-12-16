@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
+import com.iridium.iridiumskyblock.gui.ShopGUI;
 import com.iridium.iridiumskyblock.gui.TopGUI;
 import com.iridium.iridiumskyblock.gui.VisitGUI;
 import com.iridium.iridiumskyblock.listeners.*;
@@ -11,7 +12,6 @@ import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.Vault;
 import com.iridium.iridiumskyblock.support.Wildstacker;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
@@ -45,6 +45,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public static Schematics schematics;
     public static Commands commands;
     public static BlockValues blockValues;
+    public static Shop shop;
 
     private static Persist persist;
 
@@ -53,6 +54,8 @@ public class IridiumSkyblock extends JavaPlugin {
     private static CommandManager commandManager;
 
     public static TopGUI topGUI;
+
+    public static ShopGUI shopGUI;
 
     public static HashMap<Integer, VisitGUI> visitGUI;
 
@@ -79,6 +82,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 commandManager = new CommandManager("island");
                 commandManager.registerCommands();
+                IridiumSkyblock.getInstance().getCommand("shop").setExecutor(commandManager);
 
                 if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
                 if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
@@ -90,6 +94,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
 
                 topGUI = new TopGUI();
+                shopGUI = new ShopGUI();
                 visitGUI = new HashMap<>();
 
                 registerListeners(new onPlayerTalk(), new onItemCraft(), new onPlayerTeleport(), new onPlayerPortal(), new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
@@ -324,6 +329,7 @@ public class IridiumSkyblock extends JavaPlugin {
         schematics = persist.getFile(Schematics.class).exists() ? persist.load(Schematics.class) : new Schematics();
         commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
+        shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
 
         if (getBoosters().flightBooster.time == 0) getBoosters().flightBooster.time = 3600;
         if (getBoosters().experianceBooster.time == 0) getBoosters().experianceBooster.time = 3600;
@@ -382,6 +388,7 @@ public class IridiumSkyblock extends JavaPlugin {
         if (schematics != null) persist.save(schematics);
         if (commands != null) persist.save(commands);
         if (blockValues != null) persist.save(blockValues);
+        if (shop != null) persist.save(shop);
     }
 
     public String getLatest() {
@@ -439,6 +446,14 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public static Inventories getInventories() {
         return inventories;
+    }
+
+    public static ShopGUI getShopGUI() {
+        return shopGUI;
+    }
+
+    public static Shop getShop() {
+        return shop;
     }
 
     public static Persist getPersist() {

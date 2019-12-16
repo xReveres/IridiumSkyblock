@@ -665,6 +665,7 @@ public enum MultiversionMaterials {
     REDSTONE_BLOCK("REDSTONE_BLOCK", 0),
     REDSTONE_LAMP("REDSTONE_LAMP_OFF", 0),
     REDSTONE_ORE("REDSTONE_ORE", 0),
+    GLOWING_REDSTONE_ORE("GLOWING_REDSTONE_ORE", 0),
     REDSTONE_TORCH("REDSTONE_TORCH_ON", 0),
     REDSTONE_WALL_TORCH("REDSTONE_TORCH_ON", 1),
     REDSTONE_WIRE("REDSTONE_WIRE", 0),
@@ -907,7 +908,8 @@ public enum MultiversionMaterials {
                 }
             }
         }
-        return null;
+        IridiumSkyblock.getInstance().getLogger().warning("Could not find Multiversion Material for " + key);
+        return MultiversionMaterials.AIR;
     }
 
     public ItemStack parseItem() {
@@ -934,16 +936,7 @@ public enum MultiversionMaterials {
     }
 
     public static MultiversionMaterials fromMaterial(Material mat) {
-        try {
-            return MultiversionMaterials.valueOf(mat.toString());
-        } catch (IllegalArgumentException e) {
-            for (MultiversionMaterials xmat : MultiversionMaterials.values()) {
-                if (xmat.m.equals(mat.toString())) {
-                    return xmat;
-                }
-            }
-        }
-        return null;
+        return fromString(mat.name().replace("LEGACY_", ""));
     }
 
     public boolean isDamageable(MultiversionMaterials type) {

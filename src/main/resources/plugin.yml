@@ -9,3 +9,5 @@ commands:
   island:
     aliases: ["is", "IridiumSkyblock"]
     description: Main plugin command
+  shop:
+    description: Access the skyblock shop
