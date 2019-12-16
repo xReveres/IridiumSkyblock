@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.support.Wildstacker;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -712,7 +713,11 @@ public class Island {
         for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
             for (double Y = 0; Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight(); Y++) {
                 for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                    new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z).getBlock().setType(Material.AIR, false);
+                    Block b = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z).getBlock();
+                    if (b.getState() instanceof Chest) {
+                        ((Chest) b.getState()).getBlockInventory().clear();
+                    }
+                    b.setType(Material.AIR, false);
                 }
             }
         }
@@ -720,7 +725,11 @@ public class Island {
             for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
                 for (double Y = 0; Y <= IridiumSkyblock.getIslandManager().getNetherWorld().getMaxHeight(); Y++) {
                     for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                        new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z).getBlock().setType(Material.AIR, false);
+                        Block b = new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z).getBlock();
+                        if (b.getState() instanceof Chest) {
+                            ((Chest) b.getState()).getBlockInventory().clear();
+                        }
+                        b.setType(Material.AIR, false);
                     }
                 }
             }
