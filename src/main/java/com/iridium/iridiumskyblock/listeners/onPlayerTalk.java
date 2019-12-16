@@ -16,6 +16,16 @@ public class onPlayerTalk implements Listener {
     public void onPlayerTalk(AsyncPlayerChatEvent e) {
         String format = e.getFormat();
         User u = User.getUser(e.getPlayer());
+        if (u.warp != null) {
+            if (u.warp.getPassword().equals(e.getMessage())) {
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> e.getPlayer().teleport(u.warp.getLocation()));
+                e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().teleporting.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            } else {
+                e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().wrongPassword.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                u.warp = null;
+            }
+            e.setCancelled(true);
+        }
         Island island = u.getIsland();
         if (format.contains(IridiumSkyblock.getConfiguration().chatRankPlaceholder)) {
             if (island != null) {
