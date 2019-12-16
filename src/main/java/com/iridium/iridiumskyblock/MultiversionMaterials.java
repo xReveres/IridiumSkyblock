@@ -582,7 +582,7 @@ public enum MultiversionMaterials {
     PINK_WOOL("WOOL", 6),
     PISTON("PISTON_BASE", 0),
     PISTON_HEAD("PISTON_EXTENSION", 0),
-    PLAYER_HEAD("SKULL", 0),
+    PLAYER_HEAD("SKULL_ITEM", 0),
     PLAYER_WALL_HEAD("SKULL", 0),
     PODZOL("DIRT", 2),
     POISONOUS_POTATO("POISONOUS_POTATO", 0),
@@ -901,10 +901,13 @@ public enum MultiversionMaterials {
         try {
             return MultiversionMaterials.valueOf(key);
         } catch (IllegalArgumentException e) {
-            String[] split = key.split(":");
-
-            return split.length == 1 ? requestXMaterial(key, (byte) 0) : requestXMaterial(split[0], (byte) Integer.parseInt(split[1]));
+            for (MultiversionMaterials xmat : MultiversionMaterials.values()) {
+                if (xmat.m.equals(key)) {
+                    return xmat;
+                }
+            }
         }
+        return null;
     }
 
     public ItemStack parseItem() {
