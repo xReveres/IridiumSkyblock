@@ -20,6 +20,17 @@ public class onPlayerMove implements Listener {
                     } else {
                         island.teleportNetherHome(e.getPlayer());
                     }
+                } else {
+                    User u = User.getUser(e.getPlayer());
+                    if (u.getIsland() != null) {
+                        if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                            u.getIsland().teleportHome(e.getPlayer());
+                        } else if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                            u.getIsland().teleportNetherHome(e.getPlayer());
+                        }
+                    } else if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                        u.getIsland().spawnPlayer(e.getPlayer());
+                    }
                 }
             }
             User user = User.getUser(e.getPlayer());
