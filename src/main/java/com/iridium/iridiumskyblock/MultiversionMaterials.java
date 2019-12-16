@@ -1,9 +1,10 @@
 package com.iridium.iridiumskyblock;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public enum MultiversionMaterials {
 
@@ -664,8 +665,7 @@ public enum MultiversionMaterials {
     REDSTONE("REDSTONE", 0),
     REDSTONE_BLOCK("REDSTONE_BLOCK", 0),
     REDSTONE_LAMP("REDSTONE_LAMP_OFF", 0),
-    REDSTONE_ORE("REDSTONE_ORE", 0),
-    GLOWING_REDSTONE_ORE("GLOWING_REDSTONE_ORE", 0),
+    REDSTONE_ORE(Arrays.asList("REDSTONE_ORE", "GLOWING_REDSTONE_ORE"), 0),
     REDSTONE_TORCH("REDSTONE_TORCH_ON", 0),
     REDSTONE_WALL_TORCH("REDSTONE_TORCH_ON", 1),
     REDSTONE_WIRE("REDSTONE_WIRE", 0),
@@ -815,7 +815,7 @@ public enum MultiversionMaterials {
     WATER_BUCKET("WATER_BUCKET", 0),
     WET_SPONGE("SPONGE", 1),
     WHEAT("WHEAT", 0),
-    WHEAT_SEEDS("SEEDS", 0),
+    WHEAT_SEEDS(Arrays.asList("SEEDS", "CROPS"), 0),
     WHITE_BANNER("BANNER", 15),
     WHITE_BED("BED", 0),
     WHITE_CARPET("CARPET", 0),
@@ -861,49 +861,26 @@ public enum MultiversionMaterials {
     ZOMBIE_WALL_HEAD("SKULL", 0),
     ;
 
-    static int newV = -1;
-    private static HashMap<String, MultiversionMaterials> cachedSearch = new HashMap<>();
-    String m;
+    public List<String> m;
     public int data;
 
-    MultiversionMaterials(String m, int data) {
+    MultiversionMaterials(List<String> m, int data) {
         this.m = m;
         this.data = data;
     }
 
-    public static boolean isNewVersion() {
-        if (newV == 0) return false;
-        if (newV == 1) return true;
-
-        Material mat = Material.matchMaterial("RED_WOOL");
-        if (mat != null) {
-            newV = 1;
-            return true;
-        }
-
-        newV = 0;
-        return false;
-    }
-
-    public static MultiversionMaterials requestXMaterial(String name, byte data) {
-        if (cachedSearch.containsKey(name.toUpperCase() + "," + data)) {
-            return cachedSearch.get(name.toUpperCase() + "," + data);
-        }
-        for (MultiversionMaterials mat : MultiversionMaterials.values()) {
-            if (name.toUpperCase().equals(mat.m) && ((byte) mat.data) == data) {
-                cachedSearch.put(mat.m + "," + data, mat);
-                return mat;
-            }
-        }
-        return null;
+    MultiversionMaterials(String m, int data) {
+        this.m = Collections.singletonList(m);
+        this.data = data;
     }
 
     public static MultiversionMaterials fromString(String key) {
+        key = key.replace("LEGACY_", "");
         try {
             return MultiversionMaterials.valueOf(key);
         } catch (IllegalArgumentException e) {
             for (MultiversionMaterials xmat : MultiversionMaterials.values()) {
-                if (xmat.m.equals(key)) {
+                if (xmat.m.contains(key)) {
                     return xmat;
                 }
             }
@@ -912,59 +889,18 @@ public enum MultiversionMaterials {
         return MultiversionMaterials.AIR;
     }
 
-    public ItemStack parseItem() {
-        Material mat = parseMaterial();
-        if (isNewVersion()) {
-            return new ItemStack(mat);
-        }
-        return new ItemStack(mat, 1, (byte) data);
-    }
-
-    public boolean isSameMaterial(ItemStack comp) {
-        if (isNewVersion()) {
-            return comp.getType() == this.parseMaterial();
-        }
-        if (comp.getType() == this.parseMaterial() &&
-                (int) comp.getData().getData() == this.data) {
-            return true;
-        }
-        MultiversionMaterials xmat = fromMaterial(comp.getType());
-        if (isDamageable(xmat)) {
-            return this.parseMaterial() == comp.getType();
-        }
-        return false;
-    }
-
     public static MultiversionMaterials fromMaterial(Material mat) {
         return fromString(mat.name().replace("LEGACY_", ""));
     }
 
-    public boolean isDamageable(MultiversionMaterials type) {
-        String[] split = type.toString().split("_");
-
-        switch (split[split.length - 1]) {
-            case "HELMET":
-            case "CHESTPLATE":
-            case "LEGGINGS":
-            case "BOOTS":
-            case "SWORD":
-            case "AXE":
-            case "PICKAXE":
-            case "SHOVEL":
-            case "HOE":
-            case "ELYTRA":
-            case "TURTLE_HELMET":
-            case "TRIDENT":
-            case "HORSE_ARMOR":
-            case "SHEARS":
-                return true;
-            default:
-                return false;
-        }
-    }
-
     public Material parseMaterial() {
-        Material mat = Material.matchMaterial(this.toString());
-        return mat != null ? mat : Material.matchMaterial(m);
+        Material result = Material.matchMaterial(this.toString());
+        if (result == null) {
+            for (String material : m) {
+                result = Material.matchMaterial(material);
+                if (result != null) return result;
+            }
+        }
+        return result;
     }
 }
