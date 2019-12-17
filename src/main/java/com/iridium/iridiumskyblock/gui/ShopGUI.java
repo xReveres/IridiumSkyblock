@@ -93,11 +93,11 @@ public class ShopGUI extends GUI implements Listener {
                 if (items.containsKey(e.getSlot())) {
                     Shop.ShopItem item = items.get(e.getSlot());
                     if (e.getClick().equals(ClickType.RIGHT)) {
-                        if (e.getWhoClicked().getInventory().contains(item.material.parseMaterial(), item.amount)) {
+                        if (e.getWhoClicked().getInventory().containsAtLeast(new ItemStack(item.material.parseMaterial(), 1, (short) item.material.data), item.amount)) {
                             int removed = 0;
                             for (ItemStack itemStack : e.getWhoClicked().getInventory().getContents()) {
                                 if (itemStack != null) {
-                                    if (itemStack.getType().equals(item.material.parseMaterial())) {
+                                    if (itemStack.getType().equals(item.material.parseMaterial()) && itemStack.getDurability() == item.material.data) {
                                         if (removed + itemStack.getAmount() <= item.amount) {
                                             removed += itemStack.getAmount();
                                             itemStack.setType(Material.AIR);
@@ -111,7 +111,7 @@ public class ShopGUI extends GUI implements Listener {
                         }
                     } else {
                         if (Utils.canBuy((Player) e.getWhoClicked(), item.buyVault, item.buyCrystals)) {
-                            e.getWhoClicked().getInventory().addItem(new ItemStack(item.material.parseMaterial(), item.amount));
+                            e.getWhoClicked().getInventory().addItem(new ItemStack(item.material.parseMaterial(), item.amount, (short) item.material.data));
                         }
                     }
                 }
