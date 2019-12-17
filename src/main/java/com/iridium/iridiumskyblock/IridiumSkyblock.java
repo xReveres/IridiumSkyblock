@@ -23,9 +23,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.ListIterator;
 
@@ -184,7 +186,14 @@ public class IridiumSkyblock extends JavaPlugin {
     public void backupIslandManager() {
         File backupsFolder = new File(getDataFolder(), "backups");
         if (!backupsFolder.exists()) backupsFolder.mkdir();
-        getPersist().save(islandManager, new File(backupsFolder, "IslandManager_" + LocalDateTime.now().toString() + ".json"));
+        getPersist().save(islandManager, new File(backupsFolder, "IslandManager_" + getCurrentTimeStamp() + ".json"));
+    }
+
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
     }
 
     @Override
