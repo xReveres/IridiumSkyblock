@@ -84,7 +84,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 commandManager = new CommandManager("island");
                 commandManager.registerCommands();
-                IridiumSkyblock.getInstance().getCommand("shop").setExecutor(commandManager);
 
                 if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
                 if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
