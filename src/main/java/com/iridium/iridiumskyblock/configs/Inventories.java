@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.MultiversionMaterials;
-import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +25,7 @@ public class Inventories {
     public String schematicselectGUITitle = "&7Select an Island";
     public String bankGUITitle = "&7Island Bank";
     public String visitGUITitle = "&7Visit an Island";
+    public String shopGUITitle = "&7Island Shop";
 
     public int upgradeGUISize = 27;
     public int boosterGUISize = 27;
@@ -40,6 +40,7 @@ public class Inventories {
     public int schematicselectGUISize = 27;
     public int bankGUISize = 27;
     public int visitGUISize = 54;
+    public int shopGUISize = 54;
 
     //Boosters
     public Item spawner = new Item(MultiversionMaterials.SPAWNER, 1, "&b&lIncreased Mobs", Arrays.asList("&7Are your spawners too slow? Buy this", "&7booster and increase spawner rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{spawnerbooster_minutes} minutes and {spawnerbooster_seconds}seconds", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().spawnerBooster.crystalsCost + " Crystals and $" + IridiumSkyblock.getBoosters().spawnerBooster.vaultCost, "", "&b&l[!] &bRight Click to Purchase this Booster."));
@@ -75,6 +76,12 @@ public class Inventories {
     public Item crystal = new Item(MultiversionMaterials.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b&l[!] &bto Redeem, go to your Island Bank"));
 
     public Item background = new Item(MultiversionMaterials.BLACK_STAINED_GLASS_PANE, 1, " ", new ArrayList<>());
+
+    public Item nextPage = new Item(MultiversionMaterials.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", new ArrayList<>());
+
+    public Item previousPage = new Item(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", new ArrayList<>());
+
+    public Item back = new Item(MultiversionMaterials.NETHER_STAR, 1, "&c&lBack", new ArrayList<>());
 
     public List<Item> missionsItems = Arrays.asList(
             new Item(MultiversionMaterials.EXPERIENCE_BOTTLE, 10, 1, "&b&lTreasure Hunter", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bCollect {Treasure Hunteramount} Experience", "&b&l * &7Current Status: &b{Treasure Hunterstatus}", "&b&l * &7Reward: &b{Treasure Huntercrystals} Island Crystals and ${Treasure Huntervault}", "", "&b&l[!] &bComplete this mission for rewards.")),

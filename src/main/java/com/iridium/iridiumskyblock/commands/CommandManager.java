@@ -70,6 +70,15 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
+        if (cmd.getLabel().equalsIgnoreCase("shop")) {
+            if (cs instanceof Player) {
+                Player p = (Player) cs;
+                p.openInventory(IridiumSkyblock.getShopGUI().getInventory());
+            } else {
+                cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+            return true;
+        }
         try {
             if (args.length != 0) {
                 for (com.iridium.iridiumskyblock.commands.Command command : commands) {
@@ -79,7 +88,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             return true;
                         }
-                        if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))&&command.isEnabled()) {
+                        if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) && command.isEnabled()) {
                             command.execute(cs, args);
                             return true;
                         } else {
@@ -119,7 +128,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             //Help Menu
             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpHeader));
             for (com.iridium.iridiumskyblock.commands.Command command : commands) {
-                if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock."))&&command.isEnabled()) {
+                if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) && command.isEnabled()) {
                     cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", command.getAliases().get(0)).replace("%description%", command.getDescription())));
                 }
             }
@@ -131,6 +140,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender cs, Command cmd, String s, String[] args) {
+        if (cmd.getLabel().equalsIgnoreCase("shop")) {
+            return null;
+        }
         try {
             if (args.length == 1) {
                 ArrayList<String> result = new ArrayList<>();

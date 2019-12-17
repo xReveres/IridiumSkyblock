@@ -15,6 +15,10 @@ public abstract class GUI {
     public int islandID;
     public int scheduler;
 
+    public GUI() {
+
+    }
+
     public GUI(Island island, int size, String name) {
         islandID = island.getId();
         this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
@@ -28,14 +32,14 @@ public abstract class GUI {
 
     public void addContent() {
         for (int i = 0; i < inventory.getSize(); i++) {
-            if(inventory.getItem(i)==null || inventory.getItem(i).getType().equals(Material.AIR)){
+            if (inventory.getItem(i) == null || inventory.getItem(i).getType().equals(Material.AIR)) {
                 setItem(i, Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
             }
         }
     }
 
     public void setItem(int i, ItemStack itemStack) {
-        if (getInventory().getItem(i)==null || !getInventory().getItem(i).isSimilar(itemStack)) {
+        if (getInventory().getItem(i) == null || !getInventory().getItem(i).isSimilar(itemStack)) {
             getInventory().setItem(i, itemStack);
         }
     }

@@ -62,8 +62,8 @@ public class VisitGUI extends GUI implements Listener {
                 slot++;
             }
         }
-        setItem(47, Utils.makeItem(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page"));
-        setItem(51, Utils.makeItem(MultiversionMaterials.GREEN_STAINED_GLASS_PANE, 1, "&a&lNext Page"));
+        setItem(getInventory().getSize() - 3, Utils.makeItem(IridiumSkyblock.getInventories().nextPage));
+        setItem(getInventory().getSize() - 7, Utils.makeItem(IridiumSkyblock.getInventories().previousPage));
     }
 
     @EventHandler
@@ -88,10 +88,10 @@ public class VisitGUI extends GUI implements Listener {
                 } else {
                     e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
-            } else if (e.getSlot() == 47) {
+            } else if (e.getSlot() == getInventory().getSize() - 7) {
                 if (IridiumSkyblock.visitGUI.containsKey(page - 1))
                     e.getWhoClicked().openInventory(IridiumSkyblock.visitGUI.get(page - 1).getInventory());
-            } else if (e.getSlot() == 51) {
+            } else if (e.getSlot() == getInventory().getSize() - 3) {
                 if (IridiumSkyblock.visitGUI.containsKey(page + 1))
                     e.getWhoClicked().openInventory(IridiumSkyblock.visitGUI.get(page + 1).getInventory());
             }

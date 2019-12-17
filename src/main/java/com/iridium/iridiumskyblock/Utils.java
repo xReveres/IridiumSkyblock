@@ -112,6 +112,14 @@ public class Utils {
         return item;
     }
 
+    public static ItemStack makeItem(Inventories.Item item) {
+        try {
+            return makeItem(item.material, item.amount, item.title, item.lore);
+        } catch (Exception e) {
+            return makeItem(MultiversionMaterials.STONE, item.amount, item.title, item.lore);
+        }
+    }
+
     public static ItemStack makeItem(Inventories.Item item, Island island) {
         try {
             return makeItem(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
@@ -271,11 +279,27 @@ public class Utils {
         return newlist;
     }
 
+    public static List<String> processMultiplePlaceholders(List<String> lines, List<Placeholder> placeholders) {
+        List<String> newlist = new ArrayList<>();
+        for (String string : lines) {
+            newlist.add(processMultiplePlaceholders(string, placeholders));
+        }
+        return newlist;
+    }
+
     public static String processMultiplePlaceholders(String line, List<Placeholder> placeholders) {
         for (Placeholder placeholder : placeholders) {
             line = placeholder.process(line);
         }
         return color(line);
+    }
+
+    public static void pay(Player p, int vault, int crystals) {
+        User u = User.getUser(p);
+        if (u.getIsland() != null) {
+            u.getIsland().setCrystals(u.getIsland().getCrystals() + crystals);
+        }
+        Vault.econ.depositPlayer(p, vault);
     }
 
     public static boolean canBuy(Player p, int vault, int crystals) {
@@ -293,12 +317,18 @@ public class Utils {
                 }
                 return canbuy;
             } else {
-                boolean canbuy = u.getIsland().getCrystals() >= crystals;
+                boolean canbuy = u.getIsland().getCrystals() >= crystals && vault == 0;
                 if (canbuy) {
                     u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
                 }
                 return canbuy;
             }
+        } else if (crystals == 0 && Vault.econ != null) {
+            boolean canbuy = Vault.econ.getBalance(p) >= vault;
+            if (canbuy) {
+                Vault.econ.withdrawPlayer(p, vault);
+            }
+            return canbuy;
         }
         return false;
     }

@@ -40,7 +40,7 @@ public class PermissionsGUI extends GUI implements Listener {
                 for (Field field : Permissions.class.getDeclaredFields()) {
                     Object object = field.get(getIsland().getPermissions(role));
                     if (object instanceof Boolean) {
-                        setItem(i, Utils.makeItem((Boolean) object ? MultiversionMaterials.GREEN_STAINED_GLASS_PANE : MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&b&l" + field.getName()));
+                        setItem(i, Utils.makeItem((Boolean) object ? MultiversionMaterials.LIME_STAINED_GLASS_PANE : MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&b&l" + field.getName()));
                     }
                     i++;
                 }

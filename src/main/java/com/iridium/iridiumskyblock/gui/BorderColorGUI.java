@@ -22,7 +22,7 @@ public class BorderColorGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         this.red = Utils.makeItem(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&c&lRed");
-        this.green = Utils.makeItem(MultiversionMaterials.GREEN_STAINED_GLASS_PANE, 1, "&a&lGreen");
+        this.green = Utils.makeItem(MultiversionMaterials.LIME_STAINED_GLASS_PANE, 1, "&a&lGreen");
         this.blue = Utils.makeItem(MultiversionMaterials.BLUE_STAINED_GLASS_PANE, 1, "&b&lBlue");
         this.off = Utils.makeItem(MultiversionMaterials.WHITE_STAINED_GLASS_PANE, 1, "&b&lOff");
 
