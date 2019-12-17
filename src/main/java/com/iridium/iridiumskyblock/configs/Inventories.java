@@ -13,7 +13,7 @@ public class Inventories {
 
     public String upgradeGUITitle = "&7Upgrade";
     public String boosterGUITitle = "&7Booster";
-    public String confirmationGUITitle = "&7Are you sure you want to do that";
+    public String confirmationGUITitle = "&7Are you sure?";
     public String missionsGUITitle = "&7Missions";
     public String membersGUITitle = "&7Members";
     public String coopGUITitle = "&7Co-op Islands";
