@@ -103,6 +103,7 @@ public class ShopGUI extends GUI implements Listener {
                                             itemStack.setType(Material.AIR);
                                         } else {
                                             itemStack.setAmount(itemStack.getAmount() - (item.amount - removed));
+                                            removed = item.amount;
                                         }
                                     }
                                 }
