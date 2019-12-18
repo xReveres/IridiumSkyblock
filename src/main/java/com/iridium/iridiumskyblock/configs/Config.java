@@ -4,7 +4,6 @@ import com.iridium.iridiumskyblock.MissionRestart;
 import com.iridium.iridiumskyblock.MultiversionMaterials;
 import com.iridium.iridiumskyblock.Permissions;
 import com.iridium.iridiumskyblock.Role;
-import org.bukkit.Material;
 import org.bukkit.block.Biome;
 
 import java.util.HashMap;
@@ -47,7 +46,7 @@ public class Config {
     public HashMap<Role, Permissions> defaultPermissions = new HashMap<Role, Permissions>() {{
         for (Role role : Role.values()) {
             if (role == Role.Visitor) {
-                put(role, new Permissions(false, false, false, false, false, false, false, false, false, true, true, false, false, false));
+                put(role, new Permissions(false, false, false, false, false, false, false, false, false, true, true, false, false, false, false));
             } else {
                 put(role, new Permissions());
             }

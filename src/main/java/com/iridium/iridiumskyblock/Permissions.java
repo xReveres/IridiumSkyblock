@@ -17,8 +17,9 @@ public class Permissions {
     public boolean coop;
     public boolean withdrawBank;
     public boolean killMobs;
+    public boolean pickupItems;
 
-    public Permissions(boolean breakBlocks, boolean placeBlocks, boolean interact, boolean kickMembers, boolean inviteMembers, boolean regen, boolean islandprivate, boolean promote, boolean demote, boolean useNetherPortal, boolean useWarps, boolean coop, boolean withdrawBank, boolean killMobs) {
+    public Permissions(boolean breakBlocks, boolean placeBlocks, boolean interact, boolean kickMembers, boolean inviteMembers, boolean regen, boolean islandprivate, boolean promote, boolean demote, boolean useNetherPortal, boolean useWarps, boolean coop, boolean withdrawBank, boolean killMobs, boolean pickupItems) {
         this.breakBlocks = breakBlocks;
         this.placeBlocks = placeBlocks;
         this.interact = interact;
@@ -33,6 +34,7 @@ public class Permissions {
         this.coop = coop;
         this.withdrawBank = withdrawBank;
         this.killMobs = killMobs;
+        this.pickupItems = pickupItems;
     }
 
     public Permissions() {
@@ -50,5 +52,6 @@ public class Permissions {
         coop = true;
         withdrawBank = true;
         killMobs = true;
+        pickupItems = true;
     }
 }
