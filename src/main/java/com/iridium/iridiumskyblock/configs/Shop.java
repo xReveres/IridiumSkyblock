@@ -12,10 +12,10 @@ public class Shop {
     public List<ShopObject> shop = Arrays.asList(
             new ShopObject(MultiversionMaterials.GRASS_BLOCK, "&9&lBlocks", "Blocks", Arrays.asList(
                     new ShopItem(MultiversionMaterials.GRASS_BLOCK, "&9&lGrass Block", 64, 50, 5, 0, 0, 10, 1),
-                    new ShopItem(MultiversionMaterials.DIRT, "&9&lGrass Block", 64, 30, 3, 0, 0, 11, 1),
-                    new ShopItem(MultiversionMaterials.GRAVEL, "&9&lGrass Block", 64, 50, 5, 0, 0, 12, 1),
-                    new ShopItem(MultiversionMaterials.COBBLESTONE, "&9&lGrass Block", 64, 30, 3, 0, 0, 13, 1),
-                    new ShopItem(MultiversionMaterials.MOSSY_COBBLESTONE, "&9&lGrass Block", 64, 50, 5, 0, 0, 14, 1),
+                    new ShopItem(MultiversionMaterials.DIRT, "&9&lDirt Block", 64, 30, 3, 0, 0, 11, 1),
+                    new ShopItem(MultiversionMaterials.GRAVEL, "&9&lGravel", 64, 50, 5, 0, 0, 12, 1),
+                    new ShopItem(MultiversionMaterials.COBBLESTONE, "&9&lCobblestone", 64, 30, 3, 0, 0, 13, 1),
+                    new ShopItem(MultiversionMaterials.MOSSY_COBBLESTONE, "&9&lMossy Cobblestone", 64, 50, 5, 0, 0, 14, 1),
                     new ShopItem(MultiversionMaterials.STONE, "&9&lStone", 64, 50, 5, 0, 0, 15, 1),
                     new ShopItem(MultiversionMaterials.GRANITE, "&9&lGranite", 64, 30, 8, 0, 0, 16, 1),
                     new ShopItem(MultiversionMaterials.DIORITE, "&9&lDiorite", 64, 30, 3, 0, 0, 19, 1),
