@@ -37,6 +37,7 @@ public class BoosterGUI extends GUI implements Listener {
             Player p = (Player) e.getWhoClicked();
             Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (e.getSlot() == IridiumSkyblock.getBoosters().spawnerBooster.slot && IridiumSkyblock.getBoosters().spawnerBooster.enabled) {
                 if (getIsland().getSpawnerBooster() == 0) {
                     if (Utils.canBuy(p, IridiumSkyblock.getBoosters().spawnerBooster.vaultCost, IridiumSkyblock.getBoosters().spawnerBooster.crystalsCost)) {

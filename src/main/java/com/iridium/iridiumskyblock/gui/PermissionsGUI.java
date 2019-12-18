@@ -57,6 +57,7 @@ public class PermissionsGUI extends GUI implements Listener {
         User u = User.getUser(p);
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             int i = 11;
             for (Role role : Role.values()) {
                 if (e.getSlot() == i) {

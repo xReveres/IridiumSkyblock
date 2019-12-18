@@ -32,6 +32,7 @@ public class ConfirmationGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (e.getSlot() == 12) {
                 e.getWhoClicked().closeInventory();
                 runnable.run();

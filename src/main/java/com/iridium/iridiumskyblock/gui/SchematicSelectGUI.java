@@ -36,6 +36,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (e.getSlot() == fakeSchematic.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
                     getIsland().setSchematic(fakeSchematic.name);

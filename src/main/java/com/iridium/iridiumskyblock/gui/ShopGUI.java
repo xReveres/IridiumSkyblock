@@ -83,6 +83,7 @@ public class ShopGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (shop == null) {
                 if (shops.containsKey(e.getSlot())) {
                     if (shops.get(e.getSlot()).shops.containsKey(1)) { // This should always be called, but just incase the user configured the plugin incorrectly

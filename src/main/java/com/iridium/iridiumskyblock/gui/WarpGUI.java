@@ -40,6 +40,7 @@ public class WarpGUI extends GUI implements Listener {
             Player p = (Player) e.getWhoClicked();
             User u = User.getUser(p);
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (warps.containsKey(e.getSlot())) {
                 Island.Warp warp = warps.get(e.getSlot());
                 if (e.getClick().equals(ClickType.RIGHT)) {

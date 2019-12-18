@@ -386,17 +386,19 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void saveConfigs() {
-        if (configuration != null) persist.save(configuration);
-        if (missions != null) persist.save(missions);
-        if (islandManager != null) persist.save(islandManager);
-        if (messages != null) persist.save(messages);
-        if (upgrades != null) persist.save(upgrades);
-        if (boosters != null) persist.save(boosters);
-        if (inventories != null) persist.save(inventories);
-        if (schematics != null) persist.save(schematics);
-        if (commands != null) persist.save(commands);
-        if (blockValues != null) persist.save(blockValues);
-        if (shop != null) persist.save(shop);
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            if (configuration != null) persist.save(configuration);
+            if (missions != null) persist.save(missions);
+            if (islandManager != null) persist.save(islandManager);
+            if (messages != null) persist.save(messages);
+            if (upgrades != null) persist.save(upgrades);
+            if (boosters != null) persist.save(boosters);
+            if (inventories != null) persist.save(inventories);
+            if (schematics != null) persist.save(schematics);
+            if (commands != null) persist.save(commands);
+            if (blockValues != null) persist.save(blockValues);
+            if (shop != null) persist.save(shop);
+        });
     }
 
     public String getLatest() {

@@ -54,6 +54,7 @@ public class TopGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (islands.containsKey(e.getSlot())) {
                 e.getWhoClicked().closeInventory();
                 Island island = IridiumSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot()));

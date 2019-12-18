@@ -59,6 +59,7 @@ public class IslandMenuGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             Player p = (Player) e.getWhoClicked();
             User u = User.getUser(p);
             if (e.getSlot() == (IridiumSkyblock.getInventories().home.slot == null ? 0 : IridiumSkyblock.getInventories().home.slot)) {

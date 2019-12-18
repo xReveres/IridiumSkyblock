@@ -51,6 +51,7 @@ public class MembersGUI extends GUI implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
+            if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (User.getUser((OfflinePlayer) e.getWhoClicked()).bypassing || getIsland().equals(User.getUser((OfflinePlayer) e.getWhoClicked()).getIsland())) {
                 if (users.containsKey(e.getSlot())) {
                     User u = users.get(e.getSlot());
