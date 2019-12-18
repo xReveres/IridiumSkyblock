@@ -74,7 +74,7 @@ public class Shop {
                     new ShopItem(MultiversionMaterials.LAPIS_LAZULI, "&9&lLapis Lazuli", 64, 20, 4, 0, 0, 13, 1),
                     new ShopItem(MultiversionMaterials.IRON_INGOT, "&9&lIron Ingot", 8, 300, 30, 0, 0, 14, 1),
                     new ShopItem(MultiversionMaterials.GOLD_INGOT, "&9&lGold Ingot", 8, 300, 30, 0, 0, 15, 1),
-                    new ShopItem(MultiversionMaterials.DIAMOND, "&9&Diamond", 8, 1000, 100, 0, 0, 21, 1),
+                    new ShopItem(MultiversionMaterials.DIAMOND, "&9&lDiamond", 8, 1000, 100, 0, 0, 21, 1),
                     new ShopItem(MultiversionMaterials.EMERALD, "&9&lEmerald", 8, 200, 40, 0, 0, 22, 1),
                     new ShopItem(MultiversionMaterials.QUARTZ, "&9&lQuartz", 64, 100, 10, 0, 0, 23, 1)
             ), 13),
