@@ -79,4 +79,5 @@ public class Messages {
     public String resetAction = "Reset your Island";
     public String deleteAction = "Delete your Island";
     public String visitingIsland = "%prefix% &7Teleporting to %player%'s Island";
+    public String visitedYourIsland = "%prefix% &7%player% is visiting your island.";
 }
