@@ -180,7 +180,7 @@ public class Shop {
             new ShopObject(MultiversionMaterials.SADDLE, "&9&lMiscellanous", "Miscellanous", Arrays.asList(
                     new ShopItem(MultiversionMaterials.BUCKET, "&9&lBucket", 1, 100, 10, 0, 0, 10, 1),
                     new ShopItem(MultiversionMaterials.WATER_BUCKET, "&9&lWater Bucket", 1, 200, 20, 0, 0, 11, 1),
-                    new ShopItem(MultiversionMaterials.LAVA_BUCKET, "&9&lBucket", 1, 200, 20, 0, 0, 12, 1),
+                    new ShopItem(MultiversionMaterials.LAVA_BUCKET, "&9&lLava Bucket", 1, 200, 20, 0, 0, 12, 1),
                     new ShopItem(MultiversionMaterials.CAULDRON, "&9&lCauldron", 1, 300, 30, 0, 0, 13, 1),
                     new ShopItem(MultiversionMaterials.BREWING_STAND, "&9&lBrewing Stand", 1, 1000, 100, 0, 0, 14, 1),
                     new ShopItem(MultiversionMaterials.RED_BED, "&9&lBed", 1, 80, 15, 0, 0, 15, 1),
