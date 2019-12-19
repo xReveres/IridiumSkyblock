@@ -107,7 +107,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (configuration.doIslandBackup)
                     Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::backupIslandManager, 0, 20 * 60 * 30);
 
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20);
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20 * 60);
 
                 setupPlaceholderAPI();
 
@@ -203,7 +203,8 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     private void addPages() {
-        for (int i = 1; i <= Math.floor(Utils.getIslands().size() / 45.00) + 1; i++) {
+        int size = (int) (Math.floor(Utils.getIslands().size() / 45.00) + 1);
+        for (int i = 1; i <= size; i++) {
             if (!visitGUI.containsKey(i)) {
                 visitGUI.put(i, new VisitGUI(i));
             }
