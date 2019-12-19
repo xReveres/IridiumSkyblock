@@ -393,7 +393,7 @@ public class Island {
     }
 
     public boolean isInIsland(Location location) {
-        return (location.getX() >= getPos1().getX() && location.getX() <= getPos2().getX()) && (location.getZ() >= getPos1().getZ() && location.getZ() <= getPos2().getZ());
+        return (location.getX() > getPos1().getX() - 1 && location.getX() < getPos2().getX() + 1) && (location.getZ() > getPos1().getZ() - 1 && location.getZ() < getPos2().getZ() + 1);
     }
 
     public void init() {
