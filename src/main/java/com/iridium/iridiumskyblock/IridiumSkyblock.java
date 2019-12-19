@@ -341,6 +341,8 @@ public class IridiumSkyblock extends JavaPlugin {
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
 
+        getBlockValues().blockvalue.remove(MultiversionMaterials.AIR);
+
         oreUpgradeCache.clear();
         for (int i : getUpgrades().oresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
