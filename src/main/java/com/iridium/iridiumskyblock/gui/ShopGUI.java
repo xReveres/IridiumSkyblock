@@ -40,7 +40,6 @@ public class ShopGUI extends GUI implements Listener {
     }
 
     public ShopGUI(Shop.ShopObject shop, ShopGUI root) {
-        super();
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 5);
         this.shop = shop;
         this.root = root;

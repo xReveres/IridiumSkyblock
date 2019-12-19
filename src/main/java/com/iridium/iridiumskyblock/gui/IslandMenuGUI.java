@@ -50,6 +50,7 @@ public class IslandMenuGUI extends GUI implements Listener {
             setItem(IridiumSkyblock.getInventories().border.slot == null ? 9 : IridiumSkyblock.getInventories().border.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().border, getIsland()));
             setItem(IridiumSkyblock.getInventories().coop.slot == null ? 10 : IridiumSkyblock.getInventories().coop.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().coop, getIsland()));
             setItem(IridiumSkyblock.getInventories().bank.slot == null ? 11 : IridiumSkyblock.getInventories().bank.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().bank, getIsland()));
+            setItem(IridiumSkyblock.getInventories().biomes.slot == null ? 12 : IridiumSkyblock.getInventories().biomes.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().biomes, getIsland()));
             setItem(IridiumSkyblock.getInventories().delete.slot == null ? 26 : IridiumSkyblock.getInventories().delete.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().delete, getIsland()));
         }
     }
@@ -102,6 +103,9 @@ public class IslandMenuGUI extends GUI implements Listener {
             } else if (e.getSlot() == (IridiumSkyblock.getInventories().bank.slot == null ? 11 : IridiumSkyblock.getInventories().bank.slot)) {
                 p.closeInventory();
                 p.openInventory(getIsland().getBankGUI().getInventory());
+            } else if (e.getSlot() == (IridiumSkyblock.getInventories().biomes.slot == null ? 12 : IridiumSkyblock.getInventories().biomes.slot)) {
+                p.closeInventory();
+                p.openInventory(getIsland().getBiomeGUI().pages.get(1).getInventory());
             } else if (e.getSlot() == (IridiumSkyblock.getInventories().delete.slot == null ? 26 : IridiumSkyblock.getInventories().delete.slot)) {
                 p.closeInventory();
                 if (u.bypassing || getIsland().getOwner().equalsIgnoreCase(u.player)) {

@@ -26,6 +26,7 @@ public class Inventories {
     public String bankGUITitle = "&7Island Bank";
     public String visitGUITitle = "&7Visit an Island";
     public String shopGUITitle = "&7Island Shop";
+    public String biomeGUITitle = "&7Island Biome";
 
     public int upgradeGUISize = 27;
     public int boosterGUISize = 27;
@@ -41,6 +42,7 @@ public class Inventories {
     public int bankGUISize = 27;
     public int visitGUISize = 54;
     public int shopGUISize = 54;
+    public int biomeGUISize = 54;
 
     //Boosters
     public Item spawner = new Item(MultiversionMaterials.SPAWNER, 1, "&b&lIncreased Mobs", Arrays.asList("&7Are your spawners too slow? Buy this", "&7booster and increase spawner rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{spawnerbooster_minutes} minutes and {spawnerbooster_seconds}seconds", "&b&l * &7Booster Cost: &b" + IridiumSkyblock.getBoosters().spawnerBooster.crystalsCost + " Crystals and $" + IridiumSkyblock.getBoosters().spawnerBooster.vaultCost, "", "&b&l[!] &bRight Click to Purchase this Booster."));
@@ -66,6 +68,7 @@ public class Inventories {
     public Item border = new Item(MultiversionMaterials.BLAZE_POWDER, 9, 1, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
     public Item coop = new Item(MultiversionMaterials.REDSTONE, 10, 1, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands."));
     public Item bank = new Item(MultiversionMaterials.PAPER, 11, 1, "&b&lIsland Bank", Collections.singletonList("&7View your Island Bank."));
+    public Item biomes = new Item(MultiversionMaterials.SPRUCE_SAPLING, 12, 1, "&b&lIsland Biome", Collections.singletonList("&7Change your island biome."));
     public Item delete = new Item(MultiversionMaterials.BARRIER, 26, 1, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
 
     //Bank
@@ -80,6 +83,8 @@ public class Inventories {
     public Item nextPage = new Item(MultiversionMaterials.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", new ArrayList<>());
 
     public Item previousPage = new Item(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", new ArrayList<>());
+
+    public Item biome = new Item(MultiversionMaterials.GRASS, 1, "&b&l{biome} Biome", new ArrayList<>());
 
     public Item back = new Item(MultiversionMaterials.NETHER_STAR, 1, "&c&lBack", new ArrayList<>());
 

@@ -112,6 +112,14 @@ public class Utils {
         return item;
     }
 
+    public static ItemStack makeItem(Inventories.Item item, List<Placeholder> placeholders) {
+        try {
+            return makeItem(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
+        } catch (Exception e) {
+            return makeItem(MultiversionMaterials.STONE, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
+        }
+    }
+
     public static ItemStack makeItem(Inventories.Item item) {
         try {
             return makeItem(item.material, item.amount, item.title, item.lore);

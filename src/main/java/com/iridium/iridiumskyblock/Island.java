@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.support.Wildstacker;
 import org.bukkit.*;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
@@ -67,6 +68,7 @@ public class Island {
     private transient IslandMenuGUI islandMenuGUI;
     private transient CoopGUI coopGUI;
     private transient BankGUI bankGUI;
+    private transient BiomeGUI biomeGUI;
 
     private int id;
 
@@ -412,6 +414,7 @@ public class Island {
         islandMenuGUI = new IslandMenuGUI(this);
         coopGUI = new CoopGUI(this);
         bankGUI = new BankGUI(this);
+        biomeGUI = new BiomeGUI(this);
 
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
@@ -714,6 +717,14 @@ public class Island {
         }
     }
 
+    public void setBiome(Biome biome) {
+        for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
+            for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
+                IridiumSkyblock.getIslandManager().getWorld().setBiome((int) X, (int) Z, biome);
+            }
+        }
+    }
+
     public void deleteBlocks() {
         blocks.clear();
         for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
@@ -803,6 +814,10 @@ public class Island {
 
     public int getId() {
         return id;
+    }
+
+    public BiomeGUI getBiomeGUI() {
+        return biomeGUI;
     }
 
     public BankGUI getBankGUI() {
