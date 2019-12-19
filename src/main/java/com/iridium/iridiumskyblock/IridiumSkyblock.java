@@ -102,7 +102,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 new Metrics(IridiumSkyblock.getInstance());
 
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20);
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
 
                 if (configuration.doIslandBackup)
                     Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::backupIslandManager, 0, 20 * 60 * 30);
