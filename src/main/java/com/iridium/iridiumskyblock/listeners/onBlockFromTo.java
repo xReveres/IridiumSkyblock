@@ -32,13 +32,7 @@ public class onBlockFromTo implements Listener {
                         Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(fromLoc);
                         if (island != null) {
                             Random r = new Random();
-                            ArrayList<String> items = new ArrayList<>();
-                            for (String item : e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) ? IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.get(island.getOreLevel()).ores : IridiumSkyblock.getUpgrades().oresUpgrade.upgrades.get(island.getOreLevel()).netherores) {
-                                int i1 = Integer.parseInt(item.split(":")[1]);
-                                for (int i = 0; i <= i1; i++) {
-                                    items.add(item.split(":")[0]);
-                                }
-                            }
+                            ArrayList<String> items = new ArrayList<>(e.getBlock().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) ? IridiumSkyblock.oreUpgradeCache.get(island.getOreLevel()) : IridiumSkyblock.netherOreUpgradeCache.get(island.getOreLevel()));
                             String item = items.get(r.nextInt(items.size()));
                             MultiversionMaterials material = MultiversionMaterials.fromString(item);
                             if (material == null) return;

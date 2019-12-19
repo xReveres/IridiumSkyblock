@@ -26,10 +26,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.ListIterator;
+import java.util.*;
 
 public class IridiumSkyblock extends JavaPlugin {
 
@@ -64,6 +61,9 @@ public class IridiumSkyblock extends JavaPlugin {
     public boolean updatingBlocks = false;
 
     private String latest;
+
+    public static HashMap<Integer, List<String>> oreUpgradeCache = new HashMap<>();
+    public static HashMap<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -340,6 +340,30 @@ public class IridiumSkyblock extends JavaPlugin {
         commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
+
+        oreUpgradeCache.clear();
+        for (int i : getUpgrades().oresUpgrade.upgrades.keySet()) {
+            ArrayList<String> items = new ArrayList<>();
+            for (String item : getUpgrades().oresUpgrade.upgrades.get(i).ores) {
+                int i1 = Integer.parseInt(item.split(":")[1]);
+                for (int a = 0; a <= i1; a++) {
+                    items.add(item.split(":")[0]);
+                }
+            }
+            oreUpgradeCache.put(i, items);
+        }
+
+        netherOreUpgradeCache.clear();
+        for (int i : getUpgrades().oresUpgrade.upgrades.keySet()) {
+            ArrayList<String> items = new ArrayList<>();
+            for (String item : getUpgrades().oresUpgrade.upgrades.get(i).netherores) {
+                int i1 = Integer.parseInt(item.split(":")[1]);
+                for (int a = 0; a <= i1; a++) {
+                    items.add(item.split(":")[0]);
+                }
+            }
+            netherOreUpgradeCache.put(i, items);
+        }
 
         if (getBoosters().flightBooster.time == 0) getBoosters().flightBooster.time = 3600;
         if (getBoosters().experianceBooster.time == 0) getBoosters().experianceBooster.time = 3600;
