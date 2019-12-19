@@ -45,6 +45,8 @@ public class WarpGUI extends GUI implements Listener {
                 Island.Warp warp = warps.get(e.getSlot());
                 if (e.getClick().equals(ClickType.RIGHT)) {
                     u.getIsland().removeWarp(warps.get(e.getSlot()));
+                    getInventory().clear();
+                    addContent();
                 } else {
                     if (warp.getPassword().isEmpty()) {
                         p.teleport(warp.getLocation());
