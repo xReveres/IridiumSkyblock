@@ -10,20 +10,46 @@ import java.util.List;
 
 public class NMSUtils {
 
+    public static Class<?> CraftWorld;
+    public static Class<?> EntityArmorStand;
+    public static Class<?> World;
+    public static Class<?> IChatBaseComponent;
+    public static Class<?> ChatMessage;
+    public static Class<?> PacketPlayOutSpawnEntityLiving;
+    public static Class<?> EntityLiving;
+    public static Class<?> WorldBorder;
+    public static Class<?> PacketPlayOutWorldBorder;
+
+    static {
+        try {
+            CraftWorld = getCraftClass("CraftWorld");
+            EntityArmorStand = getNMSClass("EntityArmorStand");
+            World = getNMSClass("World");
+            IChatBaseComponent = getNMSClass("IChatBaseComponent");
+            ChatMessage = getNMSClass("ChatMessage");
+            PacketPlayOutSpawnEntityLiving = getNMSClass("PacketPlayOutSpawnEntityLiving");
+            EntityLiving = getNMSClass("EntityLiving");
+            WorldBorder = getNMSClass("WorldBorder");
+            PacketPlayOutWorldBorder = getNMSClass("PacketPlayOutWorldBorder");
+        } catch (Exception e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
     public static void sendHologram(Player p, Location loc, List<String> text) {
         try {
             for (int i = -1; ++i < text.size(); ) {
-                Object craftWorld = getCraftClass("CraftWorld").cast(loc.getWorld());
-                Object entityArmorStand = getNMSClass("EntityArmorStand").getConstructor(getNMSClass("World"), double.class, double.class, double.class).newInstance(getCraftClass("CraftWorld").getMethod("getHandle").invoke(craftWorld), loc.getX(), loc.getY(), loc.getZ());
+                Object craftWorld = CraftWorld.cast(loc.getWorld());
+                Object entityArmorStand = EntityArmorStand.getConstructor(World, double.class, double.class, double.class).newInstance(CraftWorld.getMethod("getHandle").invoke(craftWorld), loc.getX(), loc.getY(), loc.getZ());
 
                 entityArmorStand.getClass().getMethod("setInvisible", boolean.class).invoke(entityArmorStand, true);
                 entityArmorStand.getClass().getMethod("setCustomNameVisible", boolean.class).invoke(entityArmorStand, true);
                 try {
                     entityArmorStand.getClass().getMethod("setCustomName", String.class).invoke(entityArmorStand, Utils.color(text.get(i)));
                 } catch (NoSuchMethodException noSuchMethodEx) {
-                    entityArmorStand.getClass().getMethod("setCustomName", getNMSClass("IChatBaseComponent")).invoke(entityArmorStand, getNMSClass("ChatMessage").getConstructor(String.class, Object[].class).newInstance(Utils.color(text.get(i)), new Object[0]));
+                    entityArmorStand.getClass().getMethod("setCustomName", IChatBaseComponent).invoke(entityArmorStand, ChatMessage.getConstructor(String.class, Object[].class).newInstance(Utils.color(text.get(i)), new Object[0]));
                 }
-                Object packet = getNMSClass("PacketPlayOutSpawnEntityLiving").getConstructor(getNMSClass("EntityLiving")).newInstance(entityArmorStand);
+                Object packet = PacketPlayOutSpawnEntityLiving.getConstructor(EntityLiving).newInstance(entityArmorStand);
                 sendPacket(p, packet);
                 loc = loc.subtract(0, 0.4, 0);
             }
@@ -34,10 +60,10 @@ public class NMSUtils {
 
     public static void sendWorldBorder(Player player, Color color, double size, Location centerLocation) {
         try {
-            Object worldBorder = getNMSClass("WorldBorder").getConstructor().newInstance();
+            Object worldBorder = WorldBorder.getConstructor().newInstance();
 
 
-            Object craftWorld = getCraftClass("CraftWorld").cast(centerLocation.getWorld());
+            Object craftWorld = CraftWorld.cast(centerLocation.getWorld());
             setField(worldBorder, "world", craftWorld.getClass().getMethod("getHandle").invoke(craftWorld), false);
 
             worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
@@ -60,9 +86,9 @@ public class NMSUtils {
                     break;
             }
 
-            Object packet = getNMSClass("PacketPlayOutWorldBorder").getConstructor(getNMSClass("WorldBorder"),
-                    getNMSClass("PacketPlayOutWorldBorder").getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1]).newInstance(worldBorder,
-                    Enum.valueOf((Class<Enum>) getNMSClass("PacketPlayOutWorldBorder").getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1], "INITIALIZE"));
+            Object packet = PacketPlayOutWorldBorder.getConstructor(WorldBorder,
+                    PacketPlayOutWorldBorder.getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1]).newInstance(worldBorder,
+                    Enum.valueOf((Class<Enum>) PacketPlayOutWorldBorder.getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1], "INITIALIZE"));
             sendPacket(player, packet);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
@@ -84,11 +110,11 @@ public class NMSUtils {
     public static void sendSubTitle(Player player, String message, int fadeIn, int displayTime, int fadeOut) {
         try {
             Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
-            Object chat = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
+            Object chat = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
                     .invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
 
             Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"),
+                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], IChatBaseComponent,
                     int.class, int.class, int.class);
             Object packet = titleConstructor.newInstance(enumTitle, chat, fadeIn, displayTime, fadeOut);
 
@@ -101,11 +127,11 @@ public class NMSUtils {
     public static void sendTitle(Player player, String message, int fadeIn, int displayTime, int fadeOut) {
         try {
             Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
-            Object chat = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
+            Object chat = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
                     .invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
 
             Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"),
+                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], IChatBaseComponent,
                     int.class, int.class, int.class);
             Object packet = titleConstructor.newInstance(enumTitle, chat, fadeIn, displayTime, fadeOut);
 
