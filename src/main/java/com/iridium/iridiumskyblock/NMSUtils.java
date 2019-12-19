@@ -6,8 +6,10 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class NMSUtils {
 
     public static Class<?> CraftWorld;
@@ -19,6 +21,24 @@ public class NMSUtils {
     public static Class<?> EntityLiving;
     public static Class<?> WorldBorder;
     public static Class<?> PacketPlayOutWorldBorder;
+    public static Class<?> PacketPlayOutChat;
+    public static Class<?> PacketPlayOutTitle;
+    public static Class<?> Packet;
+
+    public static Constructor<?> EntityArmorStandConstructor;
+
+    public static Method CraftWorldGetHandle;
+    public static Method EntityArmorStandSetInvisible;
+    public static Method EntityArmorStandSetCustomNameVisible;
+    public static Method WorldBorderSetCenter;
+    public static Method WorldBorderSetSize;
+    public static Method WorldBordersetWarningTime;
+    public static Method WorldBordersetWarningDistance;
+    public static Method WorldBordertransitionSizeBetween;
+
+
+    public static Object enumTitle;
+    public static Object enumSubTitle;
 
     static {
         try {
@@ -31,6 +51,23 @@ public class NMSUtils {
             EntityLiving = getNMSClass("EntityLiving");
             WorldBorder = getNMSClass("WorldBorder");
             PacketPlayOutWorldBorder = getNMSClass("PacketPlayOutWorldBorder");
+            PacketPlayOutChat = getNMSClass("PacketPlayOutChat");
+            PacketPlayOutTitle = getNMSClass("PacketPlayOutTitle");
+            Packet = getNMSClass("Packet");
+
+            EntityArmorStandConstructor = EntityArmorStand.getConstructor(World, double.class, double.class, double.class);
+
+            CraftWorldGetHandle = CraftWorld.getMethod("getHandle");
+            EntityArmorStandSetInvisible = EntityArmorStand.getMethod("setInvisible", boolean.class);
+            EntityArmorStandSetCustomNameVisible = EntityArmorStand.getMethod("setCustomNameVisible", boolean.class);
+            WorldBorderSetCenter = WorldBorder.getMethod("setCenter", double.class, double.class);
+            WorldBorderSetSize = WorldBorder.getMethod("setSize", double.class);
+            WorldBordersetWarningTime = WorldBorder.getMethod("setWarningTime", int.class);
+            WorldBordersetWarningDistance = WorldBorder.getMethod("setWarningDistance", int.class);
+            WorldBordertransitionSizeBetween = WorldBorder.getMethod("transitionSizeBetween", double.class, double.class, long.class);
+
+            enumSubTitle = PacketPlayOutTitle.getDeclaredClasses()[0].getField("SUBTITLE").get(null);
+            enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
@@ -40,10 +77,10 @@ public class NMSUtils {
         try {
             for (int i = -1; ++i < text.size(); ) {
                 Object craftWorld = CraftWorld.cast(loc.getWorld());
-                Object entityArmorStand = EntityArmorStand.getConstructor(World, double.class, double.class, double.class).newInstance(CraftWorld.getMethod("getHandle").invoke(craftWorld), loc.getX(), loc.getY(), loc.getZ());
+                Object entityArmorStand = EntityArmorStandConstructor.newInstance(CraftWorldGetHandle.invoke(craftWorld), loc.getX(), loc.getY(), loc.getZ());
 
-                entityArmorStand.getClass().getMethod("setInvisible", boolean.class).invoke(entityArmorStand, true);
-                entityArmorStand.getClass().getMethod("setCustomNameVisible", boolean.class).invoke(entityArmorStand, true);
+                EntityArmorStandSetInvisible.invoke(entityArmorStand, true);
+                EntityArmorStandSetCustomNameVisible.invoke(entityArmorStand, true);
                 try {
                     entityArmorStand.getClass().getMethod("setCustomName", String.class).invoke(entityArmorStand, Utils.color(text.get(i)));
                 } catch (NoSuchMethodException noSuchMethodEx) {
@@ -64,25 +101,25 @@ public class NMSUtils {
 
 
             Object craftWorld = CraftWorld.cast(centerLocation.getWorld());
-            setField(worldBorder, "world", craftWorld.getClass().getMethod("getHandle").invoke(craftWorld), false);
+            setField(worldBorder, "world", CraftWorldGetHandle.invoke(craftWorld), false);
 
-            worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
+            WorldBorderSetCenter.invoke(worldBorder, centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
 
             if (color == Color.Off) {
-                worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, Integer.MAX_VALUE);
+                WorldBorderSetSize.invoke(worldBorder, Integer.MAX_VALUE);
             } else {
-                worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, size);
+                WorldBorderSetSize.invoke(worldBorder, size);
             }
 
-            worldBorder.getClass().getMethod("setWarningTime", int.class).invoke(worldBorder, 0);
-            worldBorder.getClass().getMethod("setWarningDistance", int.class).invoke(worldBorder, 0);
+            WorldBordersetWarningTime.invoke(worldBorder, 0);
+            WorldBordersetWarningDistance.invoke(worldBorder, 0);
 
             switch (color) {
                 case Red:
-                    worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, size, size - 1.0D, 20000000L);
+                    WorldBordertransitionSizeBetween.invoke(worldBorder, size, size - 1.0D, 20000000L);
                     break;
                 case Green:
-                    worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, size - 0.1D, size, 20000000L);
+                    WorldBordertransitionSizeBetween.invoke(worldBorder, size - 0.1D, size, 20000000L);
                     break;
             }
 
@@ -97,9 +134,9 @@ public class NMSUtils {
 
     public static void sendActionBar(Player player, String message) {
         try {
-            Constructor<?> constructor = getNMSClass("PacketPlayOutChat").getConstructor(getNMSClass("IChatBaseComponent"), byte.class);
+            Constructor<?> constructor = PacketPlayOutChat.getConstructor(IChatBaseComponent, byte.class);
 
-            Object text = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
+            Object text = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
             Object packet = constructor.newInstance(text, (byte) 2);
             sendPacket(player, packet);
         } catch (Exception e) {
@@ -109,14 +146,13 @@ public class NMSUtils {
 
     public static void sendSubTitle(Player player, String message, int fadeIn, int displayTime, int fadeOut) {
         try {
-            Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
             Object chat = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
                     .invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
 
-            Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], IChatBaseComponent,
+            Constructor<?> titleConstructor = PacketPlayOutTitle.getConstructor(
+                    PacketPlayOutTitle.getDeclaredClasses()[0], IChatBaseComponent,
                     int.class, int.class, int.class);
-            Object packet = titleConstructor.newInstance(enumTitle, chat, fadeIn, displayTime, fadeOut);
+            Object packet = titleConstructor.newInstance(enumSubTitle, chat, fadeIn, displayTime, fadeOut);
 
             sendPacket(player, packet);
         } catch (Exception e) {
@@ -126,12 +162,11 @@ public class NMSUtils {
 
     public static void sendTitle(Player player, String message, int fadeIn, int displayTime, int fadeOut) {
         try {
-            Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
             Object chat = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
                     .invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
 
-            Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], IChatBaseComponent,
+            Constructor<?> titleConstructor = PacketPlayOutTitle.getConstructor(
+                    PacketPlayOutTitle.getDeclaredClasses()[0], IChatBaseComponent,
                     int.class, int.class, int.class);
             Object packet = titleConstructor.newInstance(enumTitle, chat, fadeIn, displayTime, fadeOut);
 
@@ -140,7 +175,6 @@ public class NMSUtils {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
-
 
     public static void sendPacket(Player player, Object packet) {
         try {
