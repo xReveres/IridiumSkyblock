@@ -6,8 +6,31 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.List;
 
 public class NMSUtils {
+
+    public static void sendHologram(Player p, Location loc, List<String> text) {
+        try {
+            for (int i = -1; ++i < text.size(); ) {
+                Object craftWorld = getCraftClass("CraftWorld").cast(loc.getWorld());
+                Object entityArmorStand = getNMSClass("EntityArmorStand").getConstructor(getNMSClass("World"), double.class, double.class, double.class).newInstance(getCraftClass("CraftWorld").getMethod("getHandle").invoke(craftWorld), loc.getX(), loc.getY(), loc.getZ());
+
+                entityArmorStand.getClass().getMethod("setInvisible", boolean.class).invoke(entityArmorStand, true);
+                entityArmorStand.getClass().getMethod("setCustomNameVisible", boolean.class).invoke(entityArmorStand, true);
+                try {
+                    entityArmorStand.getClass().getMethod("setCustomName", String.class).invoke(entityArmorStand, Utils.color(text.get(i)));
+                } catch (NoSuchMethodException noSuchMethodEx) {
+                    entityArmorStand.getClass().getMethod("setCustomName", getNMSClass("IChatBaseComponent")).invoke(entityArmorStand, getNMSClass("ChatMessage").getConstructor(String.class, Object[].class).newInstance(Utils.color(text.get(i)), new Object[0]));
+                }
+                Object packet = getNMSClass("PacketPlayOutSpawnEntityLiving").getConstructor(getNMSClass("EntityLiving")).newInstance(entityArmorStand);
+                sendPacket(p, packet);
+                loc = loc.subtract(0, 0.4, 0);
+            }
+        } catch (Exception e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
 
     public static void sendWorldBorder(Player player, Color color, double size, Location centerLocation) {
         try {
