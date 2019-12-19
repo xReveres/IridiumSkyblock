@@ -214,12 +214,13 @@ public class IridiumSkyblock extends JavaPlugin {
     public void startCounting() {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
             try {
-                if ((LocalDateTime.now().getDayOfWeek().equals(DayOfWeek.MONDAY) || configuration.missionRestart == MissionRestart.Daily) && LocalDateTime.now().getHour() == 0 && LocalDateTime.now().getMinute() == 0 && LocalDateTime.now().getSecond() == 0) {
+                LocalDateTime ldt = LocalDateTime.now();
+                if ((ldt.getDayOfWeek().equals(DayOfWeek.MONDAY) || configuration.missionRestart == MissionRestart.Daily) && ldt.getHour() == 0 && ldt.getMinute() == 0 && ldt.getSecond() == 0) {
                     for (Island island : getIslandManager().islands.values()) {
                         island.resetMissions();
                     }
                 }
-                if (LocalDateTime.now().getHour() == 0 && LocalDateTime.now().getMinute() == 0 && LocalDateTime.now().getSecond() == 0) {
+                if (ldt.getHour() == 0 && ldt.getMinute() == 0 && ldt.getSecond() == 0) {
                     for (Island island : getIslandManager().islands.values()) {
                         island.money = (int) Math.floor(island.money * (1 + (getConfiguration().dailyMoneyInterest / 100.00)));
                         island.setCrystals((int) Math.floor(island.getCrystals() * (1 + (getConfiguration().dailyCrystalsInterest / 100.00))));
