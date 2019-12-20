@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 
 import java.util.*;
@@ -46,6 +47,14 @@ public class onBlockFromTo implements Listener {
             }
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
+        }
+    }
+
+    @EventHandler
+    public void onObsidianGen(BlockFormEvent e) {
+        if (e.getNewState().getType().equals(Material.OBSIDIAN)) {
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
+            island.failedGenerators.add(e.getBlock().getLocation());
         }
     }
 

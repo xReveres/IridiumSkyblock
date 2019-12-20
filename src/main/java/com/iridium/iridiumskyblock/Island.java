@@ -118,6 +118,8 @@ public class Island {
     public int money;
     public int exp;
 
+    public transient HashSet<Location> failedGenerators;
+
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
@@ -415,6 +417,7 @@ public class Island {
         coopGUI = new CoopGUI(this);
         bankGUI = new BankGUI(this);
         biomeGUI = new BiomeGUI(this);
+        failedGenerators = new HashSet<>();
 
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {

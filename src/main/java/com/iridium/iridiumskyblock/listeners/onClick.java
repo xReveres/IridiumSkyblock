@@ -36,6 +36,20 @@ public class onClick implements Listener {
                         }
                     }
                 }
+                if (island != null) {
+                    if (e.getPlayer().getItemInHand().getType().equals(Material.BUCKET)) {
+                        if (island.failedGenerators.contains(e.getClickedBlock().getLocation())) {
+                            island.failedGenerators.remove(e.getClickedBlock().getLocation());
+                            if (e.getPlayer().getItemInHand().getAmount() == 1) {
+                                e.getPlayer().getItemInHand().setType(Material.LAVA_BUCKET);
+                            } else {
+                                e.getPlayer().getInventory().addItem(new ItemStack(Material.LAVA_BUCKET));
+                                e.getPlayer().getItemInHand().setAmount(e.getPlayer().getItemInHand().getAmount() - 1);
+                            }
+                            e.getClickedBlock().setType(Material.AIR);
+                        }
+                    }
+                }
             }
             if (IridiumSkyblock.getConfiguration().allowWaterInNether && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getItem() != null) {
                 if (e.getClickedBlock().getWorld().getEnvironment().equals(World.Environment.NETHER)) {
