@@ -18,11 +18,9 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -71,6 +69,7 @@ public class IridiumSkyblock extends JavaPlugin {
             instance = this;
 
             super.onEnable();
+            Bukkit.getUpdateFolderFile().mkdir();
             getDataFolder().mkdir();
 
             persist = new Persist();
@@ -124,8 +123,36 @@ public class IridiumSkyblock extends JavaPlugin {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    if (!latest.equals(getDescription().getVersion()))
+                    if (!latest.equals(getDescription().getVersion())) {
                         getLogger().info("Newer version available: " + latest);
+                        if (getConfiguration().automaticUpdate) {
+                            getLogger().info("Attempting to download version: " + latest);
+                            try {
+                                getFile().renameTo(new File(getFile().getParentFile(), "/IridiumSkyblock-" + latest + ".jar"));
+                                File file = new File(Bukkit.getUpdateFolderFile() + "/IridiumSkyblock-" + latest + ".jar");
+                                file.createNewFile();
+                                URL url = new URL("http://www.peachessupport.xyz/IridiumSkyblock-" + latest + ".jar");
+                                OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+                                URLConnection conn = url.openConnection();
+                                conn.setConnectTimeout(15000);
+                                conn.setReadTimeout(15000);
+                                conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                                conn.setAllowUserInteraction(false);
+                                conn.setDoOutput(true);
+                                InputStream in = conn.getInputStream();
+                                byte[] buffer = new byte[1024];
+
+                                int numRead;
+                                while ((numRead = in.read(buffer)) != -1) {
+                                    out.write(buffer, 0, numRead);
+                                }
+                                in.close();
+                                out.close();
+                            } catch (Exception e) {
+                                sendErrorMessage(e);
+                            }
+                        }
+                    }
                 });
             });
         } catch (Exception e) {
