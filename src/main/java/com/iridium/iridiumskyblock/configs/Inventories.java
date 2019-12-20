@@ -103,6 +103,7 @@ public class Inventories {
         public MultiversionMaterials material;
         public int amount;
         public String title;
+        public String headOwner;
         public List<String> lore;
         public Integer slot;
 
@@ -118,6 +119,15 @@ public class Inventories {
             this.amount = amount;
             this.lore = lore;
             this.title = title;
+            this.slot = slot;
+        }
+
+        public Item(MultiversionMaterials material, int slot, int amount, String title, String headOwner, List<String> lore) {
+            this.material = material;
+            this.amount = amount;
+            this.lore = lore;
+            this.title = title;
+            this.headOwner = headOwner;
             this.slot = slot;
         }
     }

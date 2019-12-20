@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -122,7 +123,13 @@ public class Utils {
 
     public static ItemStack makeItem(Inventories.Item item) {
         try {
-            return makeItem(item.material, item.amount, item.title, item.lore);
+            ItemStack itemstack = makeItem(item.material, item.amount, item.title, item.lore);
+            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+                SkullMeta m = (SkullMeta) itemstack.getItemMeta();
+                m.setOwner(item.headOwner);
+                itemstack.setItemMeta(m);
+            }
+            return itemstack;
         } catch (Exception e) {
             return makeItem(MultiversionMaterials.STONE, item.amount, item.title, item.lore);
         }
@@ -130,7 +137,13 @@ public class Utils {
 
     public static ItemStack makeItem(Inventories.Item item, Island island) {
         try {
-            return makeItem(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            ItemStack itemstack = makeItem(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+                SkullMeta m = (SkullMeta) itemstack.getItemMeta();
+                m.setOwner(item.headOwner);
+                itemstack.setItemMeta(m);
+            }
+            return itemstack;
         } catch (Exception e) {
             return makeItem(MultiversionMaterials.STONE, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         }
@@ -138,7 +151,13 @@ public class Utils {
 
     public static ItemStack makeItemHidden(Inventories.Item item) {
         try {
-            return makeItemHidden(item.material.parseMaterial(), item.amount, item.material.data, item.title, item.lore);
+            ItemStack itemstack = makeItemHidden(item.material.parseMaterial(), item.amount, item.material.data, item.title, item.lore);
+            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+                SkullMeta m = (SkullMeta) itemstack.getItemMeta();
+                m.setOwner(item.headOwner);
+                itemstack.setItemMeta(m);
+            }
+            return itemstack;
         } catch (Exception e) {
             return makeItemHidden(Material.STONE, item.amount, item.material.data, item.title, item.lore);
         }
@@ -146,7 +165,13 @@ public class Utils {
 
     public static ItemStack makeItemHidden(Inventories.Item item, Island island) {
         try {
-            return makeItemHidden(item.material.parseMaterial(), item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            ItemStack itemstack = makeItemHidden(item.material.parseMaterial(), item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+                SkullMeta m = (SkullMeta) itemstack.getItemMeta();
+                m.setOwner(item.headOwner);
+                itemstack.setItemMeta(m);
+            }
+            return itemstack;
         } catch (Exception e) {
             return makeItemHidden(Material.STONE, item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         }
