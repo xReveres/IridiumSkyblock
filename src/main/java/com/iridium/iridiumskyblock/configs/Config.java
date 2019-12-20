@@ -34,6 +34,7 @@ public class Config {
     public boolean restartUpgradesOnRegen = false;
     public boolean allowWaterInNether = true;
     public int distance = 151;
+    public int backupIntervalMinutes = 60;
     public double valuePerLevel = 100.00;
     public int blocksPerTick = 50;
     public int islandsUpdateInterval = 5;
