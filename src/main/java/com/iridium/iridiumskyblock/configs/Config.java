@@ -25,6 +25,7 @@ public class Config {
     public String chatNAMEPlaceholder = "[ISLAND_NAME]";
     public boolean doIslandBackup = true;
     public boolean automaticUpdate = true;
+    public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
     public boolean islandMenu = true;
     public boolean voidTeleport = true;
