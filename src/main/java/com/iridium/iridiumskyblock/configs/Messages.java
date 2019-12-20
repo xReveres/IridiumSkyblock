@@ -80,4 +80,6 @@ public class Messages {
     public String deleteAction = "Delete your Island";
     public String visitingIsland = "%prefix% &7Teleporting to %player%'s Island";
     public String visitedYourIsland = "%prefix% &7%player% is visiting your island.";
+    public String cantBuy = "%prefix% &7You dont have enough money to buy this.";
+    public String cantSell = "%prefix% &7You dont have this item to sell.";
 }
