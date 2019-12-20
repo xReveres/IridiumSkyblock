@@ -54,7 +54,9 @@ public class onBlockFromTo implements Listener {
     public void onObsidianGen(BlockFormEvent e) {
         if (e.getNewState().getType().equals(Material.OBSIDIAN)) {
             Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
-            island.failedGenerators.add(e.getBlock().getLocation());
+            if (island != null) {
+                island.failedGenerators.add(e.getBlock().getLocation());
+            }
         }
     }
 
