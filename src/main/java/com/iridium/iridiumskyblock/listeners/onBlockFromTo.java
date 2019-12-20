@@ -55,7 +55,17 @@ public class onBlockFromTo implements Listener {
                 fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() + 1, fromLoc.getBlockY(), fromLoc.getBlockZ()),
                 fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() - 1, fromLoc.getBlockY(), fromLoc.getBlockZ()),
                 fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY(), fromLoc.getBlockZ() + 1),
-                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY(), fromLoc.getBlockZ() - 1)
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY(), fromLoc.getBlockZ() - 1),
+
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() + 1, fromLoc.getBlockY() + 1, fromLoc.getBlockZ()),
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() - 1, fromLoc.getBlockY() + 1, fromLoc.getBlockZ()),
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY() + 1, fromLoc.getBlockZ() + 1),
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY() + 1, fromLoc.getBlockZ() - 1),
+
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() + 1, fromLoc.getBlockY() - 1, fromLoc.getBlockZ()),
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX() - 1, fromLoc.getBlockY() - 1, fromLoc.getBlockZ()),
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY() - 1, fromLoc.getBlockZ() + 1),
+                fromLoc.getWorld().getBlockAt(fromLoc.getBlockX(), fromLoc.getBlockY() - 1, fromLoc.getBlockZ() - 1)
         ));
         for (Block b : blocksSet) {
             if (b.getType().toString().contains("WATER")) return true;
