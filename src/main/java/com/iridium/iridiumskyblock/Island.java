@@ -723,6 +723,13 @@ public class Island {
                 IridiumSkyblock.getIslandManager().getWorld().setBiome((int) X, (int) Z, biome);
             }
         }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            for (Chunk c : chunks) {
+                if (c.getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                    NMSUtils.sendChunk(p, c);
+                }
+            }
+        }
     }
 
     public void deleteBlocks() {
