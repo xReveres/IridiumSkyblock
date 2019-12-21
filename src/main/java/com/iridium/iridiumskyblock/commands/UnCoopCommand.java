@@ -14,7 +14,7 @@ import java.util.List;
 public class UnCoopCommand extends Command {
 
     public UnCoopCommand() {
-        super(Collections.singletonList("uncoop"), "Revokes an island Member permissions for your island", "", true);
+        super(Collections.singletonList("uncoop"), "Revokes an Islands coop", "", true);
     }
 
     @Override
