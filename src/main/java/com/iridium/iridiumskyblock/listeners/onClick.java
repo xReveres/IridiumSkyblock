@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class onClick implements Listener {
@@ -56,7 +55,7 @@ public class onClick implements Listener {
                     if (e.getItem().getType().equals(Material.WATER_BUCKET)) {
                         e.setCancelled(true);
                         e.getClickedBlock().getRelative(e.getBlockFace()).setType(Material.WATER);
-                        BlockPlaceEvent event = new BlockPlaceEvent(e.getClickedBlock().getRelative(e.getBlockFace()), e.getClickedBlock().getRelative(e.getBlockFace()).getState(), e.getClickedBlock(), e.getItem(), e.getPlayer(), false, EquipmentSlot.HAND);
+                        BlockPlaceEvent event = new BlockPlaceEvent(e.getClickedBlock().getRelative(e.getBlockFace()), e.getClickedBlock().getRelative(e.getBlockFace()).getState(), e.getClickedBlock(), e.getItem(), e.getPlayer(), false);
                         if (event.isCancelled()) {
                             e.getClickedBlock().getRelative(e.getBlockFace()).setType(Material.AIR);
                         } else {
