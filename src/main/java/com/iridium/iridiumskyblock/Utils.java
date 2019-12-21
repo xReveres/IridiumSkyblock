@@ -115,7 +115,13 @@ public class Utils {
 
     public static ItemStack makeItem(Inventories.Item item, List<Placeholder> placeholders) {
         try {
-            return makeItem(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
+            ItemStack itemstack = makeItem(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
+            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+                SkullMeta m = (SkullMeta) itemstack.getItemMeta();
+                m.setOwner(processMultiplePlaceholders(item.headOwner, placeholders));
+                itemstack.setItemMeta(m);
+            }
+            return itemstack;
         } catch (Exception e) {
             return makeItem(MultiversionMaterials.STONE, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
         }

@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,11 +34,7 @@ public class MembersGUI extends GUI implements Listener {
             for (String member : island.getMembers()) {
                 User u = User.getUser(member);
                 users.put(i, u);
-                ItemStack head = Utils.makeItem(MultiversionMaterials.PLAYER_HEAD, 1, "&b&l" + u.name);
-                SkullMeta m = (SkullMeta) head.getItemMeta();
-                m.setLore(Utils.color(Arrays.asList("&bRole: " + u.getRole(), "", "&b&l[!] &bLeft Click to " + (u.getRole().equals(Role.Visitor) ? "Kick" : "Demote") + " this Player.", "&b&l[!] &bRight Click to Promote this Player.")));
-                m.setOwner(u.name);
-                head.setItemMeta(m);
+                ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandmember, Arrays.asList(new Utils.Placeholder("demote", u.getRole().equals(Role.Visitor) ? "Kick" : "Demote"), new Utils.Placeholder("player", User.getUser(member).name), new Utils.Placeholder("role", u.getRole().name())));
                 setItem(i, head);
                 i++;
             }

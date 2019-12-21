@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class PermissionsGUI extends GUI implements Listener {
@@ -21,7 +22,7 @@ public class PermissionsGUI extends GUI implements Listener {
         int i = 11;
         for (Role role : Role.values()) {
             permissions.put(role, new PermissionsGUI(island, role));
-            setItem(i, Utils.makeItem(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&b&l" + role.name()));
+            setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandRoles, Collections.singletonList(new Utils.Placeholder("role", role.name()))));
             i++;
         }
     }
@@ -40,7 +41,11 @@ public class PermissionsGUI extends GUI implements Listener {
                 for (Field field : Permissions.class.getDeclaredFields()) {
                     Object object = field.get(getIsland().getPermissions(role));
                     if (object instanceof Boolean) {
-                        setItem(i, Utils.makeItem((Boolean) object ? MultiversionMaterials.LIME_STAINED_GLASS_PANE : MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&b&l" + field.getName()));
+                        if ((Boolean) object) {
+                            setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandPermissionAllow, Collections.singletonList(new Utils.Placeholder("permission", field.getName()))));
+                        } else {
+                            setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandPermissionDeny, Collections.singletonList(new Utils.Placeholder("permission", field.getName()))));
+                        }
                     }
                     i++;
                 }
@@ -78,6 +83,7 @@ public class PermissionsGUI extends GUI implements Listener {
                                 if (i == e.getSlot()) {
                                     field.setAccessible(true);
                                     field.setBoolean(getIsland().getPermissions(role), !(Boolean) object);
+                                    addContent();
                                 }
                                 i++;
                             }

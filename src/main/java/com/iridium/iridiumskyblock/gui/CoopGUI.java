@@ -1,6 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,10 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class CoopGUI extends GUI implements Listener {
@@ -35,17 +37,7 @@ public class CoopGUI extends GUI implements Listener {
                 if (is != null) {
                     islands.put(i, id);
                     User user = User.getUser(is.getOwner());
-                    ArrayList<String> lore = new ArrayList<>();
-                    lore.add("&b&l * &7Island: &b" + island.getName());
-                    lore.add("&b&l * &7Rank: &b" + i);
-                    lore.add("&b&l * &7Value: &b" + NumberFormat.getInstance().format(island.getValue()));
-                    lore.add("");
-                    lore.add("&b&l[!] &bLeft Click to Teleport to this island.");
-                    lore.add("&b&l[!] &bRight Click to un co-op this island.");
-                    ItemStack head = Utils.makeItem(MultiversionMaterials.PLAYER_HEAD, 1,  "&b&l" + user.name, Utils.color(lore));
-                    SkullMeta m = (SkullMeta) head.getItemMeta();
-                    m.setOwner(user.name);
-                    head.setItemMeta(m);
+                    ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandcoop, Arrays.asList(new Utils.Placeholder("player", user.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", Utils.getIslandRank(island) + ""), new Utils.Placeholder("value", NumberFormat.getInstance().format(island.getValue()) + "")));
                     setItem(i, head);
                     i++;
                 } else {
