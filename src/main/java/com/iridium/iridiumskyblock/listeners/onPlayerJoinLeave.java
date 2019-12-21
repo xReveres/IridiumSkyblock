@@ -11,7 +11,7 @@ public class onPlayerJoinLeave implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         if (e.getPlayer().isOp()) {
-            if (IridiumSkyblock.getConfiguration().notifyAvailableUpdate && !IridiumSkyblock.getInstance().getLatest().equals(IridiumSkyblock.getInstance().getDescription().getVersion())) {
+            if (IridiumSkyblock.getInstance().getLatest() != null && IridiumSkyblock.getConfiguration().notifyAvailableUpdate && !IridiumSkyblock.getInstance().getLatest().equals(IridiumSkyblock.getInstance().getDescription().getVersion())) {
                 e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix + " &7This message is only seen by opped players."));
                 e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix + " &7Newer version available: " + IridiumSkyblock.getInstance().getLatest()));
             }
