@@ -27,6 +27,7 @@ public class onBlockBreak implements Listener {
                     }
                 }
                 island.blocks.remove(e.getBlock().getLocation());
+                island.calculateIslandValue();
                 if ((!island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).breakBlocks) && !u.bypassing)
                     e.setCancelled(true);
             } else {
