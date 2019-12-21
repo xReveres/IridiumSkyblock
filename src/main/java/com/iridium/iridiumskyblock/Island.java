@@ -121,11 +121,14 @@ public class Island {
     public int money;
     public int exp;
 
+    public Biome biome;
+
     public transient HashSet<Location> failedGenerators;
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
+        this.biome = IridiumSkyblock.getConfiguration().defaultBiome;
         blocks = new ArrayList<>();
         this.owner = user.player;
         this.name = user.name;
@@ -404,6 +407,7 @@ public class Island {
     }
 
     public void init() {
+        if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
         if (blocks == null) blocks = new ArrayList<>();
 
         blocks = new ArrayList<>(new HashSet<>(blocks));
@@ -762,6 +766,7 @@ public class Island {
     }
 
     public void setBiome(Biome biome) {
+        this.biome = biome;
         for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
             for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
                 IridiumSkyblock.getIslandManager().getWorld().setBiome((int) X, (int) Z, biome);
@@ -1038,5 +1043,9 @@ public class Island {
     public String getName() {
         if (name == null) name = User.getUser(getOwner()).name;
         return name;
+    }
+
+    public Biome getBiome() {
+        return biome;
     }
 }

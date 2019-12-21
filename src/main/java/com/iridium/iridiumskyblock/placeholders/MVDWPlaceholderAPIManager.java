@@ -178,6 +178,15 @@ public class MVDWPlaceholderAPIManager {
             return user.getIsland() != null ? user.getIsland().exp + "" : "N/A";
         });
 
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_biome", e -> {
+            Player player = e.getPlayer();
+            if (player == null) {
+                return "N/A";
+            }
+            User user = User.getUser(player);
+            return user.getIsland() != null ? user.getIsland().getBiome().name() + "" : "N/A";
+        });
+
         for (int i = 0; i < 10; i++) { //TODO there is probabbly a more efficient way to do this?
             int finalI = i;
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_name_" + (i + 1), e -> {

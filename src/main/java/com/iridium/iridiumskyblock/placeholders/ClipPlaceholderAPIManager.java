@@ -81,6 +81,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 return user.getIsland() != null ? user.getIsland().money + "" : "N/A";
             case "island_bank_experience":
                 return user.getIsland() != null ? user.getIsland().exp + "" : "N/A";
+            case "island_biome":
+                return user.getIsland() != null ? user.getIsland().getBiome().name() + "" : "N/A";
         }
         if (placeholder.startsWith("island_top_name_")) {
             try {
