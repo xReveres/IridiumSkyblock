@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandManager implements CommandExecutor, TabCompleter {
-    private List<com.iridium.iridiumskyblock.commands.Command> commands = new ArrayList<>();
+    public List<com.iridium.iridiumskyblock.commands.Command> commands = new ArrayList<>();
 
     public CommandManager(String command) {
         IridiumSkyblock.getInstance().getCommand(command).setExecutor(this);
@@ -64,6 +64,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(IridiumSkyblock.getCommands().giveUpgradeCommand);
         registerCommand(IridiumSkyblock.getCommands().shopCommand);
         registerCommand(IridiumSkyblock.getCommands().biomeCommand);
+        registerCommand(IridiumSkyblock.getCommands().helpCommand);
     }
 
     public void registerCommand(com.iridium.iridiumskyblock.commands.Command command) {
@@ -118,11 +119,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     }
                 }
             }
-            //Help Menu
+            int current = 0;
             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpHeader));
-            for (com.iridium.iridiumskyblock.commands.Command command : commands) {
+            for (com.iridium.iridiumskyblock.commands.Command command : IridiumSkyblock.getCommandManager().commands) {
                 if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) && command.isEnabled()) {
-                    cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", command.getAliases().get(0)).replace("%description%", command.getDescription())));
+                    if (current < 18)
+                        cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", command.getAliases().get(0)).replace("%description%", command.getDescription())));
+                    current++;
                 }
             }
         } catch (Exception e) {

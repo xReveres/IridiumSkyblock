@@ -83,4 +83,7 @@ public class Messages {
     public String cantBuy = "%prefix% &7You dont have enough money to buy this.";
     public String cantSell = "%prefix% &7You dont have this item to sell.";
     public String islandInterest = "%prefix% &7Your island interest has been applied giving you %crystals%Crystals $%money% and %exp%Experience.";
+    public String helpfooter = "&b<< &7Page %page% of %maxpage% &b>>";
+    public String previousPage = "<<";
+    public String nextPage = ">>";
 }

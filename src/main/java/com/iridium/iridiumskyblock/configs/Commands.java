@@ -45,4 +45,5 @@ public class Commands {
     public ChatCommand chatCommand = new ChatCommand();
     public ShopCommand shopCommand = new ShopCommand();
     public BiomeCommand biomeCommand = new BiomeCommand();
+    public HelpCommand helpCommand = new HelpCommand();
 }
