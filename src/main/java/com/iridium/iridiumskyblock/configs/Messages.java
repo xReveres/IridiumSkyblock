@@ -70,7 +70,7 @@ public class Messages {
     public String islandCreated = "&b&lIsland Created";
     public String maxlevelreached = "N/A";
     public String yes = "&a&lYes";
-    public String no = "&c&lno";
+    public String no = "&c&lNo";
     public String changesIslandName = "%prefix% &7%player% changed your Island name to %name%";
     public String missionComplete = "&b&lMission Complete: &7%mission%";
     public String rewards = "&b&lReward: &7%crystalsReward% Crystals and $%vaultReward%";
