@@ -65,6 +65,8 @@ public class Messages {
     public String coopGiven = "%prefix% &7You have been granted Member permissions to %player%'s Island.";
     public String coopTaken = "%prefix% &7Your Member permissions have been removed for %player%'s Island.";
     public String coopRemoved = "%prefix% &7Your have revoked %player%'s Island member permissions.";
+    public String coopInvite = "%prefix% &7You have been invited to coop %player%'s island.";
+    public String coopInviteSent = "%prefix% &7Coop invitation send to %player%'s Island.";
     public String islandCreated = "&b&lIsland Created";
     public String maxlevelreached = "N/A";
     public String yes = "&a&lYes";

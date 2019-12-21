@@ -31,7 +31,6 @@ public class UnCoopCommand extends Command {
                 if (!user.getIsland().equals(User.getUser(player).getIsland()) && User.getUser(player).getIsland() != null) {
                     if (user.bypassing || user.getIsland().getPermissions(user.getRole()).coop) {
                         user.getIsland().removeCoop(User.getUser(player).getIsland());
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopRemoved.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     } else {
                         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }

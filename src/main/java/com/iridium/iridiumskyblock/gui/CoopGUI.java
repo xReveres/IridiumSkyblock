@@ -62,7 +62,6 @@ public class CoopGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (islands.containsKey(e.getSlot())) {
-                e.getWhoClicked().closeInventory();
                 Island island = IridiumSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot()));
                 User u = User.getUser((OfflinePlayer) e.getWhoClicked());
                 if (e.getClick().equals(ClickType.RIGHT)) {

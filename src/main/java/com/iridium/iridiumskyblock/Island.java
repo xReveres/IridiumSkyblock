@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.support.Wildstacker;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -112,6 +113,8 @@ public class Island {
     private HashSet<String> votes;
 
     private HashSet<Integer> coop;
+
+    public transient HashSet<Integer> coopInvites;
 
     private String name;
 
@@ -418,6 +421,7 @@ public class Island {
         bankGUI = new BankGUI(this);
         biomeGUI = new BiomeGUI(this);
         failedGenerators = new HashSet<>();
+        coopInvites = new HashSet<>();
 
         initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
@@ -668,20 +672,57 @@ public class Island {
                 pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopGiven.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
+        for (String member : getMembers()) {
+            Player pl = Bukkit.getPlayer(User.getUser(member).name);
+            if (pl != null) {
+                pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopAdded.replace("%player%", User.getUser(island.getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+        }
         coop.add(island.id);
+        if (island.coop == null) island.coop = new HashSet<>();
+        island.coop.add(id);
+    }
+
+    public void inviteCoop(Island island) {
+        if (coopInvites == null) coopInvites = new HashSet<>();
+        coopInvites.add(island.getId());
+        for (String member : getMembers()) {
+            Player pl = Bukkit.getPlayer(User.getUser(member).name);
+            if (pl != null) {
+                BaseComponent[] components = TextComponent.fromLegacyText(Utils.color(IridiumSkyblock.getMessages().coopInvite.replace("%player%", User.getUser(island.getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+
+                ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is coop " + User.getUser(island.getOwner()).name);
+                HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to coop players island!").create());
+                for (BaseComponent component : components) {
+                    component.setClickEvent(clickEvent);
+                    component.setHoverEvent(hoverEvent);
+                }
+                pl.getPlayer().spigot().sendMessage(components);
+            }
+        }
     }
 
     public void removeCoop(Island island) {
         if (coop == null) coop = new HashSet<>();
+        coop.remove(island.id);
+        if (island.coop == null) island.coop = new HashSet<>();
+        island.coop.remove(id);
         for (String member : island.getMembers()) {
             Player pl = Bukkit.getPlayer(User.getUser(member).name);
             if (pl != null) {
                 pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopTaken.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
-        coop.remove(island.id);
+        for (String member : getMembers()) {
+            Player pl = Bukkit.getPlayer(User.getUser(member).name);
+            if (pl != null) {
+                pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopTaken.replace("%player%", User.getUser(island.getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+        }
         getCoopGUI().getInventory().clear();
         getCoopGUI().addContent();
+        island.getCoopGUI().getInventory().clear();
+        island.getCoopGUI().addContent();
     }
 
     public void removeCoop(int id) {

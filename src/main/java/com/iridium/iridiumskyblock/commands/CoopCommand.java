@@ -28,10 +28,16 @@ public class CoopCommand extends Command {
             }
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
             if (player != null) {
-                if (!user.getIsland().equals(User.getUser(player).getIsland()) && User.getUser(player).getIsland() != null) {
+                User u = User.getUser(player);
+                if (!user.getIsland().equals(u.getIsland()) && u.getIsland() != null) {
                     if (user.bypassing || user.getIsland().getPermissions(user.getRole()).coop) {
-                        user.getIsland().addCoop(User.getUser(player).getIsland());
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopAdded.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        if (user.getIsland().coopInvites.contains(u.islandID)) {
+                            user.getIsland().coopInvites.remove(u.islandID);
+                            user.getIsland().addCoop(u.getIsland());
+                        } else {
+                            u.getIsland().inviteCoop(user.getIsland());
+                            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopInviteSent.replace("%player%", User.getUser(u.getIsland().getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        }
                     } else {
                         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
