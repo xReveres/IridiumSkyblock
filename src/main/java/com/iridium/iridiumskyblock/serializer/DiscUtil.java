@@ -14,12 +14,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class DiscUtil {
 
     // -------------------------------------------- //
-    // CONSTANTS
-    // -------------------------------------------- //
-
-    private final static String UTF8 = "UTF-8";
-
-    // -------------------------------------------- //
     // BYTE
     // -------------------------------------------- //
     private static HashMap<String, Lock> locks = new HashMap<>();
@@ -76,7 +70,7 @@ public class DiscUtil {
             lock.lock();
             try {
                 file.createNewFile();
-                Files.write(content.getBytes(), file);
+                Files.write(content, file, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 IridiumSkyblock.getInstance().sendErrorMessage(e);
             } finally {
