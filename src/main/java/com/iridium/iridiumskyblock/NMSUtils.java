@@ -23,9 +23,6 @@ public class NMSUtils {
     public static Class<?> WorldBorder;
     public static Class<?> PacketPlayOutWorldBorder;
 
-    public static Constructor<?> PacketPlayOutUnloadChunk;
-    public static Constructor<?> PacketPlayOutMapChunk;
-
     public static Method CraftChunkgetHandle;
     public static Method EntityArmorStandsetInvisible;
     public static Method EntityArmorStandsetCustomNameVisible;
@@ -47,9 +44,6 @@ public class NMSUtils {
             WorldBorder = getNMSClass("WorldBorder");
             PacketPlayOutWorldBorder = getNMSClass("PacketPlayOutWorldBorder");
 
-            PacketPlayOutUnloadChunk = getNMSClass("PacketPlayOutUnloadChunk").getConstructor(int.class, int.class);
-            PacketPlayOutMapChunk = getNMSClass("PacketPlayOutMapChunk").getConstructor(getNMSClass("Chunk"), int.class);
-
             CraftChunkgetHandle = getCraftClass("CraftChunk").getMethod("getHandle");
             EntityArmorStandsetInvisible = getNMSClass("EntityArmorStand").getMethod("setInvisible", boolean.class);
             EntityArmorStandsetCustomNameVisible = getNMSClass("EntityArmorStand").getMethod("setCustomNameVisible", boolean.class);
@@ -66,16 +60,18 @@ public class NMSUtils {
     public static void sendChunk(Player p, Chunk c) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
             try {
-                sendPacket(p, PacketPlayOutUnloadChunk.newInstance(c.getX(), c.getZ()));
+                sendPacket(p, getNMSClass("PacketPlayOutUnloadChunk").getConstructor(int.class, int.class).newInstance(c.getX(), c.getZ()));
+            } catch (NoSuchMethodException ignored) {
             } catch (Exception e) {
-                IridiumSkyblock.getInstance().sendErrorMessage(e);
+                e.printStackTrace();
             }
         });
         Bukkit.getScheduler().scheduleAsyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
             try {
-                sendPacket(p, PacketPlayOutMapChunk.newInstance(CraftChunkgetHandle.invoke(c), 65535));
+                sendPacket(p, getNMSClass("PacketPlayOutMapChunk").getConstructor(getNMSClass("Chunk"), int.class).newInstance(CraftChunkgetHandle.invoke(c), 65535));
+            } catch (NoSuchMethodException ignored) {
             } catch (Exception e) {
-                IridiumSkyblock.getInstance().sendErrorMessage(e);
+                e.printStackTrace();
             }
         }, 2);
     }
