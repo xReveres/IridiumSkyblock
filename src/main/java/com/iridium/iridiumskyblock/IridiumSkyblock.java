@@ -224,8 +224,12 @@ public class IridiumSkyblock extends JavaPlugin {
         cal.add(Calendar.DATE, -getConfiguration().deleteBackupsAfterDays);
         for (File file : backupsFolder.listFiles()) {
             Date date = getLocalDateTime(file.getName().replace(".json", "").replace("IslandManager_", ""));
-            if (date.before(cal.getTime())) {
+            if (date == null) {
                 file.delete();
+            } else {
+                if (date.before(cal.getTime())) {
+                    file.delete();
+                }
             }
         }
         getPersist().save(islandManager, new File(backupsFolder, "IslandManager_" + getCurrentTimeStamp() + ".json"));
@@ -243,8 +247,7 @@ public class IridiumSkyblock extends JavaPlugin {
         try {
             return sdfDate.parse(time);
         } catch (ParseException e) {
-            e.printStackTrace();
-            return new Date();
+            return null;
         }
     }
 
