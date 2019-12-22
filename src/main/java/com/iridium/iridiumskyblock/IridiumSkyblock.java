@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -217,15 +218,34 @@ public class IridiumSkyblock extends JavaPlugin {
     public void backupIslandManager() {
         File backupsFolder = new File(getDataFolder(), "backups");
         if (!backupsFolder.exists()) backupsFolder.mkdir();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -getConfiguration().deleteBackupsAfterDays);
+        for (File file : backupsFolder.listFiles()) {
+            Date date = getLocalDateTime(file.getName().replace(".json", "").replace("IslandManager_", ""));
+            if (date.before(cal.getTime())) {
+                file.delete();
+            }
+        }
         getPersist().save(islandManager, new File(backupsFolder, "IslandManager_" + getCurrentTimeStamp() + ".json"));
     }
 
-    public static String getCurrentTimeStamp() {
+    public String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");//dd/MM/yyyy
         Date now = new Date();
         String strDate = sdfDate.format(now);
         return strDate;
     }
+
+    public Date getLocalDateTime(String time) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");//dd/MM/yyyy
+        try {
+            return sdfDate.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new Date();
+        }
+    }
+
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {

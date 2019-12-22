@@ -24,6 +24,7 @@ public class Config {
     public String chatValuePlaceholder = "[ISLAND_VALUE]";
     public String chatNAMEPlaceholder = "[ISLAND_NAME]";
     public boolean doIslandBackup = true;
+    public int deleteBackupsAfterDays = 7;
     public boolean automaticUpdate = true;
     public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
