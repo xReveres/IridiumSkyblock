@@ -65,11 +65,11 @@ public class Persist {
 
     // SAVE
 
-    public boolean save(Object instance) {
-        return save(instance, getFile(instance));
+    public void save(Object instance) {
+        save(instance, getFile(instance));
     }
 
-    public boolean save(Object instance, File file) {
+    public void save(Object instance, File file) {
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -77,7 +77,7 @@ public class Persist {
                 IridiumSkyblock.getInstance().sendErrorMessage(e);
             }
         }
-        return DiscUtil.writeCatch(file, gson.toJson(instance), true);
+        DiscUtil.writeCatch(file, gson.toJson(instance));
     }
 
     // LOAD BY CLASS

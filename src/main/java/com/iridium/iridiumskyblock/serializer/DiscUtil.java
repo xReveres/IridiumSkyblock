@@ -2,9 +2,11 @@ package com.iridium.iridiumskyblock.serializer;
 
 import com.google.common.io.Files;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import org.bukkit.Bukkit;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.concurrent.locks.Lock;
@@ -32,20 +34,6 @@ public class DiscUtil {
     }
 
     // -------------------------------------------- //
-    // STRING
-    // -------------------------------------------- //
-
-    public static void writeBytes(File file, byte[] bytes) throws IOException {
-        FileOutputStream out = new FileOutputStream(file);
-        out.write(bytes);
-        out.close();
-    }
-
-    public static void write(File file, String content) throws IOException {
-        writeBytes(file, utf8(content));
-    }
-
-    // -------------------------------------------- //
     // CATCH
     // -------------------------------------------- //
 
@@ -53,7 +41,7 @@ public class DiscUtil {
         return utf8(readBytes(file));
     }
 
-    public static boolean writeCatch(final File file, final String content, boolean sync) {
+    public static void writeCatch(final File file, final String content) {
         String name = file.getName();
         final Lock lock;
 
@@ -65,31 +53,15 @@ public class DiscUtil {
             lock = rwl.writeLock();
             locks.put(name, lock);
         }
-
-        if (sync) {
-            lock.lock();
-            try {
-                file.createNewFile();
-                Files.write(content, file, StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                IridiumSkyblock.getInstance().sendErrorMessage(e);
-            } finally {
-                lock.unlock();
-            }
-        } else {
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-                lock.lock();
-                try {
-                    write(file, content);
-                } catch (IOException e) {
-                    IridiumSkyblock.getInstance().sendErrorMessage(e);
-                } finally {
-                    lock.unlock();
-                }
-            });
+        lock.lock();
+        try {
+            file.createNewFile();
+            Files.write(content, file, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
+        } finally {
+            lock.unlock();
         }
-
-        return true; // don't really care but for some reason this is a boolean.
     }
 
     public static String readCatch(File file) {
@@ -98,14 +70,6 @@ public class DiscUtil {
         } catch (IOException e) {
             return null;
         }
-    }
-
-    // -------------------------------------------- //
-    // UTF8 ENCODE AND DECODE
-    // -------------------------------------------- //
-
-    public static byte[] utf8(String string) {
-        return string.getBytes(StandardCharsets.UTF_8);
     }
 
     public static String utf8(byte[] bytes) {
