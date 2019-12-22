@@ -34,7 +34,7 @@ public class MembersGUI extends GUI implements Listener {
             for (String member : island.getMembers()) {
                 User u = User.getUser(member);
                 users.put(i, u);
-                ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandmember, Arrays.asList(new Utils.Placeholder("demote", u.getRole().equals(Role.Visitor) ? "Kick" : "Demote"), new Utils.Placeholder("player", User.getUser(member).name), new Utils.Placeholder("role", u.getRole().name())));
+                ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandmember, Arrays.asList(new Utils.Placeholder("demote", u.getRole().equals(Role.Visitor) ? "Kick" : "Demote"), new Utils.Placeholder("player", User.getUser(member).name), new Utils.Placeholder("role", u.getRole().toString())));
                 setItem(i, head);
                 i++;
             }
@@ -72,7 +72,7 @@ public class MembersGUI extends GUI implements Listener {
                                         for (String member : u.getIsland().getMembers()) {
                                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                                             if (p != null) {
-                                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerDemoted.replace("%rank%", u.getRole().name()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerDemoted.replace("%rank%", u.getRole().toString()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                             }
                                         }
                                     }
@@ -102,7 +102,7 @@ public class MembersGUI extends GUI implements Listener {
                                             for (String member : u.getIsland().getMembers()) {
                                                 Player p = Bukkit.getPlayer(User.getUser(member).name);
                                                 if (p != null) {
-                                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerPromoted.replace("%rank%", u.getRole().name()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerPromoted.replace("%rank%", u.getRole().toString()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                                 }
                                             }
                                         }

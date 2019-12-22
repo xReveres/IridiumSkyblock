@@ -1,5 +1,9 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.iridium.iridiumskyblock.Role;
+
+import java.util.HashMap;
+
 public class Messages {
 
     public String reloaded = "%prefix% &7Configuration reloaded.";
@@ -88,4 +92,10 @@ public class Messages {
     public String helpfooter = "&b<< &7Page %page% of %maxpage% &b>>";
     public String previousPage = "<<";
     public String nextPage = ">>";
+
+    public HashMap<Role, String> roles = new HashMap<Role, String>() {{
+        for (Role role : Role.values()) {
+            put(role, role.name());
+        }
+    }};
 }

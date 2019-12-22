@@ -22,7 +22,7 @@ public class PermissionsGUI extends GUI implements Listener {
         int i = 11;
         for (Role role : Role.values()) {
             permissions.put(role, new PermissionsGUI(island, role));
-            setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandRoles, Collections.singletonList(new Utils.Placeholder("role", role.name()))));
+            setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandRoles, Collections.singletonList(new Utils.Placeholder("role", role.toString()))));
             i++;
         }
     }
