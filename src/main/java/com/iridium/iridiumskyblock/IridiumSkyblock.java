@@ -408,9 +408,13 @@ public class IridiumSkyblock extends JavaPlugin {
         for (int i : getUpgrades().oresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
             for (String item : getUpgrades().oresUpgrade.upgrades.get(i).ores) {
-                int i1 = Integer.parseInt(item.split(":")[1]);
-                for (int a = 0; a <= i1; a++) {
-                    items.add(item.split(":")[0]);
+                if (item != null) {
+                    int i1 = Integer.parseInt(item.split(":")[1]);
+                    for (int a = 0; a <= i1; a++) {
+                        items.add(item.split(":")[0]);
+                    }
+                } else {
+                    getUpgrades().oresUpgrade.upgrades.get(i).ores.remove(null);
                 }
             }
             oreUpgradeCache.put(i, items);
@@ -420,9 +424,13 @@ public class IridiumSkyblock extends JavaPlugin {
         for (int i : getUpgrades().oresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
             for (String item : getUpgrades().oresUpgrade.upgrades.get(i).netherores) {
-                int i1 = Integer.parseInt(item.split(":")[1]);
-                for (int a = 0; a <= i1; a++) {
-                    items.add(item.split(":")[0]);
+                if (item != null) {
+                    int i1 = Integer.parseInt(item.split(":")[1]);
+                    for (int a = 0; a <= i1; a++) {
+                        items.add(item.split(":")[0]);
+                    }
+                } else {
+                    getUpgrades().oresUpgrade.upgrades.get(i).netherores.remove(null);
                 }
             }
             netherOreUpgradeCache.put(i, items);
