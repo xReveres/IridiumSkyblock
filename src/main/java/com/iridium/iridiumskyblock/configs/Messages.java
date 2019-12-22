@@ -92,6 +92,8 @@ public class Messages {
     public String helpfooter = "&b<< &7Page %page% of %maxpage% &b>>";
     public String previousPage = "<<";
     public String nextPage = ">>";
+    public String Kick = "Kick";
+    public String Demote = "Demote";
 
     public HashMap<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {
