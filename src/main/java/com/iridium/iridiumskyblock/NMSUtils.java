@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -38,117 +39,140 @@ public class NMSUtils {
     }
 
     public static void sendChunk(Player p, Chunk c) {
-        try {
-            sendPacket(p, getNMSClass("PacketPlayOutUnloadChunk").getConstructor(int.class, int.class).newInstance(c.getX(), c.getZ()));
-            sendPacket(p, getNMSClass("PacketPlayOutMapChunk").getConstructor(getNMSClass("Chunk"), int.class).newInstance(getCraftClass("CraftChunk").getMethod("getHandle").invoke(c), 65535));
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
+            try {
+                sendPacket(p, getNMSClass("PacketPlayOutUnloadChunk").getConstructor(int.class, int.class).newInstance(c.getX(), c.getZ()));
+            } catch (Exception e) {
+                IridiumSkyblock.getInstance().sendErrorMessage(e);
+            }
+        });
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
+            try {
+                sendPacket(p, getNMSClass("PacketPlayOutMapChunk").getConstructor(getNMSClass("Chunk"), int.class).newInstance(getCraftClass("CraftChunk").getMethod("getHandle").invoke(c), 65535));
+            } catch (Exception e) {
+                IridiumSkyblock.getInstance().sendErrorMessage(e);
+            }
+        }, 2);
     }
 
-    public static void sendHologram(Player p, Location loc, List<String> text) {
-        try {
-            for (int i = -1; ++i < text.size(); ) {
-                Object craftWorld = CraftWorld.cast(loc.getWorld());
-                Object entityArmorStand = EntityArmorStand.getConstructor(World, double.class, double.class, double.class).newInstance(CraftWorld.getMethod("getHandle").invoke(craftWorld), loc.getX(), loc.getY(), loc.getZ());
+    public static void sendHologram(Player p, final Location loc, List<String> text) {
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), new Runnable() {
+            Location location = loc;
 
-                entityArmorStand.getClass().getMethod("setInvisible", boolean.class).invoke(entityArmorStand, true);
-                entityArmorStand.getClass().getMethod("setCustomNameVisible", boolean.class).invoke(entityArmorStand, true);
+            @Override
+            public void run() {
                 try {
-                    entityArmorStand.getClass().getMethod("setCustomName", String.class).invoke(entityArmorStand, Utils.color(text.get(i)));
-                } catch (NoSuchMethodException noSuchMethodEx) {
-                    entityArmorStand.getClass().getMethod("setCustomName", IChatBaseComponent).invoke(entityArmorStand, ChatMessage.getConstructor(String.class, Object[].class).newInstance(Utils.color(text.get(i)), new Object[0]));
+                    for (int i = -1; ++i < text.size(); ) {
+                        Object craftWorld = CraftWorld.cast(location.getWorld());
+                        Object entityArmorStand = EntityArmorStand.getConstructor(World, double.class, double.class, double.class).newInstance(CraftWorld.getMethod("getHandle").invoke(craftWorld), loc.getX(), loc.getY(), loc.getZ());
+
+                        entityArmorStand.getClass().getMethod("setInvisible", boolean.class).invoke(entityArmorStand, true);
+                        entityArmorStand.getClass().getMethod("setCustomNameVisible", boolean.class).invoke(entityArmorStand, true);
+                        try {
+                            entityArmorStand.getClass().getMethod("setCustomName", String.class).invoke(entityArmorStand, Utils.color(text.get(i)));
+                        } catch (NoSuchMethodException noSuchMethodEx) {
+                            entityArmorStand.getClass().getMethod("setCustomName", IChatBaseComponent).invoke(entityArmorStand, ChatMessage.getConstructor(String.class, Object[].class).newInstance(Utils.color(text.get(i)), new Object[0]));
+                        }
+                        Object packet = PacketPlayOutSpawnEntityLiving.getConstructor(EntityLiving).newInstance(entityArmorStand);
+                        sendPacket(p, packet);
+                        location = location.subtract(0, 0.4, 0);
+                    }
+                } catch (Exception e) {
+                    IridiumSkyblock.getInstance().sendErrorMessage(e);
                 }
-                Object packet = PacketPlayOutSpawnEntityLiving.getConstructor(EntityLiving).newInstance(entityArmorStand);
-                sendPacket(p, packet);
-                loc = loc.subtract(0, 0.4, 0);
             }
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
+        });
     }
 
     public static void sendWorldBorder(Player player, Color color, double size, Location centerLocation) {
-        try {
-            Object worldBorder = WorldBorder.getConstructor().newInstance();
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            try {
+                Object worldBorder = WorldBorder.getConstructor().newInstance();
 
 
-            Object craftWorld = CraftWorld.cast(centerLocation.getWorld());
-            setField(worldBorder, "world", craftWorld.getClass().getMethod("getHandle").invoke(craftWorld), false);
+                Object craftWorld = CraftWorld.cast(centerLocation.getWorld());
+                setField(worldBorder, "world", craftWorld.getClass().getMethod("getHandle").invoke(craftWorld), false);
 
-            worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
+                worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
 
-            if (color == Color.Off) {
-                worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, Integer.MAX_VALUE);
-            } else {
-                worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, size);
+                if (color == Color.Off) {
+                    worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, Integer.MAX_VALUE);
+                } else {
+                    worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, size);
+                }
+
+                worldBorder.getClass().getMethod("setWarningTime", int.class).invoke(worldBorder, 0);
+                worldBorder.getClass().getMethod("setWarningDistance", int.class).invoke(worldBorder, 0);
+
+                switch (color) {
+                    case Red:
+                        worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, size, size - 1.0D, 20000000L);
+                        break;
+                    case Green:
+                        worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, size - 0.1D, size, 20000000L);
+                        break;
+                }
+
+                Object packet = PacketPlayOutWorldBorder.getConstructor(WorldBorder,
+                        PacketPlayOutWorldBorder.getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1]).newInstance(worldBorder,
+                        Enum.valueOf((Class<Enum>) PacketPlayOutWorldBorder.getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1], "INITIALIZE"));
+                sendPacket(player, packet);
+            } catch (Exception e) {
+                IridiumSkyblock.getInstance().sendErrorMessage(e);
             }
-
-            worldBorder.getClass().getMethod("setWarningTime", int.class).invoke(worldBorder, 0);
-            worldBorder.getClass().getMethod("setWarningDistance", int.class).invoke(worldBorder, 0);
-
-            switch (color) {
-                case Red:
-                    worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, size, size - 1.0D, 20000000L);
-                    break;
-                case Green:
-                    worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, size - 0.1D, size, 20000000L);
-                    break;
-            }
-
-            Object packet = PacketPlayOutWorldBorder.getConstructor(WorldBorder,
-                    PacketPlayOutWorldBorder.getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1]).newInstance(worldBorder,
-                    Enum.valueOf((Class<Enum>) PacketPlayOutWorldBorder.getDeclaredClasses()[getVersionNumber() > 100 ? 0 : 1], "INITIALIZE"));
-            sendPacket(player, packet);
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
+        });
     }
 
     public static void sendActionBar(Player player, String message) {
-        try {
-            Constructor<?> constructor = getNMSClass("PacketPlayOutChat").getConstructor(getNMSClass("IChatBaseComponent"), byte.class);
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            try {
+                Constructor<?> constructor = getNMSClass("PacketPlayOutChat").getConstructor(getNMSClass("IChatBaseComponent"), byte.class);
 
-            Object text = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
-            Object packet = constructor.newInstance(text, (byte) 2);
-            sendPacket(player, packet);
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
+                Object text = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
+                Object packet = constructor.newInstance(text, (byte) 2);
+                sendPacket(player, packet);
+            } catch (Exception e) {
+                IridiumSkyblock.getInstance().sendErrorMessage(e);
+            }
+        });
     }
 
     public static void sendSubTitle(Player player, String message, int fadeIn, int displayTime, int fadeOut) {
-        try {
-            Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
-            Object chat = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
-                    .invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            try {
+                Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
+                Object chat = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
+                        .invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
 
-            Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], IChatBaseComponent,
-                    int.class, int.class, int.class);
-            Object packet = titleConstructor.newInstance(enumTitle, chat, fadeIn, displayTime, fadeOut);
+                Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
+                        getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], IChatBaseComponent,
+                        int.class, int.class, int.class);
+                Object packet = titleConstructor.newInstance(enumTitle, chat, fadeIn, displayTime, fadeOut);
 
-            sendPacket(player, packet);
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
+                sendPacket(player, packet);
+            } catch (Exception e) {
+                IridiumSkyblock.getInstance().sendErrorMessage(e);
+            }
+        });
     }
 
     public static void sendTitle(Player player, String message, int fadeIn, int displayTime, int fadeOut) {
-        try {
-            Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
-            Object chat = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
-                    .invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            try {
+                Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
+                Object chat = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
+                        .invoke(null, ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
 
-            Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], IChatBaseComponent,
-                    int.class, int.class, int.class);
-            Object packet = titleConstructor.newInstance(enumTitle, chat, fadeIn, displayTime, fadeOut);
+                Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
+                        getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], IChatBaseComponent,
+                        int.class, int.class, int.class);
+                Object packet = titleConstructor.newInstance(enumTitle, chat, fadeIn, displayTime, fadeOut);
 
-            sendPacket(player, packet);
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
+                sendPacket(player, packet);
+            } catch (Exception e) {
+                IridiumSkyblock.getInstance().sendErrorMessage(e);
+            }
+        });
     }
 
 
