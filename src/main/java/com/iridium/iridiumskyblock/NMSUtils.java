@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class NMSUtils {
@@ -22,6 +23,18 @@ public class NMSUtils {
     public static Class<?> WorldBorder;
     public static Class<?> PacketPlayOutWorldBorder;
 
+    public static Constructor<?> PacketPlayOutUnloadChunk;
+    public static Constructor<?> PacketPlayOutMapChunk;
+
+    public static Method CraftChunkgetHandle;
+    public static Method EntityArmorStandsetInvisible;
+    public static Method EntityArmorStandsetCustomNameVisible;
+    public static Method WorldBordersetCenter;
+    public static Method WorldBordersetSize;
+    public static Method WorldBordersetWarningDistance;
+    public static Method WorldBordersetWarningTime;
+    public static Method WorldBordertransitionSizeBetween;
+
     static {
         try {
             CraftWorld = getCraftClass("CraftWorld");
@@ -33,6 +46,18 @@ public class NMSUtils {
             EntityLiving = getNMSClass("EntityLiving");
             WorldBorder = getNMSClass("WorldBorder");
             PacketPlayOutWorldBorder = getNMSClass("PacketPlayOutWorldBorder");
+
+            PacketPlayOutUnloadChunk = getNMSClass("PacketPlayOutUnloadChunk").getConstructor(int.class, int.class);
+            PacketPlayOutMapChunk = getNMSClass("PacketPlayOutMapChunk").getConstructor(getNMSClass("Chunk"), int.class);
+
+            CraftChunkgetHandle = getCraftClass("CraftChunk").getMethod("getHandle");
+            EntityArmorStandsetInvisible = getNMSClass("EntityArmorStand").getMethod("setInvisible", boolean.class);
+            EntityArmorStandsetCustomNameVisible = getNMSClass("EntityArmorStand").getMethod("setCustomNameVisible", boolean.class);
+            WorldBordersetCenter = getNMSClass("WorldBorder").getMethod("setCenter", double.class, double.class);
+            WorldBordersetSize = getNMSClass("WorldBorder").getMethod("setSize", double.class);
+            WorldBordersetWarningDistance = getNMSClass("WorldBorder").getMethod("setWarningDistance", int.class);
+            WorldBordersetWarningTime = getNMSClass("WorldBorder").getMethod("setWarningTime", int.class);
+            WorldBordertransitionSizeBetween = getNMSClass("WorldBorder").getMethod("transitionSizeBetween", double.class, double.class, long.class);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
@@ -41,14 +66,14 @@ public class NMSUtils {
     public static void sendChunk(Player p, Chunk c) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
             try {
-                sendPacket(p, getNMSClass("PacketPlayOutUnloadChunk").getConstructor(int.class, int.class).newInstance(c.getX(), c.getZ()));
+                sendPacket(p, PacketPlayOutUnloadChunk.newInstance(c.getX(), c.getZ()));
             } catch (Exception e) {
                 IridiumSkyblock.getInstance().sendErrorMessage(e);
             }
         });
         Bukkit.getScheduler().scheduleAsyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
             try {
-                sendPacket(p, getNMSClass("PacketPlayOutMapChunk").getConstructor(getNMSClass("Chunk"), int.class).newInstance(getCraftClass("CraftChunk").getMethod("getHandle").invoke(c), 65535));
+                sendPacket(p, PacketPlayOutMapChunk.newInstance(CraftChunkgetHandle.invoke(c), 65535));
             } catch (Exception e) {
                 IridiumSkyblock.getInstance().sendErrorMessage(e);
             }
@@ -66,8 +91,8 @@ public class NMSUtils {
                         Object craftWorld = CraftWorld.cast(location.getWorld());
                         Object entityArmorStand = EntityArmorStand.getConstructor(World, double.class, double.class, double.class).newInstance(CraftWorld.getMethod("getHandle").invoke(craftWorld), loc.getX(), loc.getY(), loc.getZ());
 
-                        entityArmorStand.getClass().getMethod("setInvisible", boolean.class).invoke(entityArmorStand, true);
-                        entityArmorStand.getClass().getMethod("setCustomNameVisible", boolean.class).invoke(entityArmorStand, true);
+                        EntityArmorStandsetInvisible.invoke(entityArmorStand, true);
+                        EntityArmorStandsetCustomNameVisible.invoke(entityArmorStand, true);
                         try {
                             entityArmorStand.getClass().getMethod("setCustomName", String.class).invoke(entityArmorStand, Utils.color(text.get(i)));
                         } catch (NoSuchMethodException noSuchMethodEx) {
@@ -93,23 +118,23 @@ public class NMSUtils {
                 Object craftWorld = CraftWorld.cast(centerLocation.getWorld());
                 setField(worldBorder, "world", craftWorld.getClass().getMethod("getHandle").invoke(craftWorld), false);
 
-                worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
+                WorldBordersetCenter.invoke(worldBorder, centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
 
                 if (color == Color.Off) {
-                    worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, Integer.MAX_VALUE);
+                    WorldBordersetSize.invoke(worldBorder, Integer.MAX_VALUE);
                 } else {
-                    worldBorder.getClass().getMethod("setSize", double.class).invoke(worldBorder, size);
+                    WorldBordersetSize.invoke(worldBorder, size);
                 }
 
-                worldBorder.getClass().getMethod("setWarningTime", int.class).invoke(worldBorder, 0);
-                worldBorder.getClass().getMethod("setWarningDistance", int.class).invoke(worldBorder, 0);
+                WorldBordersetWarningTime.invoke(worldBorder, 0);
+                WorldBordersetWarningDistance.invoke(worldBorder, 0);
 
                 switch (color) {
                     case Red:
-                        worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, size, size - 1.0D, 20000000L);
+                        WorldBordertransitionSizeBetween.invoke(worldBorder, size, size - 1.0D, 20000000L);
                         break;
                     case Green:
-                        worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, size - 0.1D, size, 20000000L);
+                        WorldBordertransitionSizeBetween.invoke(worldBorder, size - 0.1D, size, 20000000L);
                         break;
                 }
 
