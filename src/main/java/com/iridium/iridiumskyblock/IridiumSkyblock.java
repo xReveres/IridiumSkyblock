@@ -436,6 +436,8 @@ public class IridiumSkyblock extends JavaPlugin {
         if (getConfiguration().distance <= max) {
             getConfiguration().distance = max + 1;
         }
+        getIslandManager().getWorld().getWorldBorder().setSize(Double.MAX_VALUE);
+        getIslandManager().getNetherWorld().getWorldBorder().setSize(Double.MAX_VALUE);
         try {
             loadSchematics();
         } catch (Exception e) {
