@@ -56,7 +56,7 @@ public class Inventories {
     public Item ores = new Item(MultiversionMaterials.DIAMOND_ORE, 1, "&b&lIsland Generator", Arrays.asList("&7Want to improve your generator? Buy this", "&7upgrade to increase your island generator.", "", "&b&lInformation:", "&b&l * &7Current Level: &b{oreslevel}", "&b&l * &7Upgrade Cost: &b{orescrystalscost} Crystals and ${oresvaultcost}", "", "&b&l[!] &bLeft Click to Purchase this Upgrade"));
 
     //Menu
-    public Item home = new Item(MultiversionMaterials.RED_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home"));
+    public Item home = new Item(MultiversionMaterials.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home"));
     public Item members = new Item(MultiversionMaterials.PLAYER_HEAD, 14, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island Members."));
     public Item regen = new Item(MultiversionMaterials.GRASS, 36, 1, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island."));
     public Item upgrades = new Item(MultiversionMaterials.PLAYER_HEAD, 21, 1, "&b&lIsland Upgrades", "ABigDwarf", Collections.singletonList("&7Upgrade your island."));

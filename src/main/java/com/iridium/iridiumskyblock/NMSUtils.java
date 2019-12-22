@@ -61,17 +61,13 @@ public class NMSUtils {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
             try {
                 sendPacket(p, getNMSClass("PacketPlayOutUnloadChunk").getConstructor(int.class, int.class).newInstance(c.getX(), c.getZ()));
-            } catch (NoSuchMethodException ignored) {
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         });
         Bukkit.getScheduler().scheduleAsyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
             try {
                 sendPacket(p, getNMSClass("PacketPlayOutMapChunk").getConstructor(getNMSClass("Chunk"), int.class).newInstance(CraftChunkgetHandle.invoke(c), 65535));
-            } catch (NoSuchMethodException ignored) {
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }, 2);
     }
