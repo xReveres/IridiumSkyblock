@@ -63,5 +63,6 @@ public class onPlayerJoinLeave implements Listener {
             e.getPlayer().setFlying(false);
             u.flying = false;
         }
+        u.bypassing = false;
     }
 }
