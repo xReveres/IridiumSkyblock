@@ -480,7 +480,6 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             if (configuration != null) persist.save(configuration);
             if (missions != null) persist.save(missions);
-            if (islandManager != null) persist.save(islandManager);
             if (messages != null) persist.save(messages);
             if (upgrades != null) persist.save(upgrades);
             if (boosters != null) persist.save(boosters);
