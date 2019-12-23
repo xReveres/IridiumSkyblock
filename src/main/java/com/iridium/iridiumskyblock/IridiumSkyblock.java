@@ -65,23 +65,18 @@ public class IridiumSkyblock extends JavaPlugin {
     public static HashMap<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-        instance = this;
-        Bukkit.getUpdateFolderFile().mkdir();
-        getDataFolder().mkdir();
-
-        persist = new Persist();
-
-        new Metrics(IridiumSkyblock.getInstance());
-
-        loadConfigs();
-    }
-
-    @Override
     public void onEnable() {
         try {
             super.onEnable();
+            instance = this;
+            Bukkit.getUpdateFolderFile().mkdir();
+            getDataFolder().mkdir();
+
+            persist = new Persist();
+
+            new Metrics(IridiumSkyblock.getInstance());
+
+            loadConfigs();
             saveConfigs();
 
             commandManager = new CommandManager("island");
@@ -96,73 +91,73 @@ public class IridiumSkyblock extends JavaPlugin {
             startCounting();
             Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 20, 20 * 60);
 
-//            Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
-            loadIslandManager();
+            Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
+                loadIslandManager();
 
-            islandValueManager();
+                islandValueManager();
 
-            topGUI = new TopGUI();
-            shopGUI = new ShopGUI();
-            visitGUI = new HashMap<>();
+                topGUI = new TopGUI();
+                shopGUI = new ShopGUI();
+                visitGUI = new HashMap<>();
 
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
-            if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
-            if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
-            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
-                registerListeners(new onExpansionUnregister());
+                if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
+                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
+                if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
+                if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+                    registerListeners(new onExpansionUnregister());
 
-            setupPlaceholderAPI();
+                setupPlaceholderAPI();
 
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                Island island = getIslandManager().getIslandViaLocation(p.getLocation());
-                if (island != null) {
-                    island.sendBorder(p);
-                }
-            }
-            getLogger().info("-------------------------------");
-            getLogger().info("");
-            getLogger().info(getDescription().getName() + " Enabled!");
-            getLogger().info("");
-            getLogger().info("-------------------------------");
-
-            Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-                try {
-                    latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
-                } catch (IOException e) {
-                    getLogger().warning("Failed to connect to api.spigotmc.org");
-                }
-                if (latest != null && !latest.equals(getDescription().getVersion())) {
-                    getLogger().info("Newer version available: " + latest);
-                    if (getConfiguration().automaticUpdate) {
-                        getLogger().info("Attempting to download version: " + latest);
-                        try {
-                            getFile().renameTo(new File(getFile().getParentFile(), "/IridiumSkyblock-" + latest + ".jar"));
-                            File file = new File(Bukkit.getUpdateFolderFile() + "/IridiumSkyblock-" + latest + ".jar");
-                            file.createNewFile();
-                            URL url = new URL("http://www.peachessupport.xyz/IridiumSkyblock-" + latest + ".jar");
-                            OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-                            URLConnection conn = url.openConnection();
-                            conn.setConnectTimeout(15000);
-                            conn.setReadTimeout(15000);
-                            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-                            conn.setAllowUserInteraction(false);
-                            conn.setDoOutput(true);
-                            InputStream in = conn.getInputStream();
-                            byte[] buffer = new byte[1024];
-
-                            int numRead;
-                            while ((numRead = in.read(buffer)) != -1) {
-                                out.write(buffer, 0, numRead);
-                            }
-                            in.close();
-                            out.close();
-                        } catch (Exception e) {
-                            sendErrorMessage(e);
-                        }
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    Island island = getIslandManager().getIslandViaLocation(p.getLocation());
+                    if (island != null) {
+                        island.sendBorder(p);
                     }
                 }
+                getLogger().info("-------------------------------");
+                getLogger().info("");
+                getLogger().info(getDescription().getName() + " Enabled!");
+                getLogger().info("");
+                getLogger().info("-------------------------------");
+
+                Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                    try {
+                        latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
+                    } catch (IOException e) {
+                        getLogger().warning("Failed to connect to api.spigotmc.org");
+                    }
+                    if (latest != null && !latest.equals(getDescription().getVersion())) {
+                        getLogger().info("Newer version available: " + latest);
+                        if (getConfiguration().automaticUpdate) {
+                            getLogger().info("Attempting to download version: " + latest);
+                            try {
+                                getFile().renameTo(new File(getFile().getParentFile(), "/IridiumSkyblock-" + latest + ".jar"));
+                                File file = new File(Bukkit.getUpdateFolderFile() + "/IridiumSkyblock-" + latest + ".jar");
+                                file.createNewFile();
+                                URL url = new URL("http://www.peachessupport.xyz/IridiumSkyblock-" + latest + ".jar");
+                                OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+                                URLConnection conn = url.openConnection();
+                                conn.setConnectTimeout(15000);
+                                conn.setReadTimeout(15000);
+                                conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                                conn.setAllowUserInteraction(false);
+                                conn.setDoOutput(true);
+                                InputStream in = conn.getInputStream();
+                                byte[] buffer = new byte[1024];
+
+                                int numRead;
+                                while ((numRead = in.read(buffer)) != -1) {
+                                    out.write(buffer, 0, numRead);
+                                }
+                                in.close();
+                                out.close();
+                            } catch (Exception e) {
+                                sendErrorMessage(e);
+                            }
+                        }
+                    }
+                });
             });
-//            });
         } catch (Exception e) {
             sendErrorMessage(e);
         }
