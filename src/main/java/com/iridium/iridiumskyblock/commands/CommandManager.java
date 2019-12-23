@@ -71,6 +71,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         commands.add(command);
     }
 
+    public void unRegisterCommand(com.iridium.iridiumskyblock.commands.Command command) {
+        commands.remove(command);
+    }
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         try {

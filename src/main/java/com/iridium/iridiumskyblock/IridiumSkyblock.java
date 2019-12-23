@@ -405,6 +405,16 @@ public class IridiumSkyblock extends JavaPlugin {
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
 
+        if (getCommandManager() != null) {
+            if (getCommandManager().commands.contains(IridiumSkyblock.getCommands().shopCommand)) {
+                if (!configuration.islandShop)
+                    getCommandManager().unRegisterCommand(IridiumSkyblock.getCommands().shopCommand);
+            } else {
+                if (configuration.islandShop)
+                    getCommandManager().registerCommand(IridiumSkyblock.getCommands().shopCommand);
+            }
+        }
+
         getBlockValues().blockvalue.remove(MultiversionMaterials.AIR);
 
         oreUpgradeCache.clear();
