@@ -15,7 +15,7 @@ class SkyblockGenerator extends ChunkGenerator {
         ChunkData chunkData = createChunkData(world);
         for (int x = 0; x <= 15; x++) {
             for (int z = 0; z <= 15; z++) {
-                if (world.getName().equals("IridiumSkyblock_nether")) {
+                if (world.getName().equals(IridiumSkyblock.getConfiguration().worldName + "_nether")) {
                     biome.setBiome(x, z, IridiumSkyblock.getConfiguration().netherBiome);
                 } else {
                     biome.setBiome(x, z, IridiumSkyblock.getConfiguration().defaultBiome);
