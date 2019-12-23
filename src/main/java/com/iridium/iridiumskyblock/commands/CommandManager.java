@@ -62,7 +62,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(IridiumSkyblock.getCommands().bankCommand);
         registerCommand(IridiumSkyblock.getCommands().chatCommand);
         registerCommand(IridiumSkyblock.getCommands().giveUpgradeCommand);
-        registerCommand(IridiumSkyblock.getCommands().shopCommand);
+        if (IridiumSkyblock.getConfiguration().islandShop) registerCommand(IridiumSkyblock.getCommands().shopCommand);
         registerCommand(IridiumSkyblock.getCommands().biomeCommand);
         registerCommand(IridiumSkyblock.getCommands().helpCommand);
     }
@@ -84,12 +84,11 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                         }
                         if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) && command.isEnabled()) {
                             command.execute(cs, args);
-                            return true;
                         } else {
                             // No permission
                             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                            return true;
                         }
+                        return true;
                     }
                 }
             } else {
