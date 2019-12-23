@@ -12,7 +12,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,9 +29,8 @@ public class TopGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         List<Island> top = Utils.getTopIslands();
-        for (int i = 1; i <= 10; i++) {
+        for (int i : IridiumSkyblock.getConfiguration().islandTopSlots.keySet()) {
             if (top.size() >= i) {
-                ArrayList<String> lore = new ArrayList<>();
                 Island island = top.get(i - 1);
                 User owner = User.getUser(island.getOwner());
                 ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().topisland, Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", i + ""), new Utils.Placeholder("value", NumberFormat.getInstance().format(island.getValue()) + "")));
