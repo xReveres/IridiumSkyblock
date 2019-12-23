@@ -57,6 +57,7 @@ public class ShopGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
+        if (!IridiumSkyblock.getConfiguration().islandShop) return;
         if (shop == null) {
             for (Shop.ShopObject shop : IridiumSkyblock.getShop().shop) {
                 setItem(shop.slot, Utils.makeItem(shop.display, 1, shop.displayName));
