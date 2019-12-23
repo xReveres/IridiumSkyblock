@@ -64,6 +64,8 @@ public class IridiumSkyblock extends JavaPlugin {
     public static HashMap<Integer, List<String>> oreUpgradeCache = new HashMap<>();
     public static HashMap<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
 
+    public static SkyblockGenerator generator;
+
     @Override
     public void onEnable() {
         try {
@@ -254,7 +256,7 @@ public class IridiumSkyblock extends JavaPlugin {
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
         if (worldName.equals(getConfiguration().worldName) || worldName.equals(getConfiguration().worldName + "_nether"))
-            return new SkyblockGenerator();
+            return generator;
         return super.getDefaultWorldGenerator(worldName, id);
     }
 
