@@ -129,9 +129,9 @@ public class IridiumSkyblock extends JavaPlugin {
                     try {
                         latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        getLogger().warning("Failed to connect to api.spigotmc.org");
                     }
-                    if (!latest.equals(getDescription().getVersion())) {
+                    if (latest != null && !latest.equals(getDescription().getVersion())) {
                         getLogger().info("Newer version available: " + latest);
                         if (getConfiguration().automaticUpdate) {
                             getLogger().info("Attempting to download version: " + latest);
