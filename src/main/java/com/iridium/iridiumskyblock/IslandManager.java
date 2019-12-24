@@ -110,6 +110,7 @@ public class IslandManager {
     }
 
     public Island getIslandViaLocation(Location loc) {
+        if (loc == null) return null;
         if (loc.getWorld().equals(getWorld()) || loc.getWorld().equals(getNetherWorld())) {
             for (Island island : islands.values()) {
                 if (island.isInIsland(loc)) {
