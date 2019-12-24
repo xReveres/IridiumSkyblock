@@ -1,9 +1,12 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,7 +34,13 @@ public class onPlayerMove implements Listener {
                             u.getIsland().teleportNetherHome(e.getPlayer());
                         }
                     } else if (e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
-                        u.getIsland().spawnPlayer(e.getPlayer());
+                        if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
+                            EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
+                            Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+                            e.getPlayer().teleport(essentialsSpawn.getSpawn(essentials.getUser(e.getPlayer()).getGroup()));
+                        } else {
+                            e.getPlayer().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+                        }
                     }
                 }
             }
