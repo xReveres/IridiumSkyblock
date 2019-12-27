@@ -89,6 +89,8 @@ public class Island {
 
     private int a;
 
+    private int chunkID;
+
     private int value;
 
     public List<Location> blocks;
@@ -457,13 +459,25 @@ public class Island {
 
     public void initChunks() {
         chunks = new ArrayList<>();
-        for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
-            for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
+        chunkID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
+            int X = getPos1().getChunk().getX();
+            int Z = getPos1().getChunk().getZ();
+
+            @Override
+            public void run() {
                 chunks.add(IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
                 if (IridiumSkyblock.getConfiguration().netherIslands)
                     chunks.add(IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z));
+                X++;
+                if (X > getPos2().getChunk().getX()) {
+                    X = getPos1().getChunk().getX();
+                    Z++;
+                    if (Z > getPos2().getChunk().getZ()) {
+                        Bukkit.getScheduler().cancelTask(chunkID);
+                    }
+                }
             }
-        }
+        }, 0, 5);
     }
 
     public void generateIsland() {
