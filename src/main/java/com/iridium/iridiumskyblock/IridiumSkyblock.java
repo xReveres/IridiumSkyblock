@@ -69,44 +69,48 @@ public class IridiumSkyblock extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            super.onEnable();
             instance = this;
+
+            super.onEnable();
             Bukkit.getUpdateFolderFile().mkdir();
             getDataFolder().mkdir();
 
             persist = new Persist();
 
-            new Metrics(IridiumSkyblock.getInstance());
-
-            loadConfigs();
-            saveConfigs();
-
-            commandManager = new CommandManager("island");
-            commandManager.registerCommands();
-
-            Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
-            if (configuration.doIslandBackup)
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::backupIslandManager, 0, 20 * 60 * getConfiguration().backupIntervalMinutes);
-
-            startCounting();
-            Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 20, 20 * 60);
+            configuration = persist.getFile(Config.class).exists() ? persist.load(Config.class) : new Config();
 
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
+
+                loadConfigs();
                 loadIslandManager();
+                saveConfigs();
 
-                registerListeners(new onBlockPiston(), new onEntityPickupItem(), new onPlayerTalk(), new onItemCraft(), new onPlayerTeleport(), new onPlayerPortal(), new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
-
-                islandValueManager();
-
-                topGUI = new TopGUI();
-                shopGUI = new ShopGUI();
-                visitGUI = new HashMap<>();
+                commandManager = new CommandManager("island");
+                commandManager.registerCommands();
 
                 if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
                 if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
                 if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
                 if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                     registerListeners(new onExpansionUnregister());
+
+                // Call it as a delayed task to wait for the server to properly load first
+                Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
+
+                topGUI = new TopGUI();
+                shopGUI = new ShopGUI();
+                visitGUI = new HashMap<>();
+
+                registerListeners(new onBlockPiston(), new onEntityPickupItem(), new onPlayerTalk(), new onItemCraft(), new onPlayerTeleport(), new onPlayerPortal(), new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+
+                new Metrics(IridiumSkyblock.getInstance());
+
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
+
+                if (configuration.doIslandBackup)
+                    Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::backupIslandManager, 0, 20 * 60 * getConfiguration().backupIntervalMinutes);
+
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20 * 60);
 
                 setupPlaceholderAPI();
 
@@ -116,13 +120,15 @@ public class IridiumSkyblock extends JavaPlugin {
                         island.sendBorder(p);
                     }
                 }
+
+                startCounting();
                 getLogger().info("-------------------------------");
                 getLogger().info("");
                 getLogger().info(getDescription().getName() + " Enabled!");
                 getLogger().info("");
                 getLogger().info("-------------------------------");
 
-                Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                Bukkit.getScheduler().scheduleAsyncDelayedTask(this, () -> {
                     try {
                         latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
                     } catch (IOException e) {
