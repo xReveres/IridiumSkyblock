@@ -383,11 +383,11 @@ public class Island {
                 Bukkit.getPlayer(user.name).sendMessage(Utils.color(IridiumSkyblock.getMessages().maxMemberCount.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
+        getMembersGUI().getInventory().clear();
+        getMembersGUI().addContent();
     }
 
     public void removeUser(User user) {
-        getMembersGUI().getInventory().clear();
-        getMembersGUI().addContent();
         user.islandID = 0;
         Player player = Bukkit.getPlayer(user.name);
         spawnPlayer(player);
@@ -402,6 +402,8 @@ public class Island {
                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().kickedMember.replace("%member%", user.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
+        getMembersGUI().getInventory().clear();
+        getMembersGUI().addContent();
     }
 
     public boolean isInIsland(Location location) {
