@@ -58,6 +58,9 @@ public class GiveBoosterCommand extends Command {
 
     @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
-        return Arrays.asList("exp", "farming", "flight", "spawner");
+        if (args.length == 3) {
+            return Arrays.asList("exp", "farming", "flight", "spawner");
+        }
+        return null;
     }
 }

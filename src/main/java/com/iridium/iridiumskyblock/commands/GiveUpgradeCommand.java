@@ -69,6 +69,9 @@ public class GiveUpgradeCommand extends Command {
 
     @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
-        return Arrays.asList("size", "member", "warp", "ores");
+        if (args.length == 3) {
+            return Arrays.asList("size", "member", "warp", "ores");
+        }
+        return null;
     }
 }
