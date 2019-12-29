@@ -22,9 +22,9 @@ public class SchematicSelectGUI extends GUI implements Listener {
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (fakeSchematic.slot == null) fakeSchematic.slot = i;
                 try {
-                    setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1,  fakeSchematic.displayname, fakeSchematic.lore));
+                    setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1, fakeSchematic.displayname, fakeSchematic.lore));
                 } catch (Exception e) {
-                    setItem(fakeSchematic.slot, Utils.makeItem(MultiversionMaterials.STONE, 1,  fakeSchematic.displayname, fakeSchematic.lore));
+                    setItem(fakeSchematic.slot, Utils.makeItem(MultiversionMaterials.STONE, 1, fakeSchematic.displayname, fakeSchematic.lore));
                 }
                 i++;
             }
@@ -40,7 +40,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (e.getSlot() == fakeSchematic.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
                     getIsland().setSchematic(fakeSchematic.name);
-                    getIsland().generateIsland();
+                    getIsland().pasteSchematic();
                     getIsland().setHome(getIsland().getHome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
                     getIsland().teleportHome((Player) e.getWhoClicked());
                     NMSUtils.sendTitle((Player) e.getWhoClicked(), IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);

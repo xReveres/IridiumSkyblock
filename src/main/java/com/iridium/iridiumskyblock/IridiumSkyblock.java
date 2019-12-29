@@ -410,7 +410,8 @@ public class IridiumSkyblock extends JavaPlugin {
             island.init();
         }
         getIslandManager().getWorld().getWorldBorder().setSize(Double.MAX_VALUE);
-        getIslandManager().getNetherWorld().getWorldBorder().setSize(Double.MAX_VALUE);
+        if (getConfiguration().netherIslands)
+            getIslandManager().getNetherWorld().getWorldBorder().setSize(Double.MAX_VALUE);
     }
 
     public void loadConfigs() {

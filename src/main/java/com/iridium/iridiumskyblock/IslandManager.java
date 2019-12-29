@@ -55,7 +55,7 @@ public class IslandManager {
                 island.setSchematic(schematic.name);
                 island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
             }
-            island.generateIsland();
+            island.pasteSchematic();
             island.teleportHome(player);
             NMSUtils.sendTitle(player, IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);
         } else {
