@@ -123,9 +123,10 @@ public class Schematic {
                     for (int z = 0; z < length; ++z) {
                         int index = y * width * length + z * width + x;
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-                        if (Material.getMaterial(blocks[index]) != null) {
+                        Material m = Material.getMaterial(blocks[index]);
+                        if (m != null && m != Material.AIR) {
                             block.setTypeIdAndData(blocks[index], blockData[index], true);
-                            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(Material.getMaterial(blocks[index])) || Material.getMaterial(blocks[index]) == Material.MOB_SPAWNER) {
+                            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(m) || m == Material.MOB_SPAWNER) {
                                 locations.add(block.getLocation());
                             }
                         }
