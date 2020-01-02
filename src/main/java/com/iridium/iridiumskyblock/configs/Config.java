@@ -25,7 +25,6 @@ public class Config {
     public String chatNAMEPlaceholder = "[ISLAND_NAME]";
     public boolean doIslandBackup = true;
     public boolean islandShop = true;
-    public int deleteBackupsAfterDays = 7;
     public boolean automaticUpdate = true;
     public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
@@ -37,11 +36,12 @@ public class Config {
     public boolean debugSchematics = false;
     public boolean restartUpgradesOnRegen = false;
     public boolean allowWaterInNether = true;
+    public int deleteBackupsAfterDays = 7;
     public int distance = 151;
     public int backupIntervalMinutes = 60;
-    public double valuePerLevel = 100.00;
     public int blocksPerTick = 50;
     public int islandsUpdateInterval = 5;
+    public double valuePerLevel = 100.00;
     public double dailyMoneyInterest = 0.5;
     public double dailyCrystalsInterest = 5;
     public double dailyExpInterest = 0.01;

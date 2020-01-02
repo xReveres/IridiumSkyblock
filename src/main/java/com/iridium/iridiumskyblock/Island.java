@@ -476,6 +476,7 @@ public class Island {
                     Z++;
                     if (Z > getPos2().getChunk().getZ()) {
                         Bukkit.getScheduler().cancelTask(chunkID);
+                        chunkID = -1;
                     }
                 }
             }
@@ -624,6 +625,7 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getIslandMenuGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getCoopGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
+        if (chunkID != -1) Bukkit.getScheduler().cancelTask(chunkID);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         deleteBlocks();
