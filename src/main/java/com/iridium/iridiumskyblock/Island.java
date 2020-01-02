@@ -457,6 +457,7 @@ public class Island {
                 }
             }};
         }
+        sendBorder();
     }
 
     public void initChunks() {

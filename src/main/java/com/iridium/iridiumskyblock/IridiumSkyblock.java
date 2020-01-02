@@ -114,13 +114,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 setupPlaceholderAPI();
 
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    Island island = getIslandManager().getIslandViaLocation(p.getLocation());
-                    if (island != null) {
-                        island.sendBorder(p);
-                    }
-                }
-
                 startCounting();
                 getLogger().info("-------------------------------");
                 getLogger().info("");
