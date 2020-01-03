@@ -10,9 +10,7 @@ import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.support.Wildstacker;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
-import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
-import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -493,33 +491,19 @@ public class Island {
                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
-
-        final int max = IridiumSkyblock.getIslandManager().getWorld().getMaxHeight();
-
-        genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
-            int y = 0;
-
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    if (max >= y) {
-                        IridiumSkyblock.getInstance().getLogger().info(y + "");
-                        deleteBlocks(y);
-                        pasteSchematic(y);
-                        y++;
-                    } else {
-                        killEntities();
-                        pasteSchematic();
-                        clearInventories();
-                        Bukkit.getScheduler().cancelTask(genearteID);
-                        genearteID = -1;
-                    }
-                }
-            }
-        }, 0, 0);
+        pasteSchematic();
     }
 
     public void pasteSchematic() {
+        if (chunks != null) {
+            for (Chunk c : chunks) {
+                for (BlockState state : c.getTileEntities()) {
+                    if (state instanceof Container) {
+                        ((Container) state).getInventory().clear();
+                    }
+                }
+            }
+        }
 
         final int max = IridiumSkyblock.getIslandManager().getWorld().getMaxHeight();
         genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
@@ -533,7 +517,7 @@ public class Island {
                         pasteSchematic(y);
                         y++;
                     } else {
-                        pasteSchematic();
+                        pasteSchematicData();
                         Bukkit.getScheduler().cancelTask(genearteID);
                         genearteID = -1;
                     }
@@ -543,6 +527,15 @@ public class Island {
     }
 
     public void pasteSchematic(Player player) {
+        if (chunks != null) {
+            for (Chunk c : chunks) {
+                for (BlockState state : c.getTileEntities()) {
+                    if (state instanceof Container) {
+                        ((Container) state).getInventory().clear();
+                    }
+                }
+            }
+        }
 
         final int max = IridiumSkyblock.getIslandManager().getWorld().getMaxHeight();
         getHome().getBlock().setType(Material.STONE, true);//Just incase something fails ?
@@ -904,6 +897,7 @@ public class Island {
     }
 
     public void killEntities() {
+        if (chunks == null) return;
         for (Chunk c : chunks) {
             for (Entity e : c.getEntities()) {
                 if (isInIsland(e.getLocation())) {
