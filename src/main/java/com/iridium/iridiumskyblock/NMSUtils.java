@@ -71,18 +71,18 @@ public class NMSUtils {
     }
 
     public static void setBlockFast(World world, int X, int Y, int Z, int blockId, byte data) {
-        try {
-            Object craftWorld = getHandle.invoke(CraftWorld.cast(world));
-//            Object chunk = craftWorld.getClass().getMethod("getChunkAt", int.class, int.class).invoke(craftWorld, location.getBlockX() >> 4, location.getBlockZ() >> 4);
-            Object blockPosition = BlockPositionConstructor.newInstance(X, Y, Z);
-            int combined = blockId + (data << 12);
-            Object iBlockData = getByCombinedId.invoke(null, combined);
-            setTypeAndData.invoke(craftWorld, blockPosition, iBlockData, 2);
-//            chunk.getClass().getMethod("a", BlockPosition, IBlockData).invoke(chunk, blockPosition, iBlockData);
-        } catch (Exception e) {
-            e.printStackTrace();
+//        try {
+//            Object craftWorld = getHandle.invoke(CraftWorld.cast(world));
+////            Object chunk = craftWorld.getClass().getMethod("getChunkAt", int.class, int.class).invoke(craftWorld, location.getBlockX() >> 4, location.getBlockZ() >> 4);
+//            Object blockPosition = BlockPositionConstructor.newInstance(X, Y, Z);
+//            int combined = blockId + (data << 12);
+//            Object iBlockData = getByCombinedId.invoke(null, combined);
+//            setTypeAndData.invoke(craftWorld, blockPosition, iBlockData, 2);
+////            chunk.getClass().getMethod("a", BlockPosition, IBlockData).invoke(chunk, blockPosition, iBlockData);
+//        } catch (Exception e) {
+//            e.printStackTrace();
             new Location(world, X, Y, Z).getBlock().setTypeIdAndData(blockId, data, false);
-        }
+//        }
     }
 
     public static void sendChunk(Player p, Chunk c) {
