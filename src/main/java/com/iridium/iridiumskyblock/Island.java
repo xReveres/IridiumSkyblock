@@ -456,7 +456,6 @@ public class Island {
                 }
             }};
         }
-        sendBorder();
     }
 
     public void initChunks() {
@@ -475,6 +474,7 @@ public class Island {
                     X = getPos1().getChunk().getX();
                     Z++;
                     if (Z > getPos2().getChunk().getZ()) {
+                        sendBorder();
                         Bukkit.getScheduler().cancelTask(chunkID);
                         chunkID = -1;
                     }
