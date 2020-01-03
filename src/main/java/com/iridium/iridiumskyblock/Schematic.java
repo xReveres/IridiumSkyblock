@@ -105,36 +105,65 @@ public class Schematic {
         return height;
     }
 
-    public List<Location> pasteSchematic(Location loc, Island island) {
+    public List<Location> pasteSchematic(Location loc, int y) {
         List<Location> locations = new ArrayList<>();
         short length = getLength();
         short width = getWidth();
         short height = getHeight();
         loc.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
-        loc.getBlock().setType(Material.STONE, true);//Just incase something fails ?
-        if (schematicVersion == SchematicVersion.v_1_8) {
+        if (y - loc.getBlockY() >= 0 && y - loc.getBlockY() < height) {
+            if (schematicVersion == SchematicVersion.v_1_8) {
 
-            byte[] blocks = getBlocks();
-            byte[] blockData = getData();
+                byte[] blocks = getBlocks();
+                byte[] blockData = getData();
 
-            //LoadBlocks
-            for (int x = 0; x < width; ++x) {
-                for (int y = 0; y < height; ++y) {
+                //LoadBlocks
+                for (int x = 0; x < width; ++x) {
                     for (int z = 0; z < length; ++z) {
-                        int index = y * width * length + z * width + x;
-                        NMSUtils.setBlockFast(loc.getWorld(), x + loc.getBlockX(), y + loc.getBlockY(), z + loc.getBlockZ(), blocks[index], blockData[index]);
-//                        Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-//                        Material m = Material.getMaterial(blocks[index]);
-//                        if (m != null && m != Material.AIR) {
-//                            block.setTypeIdAndData(blocks[index], blockData[index], true);
-//                            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(m) || m == Material.MOB_SPAWNER) {
-//                                locations.add(block.getLocation());
-//                            }
-//                        }
-//                        NMSUtils.setBlockFast(loc.clone().add(x, y, z), blocks[index], blockData[index]);
+                        int index = (y - loc.getBlockY()) * width * length + z * width + x;
+                        Material m = Material.getMaterial(blocks[index]);
+                        if (m != null && m != Material.AIR) {
+                            NMSUtils.setBlockFast(loc.getWorld(), x + loc.getBlockX(), y, z + loc.getBlockZ(), blocks[index], blockData[index]);
+                            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(m) || m == Material.MOB_SPAWNER) {
+                                locations.add(loc.clone().add(x, y, z));
+                            }
+                        }
                     }
                 }
+            } else {
+                try {
+                    Method createBlockData = Bukkit.getServer().getClass().getMethod("createBlockData", String.class);
+                    Method setBlockData = Block.class.getMethod("setBlockData", Class.forName("org.bukkit.block.data.BlockData"), boolean.class);
+                    for (int x = 0; x < width; ++x) {
+                        for (int z = 0; z < length; ++z) {
+                            int index = y * width * length + z * width + x;
+                            Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
+                            for (String s : palette.keySet()) {
+                                int i = getChildTag(palette, s, IntTag.class).getValue();
+                                if (blockdata[index] == i) {
+                                    setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), true);
+                                    if (Utils.isBlockValuable(block)) {
+                                        locations.add(block.getLocation());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
             }
+        }
+        return locations;
+    }
+
+
+    public void pasteSchematic(Location loc, Island island) {
+        short length = getLength();
+        short width = getWidth();
+        short height = getHeight();
+        loc.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
+        if (schematicVersion == SchematicVersion.v_1_8) {
             //Tile Entities
             for (Tag tag : tileEntities) {
                 if (!(tag instanceof CompoundTag))
@@ -196,25 +225,6 @@ public class Schematic {
             //LoadBlocks
             if (NMSUtils.getVersionNumber() >= 113) {
                 try {
-                    Method createBlockData = Bukkit.getServer().getClass().getMethod("createBlockData", String.class);
-                    Method setBlockData = Block.class.getMethod("setBlockData", Class.forName("org.bukkit.block.data.BlockData"), boolean.class);
-                    for (int x = 0; x < width; ++x) {
-                        for (int y = 0; y < height; ++y) {
-                            for (int z = 0; z < length; ++z) {
-                                int index = y * width * length + z * width + x;
-                                Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-                                for (String s : palette.keySet()) {
-                                    int i = getChildTag(palette, s, IntTag.class).getValue();
-                                    if (blockdata[index] == i) {
-                                        setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), true);
-                                        if (Utils.isBlockValuable(block)) {
-                                            locations.add(block.getLocation());
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                     if (version == 2) {
                         //Tile Entities
                         for (Tag tag : tileEntities) {
@@ -280,7 +290,6 @@ public class Schematic {
                 }
             }
         }
-        return locations;
     }
 
     public static void debugSchematic(File file) throws IOException {
@@ -339,7 +348,8 @@ public class Schematic {
         }
     }
 
-    public static <T extends Tag> T getChildTag(Map<String, Tag> items, String key, Class<T> expected) throws IllegalArgumentException {
+    public static <T extends Tag> T getChildTag(Map<String, Tag> items, String key, Class<T> expected) throws
+            IllegalArgumentException {
         if (!items.containsKey(key)) {
             throw new IllegalArgumentException("Schematic file is missing a \"" + key + "\" tag");
         }

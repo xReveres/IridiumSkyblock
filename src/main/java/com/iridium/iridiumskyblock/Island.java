@@ -88,7 +88,9 @@ public class Island {
 
     private int a;
 
-    private int chunkID;
+    private transient int chunkID;
+
+    public transient int genearteID;
 
     private int value;
 
@@ -491,17 +493,87 @@ public class Island {
                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
-        deleteBlocks();
-        killEntities();
-        pasteSchematic();
-        clearInventories();
+
+        final int max = IridiumSkyblock.getIslandManager().getWorld().getMaxHeight();
+
+        genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
+            int y = 0;
+
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    if (max >= y) {
+                        IridiumSkyblock.getInstance().getLogger().info(y + "");
+                        deleteBlocks(y);
+                        pasteSchematic(y);
+                        y++;
+                    } else {
+                        killEntities();
+                        pasteSchematic();
+                        clearInventories();
+                        Bukkit.getScheduler().cancelTask(genearteID);
+                        genearteID = -1;
+                    }
+                }
+            }
+        }, 0, 0);
     }
 
     public void pasteSchematic() {
-        long startTime = System.nanoTime();
+
+        final int max = IridiumSkyblock.getIslandManager().getWorld().getMaxHeight();
+        genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
+            int y = 0;
+
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    if (max >= y) {
+                        deleteBlocks(y);
+                        pasteSchematic(y);
+                        y++;
+                    } else {
+                        pasteSchematic();
+                        Bukkit.getScheduler().cancelTask(genearteID);
+                        genearteID = -1;
+                    }
+                }
+            }
+        }, 0, 0);
+    }
+
+    public void pasteSchematic(Player player) {
+
+        final int max = IridiumSkyblock.getIslandManager().getWorld().getMaxHeight();
+        getHome().getBlock().setType(Material.STONE, true);//Just incase something fails ?
+
+        genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
+            int y = 0;
+
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    if (max >= y) {
+                        deleteBlocks(y);
+                        pasteSchematic(y);
+                        y++;
+                    } else {
+                        teleportHome(player);
+                        sendBorder(player);
+                        NMSUtils.sendTitle(player, IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);
+                        pasteSchematicData();
+                        Bukkit.getScheduler().cancelTask(genearteID);
+                        genearteID = -1;
+                    }
+                }
+            }
+        }, 0, 0);
+    }
+
+    private void pasteSchematic(int Y) {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
             if (fakeSchematic.name.equals(schematic)) {
-                blocks.addAll(IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), this));
+                blocks.addAll(IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), Y));
                 if (IridiumSkyblock.getConfiguration().debugSchematics) {
                     File schematicFolder = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
                     try {
@@ -514,13 +586,23 @@ public class Island {
                 Location center = getCenter().clone();
                 if (IridiumSkyblock.getConfiguration().netherIslands) {
                     center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-                    blocks.addAll(IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center, this));
+                    blocks.addAll(IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center, Y));
                 }
             }
         }
-        long endTime = System.nanoTime();
+    }
 
-        IridiumSkyblock.getInstance().getLogger().info("Pasting Schems: "+(endTime - startTime) / 1000000 + "ms");
+    public void pasteSchematicData() {
+        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
+            if (fakeSchematic.name.equals(schematic)) {
+                IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), this);
+                Location center = getCenter().clone();
+                if (IridiumSkyblock.getConfiguration().netherIslands) {
+                    center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+                    IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center, this);
+                }
+            }
+        }
     }
 
     public void clearInventories() {
@@ -573,9 +655,7 @@ public class Island {
                 p.teleport(this.home);
                 sendBorder(p);
             } else {
-                generateIsland();
-                teleportHome(p);
-                sendBorder(p);
+                pasteSchematic(p);
             }
         }
     }
@@ -630,9 +710,9 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getCoopGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
         if (chunkID != -1) Bukkit.getScheduler().cancelTask(chunkID);
+        if (genearteID != -1) Bukkit.getScheduler().cancelTask(genearteID);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
-        deleteBlocks();
         clearInventories();
         spawnPlayers();
         killEntities();
@@ -803,36 +883,24 @@ public class Island {
         }
     }
 
-    public void deleteBlocks() {
-        long startTime = System.nanoTime();
+    public void deleteBlocks(int Y) {
         blocks.clear();
         for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
-            for (int Y = 0; Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight(); Y++) {
-                for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
-                    NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z, 0, (byte) 0);
+            for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
+                NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z, 0, (byte) 0);
 //                    Block b = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z).getBlock();
 //                    if (b.getState() instanceof Chest) {
 //                        ((Chest) b.getState()).getBlockInventory().clear();
 //                    }
-                }
             }
         }
         if (IridiumSkyblock.getConfiguration().netherIslands) {
             for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
-                for (int Y = 0; Y <= IridiumSkyblock.getIslandManager().getNetherWorld().getMaxHeight(); Y++) {
-                    for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
-                        NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z, 0, (byte) 0);
-//                    Block b = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z).getBlock();
-//                    if (b.getState() instanceof Chest) {
-//                        ((Chest) b.getState()).getBlockInventory().clear();
-//                    }
-                    }
+                for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
+                    NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z, 0, (byte) 0);
                 }
             }
         }
-        long endTime = System.nanoTime();
-
-        IridiumSkyblock.getInstance().getLogger().info((endTime - startTime) / 1000000 + "ms");
     }
 
     public void killEntities() {

@@ -1,6 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.MultiversionMaterials;
+import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,10 +43,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (e.getSlot() == fakeSchematic.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
                     getIsland().setSchematic(fakeSchematic.name);
-                    getIsland().pasteSchematic();
-                    getIsland().setHome(getIsland().getHome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
-                    getIsland().teleportHome((Player) e.getWhoClicked());
-                    NMSUtils.sendTitle((Player) e.getWhoClicked(), IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);
+                    getIsland().pasteSchematic((Player) e.getWhoClicked());
                     return;
                 }
             }
