@@ -12,7 +12,6 @@ import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -499,6 +498,7 @@ public class Island {
     }
 
     public void pasteSchematic() {
+        long startTime = System.nanoTime();
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
             if (fakeSchematic.name.equals(schematic)) {
                 blocks.addAll(IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), this));
@@ -518,6 +518,9 @@ public class Island {
                 }
             }
         }
+        long endTime = System.nanoTime();
+
+        IridiumSkyblock.getInstance().getLogger().info("Pasting Schems: "+(endTime - startTime) / 1000000 + "ms");
     }
 
     public void clearInventories() {
@@ -801,31 +804,35 @@ public class Island {
     }
 
     public void deleteBlocks() {
+        long startTime = System.nanoTime();
         blocks.clear();
-        for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
-            for (double Y = 0; Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight(); Y++) {
-                for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                    Block b = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z).getBlock();
-                    if (b.getState() instanceof Chest) {
-                        ((Chest) b.getState()).getBlockInventory().clear();
-                    }
-                    b.setType(Material.AIR, false);
+        for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
+            for (int Y = 0; Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight(); Y++) {
+                for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
+                    NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z, 0, (byte) 0);
+//                    Block b = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z).getBlock();
+//                    if (b.getState() instanceof Chest) {
+//                        ((Chest) b.getState()).getBlockInventory().clear();
+//                    }
                 }
             }
         }
         if (IridiumSkyblock.getConfiguration().netherIslands) {
-            for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
-                for (double Y = 0; Y <= IridiumSkyblock.getIslandManager().getNetherWorld().getMaxHeight(); Y++) {
-                    for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                        Block b = new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z).getBlock();
-                        if (b.getState() instanceof Chest) {
-                            ((Chest) b.getState()).getBlockInventory().clear();
-                        }
-                        b.setType(Material.AIR, false);
+            for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
+                for (int Y = 0; Y <= IridiumSkyblock.getIslandManager().getNetherWorld().getMaxHeight(); Y++) {
+                    for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
+                        NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z, 0, (byte) 0);
+//                    Block b = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z).getBlock();
+//                    if (b.getState() instanceof Chest) {
+//                        ((Chest) b.getState()).getBlockInventory().clear();
+//                    }
                     }
                 }
             }
         }
+        long endTime = System.nanoTime();
+
+        IridiumSkyblock.getInstance().getLogger().info((endTime - startTime) / 1000000 + "ms");
     }
 
     public void killEntities() {

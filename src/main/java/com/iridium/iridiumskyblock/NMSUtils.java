@@ -1,9 +1,6 @@
 package com.iridium.iridiumskyblock;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -22,6 +19,11 @@ public class NMSUtils {
     public static Class<?> EntityLiving;
     public static Class<?> WorldBorder;
     public static Class<?> PacketPlayOutWorldBorder;
+    public static Class<?> BlockPosition;
+    public static Class<?> IBlockData;
+    public static Class<?> Block;
+
+    public static Constructor<?> BlockPositionConstructor;
 
     public static Method CraftChunkgetHandle;
     public static Method EntityArmorStandsetInvisible;
@@ -31,6 +33,9 @@ public class NMSUtils {
     public static Method WorldBordersetWarningDistance;
     public static Method WorldBordersetWarningTime;
     public static Method WorldBordertransitionSizeBetween;
+    public static Method setTypeAndData;
+    public static Method getByCombinedId;
+    public static Method getHandle;
 
     static {
         try {
@@ -43,6 +48,11 @@ public class NMSUtils {
             EntityLiving = getNMSClass("EntityLiving");
             WorldBorder = getNMSClass("WorldBorder");
             PacketPlayOutWorldBorder = getNMSClass("PacketPlayOutWorldBorder");
+            IBlockData = getNMSClass("IBlockData");
+            Block = getNMSClass("Block");
+            BlockPosition = getNMSClass("BlockPosition");
+
+            BlockPositionConstructor = BlockPosition.getConstructor(int.class, int.class, int.class);
 
             CraftChunkgetHandle = getCraftClass("CraftChunk").getMethod("getHandle");
             EntityArmorStandsetInvisible = getNMSClass("EntityArmorStand").getMethod("setInvisible", boolean.class);
@@ -52,8 +62,26 @@ public class NMSUtils {
             WorldBordersetWarningDistance = getNMSClass("WorldBorder").getMethod("setWarningDistance", int.class);
             WorldBordersetWarningTime = getNMSClass("WorldBorder").getMethod("setWarningTime", int.class);
             WorldBordertransitionSizeBetween = getNMSClass("WorldBorder").getMethod("transitionSizeBetween", double.class, double.class, long.class);
+            getHandle = CraftWorld.getMethod("getHandle");
+            getByCombinedId = Block.getMethod("getByCombinedId", int.class);
+            setTypeAndData = getNMSClass("WorldServer").getMethod("setTypeAndData", BlockPosition, IBlockData, int.class);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    public static void setBlockFast(World world, int X, int Y, int Z, int blockId, byte data) {
+        try {
+            Object craftWorld = getHandle.invoke(CraftWorld.cast(world));
+//            Object chunk = craftWorld.getClass().getMethod("getChunkAt", int.class, int.class).invoke(craftWorld, location.getBlockX() >> 4, location.getBlockZ() >> 4);
+            Object blockPosition = BlockPositionConstructor.newInstance(X, Y, Z);
+            int combined = blockId + (data << 12);
+            Object iBlockData = getByCombinedId.invoke(null, combined);
+            setTypeAndData.invoke(craftWorld, blockPosition, iBlockData, 2);
+//            chunk.getClass().getMethod("a", BlockPosition, IBlockData).invoke(chunk, blockPosition, iBlockData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Location(world, X, Y, Z).getBlock().setTypeIdAndData(blockId, data, false);
         }
     }
 

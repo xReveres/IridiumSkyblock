@@ -122,14 +122,16 @@ public class Schematic {
                 for (int y = 0; y < height; ++y) {
                     for (int z = 0; z < length; ++z) {
                         int index = y * width * length + z * width + x;
-                        Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-                        Material m = Material.getMaterial(blocks[index]);
-                        if (m != null && m != Material.AIR) {
-                            block.setTypeIdAndData(blocks[index], blockData[index], true);
-                            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(m) || m == Material.MOB_SPAWNER) {
-                                locations.add(block.getLocation());
-                            }
-                        }
+                        NMSUtils.setBlockFast(loc.getWorld(), x + loc.getBlockX(), y + loc.getBlockY(), z + loc.getBlockZ(), blocks[index], blockData[index]);
+//                        Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
+//                        Material m = Material.getMaterial(blocks[index]);
+//                        if (m != null && m != Material.AIR) {
+//                            block.setTypeIdAndData(blocks[index], blockData[index], true);
+//                            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(m) || m == Material.MOB_SPAWNER) {
+//                                locations.add(block.getLocation());
+//                            }
+//                        }
+//                        NMSUtils.setBlockFast(loc.clone().add(x, y, z), blocks[index], blockData[index]);
                     }
                 }
             }
