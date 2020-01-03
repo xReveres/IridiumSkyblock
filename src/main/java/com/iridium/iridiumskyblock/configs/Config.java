@@ -39,6 +39,7 @@ public class Config {
     public int deleteBackupsAfterDays = 7;
     public int distance = 151;
     public int backupIntervalMinutes = 60;
+    public int pastingLayersPerTick = 20;
     public int blocksPerTick = 50;
     public int islandsUpdateInterval = 5;
     public double valuePerLevel = 100.00;
