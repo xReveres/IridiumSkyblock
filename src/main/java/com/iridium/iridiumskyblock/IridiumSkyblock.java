@@ -69,6 +69,7 @@ public class IridiumSkyblock extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
+            generator = new SkyblockGenerator();
             instance = this;
 
             super.onEnable();
