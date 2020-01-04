@@ -116,7 +116,6 @@ public class IslandManager {
         if (islandCache == null) islandCache = new HashMap<>();
         if (loc == null) return null;
         int hash = loc.getChunk().hashCode();
-        IridiumSkyblock.getInstance().getLogger().info(hash + "");
         if (islandCache.containsKey(hash)) {
             for (int id : islandCache.get(hash)) {
                 if (getIslandViaId(id).isInIsland(loc)) {

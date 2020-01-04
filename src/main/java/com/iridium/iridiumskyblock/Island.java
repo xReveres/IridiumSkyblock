@@ -477,21 +477,32 @@ public class Island {
 
             @Override
             public void run() {
-                chunks.add(IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
+                addChunk(IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
                 if (IridiumSkyblock.getConfiguration().netherIslands)
-                    chunks.add(IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z));
+                    addChunk(IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z));
                 X++;
                 if (X > getPos2().getChunk().getX()) {
                     X = getPos1().getChunk().getX();
                     Z++;
                     if (Z > getPos2().getChunk().getZ()) {
-                        sendBorder();
                         Bukkit.getScheduler().cancelTask(chunkID);
                         chunkID = -1;
                     }
                 }
             }
         }, 0, 5);
+    }
+
+    public void addChunk(Chunk c) {
+        chunks.add(c);
+        for (Entity e : c.getEntities()) {
+            if (e instanceof Player) {
+                if (isInIsland(e.getLocation())) {
+                    Player p = (Player) e;
+                    sendBorder(p);
+                }
+            }
+        }
     }
 
     public long canGenerate() {
