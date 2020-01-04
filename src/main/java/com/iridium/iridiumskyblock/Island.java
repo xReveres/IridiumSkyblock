@@ -713,6 +713,10 @@ public class Island {
             User.getUser(player).islandID = 0;
             if (Bukkit.getPlayer(player) != null) Bukkit.getPlayer(player).closeInventory();
         }
+        for (int id : coop) {
+            IridiumSkyblock.getIslandManager().getIslandViaId(id).coop.remove(getId());
+        }
+        coop = null;
         hideBorder();
         this.owner = null;
         this.pos1 = null;
