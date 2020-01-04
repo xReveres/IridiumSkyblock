@@ -556,7 +556,7 @@ public class Island {
 
             @Override
             public void run() {
-                for (int i = 0; i < (deleteBlocks ? IridiumSkyblock.getConfiguration().pastingLayersPerTick : 2); i++) {
+                for (int i = 0; i < (deleteBlocks ? IridiumSkyblock.getConfiguration().pastingLayersPerTick : 1); i++) {
                     if (max >= y) {
                         if (deleteBlocks) deleteBlocks(y);
                         pasteSchematic(y);
