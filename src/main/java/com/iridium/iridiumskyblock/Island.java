@@ -522,15 +522,15 @@ public class Island {
             }
         }
         pasteSchematic(true);
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
-        lastRegen = c.getTime();
     }
 
     public void pasteSchematic(boolean deleteBlocks) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
+        lastRegen = c.getTime();
         if (chunks != null && deleteBlocks) {
-            for (Chunk c : chunks) {
-                for (BlockState state : c.getTileEntities()) {
+            for (Chunk chunk : chunks) {
+                for (BlockState state : chunk.getTileEntities()) {
                     if (state instanceof Container) {
                         ((Container) state).getInventory().clear();
                     }
@@ -552,6 +552,7 @@ public class Island {
                     } else {
                         pasteSchematicData();
                         Bukkit.getScheduler().cancelTask(genearteID);
+                        killEntities();
                         genearteID = -1;
                     }
                 }
@@ -560,9 +561,12 @@ public class Island {
     }
 
     public void pasteSchematic(Player player, boolean deleteBlocks) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
+        lastRegen = c.getTime();
         if (chunks != null && deleteBlocks) {
-            for (Chunk c : chunks) {
-                for (BlockState state : c.getTileEntities()) {
+            for (Chunk chunk : chunks) {
+                for (BlockState state : chunk.getTileEntities()) {
                     if (state instanceof Container) {
                         ((Container) state).getInventory().clear();
                     }
@@ -582,10 +586,12 @@ public class Island {
                         pasteSchematic(y);
                         y++;
                     } else {
+                        User.getUser(player).teleportingHome = false;
                         teleportHome(player);
                         sendBorder(player);
                         NMSUtils.sendTitle(player, IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);
                         pasteSchematicData();
+                        killEntities();
                         Bukkit.getScheduler().cancelTask(genearteID);
                         genearteID = -1;
                     }
@@ -657,6 +663,9 @@ public class Island {
     }
 
     public void teleportHome(Player p) {
+        if (User.getUser(p).teleportingHome) {
+            return;
+        }
         if (isBanned(User.getUser(p)) && !members.contains(p.getUniqueId().toString())) {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return;
@@ -697,12 +706,16 @@ public class Island {
                 p.teleport(this.home);
                 sendBorder(p);
             } else {
+                User.getUser(p).teleportingHome = true;
                 pasteSchematic(p, false);
             }
         }
     }
 
     public void teleportNetherHome(Player p) {
+        if (User.getUser(p).teleportingHome) {
+            return;
+        }
         if (isBanned(User.getUser(p)) && !members.contains(p.getUniqueId().toString())) {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return;
@@ -721,20 +734,30 @@ public class Island {
             return;
         }
         p.setFallDistance(0);
+        if (members.contains(p.getUniqueId().toString())) {
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        } else {
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            for (String pl : members) {
+                Player player = Bukkit.getPlayer(User.getUser(pl).name);
+                if (player != null) {
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitedYourIsland.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                }
+            }
+        }
         if (Utils.isSafe(getNetherhome(), this)) {
             p.teleport(getNetherhome());
             sendBorder(p);
         } else {
 
-            Location loc = Utils.getNewHome(this, getNetherhome());
+            Location loc = Utils.getNewHome(this, this.netherhome);
             if (loc != null) {
                 this.netherhome = loc;
                 p.teleport(this.netherhome);
                 sendBorder(p);
             } else {
-                generateIsland();
-                teleportNetherHome(p);
-                sendBorder(p);
+                User.getUser(p).teleportingHome = true;
+                pasteSchematic(p, false);
             }
         }
     }

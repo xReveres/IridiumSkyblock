@@ -1,6 +1,10 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Role;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,21 +28,29 @@ public class RegenCommand extends Command {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
                     long time = user.getIsland().canGenerate() / 1000;
                     if (time == 0 || user.bypassing) {
-                        p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
-                            Island island = user.getIsland();
-                            island.generateIsland();
-                            if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
-                                island.resetMissions();
-                                island.setSizeLevel(1);
-                                island.setMemberLevel(1);
-                                island.setWarpLevel(1);
-                                island.setOreLevel(1);
-                                island.setFlightBooster(0);
-                                island.setExpBooster(0);
-                                island.setFarmingBooster(0);
-                                island.setSpawnerBooster(0);
-                            }
-                        }, IridiumSkyblock.getMessages().resetAction).getInventory());
+                        if (IridiumSkyblock.getInstance().schems.size() == 1) {
+                            p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
+                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                                    user.getIsland().setSchematic(schematic.name);
+                                    user.getIsland().setHome(user.getIsland().getHome().add(schematic.x, schematic.y, schematic.z));
+                                    user.getIsland().setNetherhome(user.getIsland().getNetherhome().add(schematic.x, schematic.y, schematic.z));
+                                }
+                                user.getIsland().pasteSchematic(true);
+                                if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
+                                    user.getIsland().resetMissions();
+                                    user.getIsland().setSizeLevel(1);
+                                    user.getIsland().setMemberLevel(1);
+                                    user.getIsland().setWarpLevel(1);
+                                    user.getIsland().setOreLevel(1);
+                                    user.getIsland().setFlightBooster(0);
+                                    user.getIsland().setExpBooster(0);
+                                    user.getIsland().setFarmingBooster(0);
+                                    user.getIsland().setSpawnerBooster(0);
+                                }
+                            }, IridiumSkyblock.getMessages().resetAction).getInventory());
+                        } else {
+                            p.openInventory(user.getIsland().getSchematicSelectGUI().getInventory());
+                        }
                     } else {
                         int day = (int) TimeUnit.SECONDS.toDays(time);
                         int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));

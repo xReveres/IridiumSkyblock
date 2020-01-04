@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,26 +15,11 @@ import java.util.concurrent.TimeUnit;
 public class IslandMenuGUI extends GUI implements Listener {
 
     public ConfirmationGUI delete;
-    public ConfirmationGUI regen;
 
     public IslandMenuGUI(Island island) {
         super(island, IridiumSkyblock.getInventories().islandMenuGUISize, IridiumSkyblock.getInventories().islandMenuGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
         this.delete = new ConfirmationGUI(island, () -> getIsland().delete(), IridiumSkyblock.getMessages().deleteAction);
-        this.regen = new ConfirmationGUI(island, () -> {
-            getIsland().generateIsland();
-            if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
-                getIsland().resetMissions();
-                getIsland().setSizeLevel(1);
-                getIsland().setMemberLevel(1);
-                getIsland().setWarpLevel(1);
-                getIsland().setOreLevel(1);
-                getIsland().setFlightBooster(0);
-                getIsland().setExpBooster(0);
-                getIsland().setFarmingBooster(0);
-                getIsland().setSpawnerBooster(0);
-            }
-        }, IridiumSkyblock.getMessages().resetAction);
     }
 
     @Override
@@ -76,7 +62,29 @@ public class IslandMenuGUI extends GUI implements Listener {
                 if (u.bypassing || getIsland().getPermissions(u.role).regen) {
                     long time = getIsland().canGenerate() / 1000;
                     if (time == 0 || u.bypassing) {
-                        p.openInventory(regen.getInventory());
+                        if (IridiumSkyblock.getInstance().schems.size() == 1) {
+                            p.openInventory(new ConfirmationGUI(getIsland(), () -> {
+                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                                    getIsland().setSchematic(schematic.name);
+                                    getIsland().setHome(getIsland().getHome().add(schematic.x, schematic.y, schematic.z));
+                                    getIsland().setNetherhome(getIsland().getNetherhome().add(schematic.x, schematic.y, schematic.z));
+                                }
+                                getIsland().pasteSchematic(true);
+                                if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
+                                    getIsland().resetMissions();
+                                    getIsland().setSizeLevel(1);
+                                    getIsland().setMemberLevel(1);
+                                    getIsland().setWarpLevel(1);
+                                    getIsland().setOreLevel(1);
+                                    getIsland().setFlightBooster(0);
+                                    getIsland().setExpBooster(0);
+                                    getIsland().setFarmingBooster(0);
+                                    getIsland().setSpawnerBooster(0);
+                                }
+                            }, IridiumSkyblock.getMessages().resetAction).getInventory());
+                        } else {
+                            p.openInventory(getIsland().getSchematicSelectGUI().getInventory());
+                        }
                     } else {
                         int day = (int) TimeUnit.SECONDS.toDays(time);
                         int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));

@@ -1,10 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.MultiversionMaterials;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,10 +40,36 @@ public class SchematicSelectGUI extends GUI implements Listener {
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (e.getSlot() == fakeSchematic.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
-                    getIsland().setSchematic(fakeSchematic.name);
+                    e.getWhoClicked().closeInventory();
+                    if (getIsland().getSchematic() != null) {
+                        for (String player : getIsland().getMembers()) {
+                            User user = User.getUser(player);
+                            Player p = Bukkit.getPlayer(user.name);
+                            if (p != null) {
+                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            }
+                        }
+                    }
+                    if (getIsland().getSchematic() == null) {
+                        getIsland().setSchematic(fakeSchematic.name);
+                        getIsland().pasteSchematic((Player) e.getWhoClicked(), false);
+                    } else {
+                        getIsland().setSchematic(fakeSchematic.name);
+                        getIsland().pasteSchematic(true);
+                    }
                     getIsland().setHome(getIsland().getHome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
                     getIsland().setNetherhome(getIsland().getNetherhome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
-                    getIsland().pasteSchematic((Player) e.getWhoClicked(), false);
+                    if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
+                        getIsland().resetMissions();
+                        getIsland().setSizeLevel(1);
+                        getIsland().setMemberLevel(1);
+                        getIsland().setWarpLevel(1);
+                        getIsland().setOreLevel(1);
+                        getIsland().setFlightBooster(0);
+                        getIsland().setExpBooster(0);
+                        getIsland().setFarmingBooster(0);
+                        getIsland().setSpawnerBooster(0);
+                    }
                     return;
                 }
             }

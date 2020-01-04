@@ -15,6 +15,7 @@ public class User {
     public boolean bypassing;
     public boolean islandChat;
     public boolean flying;
+    public transient boolean teleportingHome;
 
     public User(OfflinePlayer p) {
         invites = new ArrayList<>();
