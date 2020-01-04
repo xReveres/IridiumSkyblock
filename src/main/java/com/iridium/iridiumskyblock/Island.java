@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
+import com.iridium.iridiumskyblock.support.MergedSpawners;
 import com.iridium.iridiumskyblock.support.Wildstacker;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
@@ -283,6 +284,8 @@ public class Island {
                     int temp = IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name());
                     if (Wildstacker.enabled) {
                         temp *= Wildstacker.getSpawnerAmount((CreatureSpawner) loc.getBlock().getState());
+                    } else if (MergedSpawners.enabled) {
+                        temp *= MergedSpawners.getSpawnerAmount((CreatureSpawner) loc.getBlock().getState());
                     }
                     value += temp;
                 } else {

@@ -102,6 +102,13 @@
             <version>master</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.vk2gpz.mergedspawner</groupId>
+            <artifactId>MergedSpawners</artifactId>
+            <version>12.4.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/deps/MergedSpawner-12.4.1.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
