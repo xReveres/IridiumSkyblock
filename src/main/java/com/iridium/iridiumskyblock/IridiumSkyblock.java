@@ -9,8 +9,7 @@ import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.serializer.Persist;
-import com.iridium.iridiumskyblock.support.Vault;
-import com.iridium.iridiumskyblock.support.Wildstacker;
+import com.iridium.iridiumskyblock.support.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -88,6 +87,9 @@ public class IridiumSkyblock extends JavaPlugin {
 
             if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
             if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
+            if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) new MergedSpawners();
+            if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) new UltimateStacker();
+            if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) new EpicSpawners();
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                 registerListeners(new onExpansionUnregister());
             startCounting();

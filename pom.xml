@@ -109,6 +109,20 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/deps/MergedSpawner-12.4.1.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>EpicSpawners</artifactId>
+            <version>12.4.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/deps/EpicSpawners-6.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>UltimateStacker</artifactId>
+            <version>1.11.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/deps/ultimatestacker-1.11.3.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>net.milkbowl.vault</groupId>

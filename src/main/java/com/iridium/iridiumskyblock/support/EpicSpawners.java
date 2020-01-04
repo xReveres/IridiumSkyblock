@@ -1,17 +1,16 @@
 package com.iridium.iridiumskyblock.support;
 
-import com.vk2gpz.mergedspawner.api.MergedSpawnerAPI;
 import org.bukkit.block.CreatureSpawner;
 
-public class MergedSpawners {
+public class EpicSpawners {
 
     public static boolean enabled = false;
 
-    public MergedSpawners() {
+    public EpicSpawners() {
         enabled = true;
     }
 
     public static int getSpawnerAmount(CreatureSpawner spawner) {
-        return MergedSpawnerAPI.getInstance().getCountFor(spawner.getBlock());
+        return com.songoda.epicspawners.EpicSpawners.getInstance().getSpawnerManager().getSpawnerFromWorld(spawner.getLocation()).getSpawnCount();
     }
 }
