@@ -54,6 +54,7 @@ public class IslandManager {
             for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
                 island.setSchematic(schematic.name);
                 island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
+                island.setNetherhome(island.getNetherhome().add(schematic.x, schematic.y, schematic.z));
             }
             island.pasteSchematic(player, false);
         } else {

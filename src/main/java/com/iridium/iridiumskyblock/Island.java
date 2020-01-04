@@ -957,6 +957,10 @@ public class Island {
         this.home = home;
     }
 
+    public void setNetherhome(Location netherhome) {
+        this.netherhome = netherhome;
+    }
+
     public String getOwner() {
         return owner;
     }

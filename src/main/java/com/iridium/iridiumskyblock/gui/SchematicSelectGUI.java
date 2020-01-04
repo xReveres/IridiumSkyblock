@@ -43,6 +43,8 @@ public class SchematicSelectGUI extends GUI implements Listener {
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (e.getSlot() == fakeSchematic.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
                     getIsland().setSchematic(fakeSchematic.name);
+                    getIsland().setHome(getIsland().getHome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
+                    getIsland().setNetherhome(getIsland().getNetherhome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
                     getIsland().pasteSchematic((Player) e.getWhoClicked(), false);
                     return;
                 }
