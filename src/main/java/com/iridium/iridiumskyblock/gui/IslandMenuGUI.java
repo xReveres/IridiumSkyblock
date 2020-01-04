@@ -80,6 +80,9 @@ public class IslandMenuGUI extends GUI implements Listener {
                                     getIsland().setExpBooster(0);
                                     getIsland().setFarmingBooster(0);
                                     getIsland().setSpawnerBooster(0);
+                                    getIsland().setCrystals(0);
+                                    getIsland().exp = 0;
+                                    getIsland().money = 0;
                                 }
                             }, IridiumSkyblock.getMessages().resetAction).getInventory());
                         } else {

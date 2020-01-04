@@ -46,6 +46,9 @@ public class RegenCommand extends Command {
                                     user.getIsland().setExpBooster(0);
                                     user.getIsland().setFarmingBooster(0);
                                     user.getIsland().setSpawnerBooster(0);
+                                    user.getIsland().setCrystals(0);
+                                    user.getIsland().exp = 0;
+                                    user.getIsland().money = 0;
                                 }
                             }, IridiumSkyblock.getMessages().resetAction).getInventory());
                         } else {
