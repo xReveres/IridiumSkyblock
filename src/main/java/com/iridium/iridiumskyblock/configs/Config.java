@@ -34,7 +34,7 @@ public class Config {
     public boolean disableExplosions = true;
     public boolean clearInventories = false;
     public boolean debugSchematics = false;
-    public boolean restartUpgradesOnRegen = false;
+    public boolean restartUpgradesOnRegen = true;
     public boolean allowWaterInNether = true;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
