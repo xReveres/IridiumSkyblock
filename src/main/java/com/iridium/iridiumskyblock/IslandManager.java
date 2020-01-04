@@ -55,7 +55,7 @@ public class IslandManager {
                 island.setSchematic(schematic.name);
                 island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
             }
-            island.pasteSchematic(player);
+            island.pasteSchematic(player, false);
         } else {
             player.openInventory(island.getSchematicSelectGUI().getInventory());
         }

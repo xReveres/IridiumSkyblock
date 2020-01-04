@@ -491,11 +491,11 @@ public class Island {
                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
-        pasteSchematic();
+        pasteSchematic(true);
     }
 
-    public void pasteSchematic() {
-        if (chunks != null) {
+    public void pasteSchematic(boolean deleteBlocks) {
+        if (chunks != null && deleteBlocks) {
             for (Chunk c : chunks) {
                 for (BlockState state : c.getTileEntities()) {
                     if (state instanceof Container) {
@@ -505,15 +505,15 @@ public class Island {
             }
         }
 
-        final int max = IridiumSkyblock.getIslandManager().getWorld().getMaxHeight();
+        final int max = deleteBlocks ? IridiumSkyblock.getIslandManager().getWorld().getMaxHeight() : getMax();
         genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
-            int y = 0;
+            int y = deleteBlocks ? 0 : getHeight();
 
             @Override
             public void run() {
-                for (int i = 0; i < IridiumSkyblock.getConfiguration().pastingLayersPerTick; i++) {
+                for (int i = 0; i < (deleteBlocks ? IridiumSkyblock.getConfiguration().pastingLayersPerTick : 1); i++) {
                     if (max >= y) {
-                        deleteBlocks(y);
+                        if (deleteBlocks) deleteBlocks(y);
                         pasteSchematic(y);
                         y++;
                     } else {
@@ -526,8 +526,8 @@ public class Island {
         }, 0, 0);
     }
 
-    public void pasteSchematic(Player player) {
-        if (chunks != null) {
+    public void pasteSchematic(Player player, boolean deleteBlocks) {
+        if (chunks != null && deleteBlocks) {
             for (Chunk c : chunks) {
                 for (BlockState state : c.getTileEntities()) {
                     if (state instanceof Container) {
@@ -537,17 +537,15 @@ public class Island {
             }
         }
 
-        final int max = IridiumSkyblock.getIslandManager().getWorld().getMaxHeight();
-        getHome().getBlock().setType(Material.STONE, true);//Just incase something fails ?
-
+        final int max = deleteBlocks ? IridiumSkyblock.getIslandManager().getWorld().getMaxHeight() : getMax();
         genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
-            int y = 0;
+            int y = deleteBlocks ? 0 : getHeight();
 
             @Override
             public void run() {
-                for (int i = 0; i < IridiumSkyblock.getConfiguration().pastingLayersPerTick; i++) {
+                for (int i = 0; i < (deleteBlocks ? IridiumSkyblock.getConfiguration().pastingLayersPerTick : 2); i++) {
                     if (max >= y) {
-                        deleteBlocks(y);
+                        if (deleteBlocks) deleteBlocks(y);
                         pasteSchematic(y);
                         y++;
                     } else {
@@ -561,6 +559,24 @@ public class Island {
                 }
             }
         }, 0, 0);
+    }
+
+    private int getHeight() {
+        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
+            if (fakeSchematic.name.equals(schematic)) {
+                return getCenter().getBlockY() - (IridiumSkyblock.getInstance().schems.get(fakeSchematic).getHeight() / 2);
+            }
+        }
+        return 0;
+    }
+
+    private int getMax() {
+        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
+            if (fakeSchematic.name.equals(schematic)) {
+                return getCenter().getBlockY() + (IridiumSkyblock.getInstance().schems.get(fakeSchematic).getHeight() / 2);
+            }
+        }
+        return 0;
     }
 
     private void pasteSchematic(int Y) {
@@ -648,7 +664,7 @@ public class Island {
                 p.teleport(this.home);
                 sendBorder(p);
             } else {
-                pasteSchematic(p);
+                pasteSchematic(p, false);
             }
         }
     }
