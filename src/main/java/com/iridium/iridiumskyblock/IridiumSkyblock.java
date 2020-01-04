@@ -78,22 +78,23 @@ public class IridiumSkyblock extends JavaPlugin {
 
             persist = new Persist();
 
-            configuration = persist.getFile(Config.class).exists() ? persist.load(Config.class) : new Config();
+            new Metrics(IridiumSkyblock.getInstance());
 
+            loadConfigs();
+            saveConfigs();
+
+            commandManager = new CommandManager("island");
+            commandManager.registerCommands();
+
+            if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
+            if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+                registerListeners(new onExpansionUnregister());
+            startCounting();
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
-
-                loadConfigs();
                 loadIslandManager();
-                saveConfigs();
 
-                commandManager = new CommandManager("island");
-                commandManager.registerCommands();
-
-                if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
-                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
                 if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
-                if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
-                    registerListeners(new onExpansionUnregister());
 
                 // Call it as a delayed task to wait for the server to properly load first
                 Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
@@ -104,8 +105,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 registerListeners(new onBlockPiston(), new onEntityPickupItem(), new onPlayerTalk(), new onItemCraft(), new onPlayerTeleport(), new onPlayerPortal(), new onBlockBreak(), new onBlockPlace(), new onClick(), new onBlockFromTo(), new onSpawnerSpawn(), new onEntityDeath(), new onPlayerJoinLeave(), new onBlockGrow(), new onPlayerTalk(), new onPlayerMove(), new onEntityDamageByEntity(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
 
-                new Metrics(IridiumSkyblock.getInstance());
-
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
 
                 if (configuration.doIslandBackup)
@@ -115,7 +114,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 setupPlaceholderAPI();
 
-                startCounting();
                 getLogger().info("-------------------------------");
                 getLogger().info("");
                 getLogger().info(getDescription().getName() + " Enabled!");
@@ -278,22 +276,24 @@ public class IridiumSkyblock extends JavaPlugin {
         c.set(Calendar.MILLISECOND, 0);
         new Timer().schedule(new TimerTask() {
             public void run() {
-                LocalDateTime ldt = LocalDateTime.now();
-                if (ldt.getDayOfWeek().equals(DayOfWeek.MONDAY) && getConfiguration().missionRestart.equals(MissionRestart.Weekly) || getConfiguration().missionRestart.equals(MissionRestart.Daily)) {
-                    for (Island island : getIslandManager().islands.values()) {
-                        island.resetMissions();
+                if (getIslandManager() != null) {
+                    LocalDateTime ldt = LocalDateTime.now();
+                    if (ldt.getDayOfWeek().equals(DayOfWeek.MONDAY) && getConfiguration().missionRestart.equals(MissionRestart.Weekly) || getConfiguration().missionRestart.equals(MissionRestart.Daily)) {
+                        for (Island island : getIslandManager().islands.values()) {
+                            island.resetMissions();
+                        }
                     }
-                }
-                for (Island island : getIslandManager().islands.values()) {
-                    int cm = island.money;
-                    int cc = island.getCrystals();
-                    int ce = island.exp;
-                    island.money = (int) Math.floor(island.money * (1 + (getConfiguration().dailyMoneyInterest / 100.00)));
-                    island.setCrystals((int) Math.floor(island.getCrystals() * (1 + (getConfiguration().dailyCrystalsInterest / 100.00))));
-                    island.exp = (int) Math.floor(island.exp * (1 + (getConfiguration().dailyExpInterest / 100.00)));
-                    for (String member : island.getMembers()) {
-                        Player p = Bukkit.getPlayer(User.getUser(member).name);
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", island.exp - ce + "").replace("%crystals%", island.getCrystals() - cc + "").replace("%money%", island.money - cm + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    for (Island island : getIslandManager().islands.values()) {
+                        int cm = island.money;
+                        int cc = island.getCrystals();
+                        int ce = island.exp;
+                        island.money = (int) Math.floor(island.money * (1 + (getConfiguration().dailyMoneyInterest / 100.00)));
+                        island.setCrystals((int) Math.floor(island.getCrystals() * (1 + (getConfiguration().dailyCrystalsInterest / 100.00))));
+                        island.exp = (int) Math.floor(island.exp * (1 + (getConfiguration().dailyExpInterest / 100.00)));
+                        for (String member : island.getMembers()) {
+                            Player p = Bukkit.getPlayer(User.getUser(member).name);
+                            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", island.exp - ce + "").replace("%crystals%", island.getCrystals() - cc + "").replace("%money%", island.money - cm + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        }
                     }
                 }
                 startCounting();
