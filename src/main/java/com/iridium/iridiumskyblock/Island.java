@@ -633,7 +633,7 @@ public class Island {
             for (String pl : members) {
                 Player player = Bukkit.getPlayer(User.getUser(pl).name);
                 if (player != null) {
-                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitedYourIsland.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitedYourIsland.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             }
         }
