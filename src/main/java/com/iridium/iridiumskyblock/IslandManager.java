@@ -5,12 +5,16 @@ import org.bukkit.*;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class IslandManager {
 
     public HashMap<Integer, Island> islands = new HashMap<>();
     public HashMap<String, User> users = new HashMap<>();
+
+    public transient HashMap<Integer, List<Integer>> islandCache;
 
     int length = 1;
     int current = 0;
@@ -109,10 +113,25 @@ public class IslandManager {
     }
 
     public Island getIslandViaLocation(Location loc) {
+        if (islandCache == null) islandCache = new HashMap<>();
         if (loc == null) return null;
+        int hash = loc.getChunk().hashCode();
+        IridiumSkyblock.getInstance().getLogger().info(hash + "");
+        if (islandCache.containsKey(hash)) {
+            for (int id : islandCache.get(hash)) {
+                if (getIslandViaId(id).isInIsland(loc)) {
+                    return getIslandViaId(id);
+                }
+            }
+        }
         if (loc.getWorld().equals(getWorld()) || loc.getWorld().equals(getNetherWorld())) {
             for (Island island : islands.values()) {
                 if (island.isInIsland(loc)) {
+                    if (islandCache.containsKey(hash)) {
+                        islandCache.get(hash).add(island.getId());
+                    } else {
+                        islandCache.put(hash, Collections.singletonList(island.getId()));
+                    }
                     return island;
                 }
             }
