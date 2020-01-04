@@ -68,7 +68,6 @@ public class Messages {
     public String coopAdded = "%prefix% &7You have granted %player%'s Island member permissions.";
     public String coopGiven = "%prefix% &7You have been granted Member permissions to %player%'s Island.";
     public String coopTaken = "%prefix% &7Your Member permissions have been removed for %player%'s Island.";
-    public String coopRemoved = "%prefix% &7Your have revoked %player%'s Island member permissions.";
     public String coopInvite = "%prefix% &7You have been invited to coop %player%'s island.";
     public String coopInviteSent = "%prefix% &7Coop invitation send to %player%'s Island.";
     public String islandCreated = "&b&lIsland Created";
@@ -94,6 +93,7 @@ public class Messages {
     public String nextPage = ">>";
     public String Kick = "Kick";
     public String Demote = "Demote";
+    public String regenCooldown = "%prefix% &7Island regeneration is on cooldown for %minutes% Minutes and %seconds% Seconds";
 
     public HashMap<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {

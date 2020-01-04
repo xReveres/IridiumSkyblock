@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.concurrent.TimeUnit;
+
 public class IslandMenuGUI extends GUI implements Listener {
 
     public ConfirmationGUI delete;
@@ -72,7 +74,16 @@ public class IslandMenuGUI extends GUI implements Listener {
             } else if (e.getSlot() == (IridiumSkyblock.getInventories().regen.slot == null ? 2 : IridiumSkyblock.getInventories().regen.slot)) {
                 p.closeInventory();
                 if (u.bypassing || getIsland().getPermissions(u.role).regen) {
-                    p.openInventory(regen.getInventory());
+                    long time = getIsland().canGenerate() / 1000;
+                    if (time == 0 || u.bypassing) {
+                        p.openInventory(regen.getInventory());
+                    } else {
+                        int day = (int) TimeUnit.SECONDS.toDays(time);
+                        int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+                        int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
+                        int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
+                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    }
                 } else {
                     p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }

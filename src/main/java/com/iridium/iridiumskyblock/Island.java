@@ -126,6 +126,8 @@ public class Island {
 
     public transient HashSet<Location> failedGenerators;
 
+    private Date lastRegen;
+
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
@@ -483,6 +485,14 @@ public class Island {
         }, 0, 5);
     }
 
+    public long canGenerate() {
+        if (lastRegen == null) return 0;
+        if (new Date().after(lastRegen)) {
+            return 0;
+        }
+        return lastRegen.getTime() - System.currentTimeMillis();
+    }
+
     public void generateIsland() {
         for (String player : members) {
             User user = User.getUser(player);
@@ -492,6 +502,9 @@ public class Island {
             }
         }
         pasteSchematic(true);
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
+        lastRegen = c.getTime();
     }
 
     public void pasteSchematic(boolean deleteBlocks) {

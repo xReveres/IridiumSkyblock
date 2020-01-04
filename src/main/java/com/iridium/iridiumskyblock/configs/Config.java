@@ -37,6 +37,7 @@ public class Config {
     public boolean restartUpgradesOnRegen = false;
     public boolean allowWaterInNether = true;
     public int deleteBackupsAfterDays = 7;
+    public int regenCooldown = 3600;
     public int distance = 151;
     public int backupIntervalMinutes = 60;
     public int pastingLayersPerTick = 20;
