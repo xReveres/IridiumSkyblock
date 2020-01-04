@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.serializer.typeadapter.EnumTypeAdapter;
 import com.iridium.iridiumskyblock.serializer.typeadapter.InventoryTypeAdapter;
 import com.iridium.iridiumskyblock.serializer.typeadapter.LocationTypeAdapter;
 import com.iridium.iridiumskyblock.serializer.typeadapter.MultiversionMaterialsTypeAdapter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 
@@ -94,8 +95,9 @@ public class Persist {
 
         try {
             return gson.fromJson(content, clazz);
-        } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
-            IridiumSkyblock.getInstance().getLogger().warning(ex.getMessage());
+        } catch (Exception ex) {
+            IridiumSkyblock.getInstance().getLogger().severe("Failed to parse " + file.toString() + ": " + ex.getMessage());
+            Bukkit.getPluginManager().disablePlugin(IridiumSkyblock.getInstance());
         }
 
         return null;

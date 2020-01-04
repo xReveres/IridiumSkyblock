@@ -80,7 +80,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             new Metrics(IridiumSkyblock.getInstance());
 
-            loadConfigs();
+            if (!loadConfigs()) return;
             saveConfigs();
 
             commandManager = new CommandManager("island");
@@ -93,6 +93,7 @@ public class IridiumSkyblock extends JavaPlugin {
             startCounting();
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
                 loadIslandManager();
+                if (getIslandManager() == null) return;
 
                 if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
 
@@ -400,6 +401,8 @@ public class IridiumSkyblock extends JavaPlugin {
     public void loadIslandManager() {
         islandManager = persist.getFile(IslandManager.class).exists() ? persist.load(IslandManager.class) : new IslandManager();
 
+        if (islandManager == null) return;
+
         for (Island island : islandManager.islands.values()) {
             island.init();
         }
@@ -408,7 +411,7 @@ public class IridiumSkyblock extends JavaPlugin {
             getIslandManager().getNetherWorld().getWorldBorder().setSize(Double.MAX_VALUE);
     }
 
-    public void loadConfigs() {
+    public boolean loadConfigs() {
         configuration = persist.getFile(Config.class).exists() ? persist.load(Config.class) : new Config();
         missions = persist.getFile(Missions.class).exists() ? persist.load(Missions.class) : new Missions();
         messages = persist.getFile(Messages.class).exists() ? persist.load(Messages.class) : new Messages();
@@ -419,6 +422,10 @@ public class IridiumSkyblock extends JavaPlugin {
         commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
+
+        if (configuration == null || missions == null || messages == null || upgrades == null || boosters == null || inventories == null || schematics == null || commands == null || blockValues == null || shop == null) {
+            return false;
+        }
 
         if (shop.shop == null) shop = new Shop();
 
@@ -502,6 +509,7 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
 
         }
+        return true;
     }
 
     public void saveData() {
