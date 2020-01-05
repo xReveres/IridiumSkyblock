@@ -13,7 +13,9 @@ import com.iridium.iridiumskyblock.support.UltimateStacker;
 import com.iridium.iridiumskyblock.support.Wildstacker;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
-import org.bukkit.block.*;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -47,8 +49,6 @@ public class Island {
             return password;
         }
     }
-
-    private transient List<Chunk> chunks;
 
     private String owner;
     private HashSet<String> members;
@@ -88,8 +88,6 @@ public class Island {
     private int oreLevel;
 
     private int a;
-
-    private transient int chunkID;
 
     public transient int genearteID;
 
@@ -218,28 +216,14 @@ public class Island {
     }
 
     public void sendBorder() {
-        for (Chunk c : chunks) {
-            for (Entity e : c.getEntities()) {
-                if (e instanceof Player) {
-                    if (isInIsland(e.getLocation())) {
-                        Player p = (Player) e;
-                        sendBorder(p);
-                    }
-                }
-            }
+        for (Player p : getPlayersOnIsland()) {
+            sendBorder(p);
         }
     }
 
     public void hideBorder() {
-        for (Chunk c : chunks) {
-            for (Entity e : c.getEntities()) {
-                if (e instanceof Player) {
-                    if (isInIsland(e.getLocation())) {
-                        Player p = (Player) e;
-                        hideBorder(p);
-                    }
-                }
-            }
+        for (Player p : getPlayersOnIsland()) {
+            hideBorder(p);
         }
     }
 
@@ -440,8 +424,6 @@ public class Island {
         biomeGUI = new BiomeGUI(this);
         failedGenerators = new HashSet<>();
         coopInvites = new HashSet<>();
-
-        initChunks();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
             if (spawnerBooster > 0) spawnerBooster--;
             if (farmingBooster > 0) farmingBooster--;
@@ -467,42 +449,7 @@ public class Island {
                 }
             }};
         }
-    }
-
-    public void initChunks() { // Optimise this?
-        chunks = new ArrayList<>();
-        chunkID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
-            int X = getPos1().getChunk().getX();
-            int Z = getPos1().getChunk().getZ();
-
-            @Override
-            public void run() {
-                addChunk(IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
-                if (IridiumSkyblock.getConfiguration().netherIslands)
-                    addChunk(IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z));
-                X++;
-                if (X > getPos2().getChunk().getX()) {
-                    X = getPos1().getChunk().getX();
-                    Z++;
-                    if (Z > getPos2().getChunk().getZ()) {
-                        Bukkit.getScheduler().cancelTask(chunkID);
-                        chunkID = -1;
-                    }
-                }
-            }
-        }, 0, 5);
-    }
-
-    public void addChunk(Chunk c) {
-        chunks.add(c);
-        for (Entity e : c.getEntities()) {
-            if (e instanceof Player) {
-                if (isInIsland(e.getLocation())) {
-                    Player p = (Player) e;
-                    sendBorder(p);
-                }
-            }
-        }
+        sendBorder();
     }
 
     public long canGenerate() {
@@ -517,36 +464,6 @@ public class Island {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
         lastRegen = c.getTime();
-        if (chunks != null && deleteBlocks) {
-            for (Chunk chunk : chunks) {
-                for (BlockState state : chunk.getTileEntities()) {
-//                    try {
-//                        if (state instanceof Container) {
-//                            ((Container) state).getInventory().clear();
-//                        }
-//                    } catch (Exception e) {
-                        if (state instanceof Chest) {
-                            ((Chest) state).getInventory().clear();
-                        } else if (state instanceof DoubleChest) {
-                            ((DoubleChest) state).getInventory().clear();
-                        } else if (state instanceof Dropper) {
-                            ((Dropper) state).getInventory().clear();
-                        } else if (state instanceof Dispenser) {
-                            ((Dispenser) state).getInventory().clear();
-                        } else if (state instanceof Hopper) {
-                            ((Hopper) state).getInventory().clear();
-                        } else if (state instanceof Furnace) {
-                            ((Furnace) state).getInventory().clear();
-                        } else if (state instanceof BrewingStand) {
-                            ((BrewingStand) state).getInventory().clear();
-                        } else if (state instanceof Beacon) {
-                            ((Beacon) state).getInventory().clear();
-                        }
-//                    }
-                }
-            }
-        }
-
         final int max = deleteBlocks ? IridiumSkyblock.getIslandManager().getWorld().getMaxHeight() : getMax();
         genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             int y = deleteBlocks ? 0 : getHeight();
@@ -573,41 +490,13 @@ public class Island {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
         lastRegen = c.getTime();
-        if (chunks != null && deleteBlocks) {
-            for (Chunk chunk : chunks) {
-                for (BlockState state : chunk.getTileEntities()) {
-                    // This causes issues with 1.8 as they dont have the Container class
-//                    if (state instanceof Container) {
-//                        ((Container) state).getInventory().clear();
-//                    }
-                    if (state instanceof Chest) {
-                        ((Chest) state).getInventory().clear();
-                    } else if (state instanceof DoubleChest) {
-                        ((DoubleChest) state).getInventory().clear();
-                    } else if (state instanceof Dropper) {
-                        ((Dropper) state).getInventory().clear();
-                    } else if (state instanceof Dispenser) {
-                        ((Dispenser) state).getInventory().clear();
-                    } else if (state instanceof Hopper) {
-                        ((Hopper) state).getInventory().clear();
-                    } else if (state instanceof Furnace) {
-                        ((Furnace) state).getInventory().clear();
-                    } else if (state instanceof BrewingStand) {
-                        ((BrewingStand) state).getInventory().clear();
-                    } else if (state instanceof Beacon) {
-                        ((Beacon) state).getInventory().clear();
-                    }
-                }
-            }
-        }
-
         final int max = deleteBlocks ? IridiumSkyblock.getIslandManager().getWorld().getMaxHeight() : getMax();
         genearteID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             int y = deleteBlocks ? 0 : getHeight();
 
             @Override
             public void run() {
-                for (int i = 0; i < (deleteBlocks ? IridiumSkyblock.getConfiguration().pastingLayersPerTick : 1); i++) {
+                for (int i = 0; i < (deleteBlocks ? IridiumSkyblock.getConfiguration().pastingLayersPerTick : 2); i++) {
                     if (max >= y) {
                         if (deleteBlocks) deleteBlocks(y);
                         pasteSchematic(y);
@@ -801,7 +690,6 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getIslandMenuGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getCoopGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
-        if (chunkID != -1) Bukkit.getScheduler().cancelTask(chunkID);
         if (genearteID != -1) Bukkit.getScheduler().cancelTask(genearteID);
         permissions.clear();
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
@@ -821,7 +709,6 @@ public class Island {
         this.pos1 = null;
         this.pos2 = null;
         this.members = null;
-        this.chunks = null;
         this.center = null;
         this.home = null;
         IridiumSkyblock.getIslandManager().islands.remove(this.id);
@@ -944,13 +831,19 @@ public class Island {
     }
 
     public void spawnPlayers() {
-        for (Chunk c : chunks) {
-            for (Entity e : c.getEntities()) {
-                if (e instanceof Player) {
-                    spawnPlayer((Player) e);
-                }
+        for (Player p : getPlayersOnIsland()) {
+            spawnPlayer(p);
+        }
+    }
+
+    public List<Player> getPlayersOnIsland() {
+        List<Player> players = new ArrayList<>();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (isInIsland(p.getLocation())) {
+                players.add(p);
             }
         }
+        return players;
     }
 
     public void spawnPlayer(Player player) {
@@ -970,13 +863,14 @@ public class Island {
                 IridiumSkyblock.getIslandManager().getWorld().setBiome((int) X, (int) Z, biome);
             }
         }
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            for (Chunk c : chunks) {
-                if (c.getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-                    NMSUtils.sendChunk(p, c);
+        for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
+            for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    NMSUtils.sendChunk(p, IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
                 }
             }
         }
+
     }
 
     public void deleteBlocks(int Y) {
@@ -984,10 +878,6 @@ public class Island {
         for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
             for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
                 NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z, 0, (byte) 0);
-//                    Block b = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z).getBlock();
-//                    if (b.getState() instanceof Chest) {
-//                        ((Chest) b.getState()).getBlockInventory().clear();
-//                    }
             }
         }
         if (IridiumSkyblock.getConfiguration().netherIslands) {
@@ -1000,11 +890,17 @@ public class Island {
     }
 
     public void killEntities() {
-        if (chunks == null) return;
-        for (Chunk c : chunks) {
-            for (Entity e : c.getEntities()) {
-                if (isInIsland(e.getLocation())) {
-                    if (e.getType() != EntityType.PLAYER) {
+        for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
+            for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
+                Chunk overworld = IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z);
+                Chunk nether = IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z);
+                for (Entity e : overworld.getEntities()) {
+                    if (!e.getType().equals(EntityType.PLAYER)) {
+                        e.remove();
+                    }
+                }
+                for (Entity e : nether.getEntities()) {
+                    if (!e.getType().equals(EntityType.PLAYER)) {
                         e.remove();
                     }
                 }
