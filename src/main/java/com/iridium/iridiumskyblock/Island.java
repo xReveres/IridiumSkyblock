@@ -469,7 +469,7 @@ public class Island {
         }
     }
 
-    public void initChunks() {
+    public void initChunks() { // Optimise this?
         chunks = new ArrayList<>();
         chunkID = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             int X = getPos1().getChunk().getX();
@@ -513,17 +513,6 @@ public class Island {
         return lastRegen.getTime() - System.currentTimeMillis();
     }
 
-    public void generateIsland() {
-        for (String player : members) {
-            User user = User.getUser(player);
-            Player p = Bukkit.getPlayer(user.name);
-            if (p != null) {
-                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-            }
-        }
-        pasteSchematic(true);
-    }
-
     public void pasteSchematic(boolean deleteBlocks) {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
@@ -531,9 +520,29 @@ public class Island {
         if (chunks != null && deleteBlocks) {
             for (Chunk chunk : chunks) {
                 for (BlockState state : chunk.getTileEntities()) {
-                    if (state instanceof Container) {
-                        ((Container) state).getInventory().clear();
-                    }
+//                    try {
+//                        if (state instanceof Container) {
+//                            ((Container) state).getInventory().clear();
+//                        }
+//                    } catch (Exception e) {
+                        if (state instanceof Chest) {
+                            ((Chest) state).getInventory().clear();
+                        } else if (state instanceof DoubleChest) {
+                            ((DoubleChest) state).getInventory().clear();
+                        } else if (state instanceof Dropper) {
+                            ((Dropper) state).getInventory().clear();
+                        } else if (state instanceof Dispenser) {
+                            ((Dispenser) state).getInventory().clear();
+                        } else if (state instanceof Hopper) {
+                            ((Hopper) state).getInventory().clear();
+                        } else if (state instanceof Furnace) {
+                            ((Furnace) state).getInventory().clear();
+                        } else if (state instanceof BrewingStand) {
+                            ((BrewingStand) state).getInventory().clear();
+                        } else if (state instanceof Beacon) {
+                            ((Beacon) state).getInventory().clear();
+                        }
+//                    }
                 }
             }
         }
@@ -567,8 +576,26 @@ public class Island {
         if (chunks != null && deleteBlocks) {
             for (Chunk chunk : chunks) {
                 for (BlockState state : chunk.getTileEntities()) {
-                    if (state instanceof Container) {
-                        ((Container) state).getInventory().clear();
+                    // This causes issues with 1.8 as they dont have the Container class
+//                    if (state instanceof Container) {
+//                        ((Container) state).getInventory().clear();
+//                    }
+                    if (state instanceof Chest) {
+                        ((Chest) state).getInventory().clear();
+                    } else if (state instanceof DoubleChest) {
+                        ((DoubleChest) state).getInventory().clear();
+                    } else if (state instanceof Dropper) {
+                        ((Dropper) state).getInventory().clear();
+                    } else if (state instanceof Dispenser) {
+                        ((Dispenser) state).getInventory().clear();
+                    } else if (state instanceof Hopper) {
+                        ((Hopper) state).getInventory().clear();
+                    } else if (state instanceof Furnace) {
+                        ((Furnace) state).getInventory().clear();
+                    } else if (state instanceof BrewingStand) {
+                        ((BrewingStand) state).getInventory().clear();
+                    } else if (state instanceof Beacon) {
+                        ((Beacon) state).getInventory().clear();
                     }
                 }
             }
