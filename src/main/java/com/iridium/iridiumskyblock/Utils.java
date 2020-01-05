@@ -345,8 +345,18 @@ public class Utils {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
             u.getIsland().setCrystals(u.getIsland().getCrystals() + crystals);
+            if (Vault.econ == null) {
+                u.getIsland().money += vault;
+            } else {
+                Vault.econ.depositPlayer(p, vault);
+            }
+        } else {
+            if (Vault.econ == null) {
+                IridiumSkyblock.getInstance().getLogger().warning("Vault plugin not found");
+                return;
+            }
+            Vault.econ.depositPlayer(p, vault);
         }
-        Vault.econ.depositPlayer(p, vault);
     }
 
     public static boolean canBuy(Player p, int vault, int crystals) {
