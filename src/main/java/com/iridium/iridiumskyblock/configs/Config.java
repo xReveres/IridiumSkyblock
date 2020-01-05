@@ -41,7 +41,7 @@ public class Config {
     public int distance = 151;
     public int backupIntervalMinutes = 60;
     public int pastingLayersPerTick = 2;
-    public int blocksPerTick = 50;
+    public int blocksPerTick = 25;
     public int islandsUpdateInterval = 5;
     public double valuePerLevel = 100.00;
     public double dailyMoneyInterest = 0.5;
