@@ -26,5 +26,6 @@ public class onPlayerJoinLeave implements Listener {
             u.flying = false;
         }
         u.bypassing = false;
+        IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getPlayer().getLocation()).sendBorder(e.getPlayer());
     }
 }
