@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,9 @@ public class onPlayerJoinLeave implements Listener {
             u.flying = false;
         }
         u.bypassing = false;
-        IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getPlayer().getLocation()).sendBorder(e.getPlayer());
+        Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getPlayer().getLocation());
+        if (island != null) {
+            island.sendBorder(e.getPlayer());
+        }
     }
 }
