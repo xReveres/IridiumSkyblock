@@ -407,6 +407,10 @@ public class Island {
     public void init() {
         if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
         if (blocks == null) blocks = new ArrayList<>();
+        if (members == null) {
+            members = new HashSet<>();
+            members.add(owner);
+        }
 
         blocks = new ArrayList<>(new HashSet<>(blocks));
 
