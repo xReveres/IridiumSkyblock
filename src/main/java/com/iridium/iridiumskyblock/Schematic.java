@@ -136,8 +136,8 @@ public class Schematic {
                     Method setBlockData = Block.class.getMethod("setBlockData", Class.forName("org.bukkit.block.data.BlockData"), boolean.class);
                     for (int x = 0; x < width; ++x) {
                         for (int z = 0; z < length; ++z) {
-                            int index = y * width * length + z * width + x;
-                            Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
+                            int index = (y - loc.getBlockY()) * width * length + z * width + x;
+                            Block block = new Location(loc.getWorld(), x + loc.getBlockX(), y, z + loc.getBlockZ()).getBlock();
                             for (String s : palette.keySet()) {
                                 int i = getChildTag(palette, s, IntTag.class).getValue();
                                 if (blockdata[index] == i) {
@@ -150,7 +150,7 @@ public class Schematic {
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         }

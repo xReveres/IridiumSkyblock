@@ -480,6 +480,7 @@ public class Island {
                         pasteSchematic(y);
                         y++;
                     } else {
+                        i=9999;
                         pasteSchematicData();
                         Bukkit.getScheduler().cancelTask(genearteID);
                         killEntities();
@@ -523,7 +524,7 @@ public class Island {
     private int getHeight() {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
             if (fakeSchematic.name.equals(schematic)) {
-                return getCenter().getBlockY() - (IridiumSkyblock.getInstance().schems.get(fakeSchematic).getHeight() / 2);
+                return getCenter().getBlockY() - (IridiumSkyblock.getInstance().schems.get(fakeSchematic).getHeight() / 2) -1;
             }
         }
         return 0;
@@ -532,7 +533,7 @@ public class Island {
     private int getMax() {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
             if (fakeSchematic.name.equals(schematic)) {
-                return getCenter().getBlockY() + (IridiumSkyblock.getInstance().schems.get(fakeSchematic).getHeight() / 2);
+                return getCenter().getBlockY() + (IridiumSkyblock.getInstance().schems.get(fakeSchematic).getHeight() / 2) +1;
             }
         }
         return 0;
