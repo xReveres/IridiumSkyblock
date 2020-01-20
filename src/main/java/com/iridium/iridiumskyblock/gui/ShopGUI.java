@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.MultiversionMaterials;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Shop;
 import org.bukkit.Bukkit;
@@ -78,6 +79,19 @@ public class ShopGUI extends GUI implements Listener {
         }
     }
 
+    public boolean contains(Player p, MultiversionMaterials materials, int amount) {
+        int total = 0;
+        for (ItemStack item : p.getInventory().getContents()) {
+            if (item == null) continue;
+            if (item.getType().equals(materials.parseMaterial())) {
+                if (item.getData().getData() == materials.data) {
+                    total += item.getAmount();
+                }
+            }
+        }
+        return total >= amount;
+    }
+
     @EventHandler
     @Override
     public void onInventoryClick(InventoryClickEvent e) {
@@ -94,11 +108,11 @@ public class ShopGUI extends GUI implements Listener {
                 if (items.containsKey(e.getSlot())) {
                     Shop.ShopItem item = items.get(e.getSlot());
                     if (e.getClick().equals(ClickType.RIGHT)) {
-                        if (e.getWhoClicked().getInventory().containsAtLeast(new ItemStack(item.material.parseMaterial(), 1, (short) item.material.data), item.amount)) {
+                        if (contains((Player) e.getWhoClicked(), item.material, item.amount)) {
                             int removed = 0;
                             for (ItemStack itemStack : e.getWhoClicked().getInventory().getContents()) {
                                 if (itemStack != null) {
-                                    if (itemStack.getType().equals(item.material.parseMaterial()) && itemStack.getDurability() == item.material.data) {
+                                    if (itemStack.getType().equals(item.material.parseMaterial()) && itemStack.getData().getData() == item.material.data) {
                                         if (removed + itemStack.getAmount() <= item.amount) {
                                             removed += itemStack.getAmount();
                                             itemStack.setType(Material.AIR);
