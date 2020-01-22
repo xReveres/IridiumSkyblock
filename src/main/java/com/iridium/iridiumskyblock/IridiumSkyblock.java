@@ -65,6 +65,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public static SkyblockGenerator generator;
 
+    public static WorldEdit worldEdit;
+
     @Override
     public void onEnable() {
         try {
@@ -116,6 +118,15 @@ public class IridiumSkyblock extends JavaPlugin {
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20 * 60);
 
                 setupPlaceholderAPI();
+
+                Plugin worldedit = Bukkit.getPluginManager().getPlugin("WorldEdit");
+                if (worldedit != null) {
+                    if (worldedit.getDescription().getVersion().startsWith("7")) {
+                        worldEdit = new WorldEdit7();
+                    } else {
+//                        worldEdit = new WorldEdit6();
+                    }
+                }
 
                 getLogger().info("-------------------------------");
                 getLogger().info("");
