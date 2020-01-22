@@ -22,16 +22,16 @@ public class WorldEdit7 implements com.iridium.iridiumskyblock.WorldEdit {
     @Override
     public void paste(File file, Location location) {
         ClipboardFormat format = ClipboardFormats.findByFile(file);
-        try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
+        try {
+            ClipboardReader reader = format.getReader(new FileInputStream(file));
             Clipboard clipboard = reader.read();
-            try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(location.getWorld()), -1)) {
-                Operation operation = new ClipboardHolder(clipboard)
-                        .createPaste(editSession)
-                        .to(BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ()))
-                        .ignoreAirBlocks(false)
-                        .build();
-                Operations.complete(operation);
-            }
+            EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(location.getWorld()), -1);
+            Operation operation = new ClipboardHolder(clipboard)
+                    .createPaste(editSession)
+                    .to(BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ()))
+                    .ignoreAirBlocks(false)
+                    .build();
+            Operations.complete(operation);
         } catch (IOException | WorldEditException e) {
             e.printStackTrace();
         }
