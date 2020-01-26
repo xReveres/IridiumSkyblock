@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.MultiversionMaterials;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Shop;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -110,18 +109,21 @@ public class ShopGUI extends GUI implements Listener {
                     if (e.getClick().equals(ClickType.RIGHT)) {
                         if (contains((Player) e.getWhoClicked(), item.material, item.amount)) {
                             int removed = 0;
+                            int index = 0;
                             for (ItemStack itemStack : e.getWhoClicked().getInventory().getContents()) {
+                                if (removed >= item.amount) break;
                                 if (itemStack != null) {
                                     if (itemStack.getType().equals(item.material.parseMaterial()) && itemStack.getData().getData() == item.material.data) {
                                         if (removed + itemStack.getAmount() <= item.amount) {
                                             removed += itemStack.getAmount();
-                                            itemStack.setType(Material.AIR);
+                                            e.getWhoClicked().getInventory().setItem(index, null);
                                         } else {
                                             itemStack.setAmount(itemStack.getAmount() - (item.amount - removed));
-                                            removed = item.amount;
+                                            removed += item.amount;
                                         }
                                     }
                                 }
+                                index++;
                             }
                             Utils.pay((Player) e.getWhoClicked(), item.sellVault, item.sellCrystals);
                         } else {
