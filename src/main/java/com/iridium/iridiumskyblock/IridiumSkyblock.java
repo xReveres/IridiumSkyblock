@@ -2,9 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
-import com.iridium.iridiumskyblock.gui.ShopGUI;
-import com.iridium.iridiumskyblock.gui.TopGUI;
-import com.iridium.iridiumskyblock.gui.VisitGUI;
+import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
@@ -67,6 +65,12 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public static WorldEdit worldEdit;
 
+    public static SettingsGUI settingsGUI;
+
+    public List<String> languages = new ArrayList<>();
+
+    public LanguagesGUI languagesGUI;
+
     @Override
     public void onEnable() {
         try {
@@ -87,6 +91,8 @@ public class IridiumSkyblock extends JavaPlugin {
             commandManager = new CommandManager("island");
             commandManager.registerCommands();
 
+            settingsGUI = new SettingsGUI();
+
             if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
             if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
             if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) new MergedSpawners();
@@ -95,6 +101,7 @@ public class IridiumSkyblock extends JavaPlugin {
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                 registerListeners(new onExpansionUnregister());
             startCounting();
+            getLanguages();
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
                 loadIslandManager();
                 if (getIslandManager() == null) return;
@@ -121,10 +128,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 Plugin worldedit = Bukkit.getPluginManager().getPlugin("WorldEdit");
                 if (worldedit != null) {
-                    if (worldedit.getDescription().getVersion().startsWith("7")) {
-                        worldEdit = new WorldEdit7();
-                    } else {
+                    if (worldedit.getDescription().getVersion().startsWith("6")) {
                         worldEdit = new WorldEdit6();
+                    } else if (worldedit.getDescription().getVersion().startsWith("7")){
+                        worldEdit = new WorldEdit7();
                     }
                 }
 
@@ -175,6 +182,22 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             sendErrorMessage(e);
         }
+    }
+
+    public void getLanguages() {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            languages.clear();
+            languages.add("English");
+            languages.add("French");
+            languagesGUI = new LanguagesGUI();
+        });
+    }
+
+    public void setLanguage(String language) {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+
+            loadConfigs();
+        });
     }
 
     private void registerMultiverse() {
