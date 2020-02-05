@@ -183,7 +183,7 @@ public class Shop {
                     new ShopItem(MultiversionMaterials.LAVA_BUCKET, "&9&lLava Bucket", 1, 200, 20, 0, 0, 12, 1),
                     new ShopItem(MultiversionMaterials.CAULDRON, "&9&lCauldron", 1, 300, 30, 0, 0, 13, 1),
                     new ShopItem(MultiversionMaterials.BREWING_STAND, "&9&lBrewing Stand", 1, 1000, 100, 0, 0, 14, 1),
-                    new ShopItem(MultiversionMaterials.RED_BED, "&9&lBed", 1, 80, 15, 0, 0, 15, 1),
+                    new ShopItem(MultiversionMaterials.WHITE_BED, "&9&lBed", 1, 80, 15, 0, 0, 15, 1),
                     new ShopItem(MultiversionMaterials.NAME_TAG, "&9&lName Tag", 1, 100, 10, 0, 0, 16, 1),
                     new ShopItem(MultiversionMaterials.LEAD, "&9&lLead", 1, 20, 2, 0, 0, 21, 1),
                     new ShopItem(MultiversionMaterials.SADDLE, "&9&lSaddle", 1, 200, 50, 0, 0, 22, 1),
