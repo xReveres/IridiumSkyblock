@@ -94,6 +94,7 @@ public class Inventories {
     public Item islandPermissionDeny = new Item(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&b&l{permission}", Collections.emptyList());
     public Item islandWarp = new Item(MultiversionMaterials.YELLOW_STAINED_GLASS_PANE, 1, "&b&l{warp}", Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."));
     public Item topisland = new Item(MultiversionMaterials.PLAYER_HEAD, 1, "&b&l{player}", "{player}", Arrays.asList("&b&l * &7Island: &b{name}", "&b&l * &7Rank: &b{rank}", "&b&l * &7Value: &b{value}", "", "&b&l[!] &bLeft Click to Teleport to this island."));
+    public Item visitisland = new Item(MultiversionMaterials.PLAYER_HEAD, 1, "&b&l{player}", "{player}", Arrays.asList("&b&l * &7Island: &b{name}", "&b&l * &7Rank: &b{rank}", "&b&l * &7Value: &b{value}","&b&l * &7Votes: &b{votes}", "", "&b&l[!] &bLeft Click to Teleport to this island.", "&b&l[!] &bRight Click to (un)vote for this island."));
 
     public List<Item> missionsItems = Arrays.asList(
             new Item(MultiversionMaterials.EXPERIENCE_BOTTLE, 10, 1, "&b&lTreasure Hunter", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bCollect {Treasure Hunteramount} Experience", "&b&l * &7Current Status: &b{Treasure Hunterstatus}", "&b&l * &7Reward: &b{Treasure Huntercrystals} Island Crystals and ${Treasure Huntervault}", "", "&b&l[!] &bComplete this mission for rewards.")),
