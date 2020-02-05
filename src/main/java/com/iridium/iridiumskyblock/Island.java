@@ -741,6 +741,9 @@ public class Island {
         clearInventories();
         spawnPlayers();
         killEntities();
+        for (int i = 0; i < IridiumSkyblock.getIslandManager().getWorld().getMaxHeight(); i++) {
+            deleteBlocks(i);
+        }
         for (String player : members) {
             User.getUser(player).islandID = 0;
             if (Bukkit.getPlayer(player) != null) Bukkit.getPlayer(player).closeInventory();
