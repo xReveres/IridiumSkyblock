@@ -21,7 +21,11 @@ public class HelpCommand extends Command {
         Player p = (Player) cs;
         int page = 1;
         if (args.length == 2) {
-            page = Integer.parseInt(args[1]);
+            try {
+                page = Integer.parseInt(args[1]);
+            }catch (NumberFormatException e){
+                return;
+            }
         }
         int maxpage = (int) Math.ceil(IridiumSkyblock.getCommandManager().commands.size() / 18.00);
         int current = 0;
