@@ -19,6 +19,14 @@ public class onBlockFromTo implements Listener {
 
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent e) {
+        if(e.getBlock().getType().equals(Material.WATER) || e.getBlock().getType().equals(Material.LAVA)){
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
+            if(island != null){
+                if(island!=IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getToBlock().getLocation())){
+                    e.setCancelled(true);
+                }
+            }
+        }
         if (!IridiumSkyblock.getUpgrades().oresUpgrade.enabled) return;
         try {
             if (e.getFace() != BlockFace.DOWN) {
