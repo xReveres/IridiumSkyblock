@@ -1,6 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.NMSUtils;
+import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,10 +24,10 @@ public class BorderColorGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
-        this.red = Utils.makeItem(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&c&lRed");
-        this.green = Utils.makeItem(MultiversionMaterials.LIME_STAINED_GLASS_PANE, 1, "&a&lGreen");
-        this.blue = Utils.makeItem(MultiversionMaterials.BLUE_STAINED_GLASS_PANE, 1, "&b&lBlue");
-        this.off = Utils.makeItem(MultiversionMaterials.WHITE_STAINED_GLASS_PANE, 1, "&b&lOff");
+        this.red = Utils.makeItem(IridiumSkyblock.getInventories().red);
+        this.green = Utils.makeItem(IridiumSkyblock.getInventories().green);
+        this.blue = Utils.makeItem(IridiumSkyblock.getInventories().blue);
+        this.off = Utils.makeItem(IridiumSkyblock.getInventories().off);
 
         setItem(10, this.red);
         setItem(12, this.blue);
