@@ -21,6 +21,10 @@ public class TransferCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+        if (args.length != 2) {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is transfer player");
+            return;
+        }
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
