@@ -553,6 +553,7 @@ public class Island {
                         teleportHome(player);
                         sendBorder(player);
                         NMSUtils.sendTitle(player, IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);
+                        if(!IridiumSkyblock.getMessages().islandCreatedSubtitle.isEmpty())NMSUtils.sendSubTitle(player, IridiumSkyblock.getMessages().islandCreatedSubtitle, 20, 40, 20);
                         Bukkit.getScheduler().cancelTask(genearteID);
                         genearteID = -1;
                     }

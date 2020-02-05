@@ -71,6 +71,7 @@ public class Messages {
     public String coopInvite = "%prefix% &7You have been invited to coop %player%'s island.";
     public String coopInviteSent = "%prefix% &7Coop invitation send to %player%'s Island.";
     public String islandCreated = "&b&lIsland Created";
+    public String islandCreatedSubtitle = "";
     public String maxlevelreached = "N/A";
     public String yes = "&a&lYes";
     public String no = "&c&lNo";
