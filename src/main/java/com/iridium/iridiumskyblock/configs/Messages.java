@@ -94,6 +94,7 @@ public class Messages {
     public String nextPage = ">>";
     public String Kick = "Kick";
     public String Demote = "Demote";
+    public String completed = "Completed";
     public String regenCooldown = "%prefix% &7Island regeneration is on cooldown for %minutes% Minutes and %seconds% Seconds";
 
     public HashMap<Role, String> roles = new HashMap<Role, String>() {{

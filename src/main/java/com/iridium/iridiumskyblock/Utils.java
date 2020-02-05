@@ -310,7 +310,7 @@ public class Utils {
         //Status amount crystals vault
         for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
             int amount = island.getMission(mission.name);
-            placeholders.add(new Placeholder(mission.name + "status", amount == Integer.MIN_VALUE ? "Completed" : amount + "/" + mission.amount));
+            placeholders.add(new Placeholder(mission.name + "status", amount == Integer.MIN_VALUE ? IridiumSkyblock.getMessages().completed : amount + "/" + mission.amount));
             placeholders.add(new Placeholder(mission.name + "amount", mission.amount + ""));
             placeholders.add(new Placeholder(mission.name + "crystals", mission.crystalReward + ""));
             placeholders.add(new Placeholder(mission.name + "vault", mission.vaultReward + ""));
