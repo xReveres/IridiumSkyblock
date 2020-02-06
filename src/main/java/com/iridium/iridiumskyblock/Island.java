@@ -488,9 +488,9 @@ public class Island {
             File schematicFolder = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
                 if (fakeSchematic.name.equals(schematic)) {
-                    IridiumSkyblock.worldEdit.paste(new File(schematicFolder, fakeSchematic.name), getSchematicLocation(fakeSchematic));
+                    IridiumSkyblock.worldEdit.paste(new File(schematicFolder, fakeSchematic.name), getSchematicLocation(fakeSchematic), this);
                     if (IridiumSkyblock.getConfiguration().netherIslands) {
-                        IridiumSkyblock.worldEdit.paste(new File(schematicFolder, fakeSchematic.netherisland), getNetherSchematicLocation(fakeSchematic));
+                        IridiumSkyblock.worldEdit.paste(new File(schematicFolder, fakeSchematic.netherisland), getNetherSchematicLocation(fakeSchematic), this);
                     }
                     break;
                 }
