@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class WorldEdit7 implements com.iridium.iridiumskyblock.WorldEdit {
     @Override
-    public void paste(File file, Location location) {
+    public void paste(File file, Location location, Island island) {
         ClipboardFormat format = ClipboardFormats.findByFile(file);
         try {
             ClipboardReader reader = format.getReader(new FileInputStream(file));
@@ -33,7 +33,11 @@ public class WorldEdit7 implements com.iridium.iridiumskyblock.WorldEdit {
                     .build();
             Operations.complete(operation);
         } catch (IOException | WorldEditException e) {
-            e.printStackTrace();
+            try {
+                Schematic.loadSchematic(file).pasteSchematic(location, island);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

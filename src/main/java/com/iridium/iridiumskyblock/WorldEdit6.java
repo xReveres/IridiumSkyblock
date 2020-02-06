@@ -8,6 +8,7 @@ import com.sk89q.worldedit.schematic.SchematicFormat;
 import org.bukkit.Location;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -26,7 +27,7 @@ public class WorldEdit6 implements WorldEdit {
     }
 
     @Override
-    public void paste(File file, Location location) {
+    public void paste(File file, Location location, Island island) {
         try {
             EditSession editSession = (com.sk89q.worldedit.EditSession) EditSession.newInstance(new BukkitWorld(location.getWorld()), 999999999);
             editSession.enableQueue();
@@ -37,7 +38,11 @@ public class WorldEdit6 implements WorldEdit {
             clipboard.paste(editSession, BukkitUtil.toVector(location), true);
             flush.invoke(editSession);
         } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                Schematic.loadSchematic(file).pasteSchematic(location, island);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

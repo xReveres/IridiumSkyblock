@@ -16,10 +16,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Schematic {
+
+    public static HashMap<String, Schematic> cache = new HashMap<>();
 
     public enum SchematicVersion {
         v1_13, v_1_8
@@ -295,6 +298,7 @@ public class Schematic {
     }
 
     public static Schematic loadSchematic(File file) throws IOException {
+        if(cache.containsKey(file.getAbsolutePath()))return cache.get(file.getAbsolutePath());
         FileInputStream stream = new FileInputStream(file);
         NBTInputStream nbtStream = new NBTInputStream(stream);
 
@@ -313,11 +317,14 @@ public class Schematic {
             byte[] blockdata = getChildTag(schematic, "BlockData", ByteArrayTag.class).getValue();
             if (version == 1) {
                 List<Tag> TileEntities = getChildTag(schematic, "TileEntities", ListTag.class).getValue();
+                cache.put(file.getAbsolutePath(), new Schematic(width, length, height, TileEntities, blockdata, palette, version));
                 return new Schematic(width, length, height, TileEntities, blockdata, palette, version);
             } else if (version == 2) {
                 List<Tag> BlockEntities = getChildTag(schematic, "BlockEntities", ListTag.class).getValue();
+                cache.put(file.getAbsolutePath(), new Schematic(width, length, height, blockdata, palette, version));
                 return new Schematic(width, length, height, BlockEntities, blockdata, palette, version);
             } else {
+                cache.put(file.getAbsolutePath(), new Schematic(width, length, height, blockdata, palette, version));
                 return new Schematic(width, length, height, blockdata, palette, version);
             }
 
@@ -332,6 +339,7 @@ public class Schematic {
             byte[] blocks = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
             byte[] blockData = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
             List<Tag> entities = getChildTag(schematic, "Entities", ListTag.class).getValue();
+            cache.put(file.getAbsolutePath(), new Schematic(width, length, height, TileEntities, blocks, blockData, entities));
             return new Schematic(width, length, height, TileEntities, blocks, blockData, entities);
         }
     }
