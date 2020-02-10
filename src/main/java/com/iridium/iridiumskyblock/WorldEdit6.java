@@ -38,6 +38,7 @@ public class WorldEdit6 implements WorldEdit {
             clipboard.paste(editSession, BukkitUtil.toVector(location), true);
             flush.invoke(editSession);
         } catch (Exception e) {
+            e.printStackTrace();
             try {
                 Schematic.loadSchematic(file).pasteSchematic(location, island);
             } catch (IOException ex) {

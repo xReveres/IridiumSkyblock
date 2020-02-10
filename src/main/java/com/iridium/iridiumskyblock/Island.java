@@ -478,10 +478,12 @@ public class Island {
     }
 
     public void pasteSchematic(boolean deleteBlocks) {
+        //TODO
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
         lastRegen = c.getTime();
         if (deleteBlocks) deleteBlocks();
+        getCenter().getBlock().setType(Material.STONE);
         if(IridiumSkyblock.worldEdit==null){
             pasteSchematic();
         }else{
@@ -857,7 +859,7 @@ public class Island {
     public void deleteBlocks() {
         blocks.clear();
         for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
-            for (int Y = getPos1().getBlockY(); Y <= getPos2().getBlockY(); Y++) {
+            for (int Y = 0; Y <= 255; Y++) {
                 for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
                     NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z, 0, (byte) 0);
                 }
@@ -865,7 +867,7 @@ public class Island {
         }
         if (IridiumSkyblock.getConfiguration().netherIslands) {
             for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
-                for (int Y = getPos1().getBlockY(); Y <= getPos2().getBlockY(); Y++) {
+                for (int Y = 0; Y <= 255; Y++) {
                     for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
                         NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z, 0, (byte) 0);
                     }

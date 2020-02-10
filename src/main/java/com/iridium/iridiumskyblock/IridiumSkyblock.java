@@ -125,14 +125,16 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 setupPlaceholderAPI();
 
-                Plugin worldedit = Bukkit.getPluginManager().getPlugin("WorldEdit");
-                if (worldedit != null) {
-                    if (worldedit.getDescription().getVersion().startsWith("6")) {
-                        worldEdit = new WorldEdit6();
-                    } else if (worldedit.getDescription().getVersion().startsWith("7")) {
-                        worldEdit = new WorldEdit7();
-                    }
-                }
+
+                //TODO
+//                Plugin worldedit = Bukkit.getPluginManager().getPlugin("WorldEdit");
+//                if (worldedit != null) {
+//                    if (worldedit.getDescription().getVersion().startsWith("6")) {
+//                        worldEdit = new WorldEdit6();
+//                    } else if (worldedit.getDescription().getVersion().startsWith("7")) {
+//                        worldEdit = new WorldEdit7();
+//                    }
+//                }
 
                 getLogger().info("-------------------------------");
                 getLogger().info("");
