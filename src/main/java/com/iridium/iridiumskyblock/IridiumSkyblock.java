@@ -29,11 +29,6 @@ import java.util.*;
 
 public class IridiumSkyblock extends JavaPlugin {
 
-    private static IridiumSkyblock instance;
-
-    public HashMap<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
-    public HashMap<Schematics.FakeSchematic, Schematic> netherschems = new HashMap<>();
-
     public static Config configuration;
     public static Messages messages;
     public static Missions missions;
@@ -44,33 +39,88 @@ public class IridiumSkyblock extends JavaPlugin {
     public static Commands commands;
     public static BlockValues blockValues;
     public static Shop shop;
-
-    private static Persist persist;
-
-    private static IslandManager islandManager;
-
-    private static CommandManager commandManager;
-
     public static TopGUI topGUI;
-
     public static ShopGUI shopGUI;
-
     public static HashMap<Integer, VisitGUI> visitGUI;
-
-    public boolean updatingBlocks = false;
-
-    private String latest;
-
     public static HashMap<Integer, List<String>> oreUpgradeCache = new HashMap<>();
     public static HashMap<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
-
     public static SkyblockGenerator generator;
-
     public static WorldEdit worldEdit;
-
+    private static IridiumSkyblock instance;
+    private static Persist persist;
+    private static IslandManager islandManager;
+    private static CommandManager commandManager;
+    public HashMap<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
+    public HashMap<Schematics.FakeSchematic, Schematic> netherschems = new HashMap<>();
+    public boolean updatingBlocks = false;
     public List<String> languages = new ArrayList<>();
-
     public LanguagesGUI languagesGUI;
+    private String latest;
+
+    public static IridiumSkyblock getInstance() {
+        return instance;
+    }
+
+    public static IslandManager getIslandManager() {
+        return islandManager;
+    }
+
+    public static Config getConfiguration() {
+        return configuration;
+    }
+
+    public static Missions getMissions() {
+        return missions;
+    }
+
+    public static CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    public static Messages getMessages() {
+        return messages;
+    }
+
+    public static BlockValues getBlockValues() {
+        return blockValues;
+    }
+
+    public static Upgrades getUpgrades() {
+        if (upgrades == null) {
+            upgrades = new Upgrades();
+            IridiumSkyblock.getPersist().getFile(upgrades).delete();
+            IridiumSkyblock.getInstance().saveConfigs();
+        }
+        return upgrades;
+    }
+
+    public static Commands getCommands() {
+        return commands;
+    }
+
+    public static Boosters getBoosters() {
+        return boosters;
+    }
+
+    public static Schematics getSchematics() {
+        return schematics;
+    }
+
+    public static Inventories getInventories() {
+        return inventories;
+    }
+
+    public static ShopGUI getShopGUI() {
+        return shopGUI;
+    }
+
+    public static Shop getShop() {
+        return shop;
+    }
+
+    public static Persist getPersist() {
+        return persist;
+    }
 
     @Override
     public void onEnable() {
@@ -288,7 +338,6 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
-
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
         if (worldName.equals(getConfiguration().worldName) || worldName.equals(getConfiguration().worldName + "_nether"))
@@ -330,7 +379,9 @@ public class IridiumSkyblock extends JavaPlugin {
                         island.exp = (int) Math.floor(island.exp * (1 + (getConfiguration().dailyExpInterest / 100.00)));
                         for (String member : island.getMembers()) {
                             Player p = Bukkit.getPlayer(User.getUser(member).name);
-                            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", island.exp - ce + "").replace("%crystals%", island.getCrystals() - cc + "").replace("%money%", island.money - cm + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            if (p != null) {
+                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", island.exp - ce + "").replace("%crystals%", island.getCrystals() - cc + "").replace("%money%", island.money - cm + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            }
                         }
                     }
                 }
@@ -570,70 +621,5 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public String getLatest() {
         return latest;
-    }
-
-    public static IridiumSkyblock getInstance() {
-        return instance;
-    }
-
-    public static IslandManager getIslandManager() {
-        return islandManager;
-    }
-
-    public static Config getConfiguration() {
-        return configuration;
-    }
-
-    public static Missions getMissions() {
-        return missions;
-    }
-
-    public static CommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    public static Messages getMessages() {
-        return messages;
-    }
-
-    public static BlockValues getBlockValues() {
-        return blockValues;
-    }
-
-    public static Upgrades getUpgrades() {
-        if (upgrades == null) {
-            upgrades = new Upgrades();
-            IridiumSkyblock.getPersist().getFile(upgrades).delete();
-            IridiumSkyblock.getInstance().saveConfigs();
-        }
-        return upgrades;
-    }
-
-    public static Commands getCommands() {
-        return commands;
-    }
-
-    public static Boosters getBoosters() {
-        return boosters;
-    }
-
-    public static Schematics getSchematics() {
-        return schematics;
-    }
-
-    public static Inventories getInventories() {
-        return inventories;
-    }
-
-    public static ShopGUI getShopGUI() {
-        return shopGUI;
-    }
-
-    public static Shop getShop() {
-        return shop;
-    }
-
-    public static Persist getPersist() {
-        return persist;
     }
 }
