@@ -204,10 +204,7 @@ public class IridiumSkyblock extends JavaPlugin {
                             getLogger().info("Attempting to download version: " + latest);
                             try {
                                 getFile().renameTo(new File(getFile().getParentFile(), "/IridiumSkyblock-" + latest + ".jar"));
-                                File file = new File(Bukkit.getUpdateFolderFile() + "/IridiumSkyblock-" + latest + ".jar");
-                                file.createNewFile();
                                 URL url = new URL("http://www.peachessupport.xyz/IridiumSkyblock-" + latest + ".jar");
-                                OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
                                 URLConnection conn = url.openConnection();
                                 conn.setConnectTimeout(15000);
                                 conn.setReadTimeout(15000);
@@ -215,6 +212,10 @@ public class IridiumSkyblock extends JavaPlugin {
                                 conn.setAllowUserInteraction(false);
                                 conn.setDoOutput(true);
                                 InputStream in = conn.getInputStream();
+
+                                File file = new File(Bukkit.getUpdateFolderFile() + "/IridiumSkyblock-" + latest + ".jar");
+                                file.createNewFile();
+                                OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
                                 byte[] buffer = new byte[1024];
 
                                 int numRead;
@@ -224,7 +225,7 @@ public class IridiumSkyblock extends JavaPlugin {
                                 in.close();
                                 out.close();
                             } catch (Exception e) {
-                                sendErrorMessage(e);
+                                getLogger().info("Failed to connect to update server");
                             }
                         }
                     }

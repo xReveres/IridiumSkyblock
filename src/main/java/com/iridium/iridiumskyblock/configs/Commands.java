@@ -46,5 +46,4 @@ public class Commands {
     public ShopCommand shopCommand = new ShopCommand();
     public BiomeCommand biomeCommand = new BiomeCommand();
     public HelpCommand helpCommand = new HelpCommand();
-    public LanguagesCommand languagesCommand = new LanguagesCommand();
 }
