@@ -1008,7 +1008,6 @@ public enum MultiversionMaterials {
                 }
             }
         }
-        IridiumSkyblock.getInstance().getLogger().warning("Could not find Multiversion Material for " + key);
         return MultiversionMaterials.AIR;
     }
 
