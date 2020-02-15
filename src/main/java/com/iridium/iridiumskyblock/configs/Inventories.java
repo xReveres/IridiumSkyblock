@@ -2,10 +2,7 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.MultiversionMaterials;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Inventories {
 
@@ -54,22 +51,6 @@ public class Inventories {
     public Item warp = new Item(MultiversionMaterials.END_PORTAL_FRAME, 1, "&b&lIsland Warps", Arrays.asList("&7Need more island warps? Buy this", "&7upgrade to increase your warp count.", "", "&b&lInformation:", "&b&l * &7Current Level: &b{warplevel}", "&b&l * &7Current Warps: &b{warpcount} Warps", "&b&l * &7Upgrade Cost: &b{warpcrystalscost} Crystals and ${warpvaultcost}", "&b&lLevels:", "&b&l * &7Level 1: &b2 Warps", "&b&l * &7Level 2: &b5 Warps", "&b&l * &7Level 3: &b9 Warps", "", "&b&l[!] &bLeft Click to Purchase this Upgrade"));
     public Item ores = new Item(MultiversionMaterials.DIAMOND_ORE, 1, "&b&lIsland Generator", Arrays.asList("&7Want to improve your generator? Buy this", "&7upgrade to increase your island generator.", "", "&b&lInformation:", "&b&l * &7Current Level: &b{oreslevel}", "&b&l * &7Upgrade Cost: &b{orescrystalscost} Crystals and ${oresvaultcost}", "", "&b&l[!] &bLeft Click to Purchase this Upgrade"));
 
-    //Menu
-    public Item home = new Item(MultiversionMaterials.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home"));
-    public Item members = new Item(MultiversionMaterials.PLAYER_HEAD, 14, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island Members."));
-    public Item regen = new Item(MultiversionMaterials.GRASS, 36, 1, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island."));
-    public Item upgrades = new Item(MultiversionMaterials.PLAYER_HEAD, 21, 1, "&b&lIsland Upgrades", "ABigDwarf", Collections.singletonList("&7Upgrade your island."));
-    public Item missions = new Item(MultiversionMaterials.IRON_SWORD, 22, 1, "&b&lIsland Missions", Collections.singletonList("&7View island missions."));
-    public Item boosters = new Item(MultiversionMaterials.EXPERIENCE_BOTTLE, 23, 1, "&b&lIsland Boosters", Collections.singletonList("&7Boost your island."));
-    public Item permissions = new Item(MultiversionMaterials.BOOK, 31, 1, "&b&lIsland Permissions", Collections.singletonList("&7Change island permissions."));
-    public Item top = new Item(MultiversionMaterials.DIAMOND, 0, 1, "&b&lIsland Top", Collections.singletonList("&7View top islands."));
-    public Item warps = new Item(MultiversionMaterials.END_PORTAL_FRAME, 20, 1, "&b&lIsland Warps", Collections.singletonList("&7View your island warps."));
-    public Item border = new Item(MultiversionMaterials.BEACON, 24, 1, "&b&lIsland Border", Collections.singletonList("&7Change your island border."));
-    public Item coop = new Item(MultiversionMaterials.NAME_TAG, 32, 1, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands."));
-    public Item bank = new Item(MultiversionMaterials.GOLD_INGOT, 30, 1, "&b&lIsland Bank", Collections.singletonList("&7View your Island Bank."));
-    public Item biomes = new Item(MultiversionMaterials.PLAYER_HEAD, 12, 1, "&b&lIsland Biome", "BlockminersTV", Collections.singletonList("&7Change your island biome."));
-    public Item delete = new Item(MultiversionMaterials.BARRIER, 44, 1, "&b&lIsland Delete", Collections.singletonList("&7Delete your island."));
-
     //Bank
     public Item experience = new Item(MultiversionMaterials.EXPERIENCE_BOTTLE, 11, 1, "&b&lIsland Experience", Arrays.asList("&7{experience} Experience", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
     public Item crystals = new Item(MultiversionMaterials.NETHER_STAR, 13, 1, "&b&lIsland Crystals", Arrays.asList("&7{crystals} Crystals", "&b&l[!] &bLeft click to withdraw", "&b&l[!] &bRight click to deposit"));
@@ -94,7 +75,7 @@ public class Inventories {
     public Item islandPermissionDeny = new Item(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&b&l{permission}", Collections.emptyList());
     public Item islandWarp = new Item(MultiversionMaterials.YELLOW_STAINED_GLASS_PANE, 1, "&b&l{warp}", Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."));
     public Item topisland = new Item(MultiversionMaterials.PLAYER_HEAD, 1, "&b&l{player}", "{player}", Arrays.asList("&b&l * &7Island: &b{name}", "&b&l * &7Rank: &b{rank}", "&b&l * &7Value: &b{value}", "", "&b&l[!] &bLeft Click to Teleport to this island."));
-    public Item visitisland = new Item(MultiversionMaterials.PLAYER_HEAD, 1, "&b&l{player}", "{player}", Arrays.asList("&b&l * &7Island: &b{name}", "&b&l * &7Rank: &b{rank}", "&b&l * &7Value: &b{value}","&b&l * &7Votes: &b{votes}", "", "&b&l[!] &bLeft Click to Teleport to this island.", "&b&l[!] &bRight Click to (un)vote for this island."));
+    public Item visitisland = new Item(MultiversionMaterials.PLAYER_HEAD, 1, "&b&l{player}", "{player}", Arrays.asList("&b&l * &7Island: &b{name}", "&b&l * &7Rank: &b{rank}", "&b&l * &7Value: &b{value}", "&b&l * &7Votes: &b{votes}", "", "&b&l[!] &bLeft Click to Teleport to this island.", "&b&l[!] &bRight Click to (un)vote for this island."));
 
 
     public Item red = new Item(MultiversionMaterials.RED_STAINED_GLASS_PANE, 1, "&c&lRed", new ArrayList<>());
@@ -111,6 +92,23 @@ public class Inventories {
             new Item(MultiversionMaterials.FISHING_ROD, 15, 1, "&b&lFisherman", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bCatch {Fishermanamount} Fish", "&b&l * &7Current Status: &b{Fishermanstatus}", "&b&l * &7Reward: &b{Fishermancrystals} Island Crystals and ${Fishermanvault}", "", "&b&l[!] &bComplete this mission for rewards.")),
             new Item(MultiversionMaterials.COBBLESTONE, 16, 1, "&b&lBuilder", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bPlace {Builderamount} Blocks", "&b&l * &7Current Status: &b{Builderstatus}", "&b&l * &7Reward: &b{Buildercrystals} Island Crystals and ${Buildervault}", "", "&b&l[!] &bComplete this mission for rewards."))
     );
+
+    public HashMap<Item, String> menu = new HashMap<Item, String>() {{
+        put(new Item(MultiversionMaterials.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home")), "is home");
+        put(new Item(MultiversionMaterials.PLAYER_HEAD, 14, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island Members.")), "is members");
+        put(new Item(MultiversionMaterials.GRASS, 36, 1, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island.")), "is regen");
+        put(new Item(MultiversionMaterials.PLAYER_HEAD, 21, 1, "&b&lIsland Upgrades", "ABigDwarf", Collections.singletonList("&7Upgrade your island.")), "is upgrade");
+        put(new Item(MultiversionMaterials.IRON_SWORD, 22, 1, "&b&lIsland Missions", Collections.singletonList("&7View island missions.")), "is missions");
+        put(new Item(MultiversionMaterials.EXPERIENCE_BOTTLE, 23, 1, "&b&lIsland Boosters", Collections.singletonList("&7Boost your island.")), "is booster");
+        put(new Item(MultiversionMaterials.BOOK, 31, 1, "&b&lIsland Permissions", Collections.singletonList("&7Change island permissions.")), "is permissions");
+        put(new Item(MultiversionMaterials.DIAMOND, 0, 1, "&b&lIsland Top", Collections.singletonList("&7View top islands.")), "is top");
+        put(new Item(MultiversionMaterials.END_PORTAL_FRAME, 20, 1, "&b&lIsland Warps", Collections.singletonList("&7View your island warps.")), "is warps");
+        put(new Item(MultiversionMaterials.BEACON, 24, 1, "&b&lIsland Border", Collections.singletonList("&7Change your island border.")), "is border");
+        put(new Item(MultiversionMaterials.NAME_TAG, 32, 1, "&b&lIsland Coop", Collections.singletonList("&7View your Co-op Islands.")), "is coop");
+        put(new Item(MultiversionMaterials.GOLD_INGOT, 30, 1, "&b&lIsland Bank", Collections.singletonList("&7View your Island Bank.")), "is bank");
+        put(new Item(MultiversionMaterials.PLAYER_HEAD, 12, 1, "&b&lIsland Biome", "BlockminersTV", Collections.singletonList("&7Change your island biome.")), "is biome");
+        put(new Item(MultiversionMaterials.BARRIER, 44, 1, "&b&lIsland Delete", Collections.singletonList("&7Delete your island.")), "is delete");
+    }};
 
     public static class Item {
 
