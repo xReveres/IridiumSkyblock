@@ -384,9 +384,11 @@ public class Island {
     public void removeUser(User user) {
         user.islandID = 0;
         Player player = Bukkit.getPlayer(user.name);
-        spawnPlayer(player);
-        player.setFlying(false);
-        player.setAllowFlight(false);
+        if(player != null) {
+            spawnPlayer(player);
+            player.setFlying(false);
+            player.setAllowFlight(false);
+        }
         members.remove(user.player);
         user.role = Role.Visitor;
         for (String member : members) {
@@ -830,6 +832,7 @@ public class Island {
     }
 
     public void spawnPlayer(Player player) {
+        if(player == null) return;
         if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
             EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
             Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
