@@ -282,7 +282,6 @@ public class IridiumSkyblock extends JavaPlugin {
     public void saveIslandManager() {
         if (getIslandManager() != null) {
             getDataFolder().mkdir();
-            if (islandManager != null) {
                 getPersist().save(islandManager, getPersist().getFile("IslandManager_temp"));
                 try {
                     if (persist.load(IslandManager.class, getPersist().getFile("IslandManager_temp")) == null) {
@@ -295,7 +294,6 @@ public class IridiumSkyblock extends JavaPlugin {
                 }
                 getPersist().getFile(islandManager).delete();
                 getPersist().getFile("IslandManager_temp").renameTo(getPersist().getFile(islandManager));
-            }
         }
     }
 
@@ -594,19 +592,21 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
 
         }
-        for (Island island : getIslandManager().islands.values()) {
-            if (island.getIslandMenuGUI() != null) island.getIslandMenuGUI().getInventory().clear();
-            if (island.getSchematicSelectGUI() != null) island.getSchematicSelectGUI().getInventory().clear();
-            if (island.getBankGUI() != null) island.getBankGUI().getInventory().clear();
-            if (island.getBiomeGUI() != null) island.getBiomeGUI().getInventory().clear();
-            if (island.getBoosterGUI() != null) island.getBoosterGUI().getInventory().clear();
-            if (island.getCoopGUI() != null) island.getCoopGUI().getInventory().clear();
-            if (island.getMembersGUI() != null) island.getMembersGUI().getInventory().clear();
-            if (island.getMissionsGUI() != null) island.getMissionsGUI().getInventory().clear();
-            if (island.getPermissionsGUI() != null) island.getPermissionsGUI().getInventory().clear();
-            if (island.getUpgradeGUI() != null) island.getUpgradeGUI().getInventory().clear();
-            if (island.getWarpGUI() != null) island.getWarpGUI().getInventory().clear();
-            if (island.getBorderColorGUI() != null) island.getBorderColorGUI().getInventory().clear();
+        if(getIslandManager() != null) {
+            for (Island island : getIslandManager().islands.values()) {
+                if (island.getIslandMenuGUI() != null) island.getIslandMenuGUI().getInventory().clear();
+                if (island.getSchematicSelectGUI() != null) island.getSchematicSelectGUI().getInventory().clear();
+                if (island.getBankGUI() != null) island.getBankGUI().getInventory().clear();
+                if (island.getBiomeGUI() != null) island.getBiomeGUI().getInventory().clear();
+                if (island.getBoosterGUI() != null) island.getBoosterGUI().getInventory().clear();
+                if (island.getCoopGUI() != null) island.getCoopGUI().getInventory().clear();
+                if (island.getMembersGUI() != null) island.getMembersGUI().getInventory().clear();
+                if (island.getMissionsGUI() != null) island.getMissionsGUI().getInventory().clear();
+                if (island.getPermissionsGUI() != null) island.getPermissionsGUI().getInventory().clear();
+                if (island.getUpgradeGUI() != null) island.getUpgradeGUI().getInventory().clear();
+                if (island.getWarpGUI() != null) island.getWarpGUI().getInventory().clear();
+                if (island.getBorderColorGUI() != null) island.getBorderColorGUI().getInventory().clear();
+            }
         }
         return true;
     }
