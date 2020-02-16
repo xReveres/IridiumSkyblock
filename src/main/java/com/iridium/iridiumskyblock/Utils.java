@@ -220,8 +220,19 @@ public class Utils {
     }
 
     public static boolean isSafe(Location loc, Island island) {
-        return (island.isInIsland(loc) && loc.getBlock().getType().equals(Material.AIR)
-                && (!loc.clone().add(0, -1, 0).getBlock().getType().equals(Material.AIR) && !loc.clone().add(0, -1, 0).getBlock().isLiquid()));
+        if(!island.isInIsland(loc)) {
+            return false;
+        }
+        if(loc.getBlock().getType().equals(Material.AIR)){
+            return false;
+        }
+        if(loc.getBlock().isLiquid()){
+            return false;
+        }
+        if(loc.add(0, -1, 0).getBlock().getType().equals(Material.AIR)){
+            return false;
+        }
+        return true;
     }
 
     public static int getIslandRank(Island island) {

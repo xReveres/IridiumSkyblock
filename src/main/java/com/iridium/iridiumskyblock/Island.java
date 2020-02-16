@@ -599,7 +599,6 @@ public class Island {
             p.teleport(getHome());
             sendBorder(p);
         } else {
-
             Location loc = Utils.getNewHome(this, this.home);
             if (loc != null) {
                 this.home = loc;
