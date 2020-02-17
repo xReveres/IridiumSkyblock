@@ -5,9 +5,8 @@ import org.bukkit.*;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class IslandManager {
 
@@ -38,6 +37,21 @@ public class IslandManager {
     }
 
     public Island createIsland(Player player) {
+        User user = User.getUser(player);
+        if (user.lastCreate != null && new Date().before(user.lastCreate) && IridiumSkyblock.getConfiguration().createCooldown) {
+            //The user cannot create an island
+            long time = (user.lastCreate.getTime() - System.currentTimeMillis()) / 1000;
+            int day = (int) TimeUnit.SECONDS.toDays(time);
+            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+            int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
+            int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
+            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().createCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            return null;
+        }
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
+        user.lastCreate = c.getTime();
+
         Location pos1 = nextLocation.clone().subtract(IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00, 0, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00);
         Location pos2 = nextLocation.clone().add(IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00, 0, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00);
         Location center = nextLocation.clone().add(0, 100, 0);
@@ -51,8 +65,8 @@ public class IslandManager {
         Island island = new Island(player, pos1, pos2, center, home, netherhome, nextID);
         islands.put(nextID, island);
 
-        User.getUser(player).islandID = nextID;
-        User.getUser(player).role = Role.Owner;
+        user.islandID = nextID;
+        user.role = Role.Owner;
 
         if (IridiumSkyblock.getInstance().schems.size() == 1) {
             for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {

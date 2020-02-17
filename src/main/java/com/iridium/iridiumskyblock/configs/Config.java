@@ -23,6 +23,7 @@ public class Config {
     public String chatRankPlaceholder = "[ISLAND_RANK]";
     public String chatValuePlaceholder = "[ISLAND_VALUE]";
     public String chatNAMEPlaceholder = "[ISLAND_NAME]";
+    public boolean createCooldown = true;
     public boolean doIslandBackup = true;
     public boolean islandShop = true;
     public boolean automaticUpdate = true;

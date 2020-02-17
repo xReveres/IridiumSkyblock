@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class User {
 
@@ -16,6 +17,7 @@ public class User {
     public boolean islandChat;
     public boolean flying;
     public transient boolean teleportingHome;
+    public Date lastCreate;
 
     public User(OfflinePlayer p) {
         invites = new ArrayList<>();
