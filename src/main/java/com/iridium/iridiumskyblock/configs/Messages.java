@@ -96,6 +96,7 @@ public class Messages {
     public String Demote = "Demote";
     public String completed = "Completed";
     public String regenCooldown = "%prefix% &7Island regeneration is on cooldown for %minutes% Minutes and %seconds% Seconds";
+    public String islandDeleted = "%prefix% &7Your island has been deleted";
 
     public HashMap<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {

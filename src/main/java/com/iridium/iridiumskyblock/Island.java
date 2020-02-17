@@ -699,7 +699,11 @@ public class Island {
         deleteBlocks();
         for (String player : members) {
             User.getUser(player).islandID = 0;
-            if (Bukkit.getPlayer(player) != null) Bukkit.getPlayer(player).closeInventory();
+            Player p = Bukkit.getPlayer(player);
+            if (p != null) {
+                p.closeInventory();
+                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
         }
         for (int id : coop) {
             IridiumSkyblock.getIslandManager().getIslandViaId(id).coop.remove(getId());
