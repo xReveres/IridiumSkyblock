@@ -622,8 +622,9 @@ public class Island {
                 p.teleport(this.home);
                 sendBorder(p);
             } else {
-                User.getUser(p).teleportingHome = true;
-                pasteSchematic(p, false);
+//                User.getUser(p).teleportingHome = true;
+                p.teleport(this.home);
+//                pasteSchematic(p, false);
             }
         }
     }
@@ -695,16 +696,16 @@ public class Island {
         if (a != -1) Bukkit.getScheduler().cancelTask(a);
         clearInventories();
         spawnPlayers();
-        killEntities();
-        deleteBlocks();
         for (String player : members) {
             User.getUser(player).islandID = 0;
-            Player p = Bukkit.getPlayer(player);
+            Player p = Bukkit.getPlayer(User.getUser(player).name);
             if (p != null) {
                 p.closeInventory();
                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
+        killEntities();
+        deleteBlocks();
         for (int id : coop) {
             IridiumSkyblock.getIslandManager().getIslandViaId(id).coop.remove(getId());
         }
