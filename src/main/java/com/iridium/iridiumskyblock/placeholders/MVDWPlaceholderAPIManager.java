@@ -8,7 +8,9 @@ import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.entity.Player;
 
 import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MVDWPlaceholderAPIManager {
 
@@ -185,6 +187,47 @@ public class MVDWPlaceholderAPIManager {
             }
             User user = User.getUser(player);
             return user.getIsland() != null ? user.getIsland().getBiome().name() + "" : "N/A";
+        });
+
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_midnight_seconds", e -> {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DAY_OF_MONTH, 1);
+            c.set(Calendar.HOUR_OF_DAY, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            long time = (c.getTimeInMillis() - System.currentTimeMillis()) / 1000;
+            int day = (int) TimeUnit.SECONDS.toDays(time);
+            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+            int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
+            return second + "";
+        });
+
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_midnight_minutes", e -> {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DAY_OF_MONTH, 1);
+            c.set(Calendar.HOUR_OF_DAY, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            long time = (c.getTimeInMillis() - System.currentTimeMillis()) / 1000;
+            int day = (int) TimeUnit.SECONDS.toDays(time);
+            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+            int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
+            return minute + "";
+        });
+
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_midnight_hours", e -> {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DAY_OF_MONTH, 1);
+            c.set(Calendar.HOUR_OF_DAY, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            long time = (c.getTimeInMillis() - System.currentTimeMillis()) / 1000;
+            int day = (int) TimeUnit.SECONDS.toDays(time);
+            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+            return hours + "";
         });
 
         for (int i = 0; i < 10; i++) { //TODO there is probabbly a more efficient way to do this?
