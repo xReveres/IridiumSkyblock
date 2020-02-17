@@ -38,7 +38,7 @@ public class IslandManager {
 
     public Island createIsland(Player player) {
         User user = User.getUser(player);
-        if (user.lastCreate != null && new Date().before(user.lastCreate) && IridiumSkyblock.getConfiguration().createCooldown) {
+        if (user.lastCreate != null && new Date().before(user.lastCreate) && IridiumSkyblock.getConfiguration().createCooldown && !user.bypassing) {
             //The user cannot create an island
             long time = (user.lastCreate.getTime() - System.currentTimeMillis()) / 1000;
             int day = (int) TimeUnit.SECONDS.toDays(time);
