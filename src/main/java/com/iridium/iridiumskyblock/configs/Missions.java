@@ -17,22 +17,47 @@ public class Missions {
             put(3, new Mission(15, 10000, 10000, MissionType.EXPERIENCE, Collections.emptyList()));
         }});
         put("Competitor", new HashMap<Integer, Mission>() {{
-            put(1, new Mission(15, 10000, 10000, MissionType.VALUE_INCREASE, Collections.emptyList()));
+            put(1, new Mission(5, 10000, 100, MissionType.VALUE_INCREASE, Collections.emptyList()));
+            put(2, new Mission(10, 10000, 500, MissionType.VALUE_INCREASE, Collections.emptyList()));
+            put(3, new Mission(15, 10000, 1000, MissionType.VALUE_INCREASE, Collections.emptyList()));
+            put(4, new Mission(15, 10000, 5000, MissionType.VALUE_INCREASE, Collections.emptyList()));
+            put(5, new Mission(15, 10000, 10000, MissionType.VALUE_INCREASE, Collections.emptyList()));
         }});
         put("Miner", new HashMap<Integer, Mission>() {{
-            put(1, new Mission(15, 10000, 1000, MissionType.BLOCK_BREAK, Arrays.asList(MultiversionMaterials.COAL_ORE.toString(), MultiversionMaterials.DIAMOND_ORE.toString(), MultiversionMaterials.EMERALD_ORE.toString(), MultiversionMaterials.GOLD_ORE.toString(), MultiversionMaterials.IRON_ORE.toString(), MultiversionMaterials.LAPIS_ORE.toString(), MultiversionMaterials.NETHER_QUARTZ_ORE.toString(), MultiversionMaterials.REDSTONE_ORE.toString())));
+            put(1, new Mission(1, 10000, 50, MissionType.BLOCK_BREAK, Arrays.asList(MultiversionMaterials.COAL_ORE.toString(), MultiversionMaterials.DIAMOND_ORE.toString(), MultiversionMaterials.EMERALD_ORE.toString(), MultiversionMaterials.GOLD_ORE.toString(), MultiversionMaterials.IRON_ORE.toString(), MultiversionMaterials.LAPIS_ORE.toString(), MultiversionMaterials.NETHER_QUARTZ_ORE.toString(), MultiversionMaterials.REDSTONE_ORE.toString())));
+            put(2, new Mission(5, 10000, 100, MissionType.BLOCK_BREAK, Arrays.asList(MultiversionMaterials.COAL_ORE.toString(), MultiversionMaterials.DIAMOND_ORE.toString(), MultiversionMaterials.EMERALD_ORE.toString(), MultiversionMaterials.GOLD_ORE.toString(), MultiversionMaterials.IRON_ORE.toString(), MultiversionMaterials.LAPIS_ORE.toString(), MultiversionMaterials.NETHER_QUARTZ_ORE.toString(), MultiversionMaterials.REDSTONE_ORE.toString())));
+            put(3, new Mission(10, 10000, 500, MissionType.BLOCK_BREAK, Arrays.asList(MultiversionMaterials.COAL_ORE.toString(), MultiversionMaterials.DIAMOND_ORE.toString(), MultiversionMaterials.EMERALD_ORE.toString(), MultiversionMaterials.GOLD_ORE.toString(), MultiversionMaterials.IRON_ORE.toString(), MultiversionMaterials.LAPIS_ORE.toString(), MultiversionMaterials.NETHER_QUARTZ_ORE.toString(), MultiversionMaterials.REDSTONE_ORE.toString())));
+            put(4, new Mission(15, 10000, 1000, MissionType.BLOCK_BREAK, Arrays.asList(MultiversionMaterials.COAL_ORE.toString(), MultiversionMaterials.DIAMOND_ORE.toString(), MultiversionMaterials.EMERALD_ORE.toString(), MultiversionMaterials.GOLD_ORE.toString(), MultiversionMaterials.IRON_ORE.toString(), MultiversionMaterials.LAPIS_ORE.toString(), MultiversionMaterials.NETHER_QUARTZ_ORE.toString(), MultiversionMaterials.REDSTONE_ORE.toString())));
+            put(5, new Mission(15, 10000, 2000, MissionType.BLOCK_BREAK, Arrays.asList(MultiversionMaterials.COAL_ORE.toString(), MultiversionMaterials.DIAMOND_ORE.toString(), MultiversionMaterials.EMERALD_ORE.toString(), MultiversionMaterials.GOLD_ORE.toString(), MultiversionMaterials.IRON_ORE.toString(), MultiversionMaterials.LAPIS_ORE.toString(), MultiversionMaterials.NETHER_QUARTZ_ORE.toString(), MultiversionMaterials.REDSTONE_ORE.toString())));
         }});
         put("Farmer", new HashMap<Integer, Mission>() {{
-            put(1, new Mission(15, 10000, 5000, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
+            put(1, new Mission(1, 10000, 50, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
+            put(2, new Mission(5, 10000, 100, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
+            put(3, new Mission(10, 10000, 500, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
+            put(4, new Mission(15, 10000, 1000, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
+            put(5, new Mission(15, 10000, 5000, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
         }});
         put("Hunter", new HashMap<Integer, Mission>() {{
-            put(1, new Mission(15, 10000, 1000, MissionType.ENTITY_KILL, Collections.emptyList()));
+            put(1, new Mission(1, 10000, 10, MissionType.ENTITY_KILL, Collections.emptyList()));
+            put(2, new Mission(5, 10000, 50, MissionType.ENTITY_KILL, Collections.emptyList()));
+            put(3, new Mission(10, 10000, 100, MissionType.ENTITY_KILL, Collections.emptyList()));
+            put(4, new Mission(15, 10000, 500, MissionType.ENTITY_KILL, Collections.emptyList()));
+            put(5, new Mission(15, 10000, 1000, MissionType.ENTITY_KILL, Collections.emptyList()));
         }});
         put("Fisherman", new HashMap<Integer, Mission>() {{
-            put(1, new Mission(15, 10000, 100, MissionType.FISH_CATCH, Collections.emptyList()));
+            put(1, new Mission(1, 10000, 5, MissionType.FISH_CATCH, Collections.emptyList()));
+            put(2, new Mission(5, 10000, 10, MissionType.FISH_CATCH, Collections.emptyList()));
+            put(3, new Mission(10, 10000, 50, MissionType.FISH_CATCH, Collections.emptyList()));
+            put(4, new Mission(15, 10000, 100, MissionType.FISH_CATCH, Collections.emptyList()));
+            put(5, new Mission(15, 10000, 500, MissionType.FISH_CATCH, Collections.emptyList()));
         }});
         put("Builder", new HashMap<Integer, Mission>() {{
-            put(1, new Mission(15, 10000, 10000, MissionType.BLOCK_PLACE, Collections.emptyList()));
+            put(1, new Mission(1, 10000, 100, MissionType.BLOCK_PLACE, Collections.emptyList()));
+            put(2, new Mission(5, 10000, 500, MissionType.BLOCK_PLACE, Collections.emptyList()));
+            put(3, new Mission(10, 10000, 1000, MissionType.BLOCK_PLACE, Collections.emptyList()));
+            put(4, new Mission(15, 10000, 5000, MissionType.BLOCK_PLACE, Collections.emptyList()));
+            put(5, new Mission(15, 10000, 10000, MissionType.BLOCK_PLACE, Collections.emptyList()));
+            put(6, new Mission(15, 10000, 50000, MissionType.BLOCK_PLACE, Collections.emptyList()));
         }});
     }};
 
