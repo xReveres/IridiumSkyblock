@@ -622,9 +622,8 @@ public class Island {
                 p.teleport(this.home);
                 sendBorder(p);
             } else {
-//                User.getUser(p).teleportingHome = true;
-                p.teleport(this.home);
-//                pasteSchematic(p, false);
+                User.getUser(p).teleportingHome = true;
+                pasteSchematic(p, false);
             }
         }
     }

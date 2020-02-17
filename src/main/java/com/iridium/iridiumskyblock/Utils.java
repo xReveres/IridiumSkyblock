@@ -221,22 +221,17 @@ public class Utils {
 
     public static boolean isSafe(Location loc, Island island) {
         if (!island.isInIsland(loc)) {
-            IridiumSkyblock.getInstance().getLogger().info("1");
             return false;
         }
-        if (loc.getBlock().getType().equals(Material.AIR)) {
-            IridiumSkyblock.getInstance().getLogger().info("2");
+        if (!loc.getBlock().getType().equals(Material.AIR)) {
             return false;
         }
         if (loc.getBlock().isLiquid()) {
-            IridiumSkyblock.getInstance().getLogger().info("3");
             return false;
         }
         if (loc.add(0, -1, 0).getBlock().getType().equals(Material.AIR)) {
-            IridiumSkyblock.getInstance().getLogger().info("4");
             return false;
         }
-        IridiumSkyblock.getInstance().getLogger().info("5");
         return true;
     }
 
