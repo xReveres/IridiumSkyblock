@@ -249,6 +249,7 @@ public class Island {
     }
 
     public void completeMission(String mission) {
+        if (!missionLevels.containsKey(mission)) missionLevels.put(mission, 1);
         missions.put(mission, (IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : Integer.MIN_VALUE));
         int crystalReward = IridiumSkyblock.getMissions().mission.get(mission).get(missionLevels.get(mission)).crystalReward;
         int vaultReward = IridiumSkyblock.getMissions().mission.get(mission).get(missionLevels.get(mission)).vaultReward;
@@ -257,7 +258,7 @@ public class Island {
         for (String member : members) {
             Player p = Bukkit.getPlayer(User.getUser(member).name);
             if (p != null) {
-                NMSUtils.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", mission), 20, 40, 20);
+                NMSUtils.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", mission).replace("%level%", missionLevels.get(mission) + ""), 20, 40, 20);
                 NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", crystalReward + "").replace("%vaultReward%", vaultReward + ""), 20, 40, 20);
             }
         }
