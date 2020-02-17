@@ -40,7 +40,6 @@ public class Config {
     public int regenCooldown = 3600;
     public int distance = 151;
     public int backupIntervalMinutes = 60;
-    public int pastingLayersPerTick = 2;
     public int blocksPerTick = 25;
     public int islandsUpdateInterval = 5;
     public double valuePerLevel = 100.00;

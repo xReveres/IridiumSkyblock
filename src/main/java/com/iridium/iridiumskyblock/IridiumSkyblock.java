@@ -19,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
@@ -282,18 +283,18 @@ public class IridiumSkyblock extends JavaPlugin {
     public void saveIslandManager() {
         if (getIslandManager() != null) {
             getDataFolder().mkdir();
-                getPersist().save(islandManager, getPersist().getFile("IslandManager_temp"));
-                try {
-                    if (persist.load(IslandManager.class, getPersist().getFile("IslandManager_temp")) == null) {
-                        getPersist().getFile("IslandManager_temp").delete();
-                        return;
-                    }
-                } catch (Exception e) {
+            getPersist().save(islandManager, getPersist().getFile("IslandManager_temp"));
+            try {
+                if (persist.load(IslandManager.class, getPersist().getFile("IslandManager_temp")) == null) {
                     getPersist().getFile("IslandManager_temp").delete();
                     return;
                 }
-                getPersist().getFile(islandManager).delete();
-                getPersist().getFile("IslandManager_temp").renameTo(getPersist().getFile(islandManager));
+            } catch (Exception e) {
+                getPersist().getFile("IslandManager_temp").delete();
+                return;
+            }
+            getPersist().getFile(islandManager).delete();
+            getPersist().getFile("IslandManager_temp").renameTo(getPersist().getFile(islandManager));
         }
     }
 
@@ -592,7 +593,7 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
 
         }
-        if(getIslandManager() != null) {
+        if (getIslandManager() != null) {
             for (Island island : getIslandManager().islands.values()) {
                 if (island.getIslandMenuGUI() != null) island.getIslandMenuGUI().getInventory().clear();
                 if (island.getSchematicSelectGUI() != null) island.getSchematicSelectGUI().getInventory().clear();
@@ -607,6 +608,15 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (island.getWarpGUI() != null) island.getWarpGUI().getInventory().clear();
                 if (island.getBorderColorGUI() != null) island.getBorderColorGUI().getInventory().clear();
             }
+        }
+        try {
+            for (Field field : Permissions.class.getDeclaredFields()) {
+                if (!getMessages().permissions.containsKey(field.getName())) {
+                    getMessages().permissions.put(field.getName(), field.getName());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return true;
     }

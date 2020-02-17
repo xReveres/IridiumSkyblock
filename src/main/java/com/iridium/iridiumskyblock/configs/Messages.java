@@ -103,4 +103,6 @@ public class Messages {
             put(role, role.name());
         }
     }};
+
+    public HashMap<String, String> permissions = new HashMap<>();
 }
