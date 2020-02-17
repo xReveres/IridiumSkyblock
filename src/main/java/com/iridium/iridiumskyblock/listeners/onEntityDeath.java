@@ -19,8 +19,8 @@ public class onEntityDeath implements Listener {
             Island island = User.getUser(e.getEntity().getKiller().getPlayer()).getIsland();
             if (island != null) {
                 for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
-                    if (!island.missionLevels.containsKey(mission)) island.missionLevels.put(mission, 1);
-                    Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.missionLevels.get(mission));
+                    if (!island.getMissionLevels().containsKey(mission)) island.getMissionLevels().put(mission, 1);
+                    Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.getMissionLevels().get(mission));
                     if (m.type == MissionType.ENTITY_KILL) {
                         if (m.conditions.isEmpty() || m.conditions.contains(e.getEntityType().toString())) {
                             island.addMission(mission, 1);

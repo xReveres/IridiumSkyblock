@@ -101,7 +101,7 @@ public class Island {
 
     private HashMap<String, Integer> missions = new HashMap<>();
 
-    public HashMap<String, Integer> missionLevels = new HashMap<>();
+    private HashMap<String, Integer> missionLevels = new HashMap<>();
 
     private boolean visit;
 
@@ -1149,5 +1149,10 @@ public class Island {
 
     public Biome getBiome() {
         return biome;
+    }
+
+    public HashMap<String, Integer> getMissionLevels() {
+        if (missionLevels == null) missionLevels = new HashMap<>();
+        return missionLevels;
     }
 }

@@ -19,8 +19,8 @@ public class onBlockBreak implements Listener {
             if (island != null) {
                 if (u.islandID == island.getId()) {
                     for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
-                        if (!island.missionLevels.containsKey(mission)) island.missionLevels.put(mission, 1);
-                        Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.missionLevels.get(mission));
+                        if (!island.getMissionLevels().containsKey(mission)) island.getMissionLevels().put(mission, 1);
+                        Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.getMissionLevels().get(mission));
                         if (m.type == MissionType.BLOCK_BREAK) {
                             if (m.conditions.isEmpty() || m.conditions.contains(MultiversionMaterials.fromMaterial(e.getBlock().getType()).toString()) || (e.getBlock().getState().getData() instanceof Crops && m.conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
                                 island.addMission(mission, 1);

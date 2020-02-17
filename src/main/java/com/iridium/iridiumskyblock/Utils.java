@@ -320,13 +320,13 @@ public class Utils {
         //Status amount crystals vault
         for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
             int amount = island.getMission(mission);
-            if (!island.missionLevels.containsKey(mission)) island.missionLevels.put(mission, 1);
-            Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.missionLevels.get(mission));
+            if (!island.getMissionLevels().containsKey(mission)) island.getMissionLevels().put(mission, 1);
+            Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.getMissionLevels().get(mission));
             placeholders.add(new Placeholder(mission + "status", amount == Integer.MIN_VALUE ? IridiumSkyblock.getMessages().completed : amount + "/" + m.amount));
             placeholders.add(new Placeholder(mission + "amount", m.amount + ""));
             placeholders.add(new Placeholder(mission + "crystals", m.crystalReward + ""));
             placeholders.add(new Placeholder(mission + "vault", m.vaultReward + ""));
-            placeholders.add(new Placeholder(mission + "level", island.missionLevels.get(mission) + ""));
+            placeholders.add(new Placeholder(mission + "level", island.getMissionLevels().get(mission) + ""));
         }
         return processMultiplePlaceholders(line, placeholders);
     }
