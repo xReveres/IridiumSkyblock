@@ -220,16 +220,16 @@ public class Utils {
     }
 
     public static boolean isSafe(Location loc, Island island) {
-        if(!island.isInIsland(loc)) {
+        if (!island.isInIsland(loc)) {
             return false;
         }
-        if(loc.getBlock().getType().equals(Material.AIR)){
+        if (loc.getBlock().getType().equals(Material.AIR)) {
             return false;
         }
-        if(loc.getBlock().isLiquid()){
+        if (loc.getBlock().isLiquid()) {
             return false;
         }
-        if(loc.add(0, -1, 0).getBlock().getType().equals(Material.AIR)){
+        if (loc.add(0, -1, 0).getBlock().getType().equals(Material.AIR)) {
             return false;
         }
         return true;
@@ -319,12 +319,15 @@ public class Utils {
                 new Placeholder("crystals", island.getCrystals() + ""),
                 new Placeholder("money", island.money + "")));
         //Status amount crystals vault
-        for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
-            int amount = island.getMission(mission.name);
-            placeholders.add(new Placeholder(mission.name + "status", amount == Integer.MIN_VALUE ? IridiumSkyblock.getMessages().completed : amount + "/" + mission.amount));
-            placeholders.add(new Placeholder(mission.name + "amount", mission.amount + ""));
-            placeholders.add(new Placeholder(mission.name + "crystals", mission.crystalReward + ""));
-            placeholders.add(new Placeholder(mission.name + "vault", mission.vaultReward + ""));
+        for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
+            int amount = island.getMission(mission);
+            if (!island.missionLevels.containsKey(mission)) island.missionLevels.put(mission, 1);
+            Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.missionLevels.get(mission));
+            placeholders.add(new Placeholder(mission + "status", amount == Integer.MIN_VALUE ? IridiumSkyblock.getMessages().completed : amount + "/" + m.amount));
+            placeholders.add(new Placeholder(mission + "amount", m.amount + ""));
+            placeholders.add(new Placeholder(mission + "crystals", m.crystalReward + ""));
+            placeholders.add(new Placeholder(mission + "vault", m.vaultReward + ""));
+            placeholders.add(new Placeholder(mission + "level", island.missionLevels.get(mission) + ""));
         }
         return processMultiplePlaceholders(line, placeholders);
     }

@@ -15,12 +15,13 @@ public class onBlockPlace implements Listener {
             User u = User.getUser(e.getPlayer());
             Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
             if (island != null) {
-
                 if (u.islandID == island.getId()) {
-                    for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
-                        if (mission.type == MissionType.BLOCK_PLACE) {
-                            if (mission.conditions.isEmpty() || mission.conditions.contains(e.getBlock().getType().toString()) || (e.getBlock().getState().getData() instanceof Crops && mission.conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
-                                island.addMission(mission.name, 1);
+                    for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
+                        if (!island.missionLevels.containsKey(mission)) island.missionLevels.put(mission, 1);
+                        Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.missionLevels.get(mission));
+                        if (m.type == MissionType.BLOCK_PLACE) {
+                            if (m.conditions.isEmpty() || m.conditions.contains(MultiversionMaterials.fromMaterial(e.getBlock().getType()).toString()) || (e.getBlock().getState().getData() instanceof Crops && m.conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
+                                island.addMission(mission, 1);
                             }
                         }
                     }
