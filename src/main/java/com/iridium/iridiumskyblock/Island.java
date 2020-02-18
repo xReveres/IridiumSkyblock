@@ -176,9 +176,9 @@ public class Island {
                     //We have a new mission available
                     getMissionLevels().put(mission, getMissionLevels().get(mission) + 1);
                 }
+                missions.put(mission, 0);
             }
         }
-        missions.clear();
     }
 
     public int getMission(String mission) {
