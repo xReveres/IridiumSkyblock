@@ -606,6 +606,9 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (island.getUpgradeGUI() != null) island.getUpgradeGUI().getInventory().clear();
                 if (island.getWarpGUI() != null) island.getWarpGUI().getInventory().clear();
                 if (island.getBorderColorGUI() != null) island.getBorderColorGUI().getInventory().clear();
+                if(getConfiguration().missionRestart==MissionRestart.Instantly){
+                    island.resetMissions();
+                }
             }
         }
         try {
