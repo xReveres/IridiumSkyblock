@@ -222,8 +222,8 @@ public class Utils {
     public static boolean isSafe(Location loc, Island island) {
         if (!island.isInIsland(loc)) return false;
         if (!loc.getBlock().getType().equals(Material.AIR)) return false;
-        if (loc.add(0, -1, 0).getBlock().getType().equals(Material.AIR)) return false;
-        if (loc.add(0, -1, 0).getBlock().isLiquid()) return false;
+        if (loc.clone().add(0, -1, 0).getBlock().getType().equals(Material.AIR)) return false;
+        if (loc.clone().add(0, -1, 0).getBlock().isLiquid()) return false;
         return true;
     }
 
@@ -241,14 +241,14 @@ public class Utils {
     public static Location getNewHome(Island island, Location loc) {
         Block b = loc.getWorld().getHighestBlockAt(loc);
         if (isSafe(b.getLocation(), island)) {
-            return b.getLocation().add(0.5, 1, 0.5);
+            return b.getLocation().add(0.5, 0, 0.5);
         }
 
         for (double X = island.getPos1().getX(); X <= island.getPos2().getX(); X++) {
             for (double Z = island.getPos1().getZ(); Z <= island.getPos2().getZ(); Z++) {
                 b = loc.getWorld().getHighestBlockAt((int) X, (int) Z);
                 if (isSafe(b.getLocation(), island)) {
-                    return b.getLocation().add(0.5, 1, 0.5);
+                    return b.getLocation().add(0.5, 0, 0.5);
                 }
             }
         }

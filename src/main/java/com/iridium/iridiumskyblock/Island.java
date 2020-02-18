@@ -519,6 +519,17 @@ public class Island {
             }
         }
         killEntities();
+        //Reset island home
+        for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+            if (!schematic.name.equals(this.schematic)) continue;
+            home = new Location(IridiumSkyblock.getIslandManager().getWorld(), getCenter().getX() + schematic.x, schematic.y, getCenter().getZ() + schematic.z);
+        }
+    }
+
+    public void teleportPlayersHome() {
+        for (Player p : getPlayersOnIsland()) {
+            teleportHome(p);
+        }
     }
 
     public void pasteSchematic(Player player, boolean deleteBlocks) {

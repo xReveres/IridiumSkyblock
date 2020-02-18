@@ -50,6 +50,7 @@ public class RegenCommand extends Command {
                                     user.getIsland().exp = 0;
                                     user.getIsland().money = 0;
                                 }
+                                user.getIsland().teleportPlayersHome();
                             }, IridiumSkyblock.getMessages().resetAction).getInventory());
                         } else {
                             p.openInventory(user.getIsland().getSchematicSelectGUI().getInventory());
