@@ -598,7 +598,6 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (island.getIslandMenuGUI() != null) island.getIslandMenuGUI().getInventory().clear();
                 if (island.getSchematicSelectGUI() != null) island.getSchematicSelectGUI().getInventory().clear();
                 if (island.getBankGUI() != null) island.getBankGUI().getInventory().clear();
-                if (island.getBiomeGUI() != null) island.getBiomeGUI().getInventory().clear();
                 if (island.getBoosterGUI() != null) island.getBoosterGUI().getInventory().clear();
                 if (island.getCoopGUI() != null) island.getCoopGUI().getInventory().clear();
                 if (island.getMembersGUI() != null) island.getMembersGUI().getInventory().clear();
