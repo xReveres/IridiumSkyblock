@@ -195,13 +195,13 @@ public enum XBiome {
      * @since 1.0.0
      */
     @Nonnull
-    public static java.util.Optional<XBiome> matchXBiome(@Nonnull String biome) {
+    public static XBiome matchXBiome(@Nonnull String biome) {
         Validate.notEmpty(biome, "Cannot match XBiome of a null or empty biome name");
         biome = format(biome);
 
         for (XBiome biomes : VALUES)
-            if (biomes.name().equals(biome) || biomes.anyMatchLegacy(biome)) return java.util.Optional.of(biomes);
-        return java.util.Optional.empty();
+            if (biomes.name().equals(biome) || biomes.anyMatchLegacy(biome)) return biomes;
+        return XBiome.PLAINS;
     }
 
     /**
@@ -215,8 +215,7 @@ public enum XBiome {
     @Nonnull
     public static XBiome matchXBiome(@Nonnull Biome biome) {
         Objects.requireNonNull(biome, "Cannot match XBiome of a null biome");
-        return matchXBiome(biome.name())
-                .orElseThrow(() -> new IllegalArgumentException("Unsupported Biome: " + biome.name()));
+        return matchXBiome(biome.name());
     }
 
     /**
@@ -269,7 +268,8 @@ public enum XBiome {
     public CompletableFuture<Void> setBiome(@Nonnull Chunk chunk) {
         Objects.requireNonNull(chunk, "Cannot set biome of null chunk");
         if (!chunk.isLoaded()) {
-            if (!chunk.load(true)) throw new IllegalArgumentException("Could not load chunk at " + chunk.getX() + ", " + chunk.getZ());
+            if (!chunk.load(true))
+                throw new IllegalArgumentException("Could not load chunk at " + chunk.getX() + ", " + chunk.getZ());
         }
 
         Biome biome = this.parseBiome();
