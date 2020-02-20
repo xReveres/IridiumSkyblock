@@ -191,7 +191,7 @@ public enum XMaterial {
     BROWN_CARPET(171, 12, "CARPET"),
     BROWN_CONCRETE(251, 12, "CONCRETE"),
     BROWN_CONCRETE_POWDER(252, 12, "CONCRETE_POWDER"),
-    BROWN_DYE(351, 3, "INK_SACK", "COCOA", "COCOA_BEANS"),
+    BROWN_DYE(351, 3, "COCOA", "COCOA_BEANS", "INK_SACK"),
     BROWN_GLAZED_TERRACOTTA(247, 12, "1.12", "HARD_CLAY", "STAINED_CLAY", "BROWN_TERRACOTTA"),
     BROWN_MUSHROOM(39),
     BROWN_MUSHROOM_BLOCK(99, "BROWN_MUSHROOM", "HUGE_MUSHROOM_1"),
@@ -455,7 +455,7 @@ public enum XMaterial {
     GRANITE_STAIRS(-1),
     GRANITE_WALL(-1),
     GRASS(31),
-    GRASS_BLOCK(2, "GRASS"),
+    GRASS_BLOCK(2, "GRASS", "GRASS_BLOCK"),
     GRASS_PATH(208),
     GRAVEL(13),
     GRAY_BANNER(-1, 8, "BANNER", "STANDING_BANNER"),
@@ -852,7 +852,7 @@ public enum XMaterial {
     RED_CARPET(171, 14, "CARPET"),
     RED_CONCRETE(251, 14, "CONCRETE"),
     RED_CONCRETE_POWDER(252, 14, "CONCRETE_POWDER"),
-    RED_DYE(351, 1, "ROSE_RED"),
+    RED_DYE(351, 1, "ROSE_RED", "INK_SACK"),
     RED_GLAZED_TERRACOTTA(249, 14, "1.12", "HARD_CLAY", "STAINED_CLAY", "RED_TERRACOTTA"),
     RED_MUSHROOM(40),
     RED_MUSHROOM_BLOCK(100, "RED_MUSHROOM", "HUGE_MUSHROOM_2"),
@@ -987,7 +987,7 @@ public enum XMaterial {
      * Sugar Cane is a known material in pre-1.13
      * Use XBlock when comparing block types.
      */
-    SUGAR_CANE(83, "SUGAR_CANE_BLOCK", "REEDS"),
+    SUGAR_CANE(83, "SUGAR_CANE_BLOCK", "REEDS", "SUGAR_CANE"),
     SUNFLOWER(175, "DOUBLE_PLANT"),
     SUSPICIOUS_STEW(-1, "1.14", "MUSHROOM_STEW", ""),
     SWEET_BERRIES(-1, "1.14"),
@@ -1041,7 +1041,7 @@ public enum XMaterial {
      * Wheat is a known material in pre-1.13
      * Use XBlock when comparing block types.
      */
-    WHEAT(59, "CROPS"),
+    WHEAT(59),
     WHEAT_SEEDS(295, "SEEDS"),
     WHITE_BANNER(425, 15, "BANNER", "STANDING_BANNER"),
     WHITE_BED(26, "BED_BLOCK", "BED"),
@@ -1836,9 +1836,12 @@ public enum XMaterial {
     public Material parseMaterial(boolean suggest) {
         Optional<Material> cache = PARSED_CACHE.getIfPresent(this);
         if (cache != null) return cache.orElse(null);
-        Material mat;
+        Material mat = null;
 
-        mat = Material.getMaterial(this.name());
+        if (ISFLAT) {
+            mat = Material.getMaterial(name());
+        }
+
         if (mat == null) mat = requestOldMaterial(suggest);
 
         if (mat != null) PARSED_CACHE.put(this, Optional.ofNullable(mat));
@@ -1861,7 +1864,7 @@ public enum XMaterial {
             Material material = Material.getMaterial(legacy);
             if (material != null) return material;
         }
-        return null;
+        return Material.getMaterial(name());
     }
 
     /**
