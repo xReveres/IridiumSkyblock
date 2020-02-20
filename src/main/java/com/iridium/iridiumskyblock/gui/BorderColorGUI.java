@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.NMSUtils;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,13 +42,13 @@ public class BorderColorGUI extends GUI implements Listener {
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (e.getCurrentItem() != null) {
                 if (e.getCurrentItem().equals(blue))
-                    IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Blue);
+                    IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(Color.Blue);
                 if (e.getCurrentItem().equals(red))
-                    IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Red);
+                    IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(Color.Red);
                 if (e.getCurrentItem().equals(green))
-                    IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Green);
+                    IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(Color.Green);
                 if (e.getCurrentItem().equals(off))
-                    IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(NMSUtils.Color.Off);
+                    IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(Color.Off);
                 IridiumSkyblock.getIslandManager().getIslandViaId(islandID).sendBorder();
             }
         }

@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.gui.ShopGUI;
 import com.iridium.iridiumskyblock.gui.TopGUI;
 import com.iridium.iridiumskyblock.gui.VisitGUI;
 import com.iridium.iridiumskyblock.listeners.*;
+import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.serializer.Persist;
@@ -123,8 +124,23 @@ public class IridiumSkyblock extends JavaPlugin {
         return persist;
     }
 
+    public static NMS nms;
+
     @Override
     public void onEnable() {
+        try {
+            nms = (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
+        } catch (ClassNotFoundException e) {
+            //Unsupported Version
+            getLogger().info("Unsupported Version Detected: " + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
+            getLogger().info("Try updating from spigot");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        } catch (IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         try {
             generator = new SkyblockGenerator();
             instance = this;
@@ -606,7 +622,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (island.getUpgradeGUI() != null) island.getUpgradeGUI().getInventory().clear();
                 if (island.getWarpGUI() != null) island.getWarpGUI().getInventory().clear();
                 if (island.getBorderColorGUI() != null) island.getBorderColorGUI().getInventory().clear();
-                if(getConfiguration().missionRestart==MissionRestart.Instantly){
+                if (getConfiguration().missionRestart == MissionRestart.Instantly) {
                     island.resetMissions();
                 }
             }
@@ -620,6 +636,7 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        getConfiguration().biomes.sort(Comparator.comparing(XBiome::toString));
         return true;
     }
 

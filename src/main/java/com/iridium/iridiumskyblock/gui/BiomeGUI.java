@@ -11,9 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 
 public class BiomeGUI extends GUI implements Listener {
 
@@ -44,9 +42,7 @@ public class BiomeGUI extends GUI implements Listener {
         super.addContent();
         int i = 0;
         int slot = 0;
-        List<XBiome> biomeList = IridiumSkyblock.getConfiguration().biomes;
-        biomeList.sort(Comparator.comparing(XBiome::toString));
-        for (XBiome biome : biomeList) {
+        for (XBiome biome : IridiumSkyblock.getConfiguration().biomes) {
             if (i >= 45 * (page - 1) && slot < 45) {
                 setItem(slot, Utils.makeItem(IridiumSkyblock.getInventories().biome, Collections.singletonList(new Utils.Placeholder("biome", WordUtils.capitalize(biome.name().toLowerCase().replace("_", " "))))));
                 biomes.put(slot, biome);

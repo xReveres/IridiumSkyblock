@@ -104,7 +104,7 @@ public class Island {
 
     private boolean visit;
 
-    private NMSUtils.Color borderColor;
+    private Color borderColor;
 
     private HashMap<Role, Permissions> permissions;
 
@@ -155,7 +155,7 @@ public class Island {
         value = 0;
         warps = new ArrayList<>();
         startvalue = -1;
-        borderColor = NMSUtils.Color.Blue;
+        borderColor = Color.Blue;
         visit = IridiumSkyblock.getConfiguration().defaultIslandPublic;
         permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
         this.coop = new HashSet<>();
@@ -235,16 +235,16 @@ public class Island {
 
     public void sendBorder(Player p) {
         if (p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-            NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + 1, getCenter());
+            IridiumSkyblock.nms.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + 1, getCenter());
         } else if (IridiumSkyblock.getConfiguration().netherIslands) {
             Location loc = getCenter().clone();
             loc.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-            NMSUtils.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + 1, loc);
+            IridiumSkyblock.nms.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + 1, loc);
         }
     }
 
     public void hideBorder(Player p) {
-        NMSUtils.sendWorldBorder(p, borderColor, Integer.MAX_VALUE, getCenter().clone());
+        IridiumSkyblock.nms.sendWorldBorder(p, borderColor, Integer.MAX_VALUE, getCenter().clone());
     }
 
     public void completeMission(String mission) {
@@ -257,8 +257,8 @@ public class Island {
         for (String member : members) {
             Player p = Bukkit.getPlayer(User.getUser(member).name);
             if (p != null) {
-                NMSUtils.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", mission).replace("%level%", getMissionLevels().get(mission) + ""), 20, 40, 20);
-                NMSUtils.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", crystalReward + "").replace("%vaultReward%", vaultReward + ""), 20, 40, 20);
+                IridiumSkyblock.nms.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", mission).replace("%level%", getMissionLevels().get(mission) + ""), 20, 40, 20);
+                IridiumSkyblock.nms.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", crystalReward + "").replace("%vaultReward%", vaultReward + ""), 20, 40, 20);
             }
         }
 
@@ -472,7 +472,7 @@ public class Island {
                 }
             }};
         }
-        sendBorder();
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), (Runnable) this::sendBorder);
     }
 
     public long canGenerate() {
@@ -536,9 +536,9 @@ public class Island {
         User.getUser(player).teleportingHome = false;
         teleportHome(player);
         sendBorder(player);
-        NMSUtils.sendTitle(player, IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);
+        IridiumSkyblock.nms.sendTitle(player, IridiumSkyblock.getMessages().islandCreated, 20, 40, 20);
         if (!IridiumSkyblock.getMessages().islandCreatedSubtitle.isEmpty())
-            NMSUtils.sendSubTitle(player, IridiumSkyblock.getMessages().islandCreatedSubtitle, 20, 40, 20);
+            IridiumSkyblock.nms.sendSubTitle(player, IridiumSkyblock.getMessages().islandCreatedSubtitle, 20, 40, 20);
     }
 
     private int getHeight() {
@@ -879,7 +879,7 @@ public class Island {
         for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
             for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    NMSUtils.sendChunk(p, IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
+                    IridiumSkyblock.nms.sendChunk(p, IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
                 }
             }
         }
@@ -891,7 +891,7 @@ public class Island {
         for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
             for (int Y = 0; Y <= 255; Y++) {
                 for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
-                    NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld().getBlockAt(X, Y, Z), 0, (byte) 0);
+                    IridiumSkyblock.nms.setBlockFast(IridiumSkyblock.getIslandManager().getWorld().getBlockAt(X, Y, Z), 0, (byte) 0);
                 }
             }
         }
@@ -899,7 +899,7 @@ public class Island {
             for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
                 for (int Y = 0; Y <= 255; Y++) {
                     for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
-                        NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld().getBlockAt(X, Y, Z), 0, (byte) 0);
+                        IridiumSkyblock.nms.setBlockFast(IridiumSkyblock.getIslandManager().getWorld().getBlockAt(X, Y, Z), 0, (byte) 0);
                     }
                 }
             }
@@ -1120,11 +1120,11 @@ public class Island {
         return value;
     }
 
-    public NMSUtils.Color getBorderColor() {
+    public Color getBorderColor() {
         return borderColor;
     }
 
-    public void setBorderColor(NMSUtils.Color borderColor) {
+    public void setBorderColor(Color borderColor) {
         this.borderColor = borderColor;
     }
 

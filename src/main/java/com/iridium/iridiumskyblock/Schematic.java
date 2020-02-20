@@ -125,7 +125,7 @@ public class Schematic {
                     for (int z = 0; z < length; ++z) {
                         int index = y * width * length + z * width + x;
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-                        NMSUtils.setBlockFast(block, blocks[index], blockData[index]);
+                        IridiumSkyblock.nms.setBlockFast(block, blocks[index], blockData[index]);
                         XMaterial material = XMaterial.requestOldXMaterial(blocks[index], blockData[index]);
                         if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(material) || material == XMaterial.SPAWNER) {
                             locations.add(block.getLocation());
@@ -194,7 +194,7 @@ public class Schematic {
             }
         } else {
             //LoadBlocks
-            if (NMSUtils.getVersionNumber() >= 113) {
+            if (XMaterial.ISFLAT) {
                 try {
                     for (int x = 0; x < width; ++x) {
                         for (int y = 0; y < height; ++y) {
