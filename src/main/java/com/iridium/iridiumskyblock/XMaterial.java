@@ -1096,7 +1096,7 @@ public enum XMaterial {
      *
      * @since 3.0.0
      */
-    private static final boolean ISFLAT = supports(13);
+    public static final boolean ISFLAT = supports(13);
 
     /**
      * Checks if the specified version is the same version or higher than the current server version.

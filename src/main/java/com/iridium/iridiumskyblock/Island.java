@@ -12,7 +12,6 @@ import com.iridium.iridiumskyblock.support.UltimateStacker;
 import com.iridium.iridiumskyblock.support.Wildstacker;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
@@ -124,7 +123,7 @@ public class Island {
     public int money;
     public int exp;
 
-    public Biome biome;
+    public XBiome biome;
 
     public transient HashSet<Location> failedGenerators;
 
@@ -874,13 +873,9 @@ public class Island {
         }
     }
 
-    public void setBiome(Biome biome) {
+    public void setBiome(XBiome biome) {
         this.biome = biome;
-        for (double X = getPos1().getX(); X <= getPos2().getX(); X++) {
-            for (double Z = getPos1().getZ(); Z <= getPos2().getZ(); Z++) {
-                IridiumSkyblock.getIslandManager().getWorld().setBiome((int) X, (int) Z, biome);
-            }
-        }
+        biome.setBiome(getPos1(), getPos2());
         for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
             for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
@@ -1158,7 +1153,7 @@ public class Island {
         return name;
     }
 
-    public Biome getBiome() {
+    public XBiome getBiome() {
         return biome;
     }
 

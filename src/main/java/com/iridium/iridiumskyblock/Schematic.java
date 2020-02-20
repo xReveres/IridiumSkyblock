@@ -14,7 +14,6 @@ import org.jnbt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -197,8 +196,6 @@ public class Schematic {
             //LoadBlocks
             if (NMSUtils.getVersionNumber() >= 113) {
                 try {
-                    Method createBlockData = Bukkit.getServer().getClass().getMethod("createBlockData", String.class);
-                    Method setBlockData = Block.class.getMethod("setBlockData", Class.forName("org.bukkit.block.data.BlockData"), boolean.class);
                     for (int x = 0; x < width; ++x) {
                         for (int y = 0; y < height; ++y) {
                             for (int z = 0; z < length; ++z) {
@@ -207,7 +204,7 @@ public class Schematic {
                                 for (String s : palette.keySet()) {
                                     int i = getChildTag(palette, s, IntTag.class).getValue();
                                     if (blockdata[index] == i) {
-                                        setBlockData.invoke(block, createBlockData.invoke(Bukkit.getServer(), s), true);
+                                        block.setBlockData(Bukkit.createBlockData(s), true);
                                         if (Utils.isBlockValuable(block)) {
                                             locations.add(block.getLocation());
                                         }

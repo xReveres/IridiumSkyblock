@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.XBiome;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.block.Biome;
 import org.bukkit.event.EventHandler;
@@ -19,7 +20,7 @@ public class BiomeGUI extends GUI implements Listener {
 
     public HashMap<Integer, BiomeGUI> pages = new HashMap<>();
 
-    public HashMap<Integer, Biome> biomes = new HashMap<>();
+    public HashMap<Integer, XBiome> biomes = new HashMap<>();
 
     public BiomeGUI(Island island) {
         IridiumSkyblock.getInstance().registerListeners(this);
@@ -40,9 +41,9 @@ public class BiomeGUI extends GUI implements Listener {
         super.addContent();
         int i = 0;
         int slot = 0;
-        List<Biome> biomeList = Arrays.asList(Biome.values());
-        biomeList.sort(Comparator.comparing(Biome::toString));
-        for (Biome biome : biomeList) {
+        List<XBiome> biomeList = Arrays.asList(XBiome.values());
+        biomeList.sort(Comparator.comparing(XBiome::toString));
+        for (XBiome biome : biomeList) {
             if (i >= 45 * (page - 1) && slot < 45) {
                 setItem(slot, Utils.makeItem(IridiumSkyblock.getInventories().biome, Collections.singletonList(new Utils.Placeholder("biome", WordUtils.capitalize(biome.name().toLowerCase().replace("_", " "))))));
                 biomes.put(slot, biome);

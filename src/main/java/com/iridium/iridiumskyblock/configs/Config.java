@@ -1,23 +1,10 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.iridium.iridiumskyblock.MissionRestart;
-import com.iridium.iridiumskyblock.Permissions;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.XMaterial;
-import org.bukkit.block.Biome;
+import com.iridium.iridiumskyblock.*;
 
 import java.util.HashMap;
 
 public class Config {
-
-    public Config() {
-        try {
-            netherBiome = Biome.HELL;
-        } catch (NoSuchFieldError e) {
-            netherBiome = Biome.valueOf("NETHER");
-        }
-    }
-
     public String prefix = "&b&lIridiumSkyblock &8»";
     public String worldName = "IridiumSkyblock";
     public String chatRankPlaceholder = "[ISLAND_RANK]";
@@ -47,8 +34,8 @@ public class Config {
     public double dailyMoneyInterest = 0.5;
     public double dailyCrystalsInterest = 5;
     public double dailyExpInterest = 0.01;
-    public Biome defaultBiome = Biome.PLAINS;
-    public Biome netherBiome;
+    public XBiome defaultBiome = XBiome.PLAINS;
+    public XBiome defaultNetherBiome = XBiome.NETHER;
     public MissionRestart missionRestart = MissionRestart.Daily;
     public HashMap<Role, Permissions> defaultPermissions = new HashMap<Role, Permissions>() {{
         for (Role role : Role.values()) {
