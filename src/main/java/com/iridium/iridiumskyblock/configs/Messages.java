@@ -99,6 +99,7 @@ public class Messages {
     public String createCooldown = "%prefix% &7Island creation is on cooldown for %minutes% Minutes and %seconds% Seconds";
     public String islandDeleted = "%prefix% &7Your island has been deleted";
     public String mustBeInIsland = "%prefix% &7You must be in your island to do this.";
+    public String cannotSellItem = "%prefix% &7This is not a sellable item.";
 
     public HashMap<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {

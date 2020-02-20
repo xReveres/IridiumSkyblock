@@ -105,27 +105,32 @@ public class ShopGUI extends GUI implements Listener {
                 if (items.containsKey(e.getSlot())) {
                     Shop.ShopItem item = items.get(e.getSlot());
                     if (e.getClick().equals(ClickType.RIGHT)) {
-                        if (contains((Player) e.getWhoClicked(), item.material, item.amount)) {
-                            int removed = 0;
-                            int index = 0;
-                            for (ItemStack itemStack : e.getWhoClicked().getInventory().getContents()) {
-                                if (removed >= item.amount) break;
-                                if (itemStack != null) {
-                                    if (item.material.isSimilar(itemStack)) {
-                                        if (removed + itemStack.getAmount() <= item.amount) {
-                                            removed += itemStack.getAmount();
-                                            e.getWhoClicked().getInventory().setItem(index, null);
-                                        } else {
-                                            itemStack.setAmount(itemStack.getAmount() - (item.amount - removed));
-                                            removed += item.amount;
+                        //Can we sell this?
+                        if (item.sellVault > 0 || item.sellCrystals > 0) {
+                            if (contains((Player) e.getWhoClicked(), item.material, item.amount)) {
+                                int removed = 0;
+                                int index = 0;
+                                for (ItemStack itemStack : e.getWhoClicked().getInventory().getContents()) {
+                                    if (removed >= item.amount) break;
+                                    if (itemStack != null) {
+                                        if (item.material.isSimilar(itemStack)) {
+                                            if (removed + itemStack.getAmount() <= item.amount) {
+                                                removed += itemStack.getAmount();
+                                                e.getWhoClicked().getInventory().setItem(index, null);
+                                            } else {
+                                                itemStack.setAmount(itemStack.getAmount() - (item.amount - removed));
+                                                removed += item.amount;
+                                            }
                                         }
                                     }
+                                    index++;
                                 }
-                                index++;
+                                Utils.pay((Player) e.getWhoClicked(), item.sellVault, item.sellCrystals);
+                            } else {
+                                e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantSell.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
-                            Utils.pay((Player) e.getWhoClicked(), item.sellVault, item.sellCrystals);
                         } else {
-                            e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantSell.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cannotSellItem.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     } else {
                         if (Utils.canBuy((Player) e.getWhoClicked(), item.buyVault, item.buyCrystals)) {
