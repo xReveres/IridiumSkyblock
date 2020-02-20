@@ -227,6 +227,7 @@ public class Utils {
     }
 
     public static boolean isSafe(Location loc, Island island) {
+        if (loc.getY() == 0) return false;
         if (!island.isInIsland(loc)) return false;
         if (!loc.getBlock().getType().equals(Material.AIR)) return false;
         if (loc.clone().add(0, -1, 0).getBlock().getType().equals(Material.AIR)) return false;
