@@ -10,7 +10,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class BiomeGUI extends GUI implements Listener {
 
@@ -41,7 +44,7 @@ public class BiomeGUI extends GUI implements Listener {
         super.addContent();
         int i = 0;
         int slot = 0;
-        List<XBiome> biomeList = Arrays.asList(XBiome.values());
+        List<XBiome> biomeList = IridiumSkyblock.getConfiguration().biomes;
         biomeList.sort(Comparator.comparing(XBiome::toString));
         for (XBiome biome : biomeList) {
             if (i >= 45 * (page - 1) && slot < 45) {

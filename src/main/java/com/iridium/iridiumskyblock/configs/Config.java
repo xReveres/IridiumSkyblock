@@ -2,7 +2,9 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Config {
     public String prefix = "&b&lIridiumSkyblock &8»";
@@ -61,4 +63,5 @@ public class Config {
 
     public HashMap<XMaterial, Integer> blockvalue = null;
     public HashMap<String, Integer> spawnervalue = null;
+    public List<XBiome> biomes = Arrays.asList(XBiome.values());
 }
