@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.MultiversionMaterials;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,7 +40,7 @@ public class LanguagesGUI extends GUI implements Listener {
         for (int i = 0; i < IridiumSkyblock.getInstance().languages.size(); i++) {
             if (i >= (page-1) * 45 && i < page * 54) {
                 languages.put(slot, IridiumSkyblock.getInstance().languages.get(i));
-                setItem(slot, Utils.makeItem(MultiversionMaterials.PAPER, 1, "&b&l" + IridiumSkyblock.getInstance().languages.get(i)));
+                setItem(slot, Utils.makeItem(XMaterial.PAPER, 1, "&b&l" + IridiumSkyblock.getInstance().languages.get(i)));
                 slot++;
             }
         }

@@ -1,6 +1,9 @@
 package com.iridium.iridiumskyblock;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.block.*;
 import org.bukkit.entity.Player;
 
@@ -71,9 +74,7 @@ public class NMSUtils {
         }
     }
 
-    public static void setBlockFast(World world, int X, int Y, int Z, int blockId, byte data) {
-        Location location = new Location(world, X, Y, Z);
-        org.bukkit.block.Block b = location.getBlock();
+    public static void setBlockFast(Block b, int blockId, byte data) {
         BlockState state = b.getState();
         if (state instanceof Chest) {
             ((Chest) state).getInventory().clear();
@@ -89,10 +90,16 @@ public class NMSUtils {
             ((Furnace) state).getInventory().clear();
         } else if (state instanceof BrewingStand) {
             ((BrewingStand) state).getInventory().clear();
-        } else if (state instanceof Beacon) {
-            ((Beacon) state).getInventory().clear();
         }
-        new Location(world, X, Y, Z).getBlock().setTypeIdAndData(blockId, data, false);
+        XMaterial material = XMaterial.requestOldXMaterial(blockId, data);
+        if (material != null && material.parseMaterial() != null) {
+            b.setType(material.parseMaterial());
+        } else {
+            material = XMaterial.requestOldXMaterial(blockId, (byte) 0);
+            if (material != null && material.parseMaterial() != null) {
+                b.setType(material.parseMaterial());
+            }
+        }
     }
 
     public static void sendChunk(Player p, Chunk c) {

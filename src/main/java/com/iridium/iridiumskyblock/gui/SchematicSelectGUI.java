@@ -25,7 +25,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
                 try {
                     setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1, fakeSchematic.displayname, fakeSchematic.lore));
                 } catch (Exception e) {
-                    setItem(fakeSchematic.slot, Utils.makeItem(MultiversionMaterials.STONE, 1, fakeSchematic.displayname, fakeSchematic.lore));
+                    setItem(fakeSchematic.slot, Utils.makeItem(XMaterial.STONE, 1, fakeSchematic.displayname, fakeSchematic.lore));
                 }
                 i++;
             }

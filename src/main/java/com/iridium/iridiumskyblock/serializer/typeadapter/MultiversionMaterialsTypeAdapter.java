@@ -1,20 +1,20 @@
 package com.iridium.iridiumskyblock.serializer.typeadapter;
 
 import com.google.gson.*;
-import com.iridium.iridiumskyblock.MultiversionMaterials;
+import com.iridium.iridiumskyblock.XMaterial;
 
 import java.lang.reflect.Type;
 
-public class MultiversionMaterialsTypeAdapter implements JsonSerializer<MultiversionMaterials>, JsonDeserializer<MultiversionMaterials> {
+public class MultiversionMaterialsTypeAdapter implements JsonSerializer<XMaterial>, JsonDeserializer<XMaterial> {
 
     @Override
-    public JsonElement serialize(MultiversionMaterials material, Type type, JsonSerializationContext jsonSerializationContext) {
+    public JsonElement serialize(XMaterial material, Type type, JsonSerializationContext jsonSerializationContext) {
         return new JsonPrimitive(material.name());
     }
 
 
     @Override
-    public MultiversionMaterials deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
-        return MultiversionMaterials.fromString(jsonElement.getAsString().replace("LEGACY_", ""));
+    public XMaterial deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
+        return XMaterial.valueOf(jsonElement.getAsString().replace("LEGACY_", ""));
     }
 }

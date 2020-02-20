@@ -3,7 +3,7 @@ package com.iridium.iridiumskyblock.serializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.MultiversionMaterials;
+import com.iridium.iridiumskyblock.XMaterial;
 import com.iridium.iridiumskyblock.serializer.typeadapter.EnumTypeAdapter;
 import com.iridium.iridiumskyblock.serializer.typeadapter.InventoryTypeAdapter;
 import com.iridium.iridiumskyblock.serializer.typeadapter.LocationTypeAdapter;
@@ -45,7 +45,7 @@ public class Persist {
                 .registerTypeAdapter(Location.class, new LocationTypeAdapter())
                 .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY)
-                .registerTypeAdapter(MultiversionMaterials.class, new MultiversionMaterialsTypeAdapter());
+                .registerTypeAdapter(XMaterial.class, new MultiversionMaterialsTypeAdapter());
     }
 
     // ------------------------------------------------------------ //

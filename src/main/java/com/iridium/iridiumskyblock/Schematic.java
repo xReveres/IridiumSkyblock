@@ -126,11 +126,10 @@ public class Schematic {
                     for (int z = 0; z < length; ++z) {
                         int index = y * width * length + z * width + x;
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-                        if (Material.getMaterial(blocks[index]) != null) {
-                            block.setTypeIdAndData(blocks[index], blockData[index], true);
-                            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(Material.getMaterial(blocks[index])) || Material.getMaterial(blocks[index]) == Material.MOB_SPAWNER) {
-                                locations.add(block.getLocation());
-                            }
+                        NMSUtils.setBlockFast(block, blocks[index], blockData[index]);
+                        XMaterial material = XMaterial.requestOldXMaterial(blocks[index], blockData[index]);
+                        if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(material) || material == XMaterial.SPAWNER) {
+                            locations.add(block.getLocation());
                         }
                     }
                 }
@@ -160,10 +159,12 @@ public class Schematic {
                             String name = (getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
                             Byte amount = getChildTag(itemtag, "Count", ByteTag.class).getValue();
                             short damage = getChildTag(itemtag, "Damage", ShortTag.class).getValue();
-                            if (MultiversionMaterials.fromString(name.toUpperCase()) != null) {
-                                Material material = MultiversionMaterials.fromString(name.toUpperCase()).parseMaterial();
-                                if (material != null) {
-                                    chest.getBlockInventory().setItem(slot, new ItemStack(material, amount, damage));
+                            XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) damage);
+                            if (material != null) {
+                                ItemStack itemStack = material.parseItem(true);
+                                if (itemStack != null) {
+                                    itemStack.setAmount(amount);
+                                    chest.getBlockInventory().setItem(slot, itemStack);
                                 }
                             }
                         }
@@ -242,10 +243,12 @@ public class Schematic {
                                         byte slot = getChildTag(itemtag, "Slot", ByteTag.class).getValue();
                                         String name = (getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
                                         Byte amount = getChildTag(itemtag, "Count", ByteTag.class).getValue();
-                                        if (MultiversionMaterials.fromString(name.toUpperCase()) != null) {
-                                            Material material = MultiversionMaterials.fromString(name.toUpperCase()).parseMaterial();
-                                            if (material != null) {
-                                                chest.getBlockInventory().setItem(slot, new ItemStack(material, amount));
+                                        XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) -1);
+                                        if (material != null) {
+                                            ItemStack itemStack = material.parseItem(true);
+                                            if (itemStack != null) {
+                                                itemStack.setAmount(amount);
+                                                chest.getBlockInventory().setItem(slot, itemStack);
                                             }
                                         }
                                     }
@@ -298,7 +301,7 @@ public class Schematic {
     }
 
     public static Schematic loadSchematic(File file) throws IOException {
-        if(cache.containsKey(file.getAbsolutePath()))return cache.get(file.getAbsolutePath());
+        if (cache.containsKey(file.getAbsolutePath())) return cache.get(file.getAbsolutePath());
         FileInputStream stream = new FileInputStream(file);
         NBTInputStream nbtStream = new NBTInputStream(stream);
 

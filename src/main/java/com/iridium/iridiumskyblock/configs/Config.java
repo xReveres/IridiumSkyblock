@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.MissionRestart;
-import com.iridium.iridiumskyblock.MultiversionMaterials;
 import com.iridium.iridiumskyblock.Permissions;
 import com.iridium.iridiumskyblock.Role;
+import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.block.Biome;
 
 import java.util.HashMap;
@@ -72,6 +72,6 @@ public class Config {
         put(10, 25);
     }};
 
-    public HashMap<MultiversionMaterials, Integer> blockvalue = null;
+    public HashMap<XMaterial, Integer> blockvalue = null;
     public HashMap<String, Integer> spawnervalue = null;
 }

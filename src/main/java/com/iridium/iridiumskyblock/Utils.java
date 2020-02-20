@@ -96,16 +96,20 @@ public class Utils {
         return item;
     }
 
-    public static ItemStack makeItem(MultiversionMaterials material, int amount, String name) {
-        ItemStack item = new ItemStack(material.parseMaterial(), amount, (short) material.data);
+    public static ItemStack makeItem(XMaterial material, int amount, String name) {
+        ItemStack item = material.parseItem(true);
+        if (item == null) return null;
+        item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
         m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         item.setItemMeta(m);
         return item;
     }
 
-    public static ItemStack makeItem(MultiversionMaterials material, int amount, String name, List<String> lore) {
-        ItemStack item = new ItemStack(material.parseMaterial(), amount, (short) material.data);
+    public static ItemStack makeItem(XMaterial material, int amount, String name, List<String> lore) {
+        ItemStack item = material.parseItem(true);
+        if (item == null) return null;
+        item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
         m.setLore(Utils.color(lore));
         m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
@@ -116,75 +120,78 @@ public class Utils {
     public static ItemStack makeItem(Inventories.Item item, List<Placeholder> placeholders) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
-            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(processMultiplePlaceholders(item.headOwner, placeholders));
                 itemstack.setItemMeta(m);
             }
             return itemstack;
         } catch (Exception e) {
-            return makeItem(MultiversionMaterials.STONE, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
+            return makeItem(XMaterial.STONE, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
         }
     }
 
     public static ItemStack makeItem(Inventories.Item item) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, item.title, item.lore);
-            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
             }
             return itemstack;
         } catch (Exception e) {
-            return makeItem(MultiversionMaterials.STONE, item.amount, item.title, item.lore);
+            return makeItem(XMaterial.STONE, item.amount, item.title, item.lore);
         }
     }
 
     public static ItemStack makeItem(Inventories.Item item, Island island) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
             }
             return itemstack;
         } catch (Exception e) {
-            return makeItem(MultiversionMaterials.STONE, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            return makeItem(XMaterial.STONE, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         }
     }
 
     public static ItemStack makeItemHidden(Inventories.Item item) {
         try {
-            ItemStack itemstack = makeItemHidden(item.material.parseMaterial(), item.amount, item.material.data, item.title, item.lore);
-            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+            ItemStack itemstack = makeItemHidden(item.material, item.amount, item.title, item.lore);
+            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
             }
             return itemstack;
         } catch (Exception e) {
-            return makeItemHidden(Material.STONE, item.amount, item.material.data, item.title, item.lore);
+            return makeItemHidden(XMaterial.STONE, item.amount, item.title, item.lore);
         }
     }
 
     public static ItemStack makeItemHidden(Inventories.Item item, Island island) {
         try {
-            ItemStack itemstack = makeItemHidden(item.material.parseMaterial(), item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-            if (item.material == MultiversionMaterials.PLAYER_HEAD && item.headOwner != null) {
+            ItemStack itemstack = makeItemHidden(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
             }
             return itemstack;
         } catch (Exception e) {
-            return makeItemHidden(Material.STONE, item.amount, item.material.data, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            e.printStackTrace();
+            return makeItemHidden(XMaterial.STONE, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
         }
     }
 
-    public static ItemStack makeItemHidden(Material material, int amount, int type, String name, List<String> lore) {
-        ItemStack item = new ItemStack(material, amount, (short) type);
+    public static ItemStack makeItemHidden(XMaterial material, int amount, String name, List<String> lore) {
+        ItemStack item = material.parseItem(true);
+        if (item == null) return null;
+        item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
         m.setLore(Utils.color(lore));
         m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
@@ -202,7 +209,7 @@ public class Utils {
     }
 
     public static boolean isBlockValuable(Block b) {
-        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(MultiversionMaterials.fromMaterial(b.getType())) || b.getState() instanceof CreatureSpawner;
+        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(b.getType())) || b.getState() instanceof CreatureSpawner;
     }
 
     public static List<Island> getTopIslands() {

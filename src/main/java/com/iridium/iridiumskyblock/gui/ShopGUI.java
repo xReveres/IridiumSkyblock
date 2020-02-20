@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.MultiversionMaterials;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.XMaterial;
 import com.iridium.iridiumskyblock.configs.Shop;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -78,14 +78,12 @@ public class ShopGUI extends GUI implements Listener {
         }
     }
 
-    public boolean contains(Player p, MultiversionMaterials materials, int amount) {
+    public boolean contains(Player p, XMaterial materials, int amount) {
         int total = 0;
         for (ItemStack item : p.getInventory().getContents()) {
             if (item == null) continue;
-            if (item.getType().equals(materials.parseMaterial())) {
-                if (item.getData().getData() == materials.data) {
-                    total += item.getAmount();
-                }
+            if (materials.isSimilar(item)) {
+                total += item.getAmount();
             }
         }
         return total >= amount;
@@ -113,7 +111,7 @@ public class ShopGUI extends GUI implements Listener {
                             for (ItemStack itemStack : e.getWhoClicked().getInventory().getContents()) {
                                 if (removed >= item.amount) break;
                                 if (itemStack != null) {
-                                    if (itemStack.getType().equals(item.material.parseMaterial()) && itemStack.getData().getData() == item.material.data) {
+                                    if (item.material.isSimilar(itemStack)) {
                                         if (removed + itemStack.getAmount() <= item.amount) {
                                             removed += itemStack.getAmount();
                                             e.getWhoClicked().getInventory().setItem(index, null);
@@ -131,7 +129,9 @@ public class ShopGUI extends GUI implements Listener {
                         }
                     } else {
                         if (Utils.canBuy((Player) e.getWhoClicked(), item.buyVault, item.buyCrystals)) {
-                            e.getWhoClicked().getInventory().addItem(new ItemStack(item.material.parseMaterial(), item.amount, (short) item.material.data));
+                            ItemStack itemStack = item.material.parseItem(true);
+                            itemStack.setAmount(item.amount);
+                            e.getWhoClicked().getInventory().addItem(itemStack);
                         } else {
                             e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantBuy.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }

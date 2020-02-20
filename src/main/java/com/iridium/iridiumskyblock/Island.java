@@ -279,8 +279,8 @@ public class Island {
         while (locations.hasNext()) {
             Location loc = locations.next();
             Block block = loc.getBlock();
-            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(MultiversionMaterials.fromMaterial(block.getType()))) {
-                value += IridiumSkyblock.getBlockValues().blockvalue.get(MultiversionMaterials.fromMaterial(block.getType()));
+            if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(block.getType()))) {
+                value += IridiumSkyblock.getBlockValues().blockvalue.get(XMaterial.matchXMaterial(block.getType()));
             } else if (loc.getBlock().getState() instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 if (IridiumSkyblock.getBlockValues().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
@@ -896,7 +896,7 @@ public class Island {
         for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
             for (int Y = 0; Y <= 255; Y++) {
                 for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
-                    NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z, 0, (byte) 0);
+                    NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld().getBlockAt(X, Y, Z), 0, (byte) 0);
                 }
             }
         }
@@ -904,7 +904,7 @@ public class Island {
             for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
                 for (int Y = 0; Y <= 255; Y++) {
                     for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
-                        NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z, 0, (byte) 0);
+                        NMSUtils.setBlockFast(IridiumSkyblock.getIslandManager().getWorld().getBlockAt(X, Y, Z), 0, (byte) 0);
                     }
                 }
             }

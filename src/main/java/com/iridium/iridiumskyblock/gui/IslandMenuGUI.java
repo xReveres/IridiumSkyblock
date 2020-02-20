@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import org.bukkit.Bukkit;
@@ -35,7 +34,6 @@ public class IslandMenuGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             Player p = (Player) e.getWhoClicked();
-            User u = User.getUser(p);
             for(Inventories.Item item : IridiumSkyblock.getInventories().menu.keySet()){
                 if(item.slot==e.getSlot()){
                     p.closeInventory();

@@ -523,7 +523,7 @@ public class IridiumSkyblock extends JavaPlugin {
             }
         }
 
-        getBlockValues().blockvalue.remove(MultiversionMaterials.AIR);
+        getBlockValues().blockvalue.remove(XMaterial.AIR);
 
         oreUpgradeCache.clear();
         for (int i : getUpgrades().oresUpgrade.upgrades.keySet()) {
@@ -572,7 +572,7 @@ public class IridiumSkyblock extends JavaPlugin {
             getBoosters().flightBooster.crystalsCost = 15;
 
         if (getConfiguration().blockvalue != null) {
-            getBlockValues().blockvalue = (HashMap<MultiversionMaterials, Integer>) getConfiguration().blockvalue.clone();
+            getBlockValues().blockvalue = (HashMap<XMaterial, Integer>) getConfiguration().blockvalue.clone();
             getConfiguration().blockvalue = null;
         }
         if (getConfiguration().spawnervalue != null) {
