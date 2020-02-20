@@ -5,7 +5,7 @@ import com.iridium.iridiumskyblock.XMaterial;
 
 import java.lang.reflect.Type;
 
-public class MultiversionMaterialsTypeAdapter implements JsonSerializer<XMaterial>, JsonDeserializer<XMaterial> {
+public class XMaterialsTypeAdapter implements JsonSerializer<XMaterial>, JsonDeserializer<XMaterial> {
 
     @Override
     public JsonElement serialize(XMaterial material, Type type, JsonSerializationContext jsonSerializationContext) {
