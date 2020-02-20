@@ -1248,6 +1248,7 @@ public enum XMaterial {
     @Nullable
     public static XMaterial requestOldXMaterial(@Nonnull String name, byte data) {
         if (name.equalsIgnoreCase("sign")) return XMaterial.OAK_SIGN;
+        if (name.equalsIgnoreCase("grass")) return XMaterial.GRASS_BLOCK;
         String holder = name + data;
         XMaterial material = NAME_CACHE.getIfPresent(holder);
         if (material != null) return material;
