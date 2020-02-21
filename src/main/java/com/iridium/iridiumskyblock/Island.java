@@ -546,7 +546,6 @@ public class Island {
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
         lastRegen = c.getTime();
         if (deleteBlocks) deleteBlocks();
-        getCenter().getBlock().setType(Material.STONE);
         if (IridiumSkyblock.worldEdit == null) {
             pasteSchematic();
         } else {
