@@ -14,7 +14,6 @@ import org.jnbt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,8 +106,7 @@ public class Schematic {
         return height;
     }
 
-    public List<Location> pasteSchematic(Location loc, Island island) {
-        List<Location> locations = new ArrayList<>();
+    public void pasteSchematic(Location loc, Island island) {
         short length = getLength();
         short width = getWidth();
         short height = getHeight();
@@ -127,9 +125,6 @@ public class Schematic {
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                         IridiumSkyblock.nms.setBlockFast(block, blocks[index], blockData[index]);
                         XMaterial material = XMaterial.requestOldXMaterial(blocks[index], blockData[index]);
-                        if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(material) || material == XMaterial.SPAWNER) {
-                            locations.add(block.getLocation());
-                        }
                     }
                 }
             }
@@ -205,9 +200,6 @@ public class Schematic {
                                     int i = getChildTag(palette, s, IntTag.class).getValue();
                                     if (blockdata[index] == i) {
                                         block.setBlockData(Bukkit.createBlockData(s), true);
-                                        if (Utils.isBlockValuable(block)) {
-                                            locations.add(block.getLocation());
-                                        }
                                     }
                                 }
                             }
@@ -280,7 +272,7 @@ public class Schematic {
                 }
             }
         }
-        return locations;
+        return;
     }
 
     public static void debugSchematic(File file) throws IOException {

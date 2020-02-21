@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Missions;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -28,8 +29,6 @@ public class onBlockBreak implements Listener {
                         }
                     }
                 }
-                island.blocks.remove(e.getBlock().getLocation());
-                island.calculateIslandValue();
                 if ((!island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).breakBlocks) && !u.bypassing)
                     e.setCancelled(true);
             } else {
@@ -48,7 +47,17 @@ public class onBlockBreak implements Listener {
     public void onMonitorBreakBlock(BlockBreakEvent e) {
         Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
         if (island != null) {
-            island.blocks.remove(e.getBlock().getLocation());
+            if (Utils.isBlockValuable(e.getBlock())) {
+                if (!(e.getBlock().getState() instanceof CreatureSpawner)) {
+                    if (island.valuableBlocks.containsKey(e.getBlock().getType().name())) {
+                        island.valuableBlocks.put(e.getBlock().getType().name(), island.valuableBlocks.get(e.getBlock().getType().name()) - 1);
+                    }
+                    if(island.updating){
+                        island.tempValues.remove(e.getBlock().getLocation());
+                    }
+                    island.calculateIslandValue();
+                }
+            }
             island.failedGenerators.remove(e.getBlock().getLocation());
         }
     }

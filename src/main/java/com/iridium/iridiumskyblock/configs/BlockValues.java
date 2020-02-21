@@ -5,13 +5,13 @@ import com.iridium.iridiumskyblock.XMaterial;
 import java.util.HashMap;
 
 public class BlockValues {
-    public HashMap<XMaterial, Integer> blockvalue = new HashMap<XMaterial, Integer>() {{
-        put(XMaterial.DIAMOND_BLOCK, 10);
-        put(XMaterial.EMERALD_BLOCK, 20);
-        put(XMaterial.BEACON, 100);
+    public HashMap<XMaterial, Double> blockvalue = new HashMap<XMaterial, Double>() {{
+        put(XMaterial.DIAMOND_BLOCK, 10.00);
+        put(XMaterial.EMERALD_BLOCK, 20.00);
+        put(XMaterial.BEACON, 100.00);
     }};
-    public HashMap<String, Integer> spawnervalue = new HashMap<String, Integer>() {{
-        put("PIG", 100);
-        put("IRON_GOLEM", 1000);
+    public HashMap<String, Double> spawnervalue = new HashMap<String, Double>() {{
+        put("PIG", 100.00);
+        put("IRON_GOLEM", 1000.00);
     }};
 }

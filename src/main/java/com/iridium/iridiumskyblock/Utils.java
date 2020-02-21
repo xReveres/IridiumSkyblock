@@ -214,7 +214,7 @@ public class Utils {
 
     public static List<Island> getTopIslands() {
         List<Island> islands = new ArrayList<>(IridiumSkyblock.getIslandManager().islands.values());
-        islands.sort(Comparator.comparingInt(Island::getValue));
+        islands.sort(Comparator.comparingDouble(Island::getValue));
         Collections.reverse(islands);
         return islands;
     }

@@ -404,6 +404,7 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void islandValueManager() {
+        //Loop through all online islands and make sure Island#valuableBlocks is accurate
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             ListIterator<Integer> islands = new ArrayList<>(islandManager.islands.keySet()).listIterator();
 
@@ -424,23 +425,6 @@ public class IridiumSkyblock extends JavaPlugin {
                 }
             }
         }, 0, 0);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            ListIterator<Integer> islands = new ArrayList<>(islandManager.islands.keySet()).listIterator();
-
-            @Override
-            public void run() {
-                if (!islands.hasNext()) {
-                    islands = new ArrayList<>(islandManager.islands.keySet()).listIterator();
-                }
-                if (islands.hasNext()) {
-                    int id = islands.next();
-                    Island island = IridiumSkyblock.getIslandManager().getIslandViaId(id);
-                    if (island != null) {
-                        island.calculateIslandValue();
-                    }
-                }
-            }
-        }, 0, IridiumSkyblock.getConfiguration().islandsUpdateInterval);
     }
 
     public void sendErrorMessage(Exception e) {
@@ -588,11 +572,11 @@ public class IridiumSkyblock extends JavaPlugin {
             getBoosters().flightBooster.crystalsCost = 15;
 
         if (getConfiguration().blockvalue != null) {
-            getBlockValues().blockvalue = (HashMap<XMaterial, Integer>) getConfiguration().blockvalue.clone();
+            getBlockValues().blockvalue = (HashMap<XMaterial, Double>) getConfiguration().blockvalue.clone();
             getConfiguration().blockvalue = null;
         }
         if (getConfiguration().spawnervalue != null) {
-            getBlockValues().spawnervalue = (HashMap<String, Integer>) getConfiguration().spawnervalue.clone();
+            getBlockValues().spawnervalue = (HashMap<String, Double>) getConfiguration().spawnervalue.clone();
             getConfiguration().spawnervalue = null;
         }
         int max = 0;

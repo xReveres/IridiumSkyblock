@@ -26,12 +26,11 @@ public class Config {
     public boolean debugSchematics = false;
     public boolean restartUpgradesOnRegen = true;
     public boolean allowWaterInNether = true;
+    public int blocksPerTick = 25;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
     public int distance = 151;
     public int backupIntervalMinutes = 60;
-    public int blocksPerTick = 25;
-    public int islandsUpdateInterval = 5;
     public double valuePerLevel = 100.00;
     public double dailyMoneyInterest = 0.5;
     public double dailyCrystalsInterest = 5;
@@ -61,7 +60,7 @@ public class Config {
         put(10, 25);
     }};
 
-    public HashMap<XMaterial, Integer> blockvalue = null;
-    public HashMap<String, Integer> spawnervalue = null;
+    public HashMap<XMaterial, Double> blockvalue = null;
+    public HashMap<String, Double> spawnervalue = null;
     public List<XBiome> biomes = Arrays.asList(XBiome.values());
 }
