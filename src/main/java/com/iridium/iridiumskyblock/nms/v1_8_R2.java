@@ -1,9 +1,7 @@
 package com.iridium.iridiumskyblock.nms;
 
 import com.iridium.iridiumskyblock.Color;
-import com.iridium.iridiumskyblock.XMaterial;
 import net.minecraft.server.v1_8_R2.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -16,6 +14,8 @@ import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class v1_8_R2 implements NMS {
+
+
     @Override
     public void setBlockFast(Block block, int blockId, byte data) {
         BlockState state = block.getState();
@@ -34,11 +34,10 @@ public class v1_8_R2 implements NMS {
         } else if (state instanceof BrewingStand) {
             ((BrewingStand) state).getInventory().clear();
         }
-        XMaterial material = XMaterial.requestOldXMaterial(blockId, (byte) 0);
-        if (material != null && material.parseMaterial() != null) {
-            block.setType(material.parseMaterial());
-            block.setBlockData(Bukkit.getUnsafe().fromLegacy(material.parseMaterial(), data), true);
-        }
+        net.minecraft.server.v1_8_R2.World nmsWorld = ((CraftWorld) block.getWorld()).getHandle();
+        BlockPosition bp = new BlockPosition(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ());
+        IBlockData ibd = net.minecraft.server.v1_8_R2.Block.getByCombinedId(blockId + (data << 12));
+        nmsWorld.setTypeAndData(bp, ibd, 2);
     }
 
     @Override
