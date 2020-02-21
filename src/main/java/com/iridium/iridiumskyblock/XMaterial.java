@@ -312,7 +312,7 @@ public enum XMaterial {
     DARK_OAK_PRESSURE_PLATE(-1, "WOOD_PLATE"),
     DARK_OAK_SAPLING(6, 5, "SAPLING"),
     DARK_OAK_SIGN(-1, "SIGN"),
-    DARK_OAK_SLAB(126, 5,"WOOD_STEP", "WOODEN_SLAB", "WOOD_DOUBLE_STEP"),
+    DARK_OAK_SLAB(126, 5, "WOOD_STEP", "WOODEN_SLAB", "WOOD_DOUBLE_STEP"),
     DARK_OAK_STAIRS(164),
     DARK_OAK_TRAPDOOR(-1, "TRAP_DOOR"),
     DARK_OAK_WALL_SIGN(-1, "SIGN_POST", "WALL_SIGN"),
@@ -1089,6 +1089,12 @@ public enum XMaterial {
     ZOMBIE_SPAWN_EGG(383, 54, "MONSTER_EGG"),
     ZOMBIE_VILLAGER_SPAWN_EGG(393, 27, "MONSTER_EGG"),
     ZOMBIE_WALL_HEAD(397, 2, "SKULL", "SKULL_ITEM");
+    /**
+     * The current version of the server in the a form of a major version.
+     *
+     * @since 1.0.0
+     */
+    private static final int VERSION = Integer.parseInt(getMajorVersion(Bukkit.getServer().getClass().getPackage().getName()));
 
     /**
      * Cached result if the server version is after the v1.13 flattening update.
@@ -1198,12 +1204,7 @@ public enum XMaterial {
      * @since 3.0.0
      */
     private static final Pattern FORMAT_PATTERN = Pattern.compile("\\W+");
-    /**
-     * The current version of the server in the a form of a major version.
-     *
-     * @since 1.0.0
-     */
-    private static final int VERSION = Integer.parseInt(getMajorVersion(Bukkit.getVersion()).substring(2));
+
     /**
      * The data value of this material https://minecraft.gamepedia.com/Java_Edition_data_values/Pre-flattening
      *
@@ -1586,23 +1587,7 @@ public enum XMaterial {
      */
     @Nonnull
     public static String getMajorVersion(@Nonnull String version) {
-        Validate.notEmpty(version, "Cannot get major Minecraft version from null or empty string");
-
-        // getVersion()
-        int index = version.lastIndexOf("MC:");
-        if (index != -1) {
-            version = version.substring(index + 4, version.length() - 1);
-        } else if (version.endsWith("SNAPSHOT")) {
-            // getBukkitVersion()
-            index = version.indexOf('-');
-            version = version.substring(0, index);
-        }
-
-        // 1.13.2, 1.14.4, etc...
-        int lastDot = version.lastIndexOf('.');
-        if (version.indexOf('.') != lastDot) version = version.substring(0, lastDot);
-
-        return version;
+        return version.split("_")[1];
     }
 
     /**
