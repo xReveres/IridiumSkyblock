@@ -227,10 +227,11 @@ public class Utils {
     }
 
     public static boolean isSafe(Location loc, Island island) {
-        if (loc.getY() == 0) return false;
+        if (loc.getY() < 1) return false;
         if (!island.isInIsland(loc)) return false;
-        if (!loc.getBlock().getType().equals(Material.AIR)) return false;
-        if (loc.clone().add(0, -1, 0).getBlock().getType().equals(Material.AIR)) return false;
+        if (!XMaterial.matchXMaterial(loc.getBlock().getType()).name().endsWith("AIR")) return false;
+        if (XMaterial.matchXMaterial(loc.clone().add(0, -1, 0).getBlock().getType()).name().endsWith("AIR"))
+            return false;
         if (loc.clone().add(0, -1, 0).getBlock().isLiquid()) return false;
         return true;
     }
@@ -248,6 +249,9 @@ public class Utils {
 
     public static Location getNewHome(Island island, Location loc) {
         Block b = loc.getWorld().getHighestBlockAt(loc);
+        while (!XMaterial.matchXMaterial(b.getType()).name().endsWith("AIR")) {
+            b = b.getLocation().clone().add(0, 1, 0).getBlock();
+        }
         if (isSafe(b.getLocation(), island)) {
             return b.getLocation().add(0.5, 0, 0.5);
         }
@@ -255,6 +259,9 @@ public class Utils {
         for (double X = island.getPos1().getX(); X <= island.getPos2().getX(); X++) {
             for (double Z = island.getPos1().getZ(); Z <= island.getPos2().getZ(); Z++) {
                 b = loc.getWorld().getHighestBlockAt((int) X, (int) Z);
+                while (!XMaterial.matchXMaterial(b.getType()).name().endsWith("AIR")) {
+                    b = b.getLocation().clone().add(0, 1, 0).getBlock();
+                }
                 if (isSafe(b.getLocation(), island)) {
                     return b.getLocation().add(0.5, 0, 0.5);
                 }
