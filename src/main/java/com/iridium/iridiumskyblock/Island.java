@@ -878,8 +878,11 @@ public class Island {
         biome.setBiome(getPos1(), getPos2());
         for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
             for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    IridiumSkyblock.nms.sendChunk(p, IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
+                for (Player p : IridiumSkyblock.getIslandManager().getWorld().getPlayers()) {
+                    IridiumSkyblock.getInstance().getLogger().info(p.getName());
+                    if (p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
+                        IridiumSkyblock.nms.sendChunk(p, IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
+                    }
                 }
             }
         }
@@ -1082,6 +1085,7 @@ public class Island {
         pos1 = getCenter().clone().subtract(IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00, 0, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00);
         pos2 = getCenter().clone().add(IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00, 0, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00);
         sendBorder();
+        setBiome(biome);
     }
 
     public int getMemberLevel() {
