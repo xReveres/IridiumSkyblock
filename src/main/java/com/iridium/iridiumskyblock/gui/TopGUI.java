@@ -28,6 +28,7 @@ public class TopGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
+        if (getInventory().getViewers().isEmpty()) return;
         List<Island> top = Utils.getTopIslands();
         for (int i : IridiumSkyblock.getConfiguration().islandTopSlots.keySet()) {
             if (top.size() >= i) {

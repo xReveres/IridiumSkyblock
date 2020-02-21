@@ -19,6 +19,7 @@ public class UpgradeGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
+        if (getInventory().getViewers().isEmpty()) return;
         Island island = getIsland();
         if (island != null) {
             if (IridiumSkyblock.getUpgrades().sizeUpgrade.enabled)

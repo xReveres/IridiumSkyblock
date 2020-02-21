@@ -40,6 +40,7 @@ public class BiomeGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
+        if (getInventory().getViewers().isEmpty()) return;
         int i = 0;
         int slot = 0;
         for (XBiome biome : IridiumSkyblock.getConfiguration().biomes) {

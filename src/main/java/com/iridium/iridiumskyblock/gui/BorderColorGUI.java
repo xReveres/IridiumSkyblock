@@ -24,6 +24,7 @@ public class BorderColorGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
+        if (getInventory().getViewers().isEmpty()) return;
         this.red = Utils.makeItem(IridiumSkyblock.getInventories().red);
         this.green = Utils.makeItem(IridiumSkyblock.getInventories().green);
         this.blue = Utils.makeItem(IridiumSkyblock.getInventories().blue);

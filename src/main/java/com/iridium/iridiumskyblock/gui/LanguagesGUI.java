@@ -35,6 +35,7 @@ public class LanguagesGUI extends GUI implements Listener {
     @Override
     public void addContent() {
         super.addContent();
+        if (getInventory().getViewers().isEmpty()) return;
         languages.clear();
         int slot = 0;
         for (int i = 0; i < IridiumSkyblock.getInstance().languages.size(); i++) {
