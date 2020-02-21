@@ -43,12 +43,14 @@ public class BiomeGUI extends GUI implements Listener {
         int i = 0;
         int slot = 0;
         for (XBiome biome : IridiumSkyblock.getConfiguration().biomes) {
-            if (i >= 45 * (page - 1) && slot < 45) {
-                setItem(slot, Utils.makeItem(IridiumSkyblock.getInventories().biome, Collections.singletonList(new Utils.Placeholder("biome", WordUtils.capitalize(biome.name().toLowerCase().replace("_", " "))))));
-                biomes.put(slot, biome);
-                slot++;
+            if (biome.parseBiome() != null) {
+                if (i >= 45 * (page - 1) && slot < 45) {
+                    setItem(slot, Utils.makeItem(IridiumSkyblock.getInventories().biome, Collections.singletonList(new Utils.Placeholder("biome", WordUtils.capitalize(biome.name().toLowerCase().replace("_", " "))))));
+                    biomes.put(slot, biome);
+                    slot++;
+                }
+                i++;
             }
-            i++;
         }
         setItem(getInventory().getSize() - 3, Utils.makeItem(IridiumSkyblock.getInventories().nextPage));
         setItem(getInventory().getSize() - 7, Utils.makeItem(IridiumSkyblock.getInventories().previousPage));

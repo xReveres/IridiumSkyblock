@@ -926,7 +926,6 @@ public class Island {
         for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
             for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
                 for (Player p : IridiumSkyblock.getIslandManager().getWorld().getPlayers()) {
-                    IridiumSkyblock.getInstance().getLogger().info(p.getName());
                     if (p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
                         IridiumSkyblock.nms.sendChunk(p, IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
                     }
