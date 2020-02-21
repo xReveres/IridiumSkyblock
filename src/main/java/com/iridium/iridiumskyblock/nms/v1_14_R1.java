@@ -19,6 +19,7 @@ public class v1_14_R1 implements NMS {
     @Override
     public void setBlockFast(Block block, int blockId, byte data) {
         BlockState state = block.getState();
+        if (state.getType().name().endsWith("AIR") && blockId == 0) return;
         if (state instanceof Chest) {
             ((Chest) state).getInventory().clear();
         } else if (state instanceof DoubleChest) {
@@ -36,8 +37,7 @@ public class v1_14_R1 implements NMS {
         }
         XMaterial material = XMaterial.requestOldXMaterial(blockId, (byte) 0);
         if (material != null && material.parseMaterial() != null) {
-            block.setType(material.parseMaterial());
-            block.setBlockData(Bukkit.getUnsafe().fromLegacy(material.parseMaterial(), data), true);
+            block.setBlockData(Bukkit.getUnsafe().fromLegacy(material.parseMaterial(), data), false);
         }
     }
 
