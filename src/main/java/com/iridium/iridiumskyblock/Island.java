@@ -94,6 +94,7 @@ public class Island {
 
     public HashMap<String, Integer> valuableBlocks;
     public transient HashSet<Location> tempValues;
+    public transient HashMap<String, Integer> spawners;
 
     private List<Warp> warps;
 
@@ -139,6 +140,7 @@ public class Island {
         user.role = Role.Owner;
         this.biome = IridiumSkyblock.getConfiguration().defaultBiome;
         valuableBlocks = new HashMap<>();
+        spawners = new HashMap<>();
         tempValues = new HashSet<>();
         this.owner = user.player;
         this.name = user.name;
@@ -203,6 +205,7 @@ public class Island {
                             IridiumSkyblock.getInstance().updatingBlocks = false;
                             updating = false;
                             valuableBlocks.clear();
+                            spawners.clear();
                             for (Location location : tempValues) {
                                 Block block = location.getBlock();
                                 if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
@@ -346,6 +349,7 @@ public class Island {
 
     public void calculateIslandValue() {
         if (valuableBlocks == null) valuableBlocks = new HashMap<>();
+        if (spawners == null) spawners = new HashMap<>();
         if (tempValues == null) tempValues = new HashSet<>();
         double value = 0;
         for (String item : valuableBlocks.keySet()) {
@@ -356,6 +360,7 @@ public class Island {
                 }
             }
         }
+        spawners.clear();
         for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
             for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
                 Chunk c = IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z);
@@ -363,6 +368,11 @@ public class Island {
                     if (state instanceof CreatureSpawner) {
                         CreatureSpawner spawner = (CreatureSpawner) state;
                         if (IridiumSkyblock.getBlockValues().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
+                            if (spawners.containsKey(spawner.getSpawnedType().name())) {
+                                spawners.put(spawner.getSpawnedType().name(), spawners.get(spawner.getSpawnedType().name() + 1));
+                            } else {
+                                spawners.put(spawner.getSpawnedType().name(), 1);
+                            }
                             double temp = IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name());
                             if (enabled) {
                                 temp *= getSpawnerAmount(spawner);
@@ -472,6 +482,7 @@ public class Island {
         updating = false;
         if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
         if (valuableBlocks == null) valuableBlocks = new HashMap<>();
+        if (spawners == null) spawners = new HashMap<>();
         if (tempValues == null) tempValues = new HashSet<>();
         if (members == null) {
             members = new HashSet<>();
@@ -529,13 +540,10 @@ public class Island {
     }
 
     public Location getSchematicLocation(Schematics.FakeSchematic fakeSchematic) {
-        Schematic schematic = IridiumSkyblock.getInstance().schems.get(fakeSchematic);
-        Location loc = getCenter().clone();
-        return loc;
+        return getCenter().clone();
     }
 
     public Location getNetherSchematicLocation(Schematics.FakeSchematic fakeSchematic) {
-        Schematic schematic = IridiumSkyblock.getInstance().netherschems.get(fakeSchematic);
         Location loc = getCenter().clone();
         loc.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
         return loc;
