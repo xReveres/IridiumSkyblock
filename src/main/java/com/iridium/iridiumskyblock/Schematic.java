@@ -124,7 +124,6 @@ public class Schematic {
                         int index = y * width * length + z * width + x;
                         Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
                         IridiumSkyblock.nms.setBlockFast(block, blocks[index], blockData[index]);
-                        XMaterial material = XMaterial.requestOldXMaterial(blocks[index], blockData[index]);
                     }
                 }
             }
@@ -272,7 +271,6 @@ public class Schematic {
                 }
             }
         }
-        return;
     }
 
     public static void debugSchematic(File file) throws IOException {

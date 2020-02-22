@@ -79,7 +79,7 @@ public class Island {
     private int expBooster;
     private int flightBooster;
 
-    private int boosterid;
+    private transient int boosterid;
 
     private int crystals;
 
@@ -132,7 +132,7 @@ public class Island {
 
     private transient int initBlocks;
 
-    public boolean updating = false;
+    public transient boolean updating = false;
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
@@ -469,6 +469,7 @@ public class Island {
     }
 
     public void init() {
+        updating = false;
         if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
         if (valuableBlocks == null) valuableBlocks = new HashMap<>();
         if (tempValues == null) tempValues = new HashSet<>();

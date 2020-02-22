@@ -699,7 +699,7 @@ public enum XMaterial {
     OAK_PRESSURE_PLATE(72, "WOOD_PLATE"),
     OAK_SAPLING(6, "SAPLING"),
     OAK_SIGN(323, "SIGN"),
-    OAK_SLAB(44, 2, "WOOD_STEP", "WOODEN_SLAB", "WOOD_DOUBLE_STEP"),
+    OAK_SLAB(126, "WOOD_STEP", "WOODEN_SLAB", "WOOD_DOUBLE_STEP"),
     OAK_STAIRS(53, "WOOD_STAIRS"),
     OAK_TRAPDOOR(98, "TRAP_DOOR"),
     OAK_WALL_SIGN(68, "SIGN_POST", "WALL_SIGN"),
@@ -1041,7 +1041,7 @@ public enum XMaterial {
      * Wheat is a known material in pre-1.13
      * Use XBlock when comparing block types.
      */
-    WHEAT(59),
+    WHEAT(296),
     WHEAT_SEEDS(295, "SEEDS"),
     WHITE_BANNER(425, 15, "BANNER", "STANDING_BANNER"),
     WHITE_BED(26, "BED_BLOCK", "BED"),

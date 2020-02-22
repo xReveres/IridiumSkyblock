@@ -459,15 +459,15 @@ public class IridiumSkyblock extends JavaPlugin {
         File schematicFolder = new File(getDataFolder(), "schematics");
         if (!schematicFolder.exists()) {
             schematicFolder.mkdir();
-            if (!new File(schematicFolder, "island.schematic").exists()) {
-                if (getResource("schematics/island.schematic") != null) {
-                    saveResource("schematics/island.schematic", false);
-                }
+        }
+        if (!new File(schematicFolder, "island.schematic").exists()) {
+            if (getResource("schematics/island.schematic") != null) {
+                saveResource("schematics/island.schematic", false);
             }
-            if (!new File(schematicFolder, "nether.schematic").exists()) {
-                if (getResource("schematics/nether.schematic") != null) {
-                    saveResource("schematics/nether.schematic", false);
-                }
+        }
+        if (!new File(schematicFolder, "nether.schematic").exists()) {
+            if (getResource("schematics/nether.schematic") != null) {
+                saveResource("schematics/nether.schematic", false);
             }
         }
 
