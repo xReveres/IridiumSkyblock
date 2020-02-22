@@ -7,11 +7,11 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.*;
 import org.bukkit.craftbukkit.v1_8_R2.CraftChunk;
 import org.bukkit.craftbukkit.v1_8_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 
 public class v1_8_R2 implements NMS {
 
@@ -19,20 +19,9 @@ public class v1_8_R2 implements NMS {
     @Override
     public void setBlockFast(Block block, int blockId, byte data) {
         BlockState state = block.getState();
-        if (state instanceof Chest) {
-            ((Chest) state).getInventory().clear();
-        } else if (state instanceof DoubleChest) {
-            ((DoubleChest) state).getInventory().clear();
-        } else if (state instanceof Dropper) {
-            ((Dropper) state).getInventory().clear();
-        } else if (state instanceof Dispenser) {
-            ((Dispenser) state).getInventory().clear();
-        } else if (state instanceof Hopper) {
-            ((Hopper) state).getInventory().clear();
-        } else if (state instanceof Furnace) {
-            ((Furnace) state).getInventory().clear();
-        } else if (state instanceof BrewingStand) {
-            ((BrewingStand) state).getInventory().clear();
+        if (state.getType().name().endsWith("AIR") && blockId == 0) return;
+        if (state instanceof InventoryHolder) {
+            ((InventoryHolder) state).getInventory().clear();
         }
         net.minecraft.server.v1_8_R2.World nmsWorld = ((CraftWorld) block.getWorld()).getHandle();
         BlockPosition bp = new BlockPosition(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ());

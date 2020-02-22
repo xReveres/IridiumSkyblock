@@ -199,7 +199,7 @@ public class Schematic {
                                 for (String s : palette.keySet()) {
                                     int i = getChildTag(palette, s, IntTag.class).getValue();
                                     if (blockdata[index] == i) {
-                                        block.setBlockData(Bukkit.createBlockData(s), true);
+                                        block.setBlockData(Bukkit.createBlockData(s), false);
                                     }
                                 }
                             }

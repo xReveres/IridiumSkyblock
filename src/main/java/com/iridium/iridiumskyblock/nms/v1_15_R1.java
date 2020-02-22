@@ -9,31 +9,19 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.*;
 import org.bukkit.craftbukkit.v1_15_R1.CraftChunk;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 
 public class v1_15_R1 implements NMS {
     @Override
     public void setBlockFast(Block block, int blockId, byte data) {
         BlockState state = block.getState();
         if (state.getType().name().endsWith("AIR") && blockId == 0) return;
-        if (state instanceof Chest) {
-            ((Chest) state).getInventory().clear();
-        } else if (state instanceof DoubleChest) {
-            ((DoubleChest) state).getInventory().clear();
-        } else if (state instanceof Dropper) {
-            ((Dropper) state).getInventory().clear();
-        } else if (state instanceof Dispenser) {
-            ((Dispenser) state).getInventory().clear();
-        } else if (state instanceof Hopper) {
-            ((Hopper) state).getInventory().clear();
-        } else if (state instanceof Furnace) {
-            ((Furnace) state).getInventory().clear();
-        } else if (state instanceof BrewingStand) {
-            ((BrewingStand) state).getInventory().clear();
+        if (state instanceof InventoryHolder) {
+            ((InventoryHolder) state).getInventory().clear();
         }
         XMaterial material = XMaterial.requestOldXMaterial(blockId, (byte) 0);
         if (material != null && material.parseMaterial() != null) {
