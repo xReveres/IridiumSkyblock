@@ -128,61 +128,63 @@ public class Schematic {
                 }
             }
             //Tile Entities
-            for (Tag tag : tileEntities) {
-                if (!(tag instanceof CompoundTag))
-                    continue;
-                CompoundTag t = (CompoundTag) tag;
-                Map<String, Tag> tags = t.getValue();
+            if (tileEntities != null) {
+                for (Tag tag : tileEntities) {
+                    if (!(tag instanceof CompoundTag))
+                        continue;
+                    CompoundTag t = (CompoundTag) tag;
+                    Map<String, Tag> tags = t.getValue();
 
-                int x = getChildTag(tags, "x", IntTag.class).getValue();
-                int y = getChildTag(tags, "y", IntTag.class).getValue();
-                int z = getChildTag(tags, "z", IntTag.class).getValue();
-                Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
+                    int x = getChildTag(tags, "x", IntTag.class).getValue();
+                    int y = getChildTag(tags, "y", IntTag.class).getValue();
+                    int z = getChildTag(tags, "z", IntTag.class).getValue();
+                    Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
 
-                String id = getChildTag(tags, "id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
-                if (id.equalsIgnoreCase("chest")) {
-                    List<Tag> items = getChildTag(tags, "Items", ListTag.class).getValue();
-                    if (block.getState() instanceof Chest) {
-                        Chest chest = (Chest) block.getState();
-                        for (Tag item : items) {
-                            if (!(item instanceof CompoundTag))
-                                continue;
-                            Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
-                            byte slot = getChildTag(itemtag, "Slot", ByteTag.class).getValue();
-                            String name = (getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
-                            Byte amount = getChildTag(itemtag, "Count", ByteTag.class).getValue();
-                            short damage = getChildTag(itemtag, "Damage", ShortTag.class).getValue();
-                            XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) damage);
-                            if (material != null) {
-                                ItemStack itemStack = material.parseItem(true);
-                                if (itemStack != null) {
-                                    itemStack.setAmount(amount);
-                                    chest.getBlockInventory().setItem(slot, itemStack);
+                    String id = getChildTag(tags, "id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
+                    if (id.equalsIgnoreCase("chest")) {
+                        List<Tag> items = getChildTag(tags, "Items", ListTag.class).getValue();
+                        if (block.getState() instanceof Chest) {
+                            Chest chest = (Chest) block.getState();
+                            for (Tag item : items) {
+                                if (!(item instanceof CompoundTag))
+                                    continue;
+                                Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
+                                byte slot = getChildTag(itemtag, "Slot", ByteTag.class).getValue();
+                                String name = (getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
+                                Byte amount = getChildTag(itemtag, "Count", ByteTag.class).getValue();
+                                short damage = getChildTag(itemtag, "Damage", ShortTag.class).getValue();
+                                XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) damage);
+                                if (material != null) {
+                                    ItemStack itemStack = material.parseItem(true);
+                                    if (itemStack != null) {
+                                        itemStack.setAmount(amount);
+                                        chest.getBlockInventory().setItem(slot, itemStack);
+                                    }
                                 }
                             }
                         }
-                    }
-                } else if (id.equalsIgnoreCase("sign")) {
-                    if (block.getState() instanceof Sign) {
-                        Sign sign = (Sign) block.getState();
-                        JsonParser parser = new JsonParser();
-                        String line1 = parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                        String line2 = parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                        String line3 = parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                        String line4 = parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                        if (!parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                            line1 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
-                        if (!parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                            line2 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
-                        if (!parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                            line3 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
-                        if (!parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                            line4 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
-                        sign.setLine(0, line1);
-                        sign.setLine(1, line2);
-                        sign.setLine(2, line3);
-                        sign.setLine(3, line4);
-                        sign.update(true);
+                    } else if (id.equalsIgnoreCase("sign")) {
+                        if (block.getState() instanceof Sign) {
+                            Sign sign = (Sign) block.getState();
+                            JsonParser parser = new JsonParser();
+                            String line1 = parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                            String line2 = parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                            String line3 = parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                            String line4 = parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                            if (!parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                line1 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
+                            if (!parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                line2 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
+                            if (!parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                line3 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
+                            if (!parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                line4 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
+                            sign.setLine(0, line1);
+                            sign.setLine(1, line2);
+                            sign.setLine(2, line3);
+                            sign.setLine(3, line4);
+                            sign.update(true);
+                        }
                     }
                 }
             }
@@ -206,62 +208,64 @@ public class Schematic {
                     }
                     if (version == 2) {
                         //Tile Entities
-                        for (Tag tag : tileEntities) {
-                            if (!(tag instanceof CompoundTag))
-                                continue;
-                            CompoundTag t = (CompoundTag) tag;
-                            Map<String, Tag> tags = t.getValue();
+                        if (tileEntities != null) {
+                            for (Tag tag : tileEntities) {
+                                if (!(tag instanceof CompoundTag))
+                                    continue;
+                                CompoundTag t = (CompoundTag) tag;
+                                Map<String, Tag> tags = t.getValue();
 
-                            int[] pos = getChildTag(tags, "Pos", IntArrayTag.class).getValue();
+                                int[] pos = getChildTag(tags, "Pos", IntArrayTag.class).getValue();
 
-                            int x = pos[0];
-                            int y = pos[1];
-                            int z = pos[2];
+                                int x = pos[0];
+                                int y = pos[1];
+                                int z = pos[2];
 
-                            Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
-                            String id = getChildTag(tags, "Id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
-                            if (id.equalsIgnoreCase("chest")) {
-                                List<Tag> items = getChildTag(tags, "Items", ListTag.class).getValue();
-                                if (block.getState() instanceof Chest) {
-                                    Chest chest = (Chest) block.getState();
-                                    for (Tag item : items) {
-                                        if (!(item instanceof CompoundTag))
-                                            continue;
-                                        Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
-                                        byte slot = getChildTag(itemtag, "Slot", ByteTag.class).getValue();
-                                        String name = (getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
-                                        Byte amount = getChildTag(itemtag, "Count", ByteTag.class).getValue();
-                                        XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) -1);
-                                        if (material != null) {
-                                            ItemStack itemStack = material.parseItem(true);
-                                            if (itemStack != null) {
-                                                itemStack.setAmount(amount);
-                                                chest.getBlockInventory().setItem(slot, itemStack);
+                                Block block = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ()).getBlock();
+                                String id = getChildTag(tags, "Id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
+                                if (id.equalsIgnoreCase("chest")) {
+                                    List<Tag> items = getChildTag(tags, "Items", ListTag.class).getValue();
+                                    if (block.getState() instanceof Chest) {
+                                        Chest chest = (Chest) block.getState();
+                                        for (Tag item : items) {
+                                            if (!(item instanceof CompoundTag))
+                                                continue;
+                                            Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
+                                            byte slot = getChildTag(itemtag, "Slot", ByteTag.class).getValue();
+                                            String name = (getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
+                                            Byte amount = getChildTag(itemtag, "Count", ByteTag.class).getValue();
+                                            XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) -1);
+                                            if (material != null) {
+                                                ItemStack itemStack = material.parseItem(true);
+                                                if (itemStack != null) {
+                                                    itemStack.setAmount(amount);
+                                                    chest.getBlockInventory().setItem(slot, itemStack);
+                                                }
                                             }
                                         }
                                     }
-                                }
-                            } else if (id.equalsIgnoreCase("sign")) {
-                                if (block.getState() instanceof Sign) {
-                                    Sign sign = (Sign) block.getState();
-                                    JsonParser parser = new JsonParser();
-                                    String line1 = parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                                    String line2 = parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                                    String line3 = parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                                    String line4 = parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                                    if (parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                        line1 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
-                                    if (parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                        line2 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
-                                    if (parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                        line3 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
-                                    if (parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                        line4 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
-                                    sign.setLine(0, line1);
-                                    sign.setLine(1, line2);
-                                    sign.setLine(2, line3);
-                                    sign.setLine(3, line4);
-                                    sign.update(true);
+                                } else if (id.equalsIgnoreCase("sign")) {
+                                    if (block.getState() instanceof Sign) {
+                                        Sign sign = (Sign) block.getState();
+                                        JsonParser parser = new JsonParser();
+                                        String line1 = parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                        String line2 = parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                        String line3 = parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                        String line4 = parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                        if (parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                            line1 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
+                                        if (parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                            line2 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
+                                        if (parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                            line3 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
+                                        if (parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                            line4 = ChatColor.valueOf(parser.parse(getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
+                                        sign.setLine(0, line1);
+                                        sign.setLine(1, line2);
+                                        sign.setLine(2, line3);
+                                        sign.setLine(3, line4);
+                                        sign.update(true);
+                                    }
                                 }
                             }
                         }
