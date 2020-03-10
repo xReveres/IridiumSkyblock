@@ -142,6 +142,14 @@ public class IridiumSkyblock extends JavaPlugin {
             return;
         }
         try {
+            Class.forName("net.md_5.bungee.api.ChatColor");
+        } catch (ClassNotFoundException e) {
+            getLogger().info("CraftBukkit is not Supported");
+            getLogger().info("Please use Spigot instead");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        try {
             generator = new SkyblockGenerator();
             instance = this;
 
