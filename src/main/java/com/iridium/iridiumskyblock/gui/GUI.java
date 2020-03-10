@@ -27,7 +27,7 @@ public abstract class GUI {
 
     public GUI(int size, String name) {
         this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 5);
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 0);
     }
 
     public void addContent() {
