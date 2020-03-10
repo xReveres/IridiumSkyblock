@@ -22,12 +22,12 @@ public abstract class GUI {
     public GUI(Island island, int size, String name) {
         islandID = island.getId();
         this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 20);
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 2);
     }
 
     public GUI(int size, String name) {
         this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 0);
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 2);
     }
 
     public void addContent() {
