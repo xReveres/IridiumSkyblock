@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class IslandDeleteEvent extends Event {
-    private HandlerList handlers = new HandlerList();
+    private static HandlerList handlers = new HandlerList();
     private Island island;
 
     public IslandDeleteEvent(Island island) {
@@ -14,6 +14,10 @@ public class IslandDeleteEvent extends Event {
 
     @Override
     public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 

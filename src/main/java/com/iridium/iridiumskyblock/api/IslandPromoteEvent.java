@@ -7,7 +7,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class IslandPromoteEvent extends Event {
-    private HandlerList handlers = new HandlerList();
+    private static HandlerList handlers = new HandlerList();
     private Island island;
     private User target;
     private User promoter;
@@ -43,6 +43,10 @@ public class IslandPromoteEvent extends Event {
 
     @Override
     public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 

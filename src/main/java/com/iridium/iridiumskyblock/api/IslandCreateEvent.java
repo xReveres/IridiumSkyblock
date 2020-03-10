@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class IslandCreateEvent extends Event {
-    private HandlerList handlers = new HandlerList();
+    private static HandlerList handlers = new HandlerList();
     private Player player;
     private Island island;
 
@@ -17,6 +17,10 @@ public class IslandCreateEvent extends Event {
 
     @Override
     public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
