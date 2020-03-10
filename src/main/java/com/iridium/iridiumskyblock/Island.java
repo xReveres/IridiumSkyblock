@@ -194,7 +194,7 @@ public class Island {
                             X = pos1.getX();
                             Z = pos1.getZ();
                             Y++;
-                        } else if (world <= 1 && IridiumSkyblock.getConfiguration().netherIslands) {
+                        } else if (world == 0 && IridiumSkyblock.getConfiguration().netherIslands) {
                             world++;
                             X = pos1.getX();
                             Y = 0;
@@ -218,6 +218,7 @@ public class Island {
                             }
                             tempValues.clear();
                             calculateIslandValue();
+                            return;
                         }
                         if (IridiumSkyblock.getInstance().updatingBlocks) {
                             if (world == 0) {
