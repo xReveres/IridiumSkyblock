@@ -468,6 +468,7 @@ public class Utils {
         }
 
         public String process(String line) {
+            if (line == null) return "";
             return line.replace(key, value);
         }
     }
