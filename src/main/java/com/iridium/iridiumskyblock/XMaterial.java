@@ -1377,8 +1377,7 @@ public enum XMaterial {
     @Nonnull
     public static XMaterial matchXMaterial(@Nonnull Material material) {
         Objects.requireNonNull(material, "Cannot match null material");
-        return matchDefinedXMaterial(material.name(), (byte) -1)
-                .orElseThrow(() -> new IllegalArgumentException("Unsupported Material: " + material));
+        return matchDefinedXMaterial(material.name(), (byte) -1).orElse(XMaterial.AIR);
     }
 
     /**
@@ -1396,8 +1395,7 @@ public enum XMaterial {
         Objects.requireNonNull(item, "Cannot match null ItemStack");
         String material = item.getType().name();
         return matchDefinedXMaterial(material,
-                isDamageable(material) ? (byte) 0 : (byte) item.getDurability())
-                .orElseThrow(() -> new IllegalArgumentException("Unsupported Material: " + material));
+                isDamageable(material) ? (byte) 0 : (byte) item.getDurability()).orElse(XMaterial.AIR);
     }
 
     /**
