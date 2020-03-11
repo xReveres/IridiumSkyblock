@@ -388,22 +388,24 @@ public class Island {
                         }
                     }
                 }
-                c = IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z);
-                for (BlockState state : c.getTileEntities()) {
-                    if (state instanceof CreatureSpawner) {
-                        CreatureSpawner spawner = (CreatureSpawner) state;
-                        if (IridiumSkyblock.getBlockValues().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
-                            double temp = IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name());
-                            if (enabled) {
-                                temp *= getSpawnerAmount(spawner);
-                            } else if (MergedSpawners.enabled) {
-                                temp *= MergedSpawners.getSpawnerAmount(spawner);
-                            } else if (UltimateStacker.enabled) {
-                                temp *= UltimateStacker.getSpawnerAmount(spawner);
-                            } else if (EpicSpawners.enabled) {
-                                temp *= EpicSpawners.getSpawnerAmount(spawner);
+                if(IridiumSkyblock.getConfiguration().netherIslands) {
+                    c = IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z);
+                    for (BlockState state : c.getTileEntities()) {
+                        if (state instanceof CreatureSpawner) {
+                            CreatureSpawner spawner = (CreatureSpawner) state;
+                            if (IridiumSkyblock.getBlockValues().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
+                                double temp = IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name());
+                                if (enabled) {
+                                    temp *= getSpawnerAmount(spawner);
+                                } else if (MergedSpawners.enabled) {
+                                    temp *= MergedSpawners.getSpawnerAmount(spawner);
+                                } else if (UltimateStacker.enabled) {
+                                    temp *= UltimateStacker.getSpawnerAmount(spawner);
+                                } else if (EpicSpawners.enabled) {
+                                    temp *= EpicSpawners.getSpawnerAmount(spawner);
+                                }
+                                value += temp;
                             }
-                            value += temp;
                         }
                     }
                 }
