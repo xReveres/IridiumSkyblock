@@ -5,6 +5,7 @@ main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
 author: IridiumLLC
 load: STARTUP
+depend: [Vault]
 softdepend: [WorldEdit, PlaceholderAPI, MVdWPlaceholderAPI, WildStacker, Vault, Multiverse-Core, Essentials, EssentialsChat, ChatManager, DeluxeChat]
 commands:
   island:
