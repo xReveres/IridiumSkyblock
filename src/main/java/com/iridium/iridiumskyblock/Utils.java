@@ -383,29 +383,23 @@ public class Utils {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
             if (Vault.econ != null) {
-                boolean canbuy = (Vault.econ.getBalance(p) >= vault || u.getIsland().money >= vault) && u.getIsland().getCrystals() >= crystals;
-                if (canbuy) {
+                if (Vault.econ.getBalance(p) >= vault && u.getIsland().getCrystals() >= crystals) {
+                    Vault.econ.withdrawPlayer(p, vault);
                     u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
-                    if (u.getIsland().money >= vault) {
-                        u.getIsland().money -= vault;
-                    } else {
-                        Vault.econ.withdrawPlayer(p, vault);
-                    }
+                    return true;
                 }
-                return canbuy;
-            } else {
-                boolean canbuy = u.getIsland().getCrystals() >= crystals && vault == 0;
-                if (canbuy) {
-                    u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
-                }
-                return canbuy;
             }
-        } else if (crystals == 0 && Vault.econ != null) {
-            boolean canbuy = Vault.econ.getBalance(p) >= vault;
-            if (canbuy) {
+            if (u.getIsland().money >= vault && u.getIsland().getCrystals() >= vault) {
+                u.getIsland().money -= vault;
+                u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
+                return true;
+            }
+        }
+        if (Vault.econ != null) {
+            if (Vault.econ.getBalance(p) >= vault && crystals == 0) {
                 Vault.econ.withdrawPlayer(p, vault);
+                return true;
             }
-            return canbuy;
         }
         return false;
     }
