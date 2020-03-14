@@ -195,14 +195,14 @@ public class Shop {
         public XMaterial material;
         public String displayName;
         public int amount;
-        public int buyVault;
-        public int sellVault;
+        public double buyVault;
+        public double sellVault;
         public int buyCrystals;
         public int sellCrystals;
         public int slot;
         public int page;
 
-        public ShopItem(XMaterial material, String displayName, int amount, int buyVault, int sellVault, int buyCrystals, int sellCrystals, int slot, int page) {
+        public ShopItem(XMaterial material, String displayName, int amount, double buyVault, double sellVault, int buyCrystals, int sellCrystals, int slot, int page) {
             this.material = material;
             this.displayName = displayName;
             this.amount = amount;

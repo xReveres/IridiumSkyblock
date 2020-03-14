@@ -361,7 +361,7 @@ public class Utils {
         return color(line);
     }
 
-    public static void pay(Player p, int vault, int crystals) {
+    public static void pay(Player p, double vault, int crystals) {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
             u.getIsland().setCrystals(u.getIsland().getCrystals() + crystals);
@@ -379,7 +379,7 @@ public class Utils {
         }
     }
 
-    public static boolean canBuy(Player p, int vault, int crystals) {
+    public static boolean canBuy(Player p, double vault, int crystals) {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
             if (Vault.econ != null) {
