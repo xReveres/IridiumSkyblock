@@ -225,7 +225,7 @@ public class IridiumSkyblock extends JavaPlugin {
                             getLogger().info("Attempting to download version: " + latest);
                             try {
                                 getFile().renameTo(new File(getFile().getParentFile(), "/IridiumSkyblock-" + latest + ".jar"));
-                                URL url = new URL("http://www.peachessupport.xyz/IridiumSkyblock-" + latest + ".jar");
+                                URL url = new URL("http://www.iridiumllc.com/IridiumSkyblock-" + latest + ".jar");
                                 URLConnection conn = url.openConnection();
                                 conn.setConnectTimeout(15000);
                                 conn.setReadTimeout(15000);
