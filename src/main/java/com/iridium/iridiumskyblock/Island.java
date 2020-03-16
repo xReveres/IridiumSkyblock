@@ -388,7 +388,7 @@ public class Island {
                         }
                     }
                 }
-                if(IridiumSkyblock.getConfiguration().netherIslands) {
+                if (IridiumSkyblock.getConfiguration().netherIslands) {
                     c = IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z);
                     for (BlockState state : c.getTileEntities()) {
                         if (state instanceof CreatureSpawner) {
