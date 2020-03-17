@@ -389,7 +389,7 @@ public class Utils {
                     return true;
                 }
             }
-            if (u.getIsland().money >= vault && u.getIsland().getCrystals() >= vault) {
+            if (u.getIsland().money >= vault && u.getIsland().getCrystals() >= crystals) {
                 u.getIsland().money -= vault;
                 u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
                 return true;
