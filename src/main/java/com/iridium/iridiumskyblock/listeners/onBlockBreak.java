@@ -49,8 +49,8 @@ public class onBlockBreak implements Listener {
         if (island != null) {
             if (Utils.isBlockValuable(e.getBlock())) {
                 if (!(e.getBlock().getState() instanceof CreatureSpawner)) {
-                    if (island.valuableBlocks.containsKey(e.getBlock().getType().name())) {
-                        island.valuableBlocks.put(e.getBlock().getType().name(), island.valuableBlocks.get(e.getBlock().getType().name()) - 1);
+                    if (island.valuableBlocks.containsKey(XMaterial.matchXMaterial(e.getBlock().getType()).name())) {
+                        island.valuableBlocks.put(XMaterial.matchXMaterial(e.getBlock().getType()).name(), island.valuableBlocks.get(XMaterial.matchXMaterial(e.getBlock().getType()).name()) - 1);
                     }
                     if(island.updating){
                         island.tempValues.remove(e.getBlock().getLocation());

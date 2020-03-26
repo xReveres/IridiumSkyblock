@@ -209,10 +209,10 @@ public class Island {
                             for (Location location : tempValues) {
                                 Block block = location.getBlock();
                                 if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
-                                    if (!valuableBlocks.containsKey(block.getType().name())) {
-                                        valuableBlocks.put(block.getType().name(), 1);
+                                    if (!valuableBlocks.containsKey(XMaterial.matchXMaterial(block.getType()).name())) {
+                                        valuableBlocks.put(XMaterial.matchXMaterial(block.getType()).name(), 1);
                                     } else {
-                                        valuableBlocks.put(block.getType().name(), valuableBlocks.get(block.getType().name()) + 1);
+                                        valuableBlocks.put(XMaterial.matchXMaterial(block.getType()).name(), valuableBlocks.get(XMaterial.matchXMaterial(block.getType()).name()) + 1);
                                     }
                                 }
                             }

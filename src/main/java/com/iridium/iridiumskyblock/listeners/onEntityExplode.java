@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -34,8 +35,8 @@ public class onEntityExplode implements Listener {
                 }
                 if (Utils.isBlockValuable(b)) {
                     if (!(b.getState() instanceof CreatureSpawner)) {
-                        if (island.valuableBlocks.containsKey(b.getType().name())) {
-                            island.valuableBlocks.put(b.getType().name(), island.valuableBlocks.get(b.getType().name()) - 1);
+                        if (island.valuableBlocks.containsKey(XMaterial.matchXMaterial(b.getType()).name())) {
+                            island.valuableBlocks.put(XMaterial.matchXMaterial(b.getType()).name(), island.valuableBlocks.get(XMaterial.matchXMaterial(b.getType()).name()) - 1);
                         }
                     }
                     if (island.updating) {
