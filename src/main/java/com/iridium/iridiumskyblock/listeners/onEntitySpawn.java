@@ -12,7 +12,6 @@ public class onEntitySpawn implements Listener {
 
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent e) {
-        IridiumSkyblock.getInstance().getLogger().info(e.getEntityType().name());
         if (IridiumSkyblock.getConfiguration().blockedEntities.contains(e.getEntityType()) && (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()))) {
             IridiumSkyblock.getInstance().entities.put(e.getEntity().getUniqueId(), IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getEntity().getLocation()));
             monitorEntity(e.getEntity());
