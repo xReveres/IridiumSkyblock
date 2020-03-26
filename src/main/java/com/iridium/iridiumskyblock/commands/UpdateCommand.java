@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Bukkit;
@@ -19,7 +20,7 @@ public class UpdateCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2 && args.length != 3) {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is update <player> <blocksPerTick>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is update <player/all> <blocksPerTick>");
             return;
         }
         int blocks = 1000;
@@ -31,6 +32,23 @@ public class UpdateCommand extends Command {
             }
         }
 
+        if (args[1].equalsIgnoreCase("all")) {
+            boolean out = true;
+            for (Island island : IridiumSkyblock.getIslandManager().islands.values()) {
+                island.valuableBlocks.clear();
+                island.spawners.clear();
+                if (!island.updating) {
+                    island.forceinitBlocks(out ? sender : null, blocks, "Everyone");
+                    out = false;
+                } else {
+                    //change blockspertick to blocks temp
+                    IridiumSkyblock.blockspertick = IridiumSkyblock.getConfiguration().blocksPerTick;
+                    IridiumSkyblock.getConfiguration().blocksPerTick = blocks;
+                }
+            }
+            return;
+        }
+
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
 
         if (player != null) {
@@ -40,7 +58,7 @@ public class UpdateCommand extends Command {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().alreadyRecalculating.replace("%player%", User.getUser(u.getIsland().getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     return;
                 }
-                u.getIsland().forceinitBlocks(sender, blocks);
+                u.getIsland().forceinitBlocks(sender, blocks, User.getUser(u.getIsland().getOwner()).name);
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }

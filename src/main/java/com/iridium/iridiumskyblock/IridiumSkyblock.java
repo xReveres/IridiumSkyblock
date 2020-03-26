@@ -128,8 +128,11 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public static NMS nms;
 
+    public static int blockspertick;
+
     @Override
     public void onEnable() {
+        blockspertick = -1;
         try {
             nms = (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
         } catch (ClassNotFoundException e) {
@@ -426,9 +429,11 @@ public class IridiumSkyblock extends JavaPlugin {
                     if (islands.hasNext()) {
                         int id = islands.next();
                         Island island = IridiumSkyblock.getIslandManager().getIslandViaId(id);
-                        if (island != null) {
-                            updatingBlocks = true;
-                            island.initBlocks();
+                        if (!island.updating) {
+                            if (island != null) {
+                                updatingBlocks = true;
+                                island.initBlocks();
+                            }
                         }
                     }
                 }

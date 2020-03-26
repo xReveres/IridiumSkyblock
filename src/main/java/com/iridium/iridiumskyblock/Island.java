@@ -203,6 +203,10 @@ public class Island {
                             Y = 0;
                             Z = pos1.getZ();
                         } else {
+                            if (IridiumSkyblock.blockspertick != -1) {
+                                IridiumSkyblock.getConfiguration().blocksPerTick = IridiumSkyblock.blockspertick;
+                                IridiumSkyblock.blockspertick = -1;
+                            }
                             Bukkit.getScheduler().cancelTask(initBlocks);
                             initBlocks = -1;
                             IridiumSkyblock.getInstance().updatingBlocks = false;
@@ -246,8 +250,9 @@ public class Island {
         }, 0, 1);
     }
 
-    public void forceinitBlocks(CommandSender sender, int blockspersec) {
-        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updateStarted.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+    public void forceinitBlocks(CommandSender sender, int blockspersec, String name) {
+        if (sender != null)
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updateStarted.replace("%player%", name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         updating = true;
         initBlocks = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             int world = 0;
@@ -274,7 +279,8 @@ public class Island {
                             Y = 0;
                             Z = pos1.getZ();
                         } else {
-                            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updateFinished.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            if (sender != null)
+                                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updateFinished.replace("%player%", name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             Bukkit.getScheduler().cancelTask(initBlocks);
                             initBlocks = -1;
                             updating = false;
@@ -313,7 +319,8 @@ public class Island {
                     int per = (int) ((Y + (world * IridiumSkyblock.getIslandManager().getWorld().getMaxHeight())) / (IridiumSkyblock.getIslandManager().getWorld().getMaxHeight() * 2.00) * 100);
                     if (percent != per) {
                         percent = per;
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updatePercent.replace("%player%", User.getUser(owner).name).replace("%percent%", percent + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        if (sender != null)
+                            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updatePercent.replace("%player%", name).replace("%percent%", percent + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 } catch (Exception e) {
                     IridiumSkyblock.getInstance().sendErrorMessage(e);
