@@ -22,7 +22,11 @@ public class HomeCommand extends Command {
         if (user.getIsland() != null) {
             user.getIsland().teleportHome(p);
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            if(IridiumSkyblock.getConfiguration().createIslandonHome){
+                IridiumSkyblock.getIslandManager().createIsland(p);
+            }else {
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
         }
     }
 
