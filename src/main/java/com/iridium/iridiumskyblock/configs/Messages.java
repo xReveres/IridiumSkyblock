@@ -100,6 +100,10 @@ public class Messages {
     public String islandDeleted = "%prefix% &7Your island has been deleted";
     public String mustBeInIsland = "%prefix% &7You must be in your island to do this.";
     public String cannotSellItem = "%prefix% &7This is not a sellable item.";
+    public String updateStarted = "%prefix% &7%player%'s Island is being recalculated";
+    public String updateFinished = "%prefix% &7%player%'s Island recalculation has finished";
+    public String updatePercent = "%prefix% &7Recalculating %player%'s Island %percent%% complete";
+    public String alreadyRecalculating = "%prefix% &7Already recalculating %player%'s Island";
 
     public HashMap<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {

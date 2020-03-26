@@ -14,6 +14,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -135,6 +136,8 @@ public class Island {
 
     public transient boolean updating = false;
 
+    public int percent = 0;
+
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
@@ -235,6 +238,82 @@ public class Island {
                                 }
                             }
                         }
+                    }
+                } catch (Exception e) {
+                    IridiumSkyblock.getInstance().sendErrorMessage(e);
+                }
+            }
+        }, 0, 1);
+    }
+
+    public void forceinitBlocks(CommandSender sender, int blockspersec) {
+        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updateStarted.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        updating = true;
+        initBlocks = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
+            int world = 0;
+            double X = pos1.getX();
+            double Y = 0;
+            double Z = pos1.getZ();
+
+            @Override
+            public void run() {
+                try {
+                    for (int i = 0; i < blockspersec; i++) {
+                        if (X < pos2.getX()) {
+                            X++;
+                        } else if (Z < pos2.getZ()) {
+                            X = pos1.getX();
+                            Z++;
+                        } else if (Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight()) {
+                            X = pos1.getX();
+                            Z = pos1.getZ();
+                            Y++;
+                        } else if (world == 0 && IridiumSkyblock.getConfiguration().netherIslands) {
+                            world++;
+                            X = pos1.getX();
+                            Y = 0;
+                            Z = pos1.getZ();
+                        } else {
+                            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updateFinished.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            Bukkit.getScheduler().cancelTask(initBlocks);
+                            initBlocks = -1;
+                            updating = false;
+                            valuableBlocks.clear();
+                            spawners.clear();
+                            for (Location location : tempValues) {
+                                Block block = location.getBlock();
+                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
+                                    if (!valuableBlocks.containsKey(XMaterial.matchXMaterial(block.getType()).name())) {
+                                        valuableBlocks.put(XMaterial.matchXMaterial(block.getType()).name(), 1);
+                                    } else {
+                                        valuableBlocks.put(XMaterial.matchXMaterial(block.getType()).name(), valuableBlocks.get(XMaterial.matchXMaterial(block.getType()).name()) + 1);
+                                    }
+                                }
+                            }
+                            tempValues.clear();
+                            calculateIslandValue();
+                            return;
+                        }
+                        if (IridiumSkyblock.getInstance().updatingBlocks) {
+                            if (world == 0) {
+                                Location loc = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z);
+                                Block block = loc.getBlock();
+                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
+                                    tempValues.add(loc);
+                                }
+                            } else if (IridiumSkyblock.getConfiguration().netherIslands) {
+                                Location loc = new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z);
+                                Block block = loc.getBlock();
+                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
+                                    tempValues.add(loc);
+                                }
+                            }
+                        }
+                    }
+                    int per = (int) ((Y + (world * IridiumSkyblock.getIslandManager().getWorld().getMaxHeight())) / (IridiumSkyblock.getIslandManager().getWorld().getMaxHeight() * 2.00) * 100);
+                    if (percent != per) {
+                        percent = per;
+                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updatePercent.replace("%player%", User.getUser(owner).name).replace("%percent%", percent + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 } catch (Exception e) {
                     IridiumSkyblock.getInstance().sendErrorMessage(e);
