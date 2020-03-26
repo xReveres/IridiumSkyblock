@@ -143,7 +143,7 @@ public class IslandManager {
                     if (islandCache.containsKey(hash)) {
                         islandCache.get(hash).add(island.getId());
                     } else {
-                        islandCache.put(hash, Collections.singletonList(island.getId()));
+                        islandCache.put(hash, new ArrayList<>(island.getId()));
                     }
                     return island;
                 }
