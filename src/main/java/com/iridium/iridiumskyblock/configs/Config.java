@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.*;
+import org.bukkit.entity.EntityType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,7 +22,6 @@ public class Config {
     public boolean islandMenu = true;
     public boolean voidTeleport = true;
     public boolean notifyAvailableUpdate = true;
-    public boolean disableExplosions = true;
     public boolean clearInventories = false;
     public boolean debugSchematics = false;
     public boolean restartUpgradesOnRegen = true;
@@ -64,4 +64,6 @@ public class Config {
     public HashMap<XMaterial, Double> blockvalue = null;
     public HashMap<String, Double> spawnervalue = null;
     public List<XBiome> biomes = Arrays.asList(XBiome.values());
+
+    public List<EntityType> blockedEntities = Arrays.asList(EntityType.PRIMED_TNT, EntityType.MINECART_TNT, EntityType.FIREBALL, EntityType.SMALL_FIREBALL, EntityType.ENDER_PEARL);
 }

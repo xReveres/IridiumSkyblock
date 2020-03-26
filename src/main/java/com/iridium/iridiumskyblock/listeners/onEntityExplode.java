@@ -11,16 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class onEntityExplode implements Listener {
-    @EventHandler
-    public void onEntityExplode(EntityExplodeEvent e) {
-        try {
-            if (IridiumSkyblock.getConfiguration().disableExplosions && (e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))) {
-                e.setCancelled(true);
-            }
-        } catch (Exception ex) {
-            IridiumSkyblock.getInstance().sendErrorMessage(ex);
-        }
-    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMonitorEntityExplode(EntityExplodeEvent e) {
@@ -33,7 +23,7 @@ public class onEntityExplode implements Listener {
                             island.valuableBlocks.put(b.getType().name(), island.valuableBlocks.get(b.getType().name()) - 1);
                         }
                     }
-                    if(island.updating){
+                    if (island.updating) {
                         island.tempValues.remove(b.getLocation());
                     }
                 }
