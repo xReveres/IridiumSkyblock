@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 public enum MissionRestart {
-    Instantly(0), Daily(1), Weekly(2);
+    Instantly(0), Daily(1), Weekly(2), Never(3);
 
     private int i;
 
