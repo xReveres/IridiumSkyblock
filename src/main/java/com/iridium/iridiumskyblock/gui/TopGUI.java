@@ -32,7 +32,7 @@ public class TopGUI extends GUI implements Listener {
             if (top.size() >= i) {
                 Island island = top.get(i - 1);
                 User owner = User.getUser(island.getOwner());
-                ArrayList<Utils.Placeholder> placeholders = new ArrayList<>(Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", i + ""), new Utils.Placeholder("value", NumberFormat.getInstance().format(island.getValue()) + "")));
+                ArrayList<Utils.Placeholder> placeholders = new ArrayList<>(Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", i + ""), new Utils.Placeholder("level", NumberFormat.getInstance().format(island.getValue() / IridiumSkyblock.getConfiguration().valuePerLevel) + ""), new Utils.Placeholder("value", NumberFormat.getInstance().format(island.getValue()) + "")));
                 for (XMaterial item : IridiumSkyblock.getBlockValues().blockvalue.keySet()) {
                     placeholders.add(new Utils.Placeholder(item.name() + "_amount", "" + island.valuableBlocks.getOrDefault(item.name(), 0)));
                 }
