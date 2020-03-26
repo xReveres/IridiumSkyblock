@@ -245,17 +245,9 @@ public class Island {
 
     public void resetMissions() {
         if (missions == null) missions = new HashMap<>();
-        for (String mission : missions.keySet()) {
-            //Check if mission is complete
-            if (!getMissionLevels().containsKey(mission)) getMissionLevels().put(mission, 1);
-            if (missions.get(mission).equals(Integer.MIN_VALUE)) {
-                if (IridiumSkyblock.getMissions().mission.get(mission).containsKey(getMissionLevels().get(mission) + 1)) {
-                    //We have a new mission available
-                    getMissionLevels().put(mission, getMissionLevels().get(mission) + 1);
-                }
-            }
-        }
+        if (missionLevels == null) missionLevels = new HashMap<>();
         missions.clear();
+        missionLevels.clear();
     }
 
     public int getMission(String mission) {
@@ -340,11 +332,15 @@ public class Island {
             }
         }
 
-        if (IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly) {
-            if (IridiumSkyblock.getMissions().mission.get(mission).containsKey(getMissionLevels().get(mission) + 1)) {
-                //We have another mission, put us on the next level
-                getMissionLevels().put(mission, getMissionLevels().get(mission) + 1);
-            }
+        //Reset current mission status
+
+        if (IridiumSkyblock.getMissions().mission.get(mission).containsKey(getMissionLevels().get(mission) + 1)) {
+            //We have another mission, put us on the next level
+            missions.remove(mission);
+            getMissionLevels().put(mission, getMissionLevels().get(mission) + 1);
+        } else if (IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly) {
+            missions.remove(mission);
+            missionLevels.remove(mission);
         }
     }
 
