@@ -59,6 +59,8 @@ public class IridiumSkyblock extends JavaPlugin {
     public LanguagesGUI languagesGUI;
     private String latest;
 
+    public HashMap<UUID, Island> entities = new HashMap<>();
+
     public static IridiumSkyblock getInstance() {
         return instance;
     }
