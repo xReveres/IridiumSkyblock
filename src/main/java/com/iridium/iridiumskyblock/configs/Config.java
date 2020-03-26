@@ -26,6 +26,7 @@ public class Config {
     public boolean debugSchematics = false;
     public boolean restartUpgradesOnRegen = true;
     public boolean allowWaterInNether = true;
+    public boolean disableLeafDecay = true;
     public int blocksPerTick = 25;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
