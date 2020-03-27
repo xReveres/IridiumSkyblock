@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.text.NumberFormat;
@@ -79,6 +80,22 @@ public class MVDWPlaceholderAPIManager {
             }
             User user = User.getUser(player);
             return user.getIsland() != null ? user.getIsland().getMembers().size() + "" : "N/A";
+        });
+
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_members_online", e -> {
+            Player player = e.getPlayer();
+            if (player == null) {
+                return "N/A";
+            }
+            User user = User.getUser(player);
+            if (user.getIsland() == null) return "N/A";
+            int online = 0;
+            for (String member : user.getIsland().getMembers()) {
+                if (Bukkit.getPlayer(User.getUser(member).name) != null) {
+                    online++;
+                }
+            }
+            return online + "";
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_upgrade_member_level", e -> {

@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.text.NumberFormat;
@@ -73,6 +74,15 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getCrystals()) + "" : "N/A";
             case "island_members":
                 return user.getIsland() != null ? user.getIsland().getMembers().size() + "" : "N/A";
+            case "island_members_online":
+                if (user.getIsland() == null) return "N/A";
+                int online = 0;
+                for (String member : user.getIsland().getMembers()) {
+                    if (Bukkit.getPlayer(User.getUser(member).name) != null) {
+                        online++;
+                    }
+                }
+                return online + "";
             case "island_upgrade_member_level":
                 return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getMemberLevel()) + "" : "N/A";
             case "island_upgrade_member_amount":
