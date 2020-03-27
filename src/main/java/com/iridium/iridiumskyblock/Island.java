@@ -728,6 +728,7 @@ public class Island {
     }
 
     public void teleportHome(Player p) {
+        if (getHome() == null) home = getCenter();
         if (User.getUser(p).teleportingHome) {
             return;
         }
@@ -777,6 +778,10 @@ public class Island {
     }
 
     public void teleportNetherHome(Player p) {
+        if (getNetherhome() == null) {
+            netherhome = center;
+            netherhome.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+        }
         if (User.getUser(p).teleportingHome) {
             return;
         }

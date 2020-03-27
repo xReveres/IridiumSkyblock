@@ -227,6 +227,7 @@ public class Utils {
     }
 
     public static boolean isSafe(Location loc, Island island) {
+        if (loc == null) return false;
         if (loc.getY() < 1) return false;
         if (!island.isInIsland(loc)) return false;
         if (!XMaterial.matchXMaterial(loc.getBlock().getType()).name().endsWith("AIR")) return false;
@@ -248,12 +249,15 @@ public class Utils {
     }
 
     public static Location getNewHome(Island island, Location loc) {
-        Block b = loc.getWorld().getHighestBlockAt(loc);
-        while (!XMaterial.matchXMaterial(b.getType()).name().endsWith("AIR")) {
-            b = b.getLocation().clone().add(0, 1, 0).getBlock();
-        }
-        if (isSafe(b.getLocation(), island)) {
-            return b.getLocation().add(0.5, 0, 0.5);
+        Block b;
+        if (loc != null) {
+            b = loc.getWorld().getHighestBlockAt(loc);
+            while (!XMaterial.matchXMaterial(b.getType()).name().endsWith("AIR")) {
+                b = b.getLocation().clone().add(0, 1, 0).getBlock();
+            }
+            if (isSafe(b.getLocation(), island)) {
+                return b.getLocation().add(0.5, 0, 0.5);
+            }
         }
 
         for (double X = island.getPos1().getX(); X <= island.getPos2().getX(); X++) {
