@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.vehicle.VehicleDamageEvent;
 
 public class onEntityDamageByEntity implements Listener {
 
@@ -81,6 +82,16 @@ public class onEntityDamageByEntity implements Listener {
             }
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
+        }
+    }
+
+    @EventHandler
+    public void onVehicleDamage(VehicleDamageEvent e) {
+        if (e.getAttacker() instanceof Player) {
+            User user = User.getUser((Player) e.getAttacker());
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getVehicle().getLocation());
+            if ((!island.getPermissions((user.islandID == island.getId() || island.isCoop(user.getIsland())) ? (island.isCoop(user.getIsland()) ? Role.Member : user.getRole()) : Role.Visitor).killMobs) && !user.bypassing)
+                e.setCancelled(true);
         }
     }
 }
