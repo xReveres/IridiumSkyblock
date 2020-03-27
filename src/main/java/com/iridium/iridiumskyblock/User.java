@@ -2,8 +2,8 @@ package com.iridium.iridiumskyblock;
 
 import org.bukkit.OfflinePlayer;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 public class User {
 
@@ -11,7 +11,7 @@ public class User {
     public String name;
     public int islandID;
     public Role role;
-    public ArrayList<Integer> invites;
+    public HashSet<Integer> invites;
     public Island.Warp warp;
     public boolean bypassing;
     public boolean islandChat;
@@ -20,7 +20,7 @@ public class User {
     public Date lastCreate;
 
     public User(OfflinePlayer p) {
-        invites = new ArrayList<>();
+        invites = new HashSet<>();
         this.player = p.getUniqueId().toString();
         this.name = p.getName();
         this.islandID = 0;
