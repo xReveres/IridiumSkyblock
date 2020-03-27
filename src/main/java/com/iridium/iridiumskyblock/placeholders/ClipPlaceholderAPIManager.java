@@ -79,6 +79,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 return user.getIsland() != null ? IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(user.getIsland().getMemberLevel()).size + "" : "N/A";
             case "island_upgrade_size_level":
                 return user.getIsland() != null ? user.getIsland().getSizeLevel() + "" : "N/A";
+            case "island_upgrade_size_dimensions":
+                return user.getIsland() != null ? IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(user.getIsland().getSizeLevel()).size + "" : "N/A";
             case "island_upgrade_ore_level":
                 return user.getIsland() != null ? user.getIsland().getOreLevel() + "" : "N/A";
             case "island_upgrade_warp_level":
