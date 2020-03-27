@@ -11,13 +11,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class onClick implements Listener {
+public class onPlayerInteract implements Listener {
 
     @EventHandler
-    public void onClick(PlayerInteractEvent e) {
+    public void onPlayerInteract(PlayerInteractEvent e) {
         try {
             User u = User.getUser(e.getPlayer());
             if (e.getClickedBlock() != null) {
@@ -73,6 +74,23 @@ public class onClick implements Listener {
             }
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
+        User u = User.getUser(e.getPlayer());
+        Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getRightClicked().getLocation());
+        if (island != null) {
+            if ((!island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).interact) && !u.bypassing) {
+                e.setCancelled(true);
+            }
+        } else {
+            if (e.getRightClicked().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getRightClicked().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
+                if (!u.bypassing) {
+                    e.setCancelled(true);
+                }
+            }
         }
     }
 }
