@@ -326,7 +326,9 @@ public class Utils {
                 //Bank
                 new Placeholder("experience", island.exp + ""),
                 new Placeholder("crystals", island.getCrystals() + ""),
-                new Placeholder("money", island.money + "")));
+                new Placeholder("money", island.money + ""),
+                new Placeholder("value", island.getValue() + "")
+        ));
         //Status amount crystals vault
         for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
             int amount = island.getMission(mission);
