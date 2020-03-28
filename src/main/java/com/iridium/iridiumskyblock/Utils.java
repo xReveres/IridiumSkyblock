@@ -233,8 +233,7 @@ public class Utils {
         if (!XMaterial.matchXMaterial(loc.getBlock().getType()).name().endsWith("AIR")) return false;
         if (XMaterial.matchXMaterial(loc.clone().add(0, -1, 0).getBlock().getType()).name().endsWith("AIR"))
             return false;
-        if (loc.clone().add(0, -1, 0).getBlock().isLiquid()) return false;
-        return true;
+        return !loc.clone().add(0, -1, 0).getBlock().isLiquid();
     }
 
     public static int getIslandRank(Island island) {

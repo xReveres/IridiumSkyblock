@@ -16,7 +16,8 @@ public class onPlayerExpChange implements Listener {
         try {
             Player p = e.getPlayer();
             User user = User.getUser(p);
-            if(!p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) && !p.getLocation().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))return;
+            if (!p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) && !p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))
+                return;
             Island island = user.getIsland();
             if (island != null) {
                 for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {

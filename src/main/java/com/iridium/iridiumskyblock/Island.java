@@ -678,24 +678,6 @@ public class Island {
             IridiumSkyblock.nms.sendSubTitle(player, IridiumSkyblock.getMessages().islandCreatedSubtitle, 20, 40, 20);
     }
 
-    private int getHeight() {
-        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
-            if (fakeSchematic.name.equals(schematic)) {
-                return getCenter().getBlockY() - (IridiumSkyblock.getInstance().schems.get(fakeSchematic).getHeight() / 2) - 1;
-            }
-        }
-        return 0;
-    }
-
-    private int getMax() {
-        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
-            if (fakeSchematic.name.equals(schematic)) {
-                return getCenter().getBlockY() + (IridiumSkyblock.getInstance().schems.get(fakeSchematic).getHeight() / 2) + 1;
-            }
-        }
-        return 0;
-    }
-
     private void pasteSchematic() {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
             if (fakeSchematic.name.equals(schematic)) {

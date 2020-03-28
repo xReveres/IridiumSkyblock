@@ -17,7 +17,7 @@ public class onEntityDeath implements Listener {
             if (e.getEntity().getKiller() == null) return;
             if (e.getEntity().getKiller().getPlayer() == null) return;
             Island island = User.getUser(e.getEntity().getKiller().getPlayer()).getIsland();
-            if (!e.getEntity().getKiller().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) && !e.getEntity().getKiller().getLocation().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))
+            if (!e.getEntity().getKiller().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) && !e.getEntity().getKiller().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))
                 return;
             if (island != null) {
                 for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {

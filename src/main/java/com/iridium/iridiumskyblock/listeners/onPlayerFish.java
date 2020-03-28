@@ -16,7 +16,7 @@ public class onPlayerFish implements Listener {
             if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
                 User u = User.getUser(e.getPlayer());
                 Island island = u.getIsland();
-                if (!e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) && !e.getPlayer().getLocation().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))
+                if (!e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) && !e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))
                     return;
                 if (island != null) {
                     for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
