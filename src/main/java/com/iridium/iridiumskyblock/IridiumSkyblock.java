@@ -209,6 +209,8 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (worldedit != null) {
                     if (worldedit.getDescription().getVersion().startsWith("6")) {
                         worldEdit = new WorldEdit6();
+                    } else if (worldedit.getDescription().getVersion().startsWith("7")) {
+                        worldEdit = new WorldEdit7();
                     }
                 }
 

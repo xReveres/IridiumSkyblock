@@ -624,36 +624,13 @@ public class Island {
         return lastRegen.getTime() - System.currentTimeMillis();
     }
 
-    public Location getSchematicLocation(Schematics.FakeSchematic fakeSchematic) {
-        return getCenter().clone();
-    }
-
-    public Location getNetherSchematicLocation(Schematics.FakeSchematic fakeSchematic) {
-        Location loc = getCenter().clone();
-        loc.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-        return loc;
-    }
-
     public void pasteSchematic(boolean deleteBlocks) {
         //TODO
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
         lastRegen = c.getTime();
         if (deleteBlocks) deleteBlocks();
-        if (IridiumSkyblock.worldEdit == null) {
-            pasteSchematic();
-        } else {
-            File schematicFolder = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
-            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
-                if (fakeSchematic.name.equals(schematic)) {
-                    IridiumSkyblock.worldEdit.paste(new File(schematicFolder, fakeSchematic.name), getSchematicLocation(fakeSchematic), this);
-                    if (IridiumSkyblock.getConfiguration().netherIslands) {
-                        IridiumSkyblock.worldEdit.paste(new File(schematicFolder, fakeSchematic.netherisland), getNetherSchematicLocation(fakeSchematic), this);
-                    }
-                    break;
-                }
-            }
-        }
+        pasteSchematic();
         killEntities();
         //Reset island home
         for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {

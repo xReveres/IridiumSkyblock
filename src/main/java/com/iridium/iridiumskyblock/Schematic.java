@@ -4,7 +4,6 @@ import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
@@ -36,11 +35,13 @@ public class Schematic {
     private byte[] blockdata;
     private Map<String, Tag> palette;
 
+    private File file;
+
     private Integer version;
 
     private SchematicVersion schematicVersion;
 
-    public Schematic(short width, short length, short height, List<Tag> tileEntities, byte[] blocks, byte[] data, List<Tag> entities) {
+    public Schematic(File file, short width, short length, short height, List<Tag> tileEntities, byte[] blocks, byte[] data, List<Tag> entities) {
         this.blocks = blocks;
         this.data = data;
         this.width = width;
@@ -48,9 +49,10 @@ public class Schematic {
         this.height = height;
         this.tileEntities = tileEntities;
         this.schematicVersion = SchematicVersion.v_1_8;
+        this.file = file;
     }
 
-    public Schematic(short width, short length, short height, byte[] blockdata, Map<String, Tag> palette, int version) {
+    public Schematic(File file, short width, short length, short height, byte[] blockdata, Map<String, Tag> palette, int version) {
         this.width = width;
         this.length = length;
         this.height = height;
@@ -58,9 +60,10 @@ public class Schematic {
         this.blockdata = blockdata;
         this.schematicVersion = SchematicVersion.v1_13;
         this.version = version;
+        this.file = file;
     }
 
-    public Schematic(short width, short length, short height, List<Tag> tileEntities, byte[] blockdata, Map<String, Tag> palette, int version) {
+    public Schematic(File file, short width, short length, short height, List<Tag> tileEntities, byte[] blockdata, Map<String, Tag> palette, int version) {
         this.width = width;
         this.length = length;
         this.height = height;
@@ -69,6 +72,7 @@ public class Schematic {
         this.schematicVersion = SchematicVersion.v1_13;
         this.tileEntities = tileEntities;
         this.version = version;
+        this.file = file;
     }
 
     /**
@@ -111,8 +115,13 @@ public class Schematic {
         short width = getWidth();
         short height = getHeight();
         loc.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
-        loc.getBlock().setType(Material.STONE, true);//Just incase something fails ?
         if (schematicVersion == SchematicVersion.v_1_8) {
+            if (IridiumSkyblock.worldEdit != null) {
+                if (IridiumSkyblock.worldEdit.version() == 6) {
+                    IridiumSkyblock.worldEdit.paste(file, loc, island);
+                    return;
+                }
+            }
 
             byte[] blocks = getBlocks();
             byte[] blockData = getData();
@@ -189,6 +198,12 @@ public class Schematic {
                 }
             }
         } else {
+            if (IridiumSkyblock.worldEdit != null) {
+                if (IridiumSkyblock.worldEdit.version() == 7) {
+                    IridiumSkyblock.worldEdit.paste(file, loc, island);
+                    return;
+                }
+            }
             //LoadBlocks
             if (XMaterial.ISFLAT) {
                 try {
@@ -311,15 +326,15 @@ public class Schematic {
             byte[] blockdata = getChildTag(schematic, "BlockData", ByteArrayTag.class).getValue();
             if (version == 1) {
                 List<Tag> TileEntities = getChildTag(schematic, "TileEntities", ListTag.class).getValue();
-                cache.put(file.getAbsolutePath(), new Schematic(width, length, height, TileEntities, blockdata, palette, version));
-                return new Schematic(width, length, height, TileEntities, blockdata, palette, version);
+                cache.put(file.getAbsolutePath(), new Schematic(file, width, length, height, TileEntities, blockdata, palette, version));
+                return new Schematic(file, width, length, height, TileEntities, blockdata, palette, version);
             } else if (version == 2) {
                 List<Tag> BlockEntities = getChildTag(schematic, "BlockEntities", ListTag.class).getValue();
-                cache.put(file.getAbsolutePath(), new Schematic(width, length, height, blockdata, palette, version));
-                return new Schematic(width, length, height, BlockEntities, blockdata, palette, version);
+                cache.put(file.getAbsolutePath(), new Schematic(file, width, length, height, blockdata, palette, version));
+                return new Schematic(file, width, length, height, BlockEntities, blockdata, palette, version);
             } else {
-                cache.put(file.getAbsolutePath(), new Schematic(width, length, height, blockdata, palette, version));
-                return new Schematic(width, length, height, blockdata, palette, version);
+                cache.put(file.getAbsolutePath(), new Schematic(file, width, length, height, blockdata, palette, version));
+                return new Schematic(file, width, length, height, blockdata, palette, version);
             }
 
         } else {
@@ -333,8 +348,8 @@ public class Schematic {
             byte[] blocks = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
             byte[] blockData = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
             List<Tag> entities = getChildTag(schematic, "Entities", ListTag.class).getValue();
-            cache.put(file.getAbsolutePath(), new Schematic(width, length, height, TileEntities, blocks, blockData, entities));
-            return new Schematic(width, length, height, TileEntities, blocks, blockData, entities);
+            cache.put(file.getAbsolutePath(), new Schematic(file, width, length, height, TileEntities, blocks, blockData, entities));
+            return new Schematic(file, width, length, height, TileEntities, blocks, blockData, entities);
         }
     }
 

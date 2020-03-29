@@ -27,6 +27,11 @@ public class WorldEdit6 implements WorldEdit {
     }
 
     @Override
+    public int version() {
+        return 6;
+    }
+
+    @Override
     public void paste(File file, Location location, Island island) {
         try {
             EditSession editSession = (com.sk89q.worldedit.EditSession) EditSession.newInstance(new BukkitWorld(location.getWorld()), 999999999);
@@ -35,7 +40,8 @@ public class WorldEdit6 implements WorldEdit {
             SchematicFormat schematic = SchematicFormat.getFormat(file);
             CuboidClipboard clipboard = schematic.load(file);
 
-            clipboard.paste(editSession, BukkitUtil.toVector(location), true);
+
+            clipboard.paste(editSession, BukkitUtil.toVector(location.clone().add(clipboard.getWidth() / 2.00, clipboard.getHeight() / 2.00, clipboard.getLength() / 2.00)), true);
             flush.invoke(editSession);
         } catch (Exception e) {
             e.printStackTrace();
