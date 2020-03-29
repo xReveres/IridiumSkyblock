@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.MissionType;
 import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.configs.Missions;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,10 +21,10 @@ public class onPlayerExpChange implements Listener {
                 return;
             Island island = user.getIsland();
             if (island != null) {
-                for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
-                    if (!island.getMissionLevels().containsKey(mission)) island.getMissionLevels().put(mission, 1);
-                    if (IridiumSkyblock.getMissions().mission.get(mission).get(island.getMissionLevels().get(mission)).type == MissionType.EXPERIENCE) {
-                        island.addMission(mission, e.getAmount());
+                for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+                    if (!island.getMissionLevels().containsKey(mission.name)) island.getMissionLevels().put(mission.name, 1);
+                    if(mission.levels.get(island.getMissionLevels().get(mission.name)).type==MissionType.EXPERIENCE){
+                        island.addMission(mission.name, e.getAmount());
                     }
                 }
             }

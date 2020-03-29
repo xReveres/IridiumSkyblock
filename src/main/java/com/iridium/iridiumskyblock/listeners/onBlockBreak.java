@@ -19,12 +19,12 @@ public class onBlockBreak implements Listener {
             Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
             if (island != null) {
                 if (u.islandID == island.getId()) {
-                    for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
-                        if (!island.getMissionLevels().containsKey(mission)) island.getMissionLevels().put(mission, 1);
-                        Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.getMissionLevels().get(mission));
-                        if (m.type == MissionType.BLOCK_BREAK) {
-                            if (m.conditions.isEmpty() || m.conditions.contains(XMaterial.matchXMaterial(e.getBlock().getType()).toString()) || (e.getBlock().getState().getData() instanceof Crops && m.conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
-                                island.addMission(mission, 1);
+                    for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+                        if (!island.getMissionLevels().containsKey(mission.name))
+                            island.getMissionLevels().put(mission.name, 1);
+                        if (mission.levels.get(island.getMissionLevels().get(mission.name)).type == MissionType.BLOCK_BREAK) {
+                            if (mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.isEmpty() || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(XMaterial.matchXMaterial(e.getBlock().getType()).name()) || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString())) {
+                                island.addMission(mission.name, 1);
                             }
                         }
                     }
@@ -52,7 +52,7 @@ public class onBlockBreak implements Listener {
                     if (island.valuableBlocks.containsKey(XMaterial.matchXMaterial(e.getBlock().getType()).name())) {
                         island.valuableBlocks.put(XMaterial.matchXMaterial(e.getBlock().getType()).name(), island.valuableBlocks.get(XMaterial.matchXMaterial(e.getBlock().getType()).name()) - 1);
                     }
-                    if(island.updating){
+                    if (island.updating) {
                         island.tempValues.remove(e.getBlock().getLocation());
                     }
                     island.calculateIslandValue();

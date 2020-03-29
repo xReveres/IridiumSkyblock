@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.MissionType;
 import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.configs.Missions;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -19,10 +20,10 @@ public class onPlayerFish implements Listener {
                 if (!e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) && !e.getPlayer().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))
                     return;
                 if (island != null) {
-                    for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
-                        if (!island.getMissionLevels().containsKey(mission)) island.getMissionLevels().put(mission, 1);
-                        if (IridiumSkyblock.getMissions().mission.get(mission).get(island.getMissionLevels().get(mission)).type == MissionType.FISH_CATCH) {
-                            island.addMission(mission, 1);
+                    for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+                        if (!island.getMissionLevels().containsKey(mission.name)) island.getMissionLevels().put(mission.name, 1);
+                        if(mission.levels.get(island.getMissionLevels().get(mission.name)).type==MissionType.FISH_CATCH){
+                            island.addMission(mission.name, 1);
                         }
                     }
                 }

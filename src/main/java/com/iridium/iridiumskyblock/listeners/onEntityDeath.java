@@ -20,15 +20,16 @@ public class onEntityDeath implements Listener {
             if (!e.getEntity().getKiller().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) && !e.getEntity().getKiller().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()))
                 return;
             if (island != null) {
-                for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
-                    if (!island.getMissionLevels().containsKey(mission)) island.getMissionLevels().put(mission, 1);
-                    Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.getMissionLevels().get(mission));
-                    if (m.type == MissionType.ENTITY_KILL) {
-                        if (m.conditions.isEmpty() || m.conditions.contains(e.getEntityType().toString())) {
-                            island.addMission(mission, 1);
+                for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+                    if (!island.getMissionLevels().containsKey(mission.name))
+                        island.getMissionLevels().put(mission.name, 1);
+                    if (mission.levels.get(island.getMissionLevels().get(mission.name)).type == MissionType.ENTITY_KILL) {
+                        if (mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.isEmpty() || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(e.getEntityType().toString())) {
+                            island.addMission(mission.name, 1);
                         }
                     }
                 }
+
                 if (island.getExpBooster() != 0) {
                     e.setDroppedExp(e.getDroppedExp() * 2);
                 }

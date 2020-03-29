@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.configs.Inventories;
-import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.support.Vault;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -174,8 +173,12 @@ public class Utils {
     }
 
     public static ItemStack makeItemHidden(Inventories.Item item, Island island) {
+        return makeItemHidden(item, getIslandPlaceholders(island));
+    }
+
+    public static ItemStack makeItemHidden(Inventories.Item item, List<Placeholder> placeholders) {
         try {
-            ItemStack itemstack = makeItemHidden(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            ItemStack itemstack = makeItemHidden(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), color(processMultiplePlaceholders(item.lore, placeholders)));
             if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
@@ -184,7 +187,7 @@ public class Utils {
             return itemstack;
         } catch (Exception e) {
             e.printStackTrace();
-            return makeItemHidden(XMaterial.STONE, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
+            return makeItemHidden(XMaterial.STONE, item.amount, processMultiplePlaceholders(item.title, placeholders), color(processMultiplePlaceholders(item.lore, placeholders)));
         }
     }
 
@@ -273,7 +276,7 @@ public class Utils {
         return null;
     }
 
-    public static String processIslandPlaceholders(String line, Island island) {
+    public static List<Placeholder> getIslandPlaceholders(Island island) {
         List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
                 // Upgrades
                 new Placeholder("sizevaultcost", IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(island.getSizeLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
@@ -329,18 +332,11 @@ public class Utils {
                 new Placeholder("money", island.money + ""),
                 new Placeholder("value", island.getValue() + "")
         ));
-        //Status amount crystals vault
-        for (String mission : IridiumSkyblock.getMissions().mission.keySet()) {
-            int amount = island.getMission(mission);
-            if (!island.getMissionLevels().containsKey(mission)) island.getMissionLevels().put(mission, 1);
-            Missions.Mission m = IridiumSkyblock.getMissions().mission.get(mission).get(island.getMissionLevels().get(mission));
-            placeholders.add(new Placeholder(mission + "status", amount == Integer.MIN_VALUE ? IridiumSkyblock.getMessages().completed : amount + "/" + m.amount));
-            placeholders.add(new Placeholder(mission + "amount", m.amount + ""));
-            placeholders.add(new Placeholder(mission + "crystals", m.crystalReward + ""));
-            placeholders.add(new Placeholder(mission + "vault", m.vaultReward + ""));
-            placeholders.add(new Placeholder(mission + "level", island.getMissionLevels().get(mission) + ""));
-        }
-        return processMultiplePlaceholders(line, placeholders);
+        return placeholders;
+    }
+
+    public static String processIslandPlaceholders(String line, Island island) {
+        return processMultiplePlaceholders(line, getIslandPlaceholders(island));
     }
 
     public static List<String> processIslandPlaceholders(List<String> lines, Island island) {
