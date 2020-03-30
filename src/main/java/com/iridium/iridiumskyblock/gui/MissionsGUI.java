@@ -26,10 +26,10 @@ public class MissionsGUI extends GUI implements Listener {
             for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
                 List<Utils.Placeholder> placeholderList = Utils.getIslandPlaceholders(island);
 
-                Missions.MissionData data = mission.levels.get(island.getMissionLevels().get(mission.name));
-
                 if (!island.getMissionLevels().containsKey(mission.name))
                     island.getMissionLevels().put(mission.name, 1);
+                
+                Missions.MissionData data = mission.levels.get(island.getMissionLevels().get(mission.name));
 
                 placeholderList.add(new Utils.Placeholder("level", island.getMissionLevels().get(mission.name) + ""));
                 placeholderList.add(new Utils.Placeholder("vaultReward", data.vaultReward + ""));
