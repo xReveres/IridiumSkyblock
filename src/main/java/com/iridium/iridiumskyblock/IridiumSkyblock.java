@@ -295,6 +295,7 @@ public class IridiumSkyblock extends JavaPlugin {
             }
             loadConfigs();
             saveConfigs();
+            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }, "Change Language");
         player.openInventory(gui.getInventory());
     }

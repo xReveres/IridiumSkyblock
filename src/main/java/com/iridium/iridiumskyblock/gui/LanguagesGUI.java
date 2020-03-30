@@ -59,7 +59,6 @@ public class LanguagesGUI extends GUI implements Listener {
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (languages.containsKey(e.getSlot())) {
                 IridiumSkyblock.getInstance().setLanguage(languages.get(e.getSlot()), (Player) e.getWhoClicked());
-                e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
     }
