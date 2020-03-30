@@ -166,9 +166,6 @@ public class IridiumSkyblock extends JavaPlugin {
             if (!loadConfigs()) return;
             saveConfigs();
 
-            commandManager = new CommandManager("island");
-            commandManager.registerCommands();
-
             if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
             if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
             if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) new MergedSpawners();
@@ -568,6 +565,10 @@ public class IridiumSkyblock extends JavaPlugin {
         commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
+
+
+        commandManager = new CommandManager("island");
+        commandManager.registerCommands();
 
         if (configuration == null || missions == null || messages == null || upgrades == null || boosters == null || inventories == null || schematics == null || commands == null || blockValues == null || shop == null) {
             return false;
