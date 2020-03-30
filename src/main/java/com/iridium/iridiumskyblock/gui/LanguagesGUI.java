@@ -9,12 +9,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class LanguagesGUI extends GUI implements Listener {
 
     int page;
+
+    public LanguagesGUI root;
 
     public HashMap<Integer, LanguagesGUI> pages;
 
@@ -23,13 +26,14 @@ public class LanguagesGUI extends GUI implements Listener {
     public LanguagesGUI() {
         pages = new HashMap<>();
         for (int i = 1; i <= Math.ceil(IridiumSkyblock.getInstance().languages.size() / 45.00); i++) {
-            pages.put(i, new LanguagesGUI(i));
+            pages.put(i, new LanguagesGUI(i, this));
         }
     }
 
-    public LanguagesGUI(int page) {
+    public LanguagesGUI(int page, LanguagesGUI root) {
         super(54, "&7Languages");
         this.page = page;
+        this.root = root;
         languages = new HashMap<>();
         Bukkit.getPluginManager().registerEvents(this, IridiumSkyblock.getInstance());
     }
@@ -41,14 +45,20 @@ public class LanguagesGUI extends GUI implements Listener {
         languages.clear();
         int slot = 0;
         int i = 0;
-        for (String language : IridiumSkyblock.getInstance().languages.keySet()) {
+        ArrayList<String> langs = new ArrayList<>(IridiumSkyblock.getInstance().languages.keySet());
+        java.util.Collections.sort(langs);
+        for (String language : langs) {
             if (i >= (page - 1) * 45 && i < page * 54) {
-                languages.put(slot, language);
-                setItem(slot, Utils.makeItem(XMaterial.PAPER, 1, "&b&l" + language, Arrays.asList("", "&7Translated by: " + IridiumSkyblock.getInstance().languages.get(language))));
-                slot++;
+                if (slot < 45) {
+                    languages.put(slot, language);
+                    setItem(slot, Utils.makeItem(XMaterial.PAPER, 1, "&b&l" + language, Arrays.asList("", "&7Translated by: " + IridiumSkyblock.getInstance().languages.get(language))));
+                    slot++;
+                }
             }
             i++;
         }
+        setItem(getInventory().getSize() - 3, Utils.makeItem(IridiumSkyblock.getInventories().nextPage));
+        setItem(getInventory().getSize() - 7, Utils.makeItem(IridiumSkyblock.getInventories().previousPage));
     }
 
     @Override
@@ -59,6 +69,14 @@ public class LanguagesGUI extends GUI implements Listener {
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (languages.containsKey(e.getSlot())) {
                 IridiumSkyblock.getInstance().setLanguage(languages.get(e.getSlot()), (Player) e.getWhoClicked());
+            } else if (e.getSlot() == getInventory().getSize() - 7) {
+                if (root.pages.containsKey(page - 1)) {
+                    e.getWhoClicked().openInventory(root.pages.get(page - 1).getInventory());
+                }
+            } else if (e.getSlot() == getInventory().getSize() - 3) {
+                if (root.pages.containsKey(page + 1)) {
+                    e.getWhoClicked().openInventory(root.pages.get(page + 1).getInventory());
+                }
             }
         }
     }
