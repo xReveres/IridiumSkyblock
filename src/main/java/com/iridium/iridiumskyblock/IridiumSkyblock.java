@@ -52,7 +52,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public HashMap<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
     public HashMap<Schematics.FakeSchematic, Schematic> netherschems = new HashMap<>();
     public boolean updatingBlocks = false;
-    public List<String> languages = new ArrayList<>();
+    public HashMap<String, String> languages = new HashMap<>();
     public LanguagesGUI languagesGUI;
     private String latest;
 
@@ -270,7 +270,8 @@ public class IridiumSkyblock extends JavaPlugin {
                 connection.setDoOutput(true);
                 Scanner scanner = new Scanner(connection.getInputStream());
                 while (scanner.hasNext()) {
-                    languages.add(scanner.next());
+                    String language = scanner.next();
+                    languages.put(language.split("-")[0], language.split("-")[1]);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -293,6 +294,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 downloadConfig(language, persist.getFile(missions));
             }
             loadConfigs();
+            saveConfigs();
         }, "Change Language");
         player.openInventory(gui.getInventory());
     }
