@@ -2,10 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
-import com.iridium.iridiumskyblock.gui.LanguagesGUI;
-import com.iridium.iridiumskyblock.gui.ShopGUI;
-import com.iridium.iridiumskyblock.gui.TopGUI;
-import com.iridium.iridiumskyblock.gui.VisitGUI;
+import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
@@ -267,17 +264,66 @@ public class IridiumSkyblock extends JavaPlugin {
     public void getLanguages() {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             languages.clear();
-            languages.add("English");
-            languages.add("French");
+            try {
+                URLConnection connection = new URL("https://iridiumllc.com/languages.php").openConnection();
+                connection.setConnectTimeout(5000);
+                connection.setReadTimeout(5000);
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                connection.setAllowUserInteraction(false);
+                connection.setDoOutput(true);
+                Scanner scanner = new Scanner(connection.getInputStream());
+                while (scanner.hasNext()) {
+                    languages.add(scanner.next());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             languagesGUI = new LanguagesGUI();
         });
     }
 
-    public void setLanguage(String language) {
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-
+    public void setLanguage(String language, Player player) {
+        ConfirmationGUI gui = new ConfirmationGUI(() -> {
+            //Reset the configs back to default
+            persist.getFile(commands).delete();
+            persist.getFile(inventories).delete();
+            persist.getFile(messages).delete();
+            persist.getFile(missions).delete();
+            if (!language.equalsIgnoreCase("English")) {
+                downloadConfig(language, persist.getFile(commands));
+                downloadConfig(language, persist.getFile(inventories));
+                downloadConfig(language, persist.getFile(messages));
+                downloadConfig(language, persist.getFile(missions));
+            }
             loadConfigs();
-        });
+        }, "Change Language");
+        player.openInventory(gui.getInventory());
+    }
+
+    public void downloadConfig(String language, File file) {
+        getLogger().info("https://iridiumllc.com/Languages/" + language + "/" + file.getName());
+        try {
+            URLConnection connection = new URL("https://iridiumllc.com/Languages/" + language + "/" + file.getName()).openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            connection.setAllowUserInteraction(false);
+            connection.setDoOutput(true);
+            InputStream in = connection.getInputStream();
+
+            if (!file.exists()) file.createNewFile();
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+            byte[] buffer = new byte[1024];
+
+            int numRead;
+            while ((numRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, numRead);
+            }
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            IridiumSkyblock.getInstance().getLogger().info("Failed to connect to Translation servers");
+        }
     }
 
     private void registerMultiverse() {

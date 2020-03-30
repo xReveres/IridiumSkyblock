@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -39,7 +40,7 @@ public class LanguagesGUI extends GUI implements Listener {
         languages.clear();
         int slot = 0;
         for (int i = 0; i < IridiumSkyblock.getInstance().languages.size(); i++) {
-            if (i >= (page-1) * 45 && i < page * 54) {
+            if (i >= (page - 1) * 45 && i < page * 54) {
                 languages.put(slot, IridiumSkyblock.getInstance().languages.get(i));
                 setItem(slot, Utils.makeItem(XMaterial.PAPER, 1, "&b&l" + IridiumSkyblock.getInstance().languages.get(i)));
                 slot++;
@@ -54,7 +55,7 @@ public class LanguagesGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (languages.containsKey(e.getSlot())) {
-                IridiumSkyblock.getInstance().setLanguage(languages.get(e.getSlot()));
+                IridiumSkyblock.getInstance().setLanguage(languages.get(e.getSlot()), (Player) e.getWhoClicked());
                 e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
