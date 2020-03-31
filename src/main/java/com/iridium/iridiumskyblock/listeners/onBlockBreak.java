@@ -23,7 +23,8 @@ public class onBlockBreak implements Listener {
                         if (!island.getMissionLevels().containsKey(mission.name))
                             island.getMissionLevels().put(mission.name, 1);
                         if (mission.levels.get(island.getMissionLevels().get(mission.name)).type == MissionType.BLOCK_BREAK) {
-                            if (mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.isEmpty() || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(XMaterial.matchXMaterial(e.getBlock().getType()).name()) || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString())) {
+                            if (mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.isEmpty() || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(XMaterial.matchXMaterial(e.getBlock().getType()).name()) || (e.getBlock().getState().getData() instanceof Crops &&
+                                    mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString()))) {
                                 island.addMission(mission.name, 1);
                             }
                         }

@@ -4,6 +4,7 @@ import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
@@ -288,6 +289,9 @@ public class Schematic {
                 } catch (Exception e) {
                     IridiumSkyblock.getInstance().sendErrorMessage(e);
                 }
+            } else {
+                loc.getBlock().setType(Material.STONE);
+                IridiumSkyblock.getInstance().getLogger().warning("Tried to load a 1.13+ schematic in a native minecraft version");
             }
         }
     }
