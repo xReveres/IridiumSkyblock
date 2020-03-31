@@ -666,8 +666,14 @@ public class Island {
 
     private void pasteSchematic() {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
+            IridiumSkyblock.getInstance().getLogger().info(fakeSchematic.name);
             if (fakeSchematic.name.equals(schematic)) {
-                IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), this);
+                if (IridiumSkyblock.getInstance().schems.containsKey(fakeSchematic)) {
+                    IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), this);
+                } else {
+                    IridiumSkyblock.getInstance().getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
+                    getCenter().getBlock().setType(Material.STONE);
+                }
                 if (IridiumSkyblock.getConfiguration().debugSchematics) {
                     File schematicFolder = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
                     try {
@@ -680,10 +686,17 @@ public class Island {
                 Location center = getCenter().clone();
                 if (IridiumSkyblock.getConfiguration().netherIslands) {
                     center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-                    IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center, this);
+                    if (IridiumSkyblock.getInstance().netherschems.containsKey(fakeSchematic)) {
+                        IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center, this);
+                    } else {
+                        IridiumSkyblock.getInstance().getLogger().warning("Failed to load schematic: " + fakeSchematic.netherisland);
+                    }
                 }
+                return;
             }
         }
+        IridiumSkyblock.getInstance().getLogger().warning("Could not find schematic: " + schematic);
+        getCenter().getBlock().setType(Material.STONE);
     }
 
     public void clearInventories() {

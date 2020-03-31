@@ -208,6 +208,12 @@ public class IridiumSkyblock extends JavaPlugin {
                     }
                 }
 
+                try {
+                    loadSchematics();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 getLogger().info("-------------------------------");
                 getLogger().info("");
                 getLogger().info(getDescription().getName() + " Enabled!");
@@ -536,11 +542,24 @@ public class IridiumSkyblock extends JavaPlugin {
         schems.clear();
 
         for (Schematics.FakeSchematic fakeSchematic : schematics.schematics) {
-            schems.put(fakeSchematic, Schematic.loadSchematic(new File(schematicFolder, fakeSchematic.name)));
-            if (fakeSchematic.netherisland == null) {
-                fakeSchematic.netherisland = fakeSchematic.name;
+            File schem = new File(schematicFolder, fakeSchematic.name);
+            try {
+                if (schem.exists()) {
+                    schems.put(fakeSchematic, Schematic.loadSchematic(schem));
+                    if (fakeSchematic.netherisland == null) {
+                        fakeSchematic.netherisland = fakeSchematic.name;
+                    }
+                    schem = new File(schematicFolder, fakeSchematic.netherisland);
+                    if (schem.exists()) {
+                        netherschems.put(fakeSchematic, Schematic.loadSchematic(schem));
+                    }
+                } else {
+                    IridiumSkyblock.getInstance().getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                IridiumSkyblock.getInstance().getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
             }
-            netherschems.put(fakeSchematic, Schematic.loadSchematic(new File(schematicFolder, fakeSchematic.netherisland)));
         }
     }
 
@@ -653,11 +672,6 @@ public class IridiumSkyblock extends JavaPlugin {
         }
         if (getConfiguration().distance <= max) {
             getConfiguration().distance = max + 1;
-        }
-        try {
-            loadSchematics();
-        } catch (Exception e) {
-
         }
         if (getIslandManager() != null) {
             for (Island island : getIslandManager().islands.values()) {
