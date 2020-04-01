@@ -28,6 +28,7 @@ public class Config {
     public boolean allowWaterInNether = true;
     public boolean disableLeafDecay = true;
     public boolean createIslandonHome = true;
+    public boolean alowExplosions = true;
     public int blocksPerTick = 25;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
