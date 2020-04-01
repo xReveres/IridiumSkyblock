@@ -40,6 +40,7 @@ public class Config {
     public XBiome defaultBiome = XBiome.PLAINS;
     public XBiome defaultNetherBiome = XBiome.NETHER;
     public MissionRestart missionRestart = MissionRestart.Daily;
+    public String worldSpawn = "world";
     public HashMap<Role, Permissions> defaultPermissions = new HashMap<Role, Permissions>() {{
         for (Role role : Role.values()) {
             if (role == Role.Visitor) {

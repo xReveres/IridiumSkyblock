@@ -995,7 +995,11 @@ public class Island {
             Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
             player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
         } else {
-            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            World world = Bukkit.getWorld(IridiumSkyblock.getConfiguration().worldSpawn);
+            if (world == null) {
+                world = Bukkit.getWorlds().get(0);
+            }
+            player.teleport(world.getSpawnLocation());
         }
     }
 
