@@ -21,9 +21,11 @@ public class onBlockPlace implements Listener {
                     for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
                         if (!island.getMissionLevels().containsKey(mission.name))
                             island.getMissionLevels().put(mission.name, 1);
-                        if (mission.levels.get(island.getMissionLevels().get(mission.name)).type == MissionType.BLOCK_PLACE) {
-                            if (mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.isEmpty() || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(XMaterial.matchXMaterial(e.getBlock().getType()).name()) || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString())) {
-                                island.addMission(mission.name, 1);
+                        if (mission.levels.containsKey(island.getMissionLevels().get(mission.name))) {
+                            if (mission.levels.get(island.getMissionLevels().get(mission.name)).type == MissionType.BLOCK_PLACE) {
+                                if (mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.isEmpty() || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(XMaterial.matchXMaterial(e.getBlock().getType()).name()) || mission.levels.get(island.getMissionLevels().get(mission.name)).conditions.contains(((Crops) e.getBlock().getState().getData()).getState().toString())) {
+                                    island.addMission(mission.name, 1);
+                                }
                             }
                         }
                     }
