@@ -104,6 +104,7 @@ public class Messages {
     public String updateFinished = "%prefix% &7%player%'s Island recalculation has finished";
     public String updatePercent = "%prefix% &7Recalculating %player%'s Island %percent%% complete";
     public String alreadyRecalculating = "%prefix% &7Already recalculating %player%'s Island";
+    public String blockLimitReached = "%prefix% &7The island limit for this block has already been reached";
 
     public HashMap<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {

@@ -1019,6 +1019,7 @@ public class Island {
 
     public void deleteBlocks() {
         valuableBlocks.clear();
+        calculateIslandValue();
         for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
             for (int Y = 0; Y <= 255; Y++) {
                 for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
