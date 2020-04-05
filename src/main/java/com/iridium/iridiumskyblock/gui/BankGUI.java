@@ -117,12 +117,10 @@ public class BankGUI extends GUI implements Listener {
                         island.money += Vault.econ.getBalance(p);
                         Vault.econ.withdrawPlayer(p, Vault.econ.getBalance(p));
                     } else if (e.getClick().equals(ClickType.RIGHT)) {
-                        if (Vault.econ.getBalance(p) > 1000) {
-                            island.money += 1000;
-                            Vault.econ.withdrawPlayer(p, 1000);
-                        } else {
-                            island.money += Vault.econ.getBalance(p);
-                            Vault.econ.withdrawPlayer(p, Vault.econ.getBalance(p));
+                        double depositValue = Vault.econ.getBalance(p) > 1000 ? 1000: Vault.econ.getBalance(p);
+                        if(!(island.money > Double.MAX_VALUE - depositValue)){
+                            island.money += depositValue;
+                            Vault.econ.withdrawPlayer(p, depositValue);
                         }
                     } else if (e.getClick().equals(ClickType.LEFT)) {
                         if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {

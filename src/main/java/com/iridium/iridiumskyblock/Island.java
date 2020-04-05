@@ -124,7 +124,7 @@ public class Island {
 
     private String name;
 
-    public int money;
+    public double money;
     public int exp;
 
     public XBiome biome;

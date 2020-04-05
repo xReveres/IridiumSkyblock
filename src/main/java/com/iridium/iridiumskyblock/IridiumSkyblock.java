@@ -449,10 +449,10 @@ public class IridiumSkyblock extends JavaPlugin {
                         }
                     }
                     for (Island island : getIslandManager().islands.values()) {
-                        int cm = island.money;
+                        double cm = island.money;
                         int cc = island.getCrystals();
                         int ce = island.exp;
-                        island.money = (int) Math.floor(island.money * (1 + (getConfiguration().dailyMoneyInterest / 100.00)));
+                        island.money = Math.floor(island.money * (1 + (getConfiguration().dailyMoneyInterest / 100.00)));
                         island.setCrystals((int) Math.floor(island.getCrystals() * (1 + (getConfiguration().dailyCrystalsInterest / 100.00))));
                         island.exp = (int) Math.floor(island.exp * (1 + (getConfiguration().dailyExpInterest / 100.00)));
                         for (String member : island.getMembers()) {
