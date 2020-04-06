@@ -135,9 +135,15 @@ public class ShopGUI extends GUI implements Listener {
                         }
                     } else {
                         if (Utils.canBuy((Player) e.getWhoClicked(), item.buyVault, item.buyCrystals)) {
-                            ItemStack itemStack = item.material.parseItem(true);
-                            itemStack.setAmount(item.amount);
-                            e.getWhoClicked().getInventory().addItem(itemStack);
+                            if (item.commands != null) {
+                                for (String Command : item.commands) {
+                                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Command.replace("%player%", e.getWhoClicked().getName()));
+                                }
+                            } else {
+                                ItemStack itemStack = item.material.parseItem(true);
+                                itemStack.setAmount(item.amount);
+                                e.getWhoClicked().getInventory().addItem(itemStack);
+                            }
                         } else {
                             e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantBuy.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }

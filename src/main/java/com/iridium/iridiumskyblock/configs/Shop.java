@@ -201,6 +201,7 @@ public class Shop {
         public int sellCrystals;
         public int slot;
         public int page;
+        public List<String> commands;
 
         public ShopItem(XMaterial material, String displayName, int amount, double buyVault, double sellVault, int buyCrystals, int sellCrystals, int slot, int page) {
             this.material = material;
@@ -212,6 +213,19 @@ public class Shop {
             this.sellCrystals = sellCrystals;
             this.slot = slot;
             this.page = page;
+        }
+
+        public ShopItem(XMaterial material, List<String> commands, String displayName, int amount, double buyVault, double sellVault, int buyCrystals, int sellCrystals, int slot, int page) {
+            this.material = material;
+            this.displayName = displayName;
+            this.amount = amount;
+            this.buyVault = buyVault;
+            this.sellVault = sellVault;
+            this.buyCrystals = buyCrystals;
+            this.sellCrystals = sellCrystals;
+            this.slot = slot;
+            this.page = page;
+            this.commands = commands;
         }
     }
 
