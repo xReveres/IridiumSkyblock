@@ -18,7 +18,7 @@ public class onEntityExplode implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
         if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
-            if (!IridiumSkyblock.getConfiguration().alowExplosions) {
+            if (!IridiumSkyblock.getConfiguration().allowExplosions) {
                 e.setCancelled(true);
             }
         }
