@@ -35,11 +35,11 @@ public class Missions {
             }}, new Inventories.Item(XMaterial.DIAMOND_ORE, 12, 1, "&b&lMiner Level {level}", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bDestroy {amount} Ores", "&b&l * &7Current Status: &b{status}", "&b&l * &7Reward: &b{crystalsReward} Island Crystals and ${vaultReward}", "", "&b&l[!] &bComplete this mission for rewards."))),
 
             new Mission("Farmer", new HashMap<Integer, MissionData>() {{
-                put(1, new MissionData(1, 10000, 50, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
-                put(2, new MissionData(5, 10000, 100, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
-                put(3, new MissionData(10, 10000, 500, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
-                put(4, new MissionData(15, 10000, 1000, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
-                put(5, new MissionData(15, 10000, 5000, MissionType.BLOCK_BREAK, Collections.singletonList(CropState.RIPE.toString())));
+                put(1, new MissionData(1, 10000, 50, MissionType.BLOCK_BREAK, Arrays.asList(CropState.RIPE.toString(), XMaterial.MELON.name(), XMaterial.CACTUS.name(), XMaterial.PUMPKIN.name(), XMaterial.SUGAR_CANE.name())));
+                put(2, new MissionData(5, 10000, 100, MissionType.BLOCK_BREAK, Arrays.asList(CropState.RIPE.toString(), XMaterial.MELON.name(), XMaterial.CACTUS.name(), XMaterial.PUMPKIN.name(), XMaterial.SUGAR_CANE.name())));
+                put(3, new MissionData(10, 10000, 500, MissionType.BLOCK_BREAK, Arrays.asList(CropState.RIPE.toString(), XMaterial.MELON.name(), XMaterial.CACTUS.name(), XMaterial.PUMPKIN.name(), XMaterial.SUGAR_CANE.name())));
+                put(4, new MissionData(15, 10000, 1000, MissionType.BLOCK_BREAK, Arrays.asList(CropState.RIPE.toString(), XMaterial.MELON.name(), XMaterial.CACTUS.name(), XMaterial.PUMPKIN.name(), XMaterial.SUGAR_CANE.name())));
+                put(5, new MissionData(15, 10000, 5000, MissionType.BLOCK_BREAK, Arrays.asList(CropState.RIPE.toString(), XMaterial.MELON.name(), XMaterial.CACTUS.name(), XMaterial.PUMPKIN.name(), XMaterial.SUGAR_CANE.name())));
             }}, new Inventories.Item(XMaterial.SUGAR_CANE, 13, 1, "&b&lFarmer Level {level}", Arrays.asList("&7Complete island missions to gain crystals", "&7that can be spent on Boosters and Upgrades.", "", "&b&lInformation:", "&b&l * &7Objective: &bHarvest {amount} Crops", "&b&l * &7Current Status: &b{status}", "&b&l * &7Reward: &b{crystalsReward} Island Crystals and ${vaultReward}", "", "&b&l[!] &bComplete this mission for rewards."))),
 
             new Mission("Hunter", new HashMap<Integer, MissionData>() {{
