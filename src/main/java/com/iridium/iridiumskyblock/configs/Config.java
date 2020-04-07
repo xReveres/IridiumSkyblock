@@ -29,6 +29,8 @@ public class Config {
     public boolean disableLeafDecay = true;
     public boolean createIslandonHome = true;
     public boolean allowExplosions = true;
+    public boolean disablePvPBetweenIslandMembers = true;
+    public boolean disablePvPOnIslands = true;
     public int blocksPerTick = 25;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;

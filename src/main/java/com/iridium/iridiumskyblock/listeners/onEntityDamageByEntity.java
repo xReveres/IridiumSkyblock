@@ -17,12 +17,12 @@ public class onEntityDamageByEntity implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         try {
             Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getEntity().getLocation());
-            if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two players pvping in IridiumSkyblock world
+            if (IridiumSkyblock.getConfiguration().disablePvPOnIslands && e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two players pvping in IridiumSkyblock world
                 if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
                     e.setCancelled(true);
                 }
             }
-            if (e.getEntity() instanceof Player && e.getDamager() instanceof Arrow) { // Deals with A player getting damaged by a bow fired from a player in IridiumSkyblock world
+            if (IridiumSkyblock.getConfiguration().disablePvPOnIslands && e.getEntity() instanceof Player && e.getDamager() instanceof Arrow) { // Deals with A player getting damaged by a bow fired from a player in IridiumSkyblock world
                 Arrow arrow = (Arrow) e.getDamager();
                 if (arrow.getShooter() instanceof Player) {
                     if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
@@ -47,7 +47,7 @@ public class onEntityDamageByEntity implements Listener {
                         e.setCancelled(true);
                 }
             }
-            if (e.getEntity() instanceof Player && !(e.getDamager() instanceof Player)) { //Deals with a mob attacking a player that doesnt belong to the island (/is home traps?)
+            if (IridiumSkyblock.getConfiguration().disablePvPOnIslands && e.getEntity() instanceof Player && !(e.getDamager() instanceof Player)) { //Deals with a mob attacking a player that doesnt belong to the island (/is home traps?)
                 if (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
                     User user = User.getUser((Player) e.getEntity());
                     if (user.getIsland() != null) {
@@ -59,7 +59,7 @@ public class onEntityDamageByEntity implements Listener {
                     }
                 }
             }
-            if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two allies pvping
+            if (IridiumSkyblock.getConfiguration().disablePvPBetweenIslandMembers && e.getEntity() instanceof Player && e.getDamager() instanceof Player) { // Deals with two allies pvping
                 User u = User.getUser((Player) e.getEntity());
                 User user = User.getUser((Player) e.getDamager());
                 if (u.getIsland() != null) {
@@ -68,7 +68,7 @@ public class onEntityDamageByEntity implements Listener {
                     }
                 }
             }
-            if (e.getEntity() instanceof Player && e.getDamager() instanceof Arrow) { // Deals with two allies pvping with bows
+            if (IridiumSkyblock.getConfiguration().disablePvPBetweenIslandMembers && e.getEntity() instanceof Player && e.getDamager() instanceof Arrow) { // Deals with two allies pvping with bows
                 Arrow arrow = (Arrow) e.getDamager();
                 if (arrow.getShooter() instanceof Player) {
                     User u = User.getUser((Player) e.getEntity());
