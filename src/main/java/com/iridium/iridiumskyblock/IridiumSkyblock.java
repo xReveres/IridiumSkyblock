@@ -40,6 +40,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public static Shop shop;
     public static TopGUI topGUI;
     public static ShopGUI shopGUI;
+    public static Border border;
     public static HashMap<Integer, VisitGUI> visitGUI;
     public static HashMap<Integer, List<String>> oreUpgradeCache = new HashMap<>();
     public static HashMap<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
@@ -587,6 +588,7 @@ public class IridiumSkyblock extends JavaPlugin {
         commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
+        border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
 
 
         commandManager = new CommandManager("island");
@@ -720,6 +722,7 @@ public class IridiumSkyblock extends JavaPlugin {
             if (commands != null) persist.save(commands);
             if (blockValues != null) persist.save(blockValues);
             if (shop != null) persist.save(shop);
+            if (border != null) persist.save(border);
         });
     }
 

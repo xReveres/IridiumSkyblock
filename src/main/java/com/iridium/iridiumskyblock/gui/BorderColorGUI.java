@@ -30,10 +30,10 @@ public class BorderColorGUI extends GUI implements Listener {
         this.blue = Utils.makeItem(IridiumSkyblock.getInventories().blue);
         this.off = Utils.makeItem(IridiumSkyblock.getInventories().off);
 
-        setItem(10, this.red);
-        setItem(12, this.blue);
-        setItem(14, this.green);
-        setItem(16, this.off);
+        if (IridiumSkyblock.border.RedEnabled) setItem(10, this.red);
+        if (IridiumSkyblock.border.BlueEnabled) setItem(12, this.blue);
+        if (IridiumSkyblock.border.GreenEnabled) setItem(14, this.green);
+        if (IridiumSkyblock.border.OffEnabled) setItem(16, this.off);
     }
 
     @EventHandler

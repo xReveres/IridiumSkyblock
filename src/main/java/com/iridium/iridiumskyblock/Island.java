@@ -167,7 +167,7 @@ public class Island {
         value = 0;
         warps = new ArrayList<>();
         startvalue = -1;
-        borderColor = Color.Blue;
+        borderColor = IridiumSkyblock.border.startingColor;
         visit = IridiumSkyblock.getConfiguration().defaultIslandPublic;
         permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
         this.coop = new HashSet<>();
