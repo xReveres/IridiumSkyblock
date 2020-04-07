@@ -16,8 +16,6 @@ public class onBlockPlace implements Listener {
             User u = User.getUser(e.getPlayer());
             Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
             if (island != null) {
-
-
                 if (IridiumSkyblock.getConfiguration().limitedBlocks.containsKey(XMaterial.matchXMaterial(e.getBlock().getType()))) {
                     if (island.valuableBlocks.getOrDefault(XMaterial.matchXMaterial(e.getBlock().getType()).name(), 0) >= IridiumSkyblock.getConfiguration().limitedBlocks.get(XMaterial.matchXMaterial(e.getBlock().getType()))) {
                         e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().blockLimitReached.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

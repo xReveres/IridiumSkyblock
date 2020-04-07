@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -47,6 +48,17 @@ public class onBlockFromTo implements Listener {
                             e.setCancelled(true);
                             b.setType(material.parseMaterial(true));
                             b.getState().update(true);
+                            if (Utils.isBlockValuable(b)) {
+                                if (!island.valuableBlocks.containsKey(XMaterial.matchXMaterial(b.getType()).name())) {
+                                    island.valuableBlocks.put(XMaterial.matchXMaterial(b.getType()).name(), 1);
+                                } else {
+                                    island.valuableBlocks.put(XMaterial.matchXMaterial(b.getType()).name(), island.valuableBlocks.get(XMaterial.matchXMaterial(b.getType()).name()) + 1);
+                                }
+                                if (island.updating) {
+                                    island.tempValues.add(b.getLocation());
+                                }
+                                island.calculateIslandValue();
+                            }
                         }
                     }
                 });
