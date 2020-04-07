@@ -460,22 +460,22 @@ public class Island {
                     if (state instanceof CreatureSpawner) {
                         CreatureSpawner spawner = (CreatureSpawner) state;
                         if (IridiumSkyblock.getBlockValues().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
-                            if (spawners.containsKey(spawner.getSpawnedType().name())) {
-                                spawners.put(spawner.getSpawnedType().name(), spawners.get(spawner.getSpawnedType().name() + 1));
-                            } else {
-                                spawners.put(spawner.getSpawnedType().name(), 1);
-                            }
-                            double temp = IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name());
+                            int amount = 1;
                             if (enabled) {
-                                temp *= getSpawnerAmount(spawner);
+                                amount = getSpawnerAmount(spawner);
                             } else if (MergedSpawners.enabled) {
-                                temp *= MergedSpawners.getSpawnerAmount(spawner);
+                                amount = MergedSpawners.getSpawnerAmount(spawner);
                             } else if (UltimateStacker.enabled) {
-                                temp *= UltimateStacker.getSpawnerAmount(spawner);
+                                amount = UltimateStacker.getSpawnerAmount(spawner);
                             } else if (EpicSpawners.enabled) {
-                                temp *= EpicSpawners.getSpawnerAmount(spawner);
+                                amount = EpicSpawners.getSpawnerAmount(spawner);
                             }
-                            value += temp;
+                            if (spawners.containsKey(spawner.getSpawnedType().name())) {
+                                spawners.put(spawner.getSpawnedType().name(), spawners.get(spawner.getSpawnedType().name()) + amount);
+                            } else {
+                                spawners.put(spawner.getSpawnedType().name(), amount);
+                            }
+                            value += IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name()) * amount;
                         }
                     }
                 }
