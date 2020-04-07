@@ -48,10 +48,12 @@ public class onPlayerMove implements Listener {
             Island island = user.getIsland();
             if (island != null) {
                 if (user.flying && (!island.isInIsland(e.getPlayer().getLocation()) || island.getFlightBooster() == 0) && !e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-                    e.getPlayer().setAllowFlight(false);
-                    e.getPlayer().setFlying(false);
-                    user.flying = false;
-                    e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().flightDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    if ((!e.getPlayer().hasPermission("IridiumSkyblock.Fly") && !e.getPlayer().hasPermission("iridiumskyblock.fly"))) {
+                        e.getPlayer().setAllowFlight(false);
+                        e.getPlayer().setFlying(false);
+                        user.flying = false;
+                        e.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().flightDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    }
                 }
             }
         } catch (Exception ex) {
