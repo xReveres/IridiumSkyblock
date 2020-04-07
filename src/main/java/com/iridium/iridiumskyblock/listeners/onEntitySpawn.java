@@ -13,17 +13,23 @@ public class onEntitySpawn implements Listener {
 
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent e) {
-        if (IridiumSkyblock.getConfiguration().blockedEntities.contains(e.getEntityType()) && (e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()) || e.getEntity().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()))) {
-            IridiumSkyblock.getInstance().entities.put(e.getEntity().getUniqueId(), IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getEntity().getLocation()));
-            monitorEntity(e.getEntity());
+        if (IridiumSkyblock.getConfiguration().blockedEntities.contains(e.getEntityType())) {
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getEntity().getLocation());
+            if (island != null) {
+                IridiumSkyblock.getInstance().entities.put(e.getEntity().getUniqueId(), island);
+                monitorEntity(e.getEntity());
+            }
         }
     }
 
     @EventHandler
     public void onVehicleSpawn(VehicleCreateEvent e) {
-        if (IridiumSkyblock.getConfiguration().blockedEntities.contains(e.getVehicle().getType()) && (e.getVehicle().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld()) || e.getVehicle().getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld()))) {
-            IridiumSkyblock.getInstance().entities.put(e.getVehicle().getUniqueId(), IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getVehicle().getLocation()));
-            monitorEntity(e.getVehicle());
+        if (IridiumSkyblock.getConfiguration().blockedEntities.contains(e.getVehicle())) {
+            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getVehicle().getLocation());
+            if (island != null) {
+                IridiumSkyblock.getInstance().entities.put(e.getVehicle().getUniqueId(), island);
+                monitorEntity(e.getVehicle());
+            }
         }
     }
 
