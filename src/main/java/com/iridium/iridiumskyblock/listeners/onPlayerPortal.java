@@ -1,13 +1,12 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class onPlayerPortal implements Listener {
 
@@ -19,7 +18,16 @@ public class onPlayerPortal implements Listener {
                 Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getFrom());
                 if (island != null) {
                     if (island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).useNetherPortal || u.bypassing) {
-                        e.setCanCreatePortal(true);
+                        if (XMaterial.ISFLAT) {
+                            e.setCanCreatePortal(true);
+                        } else {
+                            try {
+                                PlayerPortalEvent.class.getMethod("useTravelAgent", boolean.class).invoke(e, true);
+                                Class.forName("org.bukkit.TravelAgent").getMethod("setCanCreatePortal", boolean.class).invoke(PlayerPortalEvent.class.getMethod("getPortalTravelAgent").invoke(e), true);
+                            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
                         if (e.getFrom().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
                             e.setTo(island.getNetherhome());
                         } else {
