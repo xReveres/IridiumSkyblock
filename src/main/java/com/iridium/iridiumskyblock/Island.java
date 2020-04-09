@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
+import com.iridium.iridiumskyblock.support.AdvancedSpawners;
 import com.iridium.iridiumskyblock.support.EpicSpawners;
 import com.iridium.iridiumskyblock.support.MergedSpawners;
 import com.iridium.iridiumskyblock.support.UltimateStacker;
@@ -469,6 +470,8 @@ public class Island {
                                 amount = UltimateStacker.getSpawnerAmount(spawner);
                             } else if (EpicSpawners.enabled) {
                                 amount = EpicSpawners.getSpawnerAmount(spawner);
+                            } else if (AdvancedSpawners.enabled) {
+                                amount = AdvancedSpawners.getSpawnerAmount(spawner);
                             }
                             if (spawners.containsKey(spawner.getSpawnedType().name())) {
                                 spawners.put(spawner.getSpawnedType().name(), spawners.get(spawner.getSpawnedType().name()) + amount);

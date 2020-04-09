@@ -172,6 +172,7 @@ public class IridiumSkyblock extends JavaPlugin {
             if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) new MergedSpawners();
             if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) new UltimateStacker();
             if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) new EpicSpawners();
+            if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) new AdvancedSpawners();
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                 registerListeners(new onExpansionUnregister());
             startCounting();
