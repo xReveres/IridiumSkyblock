@@ -48,7 +48,7 @@ public class EntityDeathListener implements Listener {
 
             for (Mission mission : IridiumSkyblock.getMissions().missions) {
                 final Map<String, Integer> levels = island.getMissionLevels();
-                levels.computeIfAbsent(mission.name, (name) -> 1);
+                levels.putIfAbsent(mission.name, 1);
 
                 final MissionData level = mission.levels.get(levels.get(mission.name));
                 if (level.type != MissionType.ENTITY_KILL) return;

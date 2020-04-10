@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.*;
 import org.bukkit.World.Environment;
@@ -154,5 +155,12 @@ public class IslandManager {
 
     public Island getIslandViaId(int i) {
         return islands.get(i);
+    }
+
+    public boolean isIslandWorld(World world) {
+        if (world == null) return false;
+        final String name = world.getName();
+        final Config config = IridiumSkyblock.getConfiguration();
+        return (name.equals(config.worldName) || name.equals(config.worldName + "_nether"));
     }
 }

@@ -43,8 +43,7 @@ public class PlayerMoveListener implements Listener {
                             user.getIsland().teleportHome(player);
                         else if (world.getName().equals(islandManager.getNetherWorld().getName()))
                             user.getIsland().teleportNetherHome(player);
-                    } else if (world.getName().equals(islandManager.getWorld().getName())
-                            || world.getName().equals(islandManager.getNetherWorld().getName())) {
+                    } else if (islandManager.isIslandWorld(world)) {
                         if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
                             final PluginManager pluginManager = Bukkit.getPluginManager();
                             final EssentialsSpawn essentialsSpawn = (EssentialsSpawn) pluginManager.getPlugin("EssentialsSpawn");

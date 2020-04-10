@@ -19,18 +19,8 @@ public class LeafDecayListener implements Listener {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final World world = location.getWorld();
-            if (world == null) return;
-
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-
-            final World islandWorld = islandManager.getWorld();
-            if (islandWorld == null) return;
-
-            final World islandNetherWorld = islandManager.getNetherWorld();
-            if (islandNetherWorld == null) return;
-
-            final String worldName = world.getName();
-            if (!(worldName.equals(islandWorld.getName()) || worldName.equals(islandNetherWorld.getName()))) return;
+            if (!islandManager.isIslandWorld(world)) return;
 
             event.setCancelled(true);
         } catch (Exception e) {

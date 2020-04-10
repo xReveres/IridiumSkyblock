@@ -10,7 +10,6 @@ import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
@@ -38,18 +37,7 @@ public class BlockBreakListener implements Listener {
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) {
                 if (user.bypassing) return;
-
-                final World world = location.getWorld();
-                if (world == null) return;
-
-                final World islandWorld = islandManager.getWorld();
-                if (islandWorld == null) return;
-
-                final World islandNetherWorld = islandManager.getNetherWorld();
-                if (islandNetherWorld == null) return;
-
-                final String worldName = world.getName();
-                if (islandWorld.getName().equals(worldName) || islandNetherWorld.getName().equals(worldName))
+                if (islandManager.isIslandWorld(location.getWorld()))
                     event.setCancelled(true);
                 return;
             }

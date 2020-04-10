@@ -24,18 +24,8 @@ public class PlayerExpChangeListener implements Listener {
             final Player player = event.getPlayer();
             final Location location = player.getLocation();
             final World world = location.getWorld();
-            if (world == null) return;
-
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-
-            final World islandWorld = islandManager.getWorld();
-            if (islandWorld == null) return;
-
-            final World islandNetherWorld = islandManager.getNetherWorld();
-            if (islandNetherWorld == null) return;
-
-            final String worldName = world.getName();
-            if (!(worldName.equals(islandWorld.getName()) || worldName.equals(islandNetherWorld.getName()))) return;
+            if (!islandManager.isIslandWorld(world)) return;
 
             final User user = User.getUser(player);
             final Island island = user.getIsland();
