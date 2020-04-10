@@ -12,13 +12,17 @@ public class ItemCraftListener implements Listener {
 
     @EventHandler
     public void onItemCraft(PrepareItemCraftEvent event) {
-        final CraftingInventory inventory = event.getInventory();
-        if (inventory.getResult() == null) return;
+        try {
+            final CraftingInventory inventory = event.getInventory();
+            if (inventory.getResult() == null) return;
 
-        for (ItemStack itemStack : inventory.getContents()) {
-            if (!Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal).isSimilar(itemStack)) continue;
-            inventory.setResult(null);
-            return;
+            for (ItemStack itemStack : inventory.getContents()) {
+                if (!Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal).isSimilar(itemStack)) continue;
+                inventory.setResult(null);
+                return;
+            }
+        } catch (Exception e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }
