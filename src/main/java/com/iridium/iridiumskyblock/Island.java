@@ -377,7 +377,7 @@ public class Island {
     public Permissions getPermissions(User user) {
         Role role;
         if (user.islandID == getId()) role = user.getRole();
-        else if (isCoop(this)) role = Role.Member;
+        else if (isCoop(user.getIsland())) role = Role.Member;
         else role = Role.Visitor;
         return getPermissions(role);
     }
