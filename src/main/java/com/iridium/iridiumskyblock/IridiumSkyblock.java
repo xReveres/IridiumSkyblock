@@ -190,7 +190,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 shopGUI = new ShopGUI();
                 visitGUI = new HashMap<>();
 
-                registerListeners(new onEntitySpawn(), new onLeafDecay(), new BlockPistonListener(), new onEntityPickupItem(), new onPlayerTalk(), new onItemCraft(), new onPlayerTeleport(), new onPlayerPortal(), new BlockBreakListener(), new BlockPlaceListener(), new onPlayerInteract(), new BlockFromToListener(), new onSpawnerSpawn(), new EntityDeathListener(), new onPlayerJoinLeave(), new BlockGrowListener(), new onPlayerTalk(), new onPlayerMove(), new EntityDamageByEntityListener(), new onPlayerExpChange(), new onPlayerFish(), new onEntityExplode());
+                registerListeners(new onEntitySpawn(), new onLeafDecay(), new BlockPistonListener(), new onEntityPickupItem(), new onPlayerTalk(), new onItemCraft(), new onPlayerTeleport(), new onPlayerPortal(), new BlockBreakListener(), new BlockPlaceListener(), new onPlayerInteract(), new BlockFromToListener(), new onSpawnerSpawn(), new EntityDeathListener(), new onPlayerJoinLeave(), new BlockGrowListener(), new onPlayerTalk(), new onPlayerMove(), new EntityDamageByEntityListener(), new onPlayerExpChange(), new onPlayerFish(), new EntityExplodeListener());
 
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
 
