@@ -174,7 +174,7 @@ public class IridiumSkyblock extends JavaPlugin {
             if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) new EpicSpawners();
             if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) new AdvancedSpawners();
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
-                registerListeners(new onExpansionUnregister());
+                registerListeners(new ExpansionUnregisterListener());
             startCounting();
             getLanguages();
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
