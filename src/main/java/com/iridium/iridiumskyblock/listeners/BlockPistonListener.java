@@ -27,38 +27,46 @@ public class BlockPistonListener implements Listener {
 
     @EventHandler
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-        final Block block = event.getBlock();
-        final Location location = block.getLocation();
-        final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-        final Island island = islandManager.getIslandViaLocation(location);
-        if (island == null) return;
+        try {
+            final Block block = event.getBlock();
+            final Location location = block.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
 
-        final BlockFace face = event.getDirection();
-        for (Block extendedBlock : event.getBlocks()) {
-            final Location extendedBlockLocation = extendedBlock.getLocation();
-            final int[] offset = offsets.get(face);
-            extendedBlockLocation.add(offset[0], offset[1], offset[2]);
-            if (!island.isInIsland(extendedBlockLocation)) {
-                event.setCancelled(true);
-                return;
+            final BlockFace face = event.getDirection();
+            for (Block extendedBlock : event.getBlocks()) {
+                final Location extendedBlockLocation = extendedBlock.getLocation();
+                final int[] offset = offsets.get(face);
+                extendedBlockLocation.add(offset[0], offset[1], offset[2]);
+                if (!island.isInIsland(extendedBlockLocation)) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
+        } catch (Exception e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 
     @EventHandler
     public void onBlockPistonReact(BlockPistonRetractEvent event) {
-        final Block block = event.getBlock();
-        final Location location = block.getLocation();
-        final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-        final Island island = islandManager.getIslandViaLocation(location);
-        if (island == null) return;
+        try {
+            final Block block = event.getBlock();
+            final Location location = block.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
 
-        for (Block retractedBlock : event.getBlocks()) {
-            final Location retractedBlockLocation = retractedBlock.getLocation();
-            if (!island.isInIsland(retractedBlockLocation)) {
-                event.setCancelled(true);
-                return;
+            for (Block retractedBlock : event.getBlocks()) {
+                final Location retractedBlockLocation = retractedBlock.getLocation();
+                if (!island.isInIsland(retractedBlockLocation)) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
+        } catch (Exception e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }
