@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Missions;
-import org.bukkit.block.CreatureSpawner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -51,7 +50,6 @@ public class onBlockBreak implements Listener {
         Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getBlock().getLocation());
         if (island != null) {
             if (Utils.isBlockValuable(e.getBlock())) {
-                if (!(e.getBlock().getState() instanceof CreatureSpawner)) {
                     if (island.valuableBlocks.containsKey(XMaterial.matchXMaterial(e.getBlock().getType()).name())) {
                         island.valuableBlocks.put(XMaterial.matchXMaterial(e.getBlock().getType()).name(), island.valuableBlocks.get(XMaterial.matchXMaterial(e.getBlock().getType()).name()) - 1);
                     }
@@ -60,7 +58,6 @@ public class onBlockBreak implements Listener {
                     }
                     island.calculateIslandValue();
                 }
-            }
             island.failedGenerators.remove(e.getBlock().getLocation());
         }
     }
