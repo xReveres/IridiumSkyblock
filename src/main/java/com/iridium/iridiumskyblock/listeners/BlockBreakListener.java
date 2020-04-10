@@ -23,10 +23,10 @@ import org.bukkit.material.Crops;
 import java.util.List;
 import java.util.Map;
 
-public class onBlockBreak implements Listener {
+public class BlockBreakListener implements Listener {
 
     @EventHandler
-    public void onBreakBlock(BlockBreakEvent event) {
+    public void onBlockBreak(BlockBreakEvent event) {
         try {
             if (event.isCancelled()) return;
             final Player player = event.getPlayer();
