@@ -1,11 +1,11 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.*;
+import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -87,11 +87,27 @@ public class onEntityDamageByEntity implements Listener {
 
     @EventHandler
     public void onVehicleDamage(VehicleDamageEvent e) {
-        if (e.getAttacker() instanceof Player) {
-            User user = User.getUser((Player) e.getAttacker());
-            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(e.getVehicle().getLocation());
-            if ((!island.getPermissions((user.islandID == island.getId() || island.isCoop(user.getIsland())) ? (island.isCoop(user.getIsland()) ? Role.Member : user.getRole()) : Role.Visitor).killMobs) && !user.bypassing)
-                e.setCancelled(true);
+        final Entity attacker = e.getAttacker();
+        if (attacker instanceof Player) {
+            final Player player = (Player) attacker;
+            final User user = User.getUser(player);
+            if (user.bypassing) return;
+
+            final Vehicle vehicle = e.getVehicle();
+            final Location location = vehicle.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
+
+            final boolean coopIsland = island.isCoop(user.getIsland());
+
+            Role role;
+            if (user.islandID == island.getId()) role = user.getRole();
+            else if (coopIsland) role = Role.Member;
+            else role = Role.Visitor;
+
+            final Permissions permissions = island.getPermissions(role);
+            if (!permissions.killMobs) e.setCancelled(true);
         }
     }
 }
