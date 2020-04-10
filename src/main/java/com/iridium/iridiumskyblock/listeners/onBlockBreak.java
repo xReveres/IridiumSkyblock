@@ -63,15 +63,15 @@ public class onBlockBreak implements Listener {
                     final List<String> conditions = level.conditions;
 
                     if (
-                            conditions.isEmpty()
-                            ||
-                            conditions.contains(XMaterial.matchXMaterial(block.getType()).name())
-                            ||
-                            (
-                                    block.getState().getData() instanceof Crops
-                                    &&
-                                    conditions.contains(((Crops) block.getState().getData()).getState().toString())
-                            )
+                        conditions.isEmpty()
+                        ||
+                        conditions.contains(XMaterial.matchXMaterial(block.getType()).name())
+                        ||
+                        (
+                            block.getState().getData() instanceof Crops
+                            &&
+                            conditions.contains(((Crops) block.getState().getData()).getState().toString())
+                        )
                     ) island.addMission(mission.name, 1);
                 }
             }
