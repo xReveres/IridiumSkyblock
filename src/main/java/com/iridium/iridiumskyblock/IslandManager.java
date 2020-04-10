@@ -10,10 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 public class IslandManager {
 
-    public HashMap<Integer, Island> islands = new HashMap<>();
-    public HashMap<String, User> users = new HashMap<>();
+    public Map<Integer, Island> islands = new HashMap<>();
+    public Map<String, User> users = new HashMap<>();
 
-    public transient HashMap<Integer, List<Integer>> islandCache;
+    public transient Map<Integer, List<Integer>> islandCache;
 
     int length = 1;
     int current = 0;

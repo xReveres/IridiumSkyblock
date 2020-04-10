@@ -41,23 +41,23 @@ public class IridiumSkyblock extends JavaPlugin {
     public static TopGUI topGUI;
     public static ShopGUI shopGUI;
     public static Border border;
-    public static HashMap<Integer, VisitGUI> visitGUI;
-    public static HashMap<Integer, List<String>> oreUpgradeCache = new HashMap<>();
-    public static HashMap<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
+    public static Map<Integer, VisitGUI> visitGUI;
+    public static Map<Integer, List<String>> oreUpgradeCache = new HashMap<>();
+    public static Map<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
     public static SkyblockGenerator generator;
     public static WorldEdit worldEdit;
     private static IridiumSkyblock instance;
     private static Persist persist;
     private static IslandManager islandManager;
     private static CommandManager commandManager;
-    public HashMap<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
-    public HashMap<Schematics.FakeSchematic, Schematic> netherschems = new HashMap<>();
+    public Map<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
+    public Map<Schematics.FakeSchematic, Schematic> netherschems = new HashMap<>();
     public boolean updatingBlocks = false;
-    public HashMap<String, String> languages = new HashMap<>();
+    public Map<String, String> languages = new HashMap<>();
     public LanguagesGUI languagesGUI;
     private String latest;
 
-    public HashMap<UUID, Island> entities = new HashMap<>();
+    public Map<UUID, Island> entities = new HashMap<>();
 
     public static IridiumSkyblock getInstance() {
         return instance;
@@ -660,11 +660,11 @@ public class IridiumSkyblock extends JavaPlugin {
             getBoosters().flightBooster.crystalsCost = 15;
 
         if (getConfiguration().blockvalue != null) {
-            getBlockValues().blockvalue = (HashMap<XMaterial, Double>) getConfiguration().blockvalue.clone();
+            getBlockValues().blockvalue = new HashMap<>(getConfiguration().blockvalue);
             getConfiguration().blockvalue = null;
         }
         if (getConfiguration().spawnervalue != null) {
-            getBlockValues().spawnervalue = (HashMap<String, Double>) getConfiguration().spawnervalue.clone();
+            getBlockValues().spawnervalue = new HashMap<>(getConfiguration().spawnervalue);
             getConfiguration().spawnervalue = null;
         }
         int max = 0;
