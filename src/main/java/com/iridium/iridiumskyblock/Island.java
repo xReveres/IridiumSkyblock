@@ -55,7 +55,7 @@ public class Island {
     }
 
     private String owner;
-    private HashSet<String> members;
+    private Set<String> members;
     private Location pos1;
     private Location pos2;
     private Location center;
@@ -91,37 +91,37 @@ public class Island {
     private int warpLevel;
     private int oreLevel;
 
-    public transient int genearteID;
+    public transient int generateID;
 
     private double value;
 
-    public HashMap<String, Integer> valuableBlocks;
-    public transient HashSet<Location> tempValues;
-    public transient HashMap<String, Integer> spawners;
+    public Map<String, Integer> valuableBlocks;
+    public transient Set<Location> tempValues;
+    public transient Map<String, Integer> spawners;
 
-    private List<Warp> warps;
+    private final List<Warp> warps;
 
     private double startvalue;
 
-    private HashMap<String, Integer> missions = new HashMap<>();
+    private Map<String, Integer> missions = new HashMap<>();
 
-    private HashMap<String, Integer> missionLevels = new HashMap<>();
+    private Map<String, Integer> missionLevels = new HashMap<>();
 
     private boolean visit;
 
     private Color borderColor;
 
-    private HashMap<Role, Permissions> permissions;
+    private Map<Role, Permissions> permissions;
 
     private String schematic;
 
-    private HashSet<String> bans;
+    private Set<String> bans;
 
-    private HashSet<String> votes;
+    private Set<String> votes;
 
-    private HashSet<Integer> coop;
+    private Set<Integer> coop;
 
-    public transient HashSet<Integer> coopInvites;
+    public transient Set<Integer> coopInvites;
 
     private String name;
 
@@ -130,7 +130,7 @@ public class Island {
 
     public XBiome biome;
 
-    public transient HashSet<Location> failedGenerators;
+    public transient Set<Location> failedGenerators;
 
     private Date lastRegen;
 
@@ -170,7 +170,7 @@ public class Island {
         startvalue = -1;
         borderColor = IridiumSkyblock.border.startingColor;
         visit = IridiumSkyblock.getConfiguration().defaultIslandPublic;
-        permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
+        permissions = new HashMap<>(IridiumSkyblock.getConfiguration().defaultPermissions);
         this.coop = new HashSet<>();
         this.bans = new HashSet<>();
         this.votes = new HashSet<>();
@@ -374,9 +374,17 @@ public class Island {
         }
     }
 
+    public Permissions getPermissions(User user) {
+        Role role;
+        if (user.islandID == getId()) role = user.getRole();
+        else if (isCoop(user.getIsland())) role = Role.Member;
+        else role = Role.Visitor;
+        return getPermissions(role);
+    }
+
     public Permissions getPermissions(Role role) {
         if (permissions == null)
-            permissions = (HashMap<Role, Permissions>) IridiumSkyblock.getConfiguration().defaultPermissions.clone();
+            permissions = new HashMap<>(IridiumSkyblock.getConfiguration().defaultPermissions);
         if (!permissions.containsKey(role)) {
             permissions.put(role, new Permissions());
         }
@@ -827,7 +835,7 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getIslandMenuGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getCoopGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
-        if (genearteID != -1) Bukkit.getScheduler().cancelTask(genearteID);
+        if (generateID != -1) Bukkit.getScheduler().cancelTask(generateID);
         if (updating) {
             Bukkit.getScheduler().cancelTask(initBlocks);
             IridiumSkyblock.getInstance().updatingBlocks = false;
@@ -970,7 +978,7 @@ public class Island {
         return coop.contains(island.id);
     }
 
-    public HashSet<Integer> getCoop() {
+    public Set<Integer> getCoop() {
         if (coop == null) coop = new HashSet<>();
         return coop;
     }
@@ -1203,7 +1211,7 @@ public class Island {
         this.crystals = crystals;
     }
 
-    public HashSet<String> getMembers() {
+    public Set<String> getMembers() {
         return members;
     }
 
@@ -1293,7 +1301,7 @@ public class Island {
         return biome;
     }
 
-    public HashMap<String, Integer> getMissionLevels() {
+    public Map<String, Integer> getMissionLevels() {
         if (missionLevels == null) missionLevels = new HashMap<>();
         return missionLevels;
     }
