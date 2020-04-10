@@ -11,7 +11,6 @@ import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -83,14 +82,12 @@ public class BlockBreakListener implements Listener {
             if (island == null) return;
 
             if (Utils.isBlockValuable(block)) {
-                if (!(block.getState() instanceof CreatureSpawner)) {
-                    final Material material = block.getType();
-                    final String materialName = XMaterial.matchXMaterial(material).name();
-                    island.valuableBlocks.computeIfPresent(materialName, (name, original) -> original - 1);
-                    if (island.updating)
-                        island.tempValues.remove(location);
-                    island.calculateIslandValue();
-                }
+                final Material material = block.getType();
+                final String materialName = XMaterial.matchXMaterial(material).name();
+                island.valuableBlocks.computeIfPresent(materialName, (name, original) -> original - 1);
+                if (island.updating)
+                    island.tempValues.remove(location);
+                island.calculateIslandValue();
             }
 
             island.failedGenerators.remove(location);
