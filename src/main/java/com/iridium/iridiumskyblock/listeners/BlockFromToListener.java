@@ -63,6 +63,7 @@ public class BlockFromToListener implements Listener {
 
             final World islandWorld = islandManager.getWorld();
             if (islandWorld == null) return;
+
             final World islandNetherWorld = islandManager.getNetherWorld();
             if (islandNetherWorld == null) return;
 

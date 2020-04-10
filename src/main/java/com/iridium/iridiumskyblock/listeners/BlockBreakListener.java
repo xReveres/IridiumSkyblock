@@ -31,21 +31,24 @@ public class BlockBreakListener implements Listener {
             if (event.isCancelled()) return;
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
-            final boolean userBypassing = user.bypassing;
             final Block block = event.getBlock();
             final Location location = block.getLocation();
-            final World world = location.getWorld();
+
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             final Island island = islandManager.getIslandViaLocation(location);
-
             if (island == null) {
-                if (userBypassing) return;
+                if (user.bypassing) return;
+
+                final World world = location.getWorld();
                 if (world == null) return;
-                final String worldName = world.getName();
+
                 final World islandWorld = islandManager.getWorld();
                 if (islandWorld == null) return;
+
                 final World islandNetherWorld = islandManager.getNetherWorld();
                 if (islandNetherWorld == null) return;
+
+                final String worldName = world.getName();
                 if (islandWorld.getName().equals(worldName) || islandNetherWorld.getName().equals(worldName))
                     event.setCancelled(true);
                 return;
@@ -95,9 +98,7 @@ public class BlockBreakListener implements Listener {
                 if (!(block.getState() instanceof CreatureSpawner)) {
                     final Material material = block.getType();
                     final String materialName = XMaterial.matchXMaterial(material).name();
-                    if (island.valuableBlocks.containsKey(materialName)) {
-                        island.valuableBlocks.put(materialName, island.valuableBlocks.get(materialName) - 1);
-                    }
+                    island.valuableBlocks.computeIfPresent(materialName, (name, original) -> original - 1);
                     if (island.updating)
                         island.tempValues.remove(location);
                     island.calculateIslandValue();
