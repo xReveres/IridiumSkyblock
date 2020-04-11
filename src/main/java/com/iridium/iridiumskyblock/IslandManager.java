@@ -14,9 +14,12 @@ import org.bukkit.entity.Player;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,7 +28,7 @@ public class IslandManager {
 
     public Map<Integer, Island> islands = new HashMap<>();
     public Map<String, User> users = new HashMap<>();
-    public Map<int[], Set<Integer>> islandCache = new ConcurrentHashMap<>();
+    public Map<List<Integer>, Set<Integer>> islandCache = new ConcurrentHashMap<>();
 
     int length = 1;
     int current = 0;
@@ -141,7 +144,7 @@ public class IslandManager {
         if (!isIslandWorld(location)) return null;
 
         final Chunk chunk = location.getChunk();
-        final int[] chunkKey = {chunk.getX(), chunk.getZ()};
+        final List<Integer> chunkKey = Collections.unmodifiableList(Arrays.asList(chunk.getX(), chunk.getZ()));
 
         final double x = location.getX();
         final double z = location.getZ();
