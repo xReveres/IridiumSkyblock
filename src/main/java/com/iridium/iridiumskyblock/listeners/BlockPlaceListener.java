@@ -32,16 +32,11 @@ public class BlockPlaceListener implements Listener {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
 
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
-            final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) {
-                if (!user.bypassing)
-                    event.setCancelled(true);
-                return;
-            }
 
             final Material material = block.getType();
             final XMaterial xmaterial = XMaterial.matchXMaterial(material);
@@ -91,8 +86,6 @@ public class BlockPlaceListener implements Listener {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 

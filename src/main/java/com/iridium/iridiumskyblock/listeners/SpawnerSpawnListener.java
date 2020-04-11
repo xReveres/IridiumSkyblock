@@ -17,8 +17,6 @@ public class SpawnerSpawnListener implements Listener {
         try {
             final Location location = event.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 

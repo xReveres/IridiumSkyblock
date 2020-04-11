@@ -21,12 +21,10 @@ public class EntitySpawnListener implements Listener {
         final Entity entity = event.getEntity();
         final Location location = entity.getLocation();
         final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-        if (!islandManager.isIslandWorld(location)) return;
-
-        if (!IridiumSkyblock.getConfiguration().blockedEntities.contains(event.getEntityType())) return;
-
         final Island island = islandManager.getIslandViaLocation(location);
         if (island == null) return;
+
+        if (!IridiumSkyblock.getConfiguration().blockedEntities.contains(event.getEntityType())) return;
 
         IridiumSkyblock.getInstance().entities.put(entity.getUniqueId(), island);
         monitorEntity(entity);
@@ -37,12 +35,10 @@ public class EntitySpawnListener implements Listener {
         final Vehicle vehicle = event.getVehicle();
         final IslandManager islandManager = IridiumSkyblock.getIslandManager();
         final Location location = vehicle.getLocation();
-        if (!islandManager.isIslandWorld(location)) return;
-
-        if (!IridiumSkyblock.getConfiguration().blockedEntities.contains(vehicle.getType())) return;
-
         final Island island = islandManager.getIslandViaLocation(location);
         if (island == null) return;
+
+        if (!IridiumSkyblock.getConfiguration().blockedEntities.contains(vehicle.getType())) return;
 
         IridiumSkyblock.getInstance().entities.put(vehicle.getUniqueId(), island);
         monitorEntity(vehicle);

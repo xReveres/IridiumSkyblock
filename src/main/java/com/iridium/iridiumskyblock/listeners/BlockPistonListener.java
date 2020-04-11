@@ -31,8 +31,6 @@ public class BlockPistonListener implements Listener {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 
@@ -57,8 +55,6 @@ public class BlockPistonListener implements Listener {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 

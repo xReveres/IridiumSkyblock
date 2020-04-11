@@ -47,7 +47,8 @@ public class EntityExplodeListener implements Listener {
             if (!islandManager.isIslandWorld(location)) return;
 
             final UUID uuid = entity.getUniqueId();
-            final Map<UUID, Island> entities = IridiumSkyblock.getInstance().entities;
+            final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
+            final Map<UUID, Island> entities = plugin.entities;
             Island island = entities.get(uuid);
             if (island != null && island.isInIsland(location)) {
                 event.setCancelled(true);
@@ -59,7 +60,6 @@ public class EntityExplodeListener implements Listener {
             island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 
-            final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
             for (Block block : event.blockList()) {
                 if (!island.isInIsland(block.getLocation())) {
                     final BlockState state = block.getState();

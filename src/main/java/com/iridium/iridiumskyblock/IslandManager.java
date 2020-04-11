@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -11,17 +12,20 @@ import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class IslandManager {
 
     public Map<Integer, Island> islands = new HashMap<>();
     public Map<String, User> users = new HashMap<>();
-    public Map<Integer, Island> islandCache = new ConcurrentHashMap<>();
+    public Map<int[], Set<Integer>> islandCache = new ConcurrentHashMap<>();
 
     int length = 1;
     int current = 0;
@@ -134,20 +138,27 @@ public class IslandManager {
 
     public Island getIslandViaLocation(Location location) {
         if (location == null) return null;
+        if (!isIslandWorld(location)) return null;
 
-        return islandCache.computeIfAbsent(location.getChunk().hashCode(), (hash) -> {
-            final World world = location.getWorld();
-            if (world == null) return null;
+        final Chunk chunk = location.getChunk();
+        final int[] chunkKey = {chunk.getX(), chunk.getZ()};
 
-            final double x = location.getX();
-            final double z = location.getZ();
-            return islands
-                    .values()
-                    .parallelStream()
-                    .filter(island -> island.isInIsland(x, z))
-                    .findAny()
-                    .orElse(null);
-        });
+        final double x = location.getX();
+        final double z = location.getZ();
+
+        final Set<Integer> islandIds = new CopyOnWriteArraySet<>(islandCache.computeIfAbsent(chunkKey, (hash) -> islands
+                .values()
+                .parallelStream()
+                .filter(island -> island.isInIsland(x, z))
+                .map(Island::getId)
+                .collect(Collectors.toSet())));
+
+        for (int id : islandIds) {
+            final Island island = islands.get(id);
+            if (island == null) continue;
+            if (island.isInIsland(x, z)) return island;
+        }
+        return null;
     }
 
     public Island getIslandViaId(int i) {
@@ -162,6 +173,10 @@ public class IslandManager {
     public boolean isIslandWorld(World world) {
         if (world == null) return false;
         final String name = world.getName();
+        return isIslandWorld(name);
+    }
+
+    public boolean isIslandWorld(String name) {
         final Config config = IridiumSkyblock.getConfiguration();
         return (name.equals(config.worldName) || name.equals(config.netherWorldName));
     }
@@ -169,13 +184,9 @@ public class IslandManager {
     public void removeIsland(Island island) {
         final int id = island.getId();
         islands.remove(id);
-        final int[] hashes = islandCache
+        islandCache
                 .entrySet()
                 .parallelStream()
-                .filter(entry -> entry.getValue().getId() == id)
-                .mapToInt(Map.Entry::getKey)
-                .toArray();
-        for (int hash : hashes)
-            islandCache.remove(hash);
+                .forEach(entry -> entry.getValue().remove(id));
     }
 }

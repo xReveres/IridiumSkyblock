@@ -96,16 +96,12 @@ public class PlayerInteractListener implements Listener {
             final Entity rightClicked = event.getRightClicked();
             final Location location = rightClicked.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) {
-                if (!user.bypassing)
-                    event.setCancelled(true);
-            } else {
-                if (!island.getPermissions(user).interact)
-                    event.setCancelled(true);
-            }
+            if (island == null) return;
+
+            if (island.getPermissions(user).interact) return;
+
+            event.setCancelled(true);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }

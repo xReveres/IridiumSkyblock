@@ -22,7 +22,8 @@ public class PlayerPortalListener implements Listener {
         try {
             final Location fromLocation = event.getFrom();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(fromLocation)) return;
+            final Island island = islandManager.getIslandViaLocation(fromLocation);
+            if (island == null) return;
 
             if (!event.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)) return;
 
@@ -30,8 +31,6 @@ public class PlayerPortalListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            final Island island = islandManager.getIslandViaLocation(fromLocation);
-            if (island == null) return;
 
             final Player player = event.getPlayer();
             final User user = User.getUser(player);

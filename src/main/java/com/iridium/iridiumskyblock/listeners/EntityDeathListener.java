@@ -32,11 +32,11 @@ public class EntityDeathListener implements Listener {
             if (!islandManager.isIslandWorld(location)) return;
 
             final User user = User.getUser(killer);
-            final Island island = user.getIsland();
-            if (island == null) return;
+            final Island userIsland = user.getIsland();
+            if (userIsland == null) return;
 
             for (Mission mission : IridiumSkyblock.getMissions().missions) {
-                final Map<String, Integer> levels = island.getMissionLevels();
+                final Map<String, Integer> levels = userIsland.getMissionLevels();
                 levels.putIfAbsent(mission.name, 1);
 
                 final MissionData level = mission.levels.get(levels.get(mission.name));
@@ -44,10 +44,10 @@ public class EntityDeathListener implements Listener {
 
                 final List<String> conditions = level.conditions;
                 if (conditions.isEmpty() || conditions.contains(entity.toString()))
-                    island.addMission(mission.name, 1);
+                    userIsland.addMission(mission.name, 1);
             }
 
-            if (island.getExpBooster() != 0)
+            if (userIsland.getExpBooster() != 0)
                 event.setDroppedExp(event.getDroppedExp() * 2);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);

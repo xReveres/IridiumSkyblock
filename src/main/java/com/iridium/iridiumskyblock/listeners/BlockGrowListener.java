@@ -22,10 +22,9 @@ public class BlockGrowListener implements Listener {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
+
             if (island.getFarmingBooster() == 0) return;
 
             final Material material = block.getType();

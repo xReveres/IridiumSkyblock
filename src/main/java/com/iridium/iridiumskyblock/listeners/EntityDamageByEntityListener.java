@@ -27,11 +27,13 @@ public class EntityDamageByEntityListener implements Listener {
             final Entity entity = event.getEntity();
             final Location location = entity.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
 
             final Entity damager = event.getDamager();
 
-            final Supplier<Island> islandSupplier = () -> islandManager.getIslandViaLocation(location);
+            // Using suppliers to defer work if unnecessary
+            // This includes seemingly innocuous downcast operations
             final Supplier<Player> playerSupplier = () -> (Player) entity;
             final Supplier<User> userSupplier = () -> User.getUser(playerSupplier.get());
             final Supplier<Island> userIslandSupplier = () -> userSupplier.get().getIsland();
@@ -63,8 +65,7 @@ public class EntityDamageByEntityListener implements Listener {
             if (damager instanceof Arrow
                     && !(entity instanceof Player)
                     && projectileSourceSupplier.get() instanceof Player
-                    && islandSupplier.get() != null
-                    && !islandSupplier.get().getPermissions(shootingUserSupplier.get()).killMobs) {
+                    && !island.getPermissions(shootingUserSupplier.get()).killMobs) {
                 event.setCancelled(true);
                 return;
             }
@@ -72,8 +73,7 @@ public class EntityDamageByEntityListener implements Listener {
             // Deals with a player attacking animals that are not from their island
             if (damager instanceof Player
                     && !(entity instanceof Player)
-                    && islandSupplier.get() != null
-                    && !islandSupplier.get().getPermissions(damagingUserSupplier.get()).killMobs) {
+                    && !island.getPermissions(damagingUserSupplier.get()).killMobs) {
                 event.setCancelled(true);
                 return;
             }
@@ -124,16 +124,14 @@ public class EntityDamageByEntityListener implements Listener {
             final Vehicle vehicle = event.getVehicle();
             final Location location = vehicle.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
 
             final Entity attacker = event.getAttacker();
             if (!(attacker instanceof Player)) return;
 
             final Player player = (Player) attacker;
             final User user = User.getUser(player);
-
-            final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) return;
 
             if (!island.getPermissions(user).killMobs)
                 event.setCancelled(true);

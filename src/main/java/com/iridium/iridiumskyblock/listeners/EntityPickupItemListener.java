@@ -19,8 +19,6 @@ public class EntityPickupItemListener implements Listener {
             final Item item = event.getItem();
             final Location location = item.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 

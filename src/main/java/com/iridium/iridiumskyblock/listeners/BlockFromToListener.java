@@ -29,8 +29,6 @@ public class BlockFromToListener implements Listener {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 
@@ -101,13 +99,12 @@ public class BlockFromToListener implements Listener {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
 
             if (!event.getNewState().getType().equals(Material.OBSIDIAN)) return;
 
-            final Island island = islandManager.getIslandViaLocation(location);
-            if (island != null)
-                island.failedGenerators.add(location);
+            island.failedGenerators.add(location);
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
