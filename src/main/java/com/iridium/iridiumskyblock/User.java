@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import org.bukkit.OfflinePlayer;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,10 +52,15 @@ public class User {
     }
 
     public static User getUser(String p) {
+        if (IridiumSkyblock.getIslandManager().users == null)
+            IridiumSkyblock.getIslandManager().users = new HashMap<>();
         return IridiumSkyblock.getIslandManager().users.get(p);
     }
 
     public static User getUser(OfflinePlayer p) {
+        if (p == null) return null;
+        if (IridiumSkyblock.getIslandManager().users == null)
+            IridiumSkyblock.getIslandManager().users = new HashMap<>();
         return IridiumSkyblock.getIslandManager().users.containsKey(p.getUniqueId().toString()) ? IridiumSkyblock.getIslandManager().users.get(p.getUniqueId().toString()) : new User(p);
     }
 }
