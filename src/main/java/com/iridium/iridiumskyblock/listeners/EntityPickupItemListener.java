@@ -24,7 +24,7 @@ public class EntityPickupItemListener implements Listener {
 
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
-            if (!(island.getPermissions(user).pickupItems || user.bypassing))
+            if (!island.getPermissions(user).pickupItems)
                 event.setCancelled(true);
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);

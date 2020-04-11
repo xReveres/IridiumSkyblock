@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -28,37 +29,23 @@ public class BlockPlaceListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         try {
-            final Player player = event.getPlayer();
-            final User user = User.getUser(player);
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) {
-                final World world = location.getWorld();
-                if (world == null) return;
+            if (island == null) return;
 
-                final World islandWorld = islandManager.getWorld();
-                if (islandWorld == null) return;
-
-                final World islandNetherWorld = islandManager.getNetherWorld();
-                if (islandNetherWorld == null) return;
-
-                final String worldName = world.getName();
-                if (worldName.equals(islandWorld.getName()) || worldName.equals(islandNetherWorld.getName())) {
-                    if (!user.bypassing)
-                        event.setCancelled(true);
-                }
-                return;
-            }
+            final Player player = event.getPlayer();
+            final User user = User.getUser(player);
 
             final Material material = block.getType();
             final XMaterial xmaterial = XMaterial.matchXMaterial(material);
-            if (IridiumSkyblock.getConfiguration().limitedBlocks.containsKey(xmaterial)) {
-                final int max = IridiumSkyblock.getConfiguration().limitedBlocks.get(xmaterial);
+            final Config config = IridiumSkyblock.getConfiguration();
+            final Integer max = config.limitedBlocks.get(xmaterial);
+            if (max != null) {
                 if (island.valuableBlocks.getOrDefault(xmaterial.name(), 0) >= max) {
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().blockLimitReached
-                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        .replace("%prefix%", config.prefix)));
                     event.setCancelled(true);
                     return;
                 }
@@ -86,7 +73,7 @@ public class BlockPlaceListener implements Listener {
                 }
             }
 
-            if (!(island.getPermissions(user).placeBlocks || user.bypassing))
+            if (!island.getPermissions(user).placeBlocks)
                 event.setCancelled(true);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);

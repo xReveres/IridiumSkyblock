@@ -27,19 +27,14 @@ public class BlockBreakListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         try {
             if (event.isCancelled()) return;
-            final Player player = event.getPlayer();
-            final User user = User.getUser(player);
             final Block block = event.getBlock();
             final Location location = block.getLocation();
-
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) {
-                if (user.bypassing) return;
-                if (islandManager.isIslandWorld(location.getWorld()))
-                    event.setCancelled(true);
-                return;
-            }
+            if (island == null) return;
+
+            final Player player = event.getPlayer();
+            final User user = User.getUser(player);
 
             if (user.islandID == island.getId()) {
                 for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
@@ -62,11 +57,13 @@ public class BlockBreakListener implements Listener {
                             &&
                             conditions.contains(((Crops) block.getState().getData()).getState().toString())
                         )
-                    ) island.addMission(mission.name, 1);
+                    )
+                        island.addMission(mission.name, 1);
                 }
             }
 
-            if (!(island.getPermissions(user).breakBlocks || user.bypassing)) event.setCancelled(true);
+            if (!island.getPermissions(user).breakBlocks)
+                event.setCancelled(true);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }

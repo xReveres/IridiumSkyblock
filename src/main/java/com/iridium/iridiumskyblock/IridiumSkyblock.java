@@ -420,7 +420,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-        if (worldName.equals(getConfiguration().worldName) || worldName.equals(getConfiguration().worldName + "_nether"))
+        if (worldName.equals(configuration.worldName) || worldName.equals(configuration.netherWorldName))
             return generator;
         return super.getDefaultWorldGenerator(worldName, id);
     }

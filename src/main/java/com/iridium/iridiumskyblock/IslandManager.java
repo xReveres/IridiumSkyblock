@@ -2,19 +2,33 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class IslandManager {
 
     public Map<Integer, Island> islands = new HashMap<>();
     public Map<String, User> users = new HashMap<>();
-
-    public transient Map<Integer, List<Integer>> islandCache;
+    public Map<List<Integer>, Set<Integer>> islandCache = new ConcurrentHashMap<>();
 
     int length = 1;
     int current = 0;
@@ -34,10 +48,10 @@ public class IslandManager {
     }
 
     public World getNetherWorld() {
-        return Bukkit.getWorld(IridiumSkyblock.getConfiguration().worldName + "_nether");
+        return Bukkit.getWorld(IridiumSkyblock.getConfiguration().netherWorldName);
     }
 
-    public Island createIsland(Player player) {
+    public void createIsland(Player player) {
         User user = User.getUser(player);
         if (user.lastCreate != null && new Date().before(user.lastCreate) && IridiumSkyblock.getConfiguration().createCooldown && !user.bypassing) {
             //The user cannot create an island
@@ -47,7 +61,7 @@ public class IslandManager {
             int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
             int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
             player.sendMessage(Utils.color(IridiumSkyblock.getMessages().createCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-            return null;
+            return;
         }
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
@@ -108,14 +122,12 @@ public class IslandManager {
         IridiumSkyblock.getInstance().saveConfigs();
 
         nextID++;
-
-        return island;
     }
 
     private void makeWorld() {
         makeWorld(Environment.NORMAL, IridiumSkyblock.getConfiguration().worldName);
         if (IridiumSkyblock.getConfiguration().netherIslands)
-            makeWorld(Environment.NETHER, IridiumSkyblock.getConfiguration().worldName + "_nether");
+            makeWorld(Environment.NETHER, IridiumSkyblock.getConfiguration().netherWorldName);
     }
 
     private void makeWorld(Environment env, String name) {
@@ -127,28 +139,27 @@ public class IslandManager {
         wc.createWorld();
     }
 
-    public Island getIslandViaLocation(Location loc) {
-        if (islandCache == null) islandCache = new HashMap<>();
-        if (loc == null) return null;
-        int hash = loc.getChunk().hashCode();
-        if (islandCache.containsKey(hash)) {
-            for (int id : islandCache.get(hash)) {
-                if (getIslandViaId(id).isInIsland(loc)) {
-                    return getIslandViaId(id);
-                }
-            }
-        }
-        if (loc.getWorld().equals(getWorld()) || loc.getWorld().equals(getNetherWorld())) {
-            for (Island island : islands.values()) {
-                if (island.isInIsland(loc)) {
-                    if (islandCache.containsKey(hash)) {
-                        islandCache.get(hash).add(island.getId());
-                    } else {
-                        islandCache.put(hash, new ArrayList<>(island.getId()));
-                    }
-                    return island;
-                }
-            }
+    public Island getIslandViaLocation(Location location) {
+        if (location == null) return null;
+        if (!isIslandWorld(location)) return null;
+
+        final Chunk chunk = location.getChunk();
+        final List<Integer> chunkKey = Collections.unmodifiableList(Arrays.asList(chunk.getX(), chunk.getZ()));
+
+        final double x = location.getX();
+        final double z = location.getZ();
+
+        final Set<Integer> islandIds = new CopyOnWriteArraySet<>(islandCache.computeIfAbsent(chunkKey, (hash) -> islands
+                .values()
+                .parallelStream()
+                .filter(island -> island.isInIsland(x, z))
+                .map(Island::getId)
+                .collect(Collectors.toSet())));
+
+        for (int id : islandIds) {
+            final Island island = islands.get(id);
+            if (island == null) continue;
+            if (island.isInIsland(x, z)) return island;
         }
         return null;
     }
@@ -157,10 +168,28 @@ public class IslandManager {
         return islands.get(i);
     }
 
+    public boolean isIslandWorld(Location location) {
+        if (location == null) return false;
+        return isIslandWorld(location.getWorld());
+    }
+
     public boolean isIslandWorld(World world) {
         if (world == null) return false;
         final String name = world.getName();
+        return isIslandWorld(name);
+    }
+
+    public boolean isIslandWorld(String name) {
         final Config config = IridiumSkyblock.getConfiguration();
-        return (name.equals(config.worldName) || name.equals(config.worldName + "_nether"));
+        return (name.equals(config.worldName) || name.equals(config.netherWorldName));
+    }
+
+    public void removeIsland(Island island) {
+        final int id = island.getId();
+        islands.remove(id);
+        islandCache
+                .entrySet()
+                .parallelStream()
+                .forEach(entry -> entry.getValue().remove(id));
     }
 }

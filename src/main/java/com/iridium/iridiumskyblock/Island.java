@@ -375,6 +375,8 @@ public class Island {
     }
 
     public Permissions getPermissions(User user) {
+        if (user.bypassing) return new Permissions();
+
         Role role;
         if (user.islandID == getId()) role = user.getRole();
         else if (isCoop(user.getIsland())) role = Role.Member;
@@ -580,7 +582,15 @@ public class Island {
     }
 
     public boolean isInIsland(Location location) {
-        return (location.getX() > getPos1().getX() - 1 && location.getX() < getPos2().getX() + 1) && (location.getZ() > getPos1().getZ() - 1 && location.getZ() < getPos2().getZ() + 1);
+        if (location == null) return false;
+        return isInIsland(location.getX(), location.getZ());
+    }
+
+    public boolean isInIsland(double x, double z) {
+        return x >= pos1.getX()
+            && x <= pos2.getX()
+            && z >= pos1.getZ()
+            && z <= pos2.getZ();
     }
 
     public void init() {
@@ -853,8 +863,9 @@ public class Island {
         }
         killEntities();
         deleteBlocks();
+        final IslandManager islandManager = IridiumSkyblock.getIslandManager();
         for (int id : coop) {
-            IridiumSkyblock.getIslandManager().getIslandViaId(id).coop.remove(getId());
+            islandManager.getIslandViaId(id).coop.remove(getId());
         }
         coop = null;
         hideBorder();
@@ -864,7 +875,7 @@ public class Island {
         this.members = null;
         this.center = null;
         this.home = null;
-        IridiumSkyblock.getIslandManager().islands.remove(this.id);
+        islandManager.removeIsland(this);
         this.id = 0;
         IridiumSkyblock.getInstance().saveConfigs();
         Bukkit.getScheduler().cancelTask(boosterid);

@@ -27,38 +27,27 @@ public class EntityDeathListener implements Listener {
             final Player killer = entity.getKiller();
             if (killer == null) return;
 
-            final User user = User.getUser(killer);
-            final Island island = user.getIsland();
-            if (island == null) return;
-
             final Location location = killer.getLocation();
-            final World world = location.getWorld();
-            if (world == null) return;
-
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
 
-            final World islandWorld = islandManager.getWorld();
-            if (islandWorld == null) return;
-
-            final World islandNetherWorld = islandManager.getNetherWorld();
-            if (islandNetherWorld == null) return;
-
-            final String worldName = world.getName();
-            if (!(worldName.equals(islandWorld.getName()) || worldName.equals(islandNetherWorld.getName()))) return;
+            final User user = User.getUser(killer);
+            final Island userIsland = user.getIsland();
+            if (userIsland == null) return;
 
             for (Mission mission : IridiumSkyblock.getMissions().missions) {
-                final Map<String, Integer> levels = island.getMissionLevels();
+                final Map<String, Integer> levels = userIsland.getMissionLevels();
                 levels.putIfAbsent(mission.name, 1);
 
                 final MissionData level = mission.levels.get(levels.get(mission.name));
-                if (level.type != MissionType.ENTITY_KILL) return;
+                if (level.type != MissionType.ENTITY_KILL) continue;
 
                 final List<String> conditions = level.conditions;
                 if (conditions.isEmpty() || conditions.contains(entity.toString()))
-                    island.addMission(mission.name, 1);
+                    userIsland.addMission(mission.name, 1);
             }
 
-            if (island.getExpBooster() != 0)
+            if (userIsland.getExpBooster() != 0)
                 event.setDroppedExp(event.getDroppedExp() * 2);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);

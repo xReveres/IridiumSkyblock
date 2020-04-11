@@ -21,25 +21,24 @@ public class PlayerFishListener implements Listener {
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
         try {
-            if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
-                final Player player = event.getPlayer();
-                final Location location = player.getLocation();
-                final World world = location.getWorld();
-                final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-                if (!islandManager.isIslandWorld(world)) return;
+            final Player player = event.getPlayer();
+            final Location location = player.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
 
-                final User user = User.getUser(player);
-                final Island island = user.getIsland();
-                if (island == null) return;
+            if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) return;
 
-                for (Mission mission : IridiumSkyblock.getMissions().missions) {
-                    final Map<String, Integer> levels = island.getMissionLevels();
-                    levels.putIfAbsent(mission.name, 1);
+            final User user = User.getUser(player);
+            final Island island = user.getIsland();
+            if (island == null) return;
 
-                    final MissionData level = mission.levels.get(levels.get(mission.name));
-                    if (level.type==MissionType.FISH_CATCH)
-                        island.addMission(mission.name, 1);
-                }
+            for (Mission mission : IridiumSkyblock.getMissions().missions) {
+                final Map<String, Integer> levels = island.getMissionLevels();
+                levels.putIfAbsent(mission.name, 1);
+
+                final MissionData level = mission.levels.get(levels.get(mission.name));
+                if (level.type == MissionType.FISH_CATCH)
+                    island.addMission(mission.name, 1);
             }
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);

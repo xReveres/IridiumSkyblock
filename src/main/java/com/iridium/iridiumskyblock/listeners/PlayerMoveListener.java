@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.IslandManager;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.configs.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -24,9 +25,12 @@ public class PlayerMoveListener implements Listener {
         try {
             final Player player = event.getPlayer();
             final Location location = player.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
 
-            if (location.getY() < 0 && IridiumSkyblock.getConfiguration().voidTeleport) {
-                final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            final Config config = IridiumSkyblock.getConfiguration();
+
+            if (location.getY() < 0 && config.voidTeleport) {
                 final Island island = islandManager.getIslandViaLocation(location);
                 final World world = location.getWorld();
                 if (world == null) return;
@@ -55,6 +59,7 @@ public class PlayerMoveListener implements Listener {
                     }
                 }
             }
+
             final User user = User.getUser(player);
             final Island island = user.getIsland();
             if (island == null) return;
@@ -68,7 +73,7 @@ public class PlayerMoveListener implements Listener {
                 player.setFlying(false);
                 user.flying = false;
                 player.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightDisabled
-                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        .replace("%prefix%", config.prefix)));
             }
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);

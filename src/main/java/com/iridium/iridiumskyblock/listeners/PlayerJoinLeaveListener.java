@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.IslandManager;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +30,10 @@ public class PlayerJoinLeaveListener implements Listener {
                 }
             }
 
+            final Location location = player.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
+
             final User user = User.getUser(player);
             user.name = player.getName();
 
@@ -39,10 +44,10 @@ public class PlayerJoinLeaveListener implements Listener {
             }
             user.bypassing = false;
 
-            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            final Island island = islandManager.getIslandViaLocation(player.getLocation());
-            if (island != null)
-                Bukkit.getScheduler().runTaskLater(plugin, () -> island.sendBorder(player), 1);
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
+
+            Bukkit.getScheduler().runTaskLater(plugin, () -> island.sendBorder(player), 1);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }

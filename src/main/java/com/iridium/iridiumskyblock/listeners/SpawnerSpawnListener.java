@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.IslandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.CreatureSpawner;
@@ -14,8 +15,9 @@ public class SpawnerSpawnListener implements Listener {
     @EventHandler
     public void onSpawnerSpawn(SpawnerSpawnEvent event) {
         try {
-            final Location location= event.getLocation();
-            final Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(location);
+            final Location location = event.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 
             if (island.getSpawnerBooster() == 0) return;
