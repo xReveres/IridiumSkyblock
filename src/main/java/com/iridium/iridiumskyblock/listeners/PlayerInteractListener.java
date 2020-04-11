@@ -26,37 +26,33 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         try {
             final Player player = event.getPlayer();
+            final Location playerLocation = player.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(playerLocation)) return;
+
             final User user = User.getUser(player);
             final Block block = event.getClickedBlock();
             if (block != null) {
                 final Location location = block.getLocation();
-                final Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(location);
+                final Island island = islandManager.getIslandViaLocation(location);
                 if (island != null) {
-                    if (!(island.getPermissions(user).interact || user.bypassing)) {
+                    if (!island.getPermissions(user).interact) {
                         event.setCancelled(true);
                         return;
                     }
                     final ItemStack itemInHand = player.getItemInHand();
-                    if (itemInHand.getType().equals(Material.BUCKET)) {
-                        if (island.failedGenerators.contains(location)) {
-                            island.failedGenerators.remove(location);
-                            if (itemInHand.getAmount() == 1) {
-                                itemInHand.setType(Material.LAVA_BUCKET);
-                            } else {
-                                player.getInventory().addItem(new ItemStack(Material.LAVA_BUCKET));
-                                player.getItemInHand().setAmount(itemInHand.getAmount() - 1);
-                            }
-                            block.setType(Material.AIR);
+                    if (itemInHand.getType().equals(Material.BUCKET) && island.failedGenerators.remove(location)) {
+                        if (itemInHand.getAmount() == 1)
+                            itemInHand.setType(Material.LAVA_BUCKET);
+                        else {
+                            player.getInventory().addItem(new ItemStack(Material.LAVA_BUCKET));
+                            player.getItemInHand().setAmount(itemInHand.getAmount() - 1);
                         }
+                        block.setType(Material.AIR);
                     }
-                } else {
-                    final World world = location.getWorld();
-                    if (!IridiumSkyblock.getIslandManager().isIslandWorld(world)) return;
-
-                    if (!user.bypassing) {
-                        event.setCancelled(true);
-                        return;
-                    }
+                } else if (!user.bypassing) {
+                    event.setCancelled(true);
+                    return;
                 }
             }
 
@@ -74,7 +70,8 @@ public class PlayerInteractListener implements Listener {
                 final BlockFace face = event.getBlockFace();
                 block.getRelative(face).setType(Material.WATER);
 
-                final BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(block.getRelative(face), block.getRelative(face).getState(), block, item, player, false);
+                final Block relative = block.getRelative(face);
+                final BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(relative, relative.getState(), block, item, player, false);
                 if (blockPlaceEvent.isCancelled()) {
                     block.getRelative(face).setType(Material.AIR);
                 } else if (player.getGameMode().equals(GameMode.SURVIVAL)) {
@@ -99,24 +96,14 @@ public class PlayerInteractListener implements Listener {
             final Entity rightClicked = event.getRightClicked();
             final Location location = rightClicked.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
+
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) {
-                final World world = location.getWorld();
-                if (world == null) return;
-
-                final World islandWorld = islandManager.getWorld();
-                if (islandWorld == null) return;
-
-                final World islandNetherWorld = islandManager.getNetherWorld();
-                if (islandNetherWorld == null) return;
-
-                final String worldName = world.getName();
-                if (!(worldName.equals(islandWorld.getName()) || worldName.equals(islandNetherWorld.getName()))) return;
-
                 if (!user.bypassing)
                     event.setCancelled(true);
             } else {
-                if (!(island.getPermissions(user).interact || user.bypassing))
+                if (!island.getPermissions(user).interact)
                     event.setCancelled(true);
             }
         } catch (Exception e) {

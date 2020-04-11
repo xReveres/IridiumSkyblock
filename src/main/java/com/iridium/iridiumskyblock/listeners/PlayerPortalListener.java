@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.IslandManager;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.XMaterial;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,19 +20,22 @@ public class PlayerPortalListener implements Listener {
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent event) {
         try {
+            final Location fromLocation = event.getFrom();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(fromLocation)) return;
+
             if (!event.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)) return;
 
             if (!IridiumSkyblock.getConfiguration().netherIslands) {
                 event.setCancelled(true);
                 return;
             }
+            final Island island = islandManager.getIslandViaLocation(fromLocation);
+            if (island == null) return;
 
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
-            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(event.getFrom());
-            if (island == null) return;
-
-            if (!(island.getPermissions(user).useNetherPortal || user.bypassing)) {
+            if (!island.getPermissions(user).useNetherPortal) {
                 event.setCancelled(true);
                 return;
             }
@@ -49,13 +53,13 @@ public class PlayerPortalListener implements Listener {
                 }
             }
 
-            final World world = event.getFrom().getWorld();
+            final World world = fromLocation.getWorld();
             if (world == null) return;
 
-            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (world.getName().equals(islandManager.getWorld().getName()))
+            final String worldName = world.getName();
+            if (worldName.equals(IridiumSkyblock.getConfiguration().worldName))
                 event.setTo(island.getNetherhome());
-            else
+            else if (worldName.equals(IridiumSkyblock.getConfiguration().netherWorldName))
                 event.setTo(island.getHome());
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);

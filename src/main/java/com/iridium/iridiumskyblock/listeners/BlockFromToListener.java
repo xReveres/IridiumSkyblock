@@ -1,6 +1,11 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.configs.Config;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.IslandManager;
+import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,11 +28,8 @@ public class BlockFromToListener implements Listener {
         try {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
-            final World world = location.getWorld();
-            if (world == null) return;
-
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(world)) return;
+            if (!islandManager.isIslandWorld(location)) return;
 
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
@@ -50,9 +52,15 @@ public class BlockFromToListener implements Listener {
                 return;
 
             final int oreLevel = island.getOreLevel();
-            final List<String> islandOreUpgrades = (world.getName().equals(IridiumSkyblock.getConfiguration().worldName))
-                    ? IridiumSkyblock.oreUpgradeCache.get(oreLevel)
-                    : IridiumSkyblock.netherOreUpgradeCache.get(oreLevel);
+            final World world = location.getWorld();
+            if (world == null) return;
+
+            final String worldName = world.getName();
+            final Config config = IridiumSkyblock.getConfiguration();
+            List<String> islandOreUpgrades;
+            if (worldName.equals(config.worldName)) islandOreUpgrades = IridiumSkyblock.oreUpgradeCache.get(oreLevel);
+            else if (worldName.equals(config.netherWorldName)) islandOreUpgrades = IridiumSkyblock.netherOreUpgradeCache.get(oreLevel);
+            else return;
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 final Material toMaterial = toBlock.getType();
@@ -90,11 +98,13 @@ public class BlockFromToListener implements Listener {
     @EventHandler
     public void onBlockFrom(BlockFormEvent event) {
         try {
-            if (!event.getNewState().getType().equals(Material.OBSIDIAN)) return;
-
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
+
+            if (!event.getNewState().getType().equals(Material.OBSIDIAN)) return;
+
             final Island island = islandManager.getIslandViaLocation(location);
             if (island != null)
                 island.failedGenerators.add(location);

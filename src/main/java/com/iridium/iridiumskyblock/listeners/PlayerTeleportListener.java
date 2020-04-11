@@ -2,7 +2,9 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.IslandManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,7 +15,11 @@ public class PlayerTeleportListener implements Listener {
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         try {
-            final Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(event.getTo());
+            final Location toLocation = event.getTo();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(toLocation)) return;
+
+            final Island island = islandManager.getIslandViaLocation(toLocation);
             if (island == null) return;
 
             final Player player = event.getPlayer();

@@ -19,12 +19,14 @@ public class EntityPickupItemListener implements Listener {
             final Item item = event.getItem();
             final Location location = item.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
+
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
-            if (!(island.getPermissions(user).pickupItems || user.bypassing))
+            if (!island.getPermissions(user).pickupItems)
                 event.setCancelled(true);
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);

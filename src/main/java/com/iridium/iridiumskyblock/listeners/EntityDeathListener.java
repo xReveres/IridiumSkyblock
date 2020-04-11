@@ -27,31 +27,20 @@ public class EntityDeathListener implements Listener {
             final Player killer = entity.getKiller();
             if (killer == null) return;
 
+            final Location location = killer.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
+
             final User user = User.getUser(killer);
             final Island island = user.getIsland();
             if (island == null) return;
-
-            final Location location = killer.getLocation();
-            final World world = location.getWorld();
-            if (world == null) return;
-
-            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-
-            final World islandWorld = islandManager.getWorld();
-            if (islandWorld == null) return;
-
-            final World islandNetherWorld = islandManager.getNetherWorld();
-            if (islandNetherWorld == null) return;
-
-            final String worldName = world.getName();
-            if (!(worldName.equals(islandWorld.getName()) || worldName.equals(islandNetherWorld.getName()))) return;
 
             for (Mission mission : IridiumSkyblock.getMissions().missions) {
                 final Map<String, Integer> levels = island.getMissionLevels();
                 levels.putIfAbsent(mission.name, 1);
 
                 final MissionData level = mission.levels.get(levels.get(mission.name));
-                if (level.type != MissionType.ENTITY_KILL) return;
+                if (level.type != MissionType.ENTITY_KILL) continue;
 
                 final List<String> conditions = level.conditions;
                 if (conditions.isEmpty() || conditions.contains(entity.toString()))

@@ -14,13 +14,12 @@ public class LeafDecayListener implements Listener {
     @EventHandler
     public void onLeafDecay(LeavesDecayEvent event) {
         try {
-            if (!IridiumSkyblock.getConfiguration().disableLeafDecay) return;
-
             final Block block = event.getBlock();
             final Location location = block.getLocation();
-            final World world = location.getWorld();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(world)) return;
+            if (!islandManager.isIslandWorld(location)) return;
+
+            if (!IridiumSkyblock.getConfiguration().disableLeafDecay) return;
 
             event.setCancelled(true);
         } catch (Exception e) {

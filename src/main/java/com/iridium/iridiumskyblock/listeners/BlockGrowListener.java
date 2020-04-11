@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.IslandManager;
 import com.iridium.iridiumskyblock.XBlock;
 import org.bukkit.CropState;
 import org.bukkit.Location;
@@ -20,8 +21,10 @@ public class BlockGrowListener implements Listener {
         try {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
 
-            final Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(location);
+            final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
             if (island.getFarmingBooster() == 0) return;
 

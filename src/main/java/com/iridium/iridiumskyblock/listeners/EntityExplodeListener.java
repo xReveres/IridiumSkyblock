@@ -28,19 +28,8 @@ public class EntityExplodeListener implements Listener {
         try {
             final Entity entity = event.getEntity();
             final Location location = entity.getLocation();
-            final World world = location.getWorld();
-            if (world == null) return;
-
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-
-            final World islandWorld = islandManager.getWorld();
-            if (islandWorld == null) return;
-
-            final World islandNetherWorld = islandManager.getNetherWorld();
-            if (islandNetherWorld == null) return;
-
-            final String worldName = world.getName();
-            if (!(worldName.equals(islandWorld.getName()) || worldName.equals(islandNetherWorld.getName()))) return;
+            if (!islandManager.isIslandWorld(location)) return;
 
             if (!IridiumSkyblock.getConfiguration().allowExplosions)
                 event.setCancelled(true);
@@ -54,8 +43,10 @@ public class EntityExplodeListener implements Listener {
         try {
             final Entity entity = event.getEntity();
             final Location location = entity.getLocation();
-            final UUID uuid = entity.getUniqueId();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
 
+            final UUID uuid = entity.getUniqueId();
             final Map<UUID, Island> entities = IridiumSkyblock.getInstance().entities;
             Island island = entities.get(uuid);
             if (island != null && island.isInIsland(location)) {
@@ -65,7 +56,6 @@ public class EntityExplodeListener implements Listener {
                 return;
             }
 
-            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
 
