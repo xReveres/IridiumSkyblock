@@ -460,12 +460,13 @@ public class IridiumSkyblock extends JavaPlugin {
                         for (String member : island.getMembers()) {
                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                             if (p != null) {
-                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", island.exp - ce + "").replace("%crystals%", island.getCrystals() - cc + "").replace("%money%", island.money - cm + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                if (cm != island.money && cc != island.getCrystals() && ce != island.exp)
+                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", island.exp - ce + "").replace("%crystals%", island.getCrystals() - cc + "").replace("%money%", island.money - cm + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }
                     }
                 }
-                startCounting();
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> startCounting());
             }
 
         }, c.getTime());
