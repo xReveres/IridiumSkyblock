@@ -22,56 +22,43 @@ public class BlockFromToListener implements Listener {
     public void onBlockFromTo(BlockFromToEvent event) {
         try {
             final Block block = event.getBlock();
+            final Location location = block.getLocation();
+            final World world = location.getWorld();
+            if (world == null) return;
+
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(world)) return;
+
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
+
             final Material material = block.getType();
             final Block toBlock = event.getToBlock();
             final Location toLocation = toBlock.getLocation();
 
             if (material.equals(Material.WATER) || material.equals(Material.LAVA)) {
-                final Location location = block.getLocation();
-                final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-                final Island island = islandManager.getIslandViaLocation(location);
-                if (island != null) {
-                    final Island toIsland = islandManager.getIslandViaLocation(toLocation);
-                    if (island != toIsland)
-                        event.setCancelled(true);
-                }
+                final Island toIsland = islandManager.getIslandViaLocation(toLocation);
+                if (island != toIsland)
+                    event.setCancelled(true);
             }
 
             if (!IridiumSkyblock.getUpgrades().oresUpgrade.enabled) return;
 
-            final BlockFace face = event.getFace();
-            if (face == BlockFace.DOWN) return;
-
-            final Location location = block.getLocation();
-            final World world = location.getWorld();
-            if (world == null) return;
+            if (event.getFace() == BlockFace.DOWN) return;
 
             if (!isSurroundedByWater(toLocation))
                 return;
 
-            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) return;
-
-            final World islandWorld = islandManager.getWorld();
-            if (islandWorld == null) return;
-
-            final World islandNetherWorld = islandManager.getNetherWorld();
-            if (islandNetherWorld == null && IridiumSkyblock.getConfiguration().netherIslands) return;
-
-            final String worldName = world.getName();
             final int oreLevel = island.getOreLevel();
-
-            List<String> islandOreUpgrades;
-            if (worldName.equals(islandWorld.getName()))
-                islandOreUpgrades = IridiumSkyblock.oreUpgradeCache.get(oreLevel);
-            else if (IridiumSkyblock.getConfiguration().netherIslands && worldName.equals(islandNetherWorld.getName()))
-                islandOreUpgrades = IridiumSkyblock.netherOreUpgradeCache.get(oreLevel);
-            else return;
+            final List<String> islandOreUpgrades = (world.getName().equals(IridiumSkyblock.getConfiguration().worldName))
+                    ? IridiumSkyblock.oreUpgradeCache.get(oreLevel)
+                    : IridiumSkyblock.netherOreUpgradeCache.get(oreLevel);
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                if (!(toBlock.getType().equals(Material.COBBLESTONE) || toBlock.getType().equals(Material.STONE)))
+                final Material toMaterial = toBlock.getType();
+                if (!(toMaterial.equals(Material.COBBLESTONE) || toMaterial.equals(Material.STONE)))
                     return;
+
                 final Random random = new Random();
                 final String oreUpgrade = islandOreUpgrades.get(random.nextInt(islandOreUpgrades.size()));
 
@@ -103,14 +90,14 @@ public class BlockFromToListener implements Listener {
     @EventHandler
     public void onBlockFrom(BlockFormEvent event) {
         try {
-            if (event.getNewState().getType().equals(Material.OBSIDIAN)) {
-                final Block block = event.getBlock();
-                final Location location = block.getLocation();
-                final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-                final Island island = islandManager.getIslandViaLocation(location);
-                if (island != null)
-                    island.failedGenerators.add(location);
-            }
+            if (!event.getNewState().getType().equals(Material.OBSIDIAN)) return;
+
+            final Block block = event.getBlock();
+            final Location location = block.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island != null)
+                island.failedGenerators.add(location);
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
