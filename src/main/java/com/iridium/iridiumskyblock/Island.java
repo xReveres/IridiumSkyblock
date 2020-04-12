@@ -4,9 +4,13 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
+import com.iridium.iridiumskyblock.configs.Config;
+import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
+import com.iridium.iridiumskyblock.runnables.InitIslandBlocksRunnable;
+import com.iridium.iridiumskyblock.runnables.InitIslandBlocksWithSenderRunnable;
 import com.iridium.iridiumskyblock.support.AdvancedSpawners;
 import com.iridium.iridiumskyblock.support.EpicSpawners;
 import com.iridium.iridiumskyblock.support.MergedSpawners;
@@ -20,6 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
@@ -178,157 +183,89 @@ public class Island {
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
 
-    public void initBlocks() {
-        updating = true;
-        initBlocks = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
-            int world = 0;
-            double X = pos1.getX();
-            double Y = 0;
-            double Z = pos1.getZ();
+    public long getBlockCount() {
+        final double minX = pos1.getX();
+        final double maxX = pos2.getX();
+        final double width = maxX - minX;
 
-            @Override
-            public void run() {
-                try {
-                    for (int i = 0; i < IridiumSkyblock.getConfiguration().blocksPerTick; i++) {
-                        if (X < pos2.getX()) {
-                            X++;
-                        } else if (Z < pos2.getZ()) {
-                            X = pos1.getX();
-                            Z++;
-                        } else if (Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight()) {
-                            X = pos1.getX();
-                            Z = pos1.getZ();
-                            Y++;
-                        } else if (world == 0 && IridiumSkyblock.getConfiguration().netherIslands) {
-                            world++;
-                            X = pos1.getX();
-                            Y = 0;
-                            Z = pos1.getZ();
-                        } else {
-                            if (IridiumSkyblock.blockspertick != -1) {
-                                IridiumSkyblock.getConfiguration().blocksPerTick = IridiumSkyblock.blockspertick;
-                                IridiumSkyblock.blockspertick = -1;
-                            }
-                            Bukkit.getScheduler().cancelTask(initBlocks);
-                            initBlocks = -1;
-                            IridiumSkyblock.getInstance().updatingBlocks = false;
-                            updating = false;
-                            valuableBlocks.clear();
-                            spawners.clear();
-                            for (Location location : tempValues) {
-                                Block block = location.getBlock();
-                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
-                                    if (!valuableBlocks.containsKey(XMaterial.matchXMaterial(block.getType()).name())) {
-                                        valuableBlocks.put(XMaterial.matchXMaterial(block.getType()).name(), 1);
-                                    } else {
-                                        valuableBlocks.put(XMaterial.matchXMaterial(block.getType()).name(), valuableBlocks.get(XMaterial.matchXMaterial(block.getType()).name()) + 1);
-                                    }
-                                }
-                            }
-                            tempValues.clear();
-                            calculateIslandValue();
-                            return;
-                        }
-                        if (IridiumSkyblock.getInstance().updatingBlocks) {
-                            if (world == 0) {
-                                Location loc = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z);
-                                Block block = loc.getBlock();
-                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
-                                    tempValues.add(loc);
-                                }
-                            } else if (IridiumSkyblock.getConfiguration().netherIslands) {
-                                Location loc = new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z);
-                                Block block = loc.getBlock();
-                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
-                                    tempValues.add(loc);
-                                }
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    IridiumSkyblock.getInstance().sendErrorMessage(e);
-                }
-            }
-        }, 0, 1);
+        final double minZ = pos1.getZ();
+        final double maxZ = pos2.getZ();
+        final double depth = maxZ - minZ;
+
+        final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+        final World islandWorld = islandManager.getWorld();
+        final double maxY = islandWorld.getMaxHeight();
+
+        return (long ) (width * maxY * depth);
     }
 
-    public void forceinitBlocks(CommandSender sender, int blockspersec, String name) {
-        if (sender != null)
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updateStarted.replace("%player%", name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+    public void initBlocks() {
         updating = true;
-        initBlocks = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
-            int world = 0;
-            double X = pos1.getX();
-            double Y = 0;
-            double Z = pos1.getZ();
 
-            @Override
-            public void run() {
-                try {
-                    for (int i = 0; i < blockspersec; i++) {
-                        if (X < pos2.getX()) {
-                            X++;
-                        } else if (Z < pos2.getZ()) {
-                            X = pos1.getX();
-                            Z++;
-                        } else if (Y <= IridiumSkyblock.getIslandManager().getWorld().getMaxHeight()) {
-                            X = pos1.getX();
-                            Z = pos1.getZ();
-                            Y++;
-                        } else if (world == 0 && IridiumSkyblock.getConfiguration().netherIslands) {
-                            world++;
-                            X = pos1.getX();
-                            Y = 0;
-                            Z = pos1.getZ();
-                        } else {
-                            if (sender != null)
-                                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updateFinished.replace("%player%", name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                            Bukkit.getScheduler().cancelTask(initBlocks);
-                            initBlocks = -1;
-                            updating = false;
-                            valuableBlocks.clear();
-                            spawners.clear();
-                            for (Location location : tempValues) {
-                                Block block = location.getBlock();
-                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
-                                    if (!valuableBlocks.containsKey(XMaterial.matchXMaterial(block.getType()).name())) {
-                                        valuableBlocks.put(XMaterial.matchXMaterial(block.getType()).name(), 1);
-                                    } else {
-                                        valuableBlocks.put(XMaterial.matchXMaterial(block.getType()).name(), valuableBlocks.get(XMaterial.matchXMaterial(block.getType()).name()) + 1);
-                                    }
-                                }
-                            }
-                            tempValues.clear();
-                            calculateIslandValue();
-                            return;
-                        }
-                        if (IridiumSkyblock.getInstance().updatingBlocks) {
-                            if (world == 0) {
-                                Location loc = new Location(IridiumSkyblock.getIslandManager().getWorld(), X, Y, Z);
-                                Block block = loc.getBlock();
-                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
-                                    tempValues.add(loc);
-                                }
-                            } else if (IridiumSkyblock.getConfiguration().netherIslands) {
-                                Location loc = new Location(IridiumSkyblock.getIslandManager().getNetherWorld(), X, Y, Z);
-                                Block block = loc.getBlock();
-                                if (Utils.isBlockValuable(block) && !(block.getState() instanceof CreatureSpawner)) {
-                                    tempValues.add(loc);
-                                }
-                            }
-                        }
-                    }
-                    int per = (int) ((Y + (world * IridiumSkyblock.getIslandManager().getWorld().getMaxHeight())) / (IridiumSkyblock.getIslandManager().getWorld().getMaxHeight() * 2.00) * 100);
-                    if (percent != per) {
-                        percent = per;
-                        if (sender != null)
-                            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().updatePercent.replace("%player%", name).replace("%percent%", percent + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
-                } catch (Exception e) {
-                    IridiumSkyblock.getInstance().sendErrorMessage(e);
-                }
+        final Config config = IridiumSkyblock.getConfiguration();
+        final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
+        final BukkitScheduler scheduler = Bukkit.getScheduler();
+        final Runnable task = new InitIslandBlocksRunnable(this, config.blocksPerTick, () -> {
+            if (IridiumSkyblock.blockspertick != -1) {
+                config.blocksPerTick = IridiumSkyblock.blockspertick;
+                IridiumSkyblock.blockspertick = -1;
             }
-        }, 0, 1);
+            scheduler.cancelTask(initBlocks);
+            initBlocks = -1;
+            plugin.updatingBlocks = false;
+            updating = false;
+            valuableBlocks.clear();
+            spawners.clear();
+            for (Location location : tempValues) {
+                final Block block = location.getBlock();
+                if (!(Utils.isBlockValuable(block) || !(block.getState() instanceof CreatureSpawner))) continue;
+                final Material material = block.getType();
+                final XMaterial xmaterial = XMaterial.matchXMaterial(material);
+                valuableBlocks.compute(xmaterial.name(), (xmaterialName, original) -> {
+                    if (original == null) return 1;
+                    return original + 1;
+                });
+            }
+            tempValues.clear();
+            calculateIslandValue();
+        });
+        initBlocks = scheduler.scheduleSyncRepeatingTask(plugin, task, 0, 1);
+    }
+
+    public void forceInitBlocks(CommandSender sender, int blocksPerTick, String name) {
+        final Config config = IridiumSkyblock.getConfiguration();
+        final Messages messages = IridiumSkyblock.getMessages();
+        if (sender != null)
+            sender.sendMessage(Utils.color(messages.updateStarted
+                    .replace("%player%", name)
+                    .replace("%prefix%", config.prefix)));
+        updating = true;
+        final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
+        final BukkitScheduler scheduler = Bukkit.getScheduler();
+        final Runnable task = new InitIslandBlocksWithSenderRunnable(this, blocksPerTick, sender, name, () -> {
+            if (sender != null)
+                sender.sendMessage(Utils.color(messages.updateFinished
+                        .replace("%player%", name)
+                        .replace("%prefix%", config.prefix)));
+            scheduler.cancelTask(initBlocks);
+            initBlocks = -1;
+            updating = false;
+            valuableBlocks.clear();
+            spawners.clear();
+            for (Location location : tempValues) {
+                final Block block = location.getBlock();
+                if (!(Utils.isBlockValuable(block) || !(block.getState() instanceof CreatureSpawner))) continue;
+                final Material material = block.getType();
+                final XMaterial xmaterial = XMaterial.matchXMaterial(material);
+                valuableBlocks.compute(xmaterial.name(), (xmaterialName, original) -> {
+                    if (original == null) return 1;
+                    return original + 1;
+                });
+            }
+            tempValues.clear();
+            calculateIslandValue();
+        });
+        initBlocks = scheduler.scheduleSyncRepeatingTask(plugin, task, 0, 1);
     }
 
     public void resetMissions() {
