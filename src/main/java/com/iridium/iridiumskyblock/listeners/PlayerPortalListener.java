@@ -1,10 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.IslandManager;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.XMaterial;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -39,7 +35,7 @@ public class PlayerPortalListener implements Listener {
                 return;
             }
 
-            if (XMaterial.ISFLAT)
+            if (XMaterial.supports(15))
                 event.setCanCreatePortal(true);
             else {
                 try {
