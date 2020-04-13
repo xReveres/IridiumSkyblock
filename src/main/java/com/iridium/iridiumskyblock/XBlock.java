@@ -105,7 +105,6 @@ public final class XBlock {
      * Any material that can be planted.
      */
     public static boolean isCrops(Material material) {
-        IridiumSkyblock.getInstance().getLogger().info(XMaterial.matchXMaterial(material).name());
         return CROPS.contains(XMaterial.matchXMaterial(material));
     }
 

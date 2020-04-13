@@ -277,7 +277,6 @@ public class Schematic {
     }
 
     public static Schematic loadSchematic(File file) throws IOException {
-        IridiumSkyblock.getInstance().getLogger().info("Loading file: " + file.getAbsolutePath());
         if (cache.containsKey(file.getAbsolutePath())) return cache.get(file.getAbsolutePath());
         FileInputStream stream = new FileInputStream(file);
         NBTInputStream nbtStream = new NBTInputStream(stream);

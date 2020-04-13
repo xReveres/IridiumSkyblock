@@ -4,21 +4,13 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
-import com.iridium.iridiumskyblock.configs.BlockValues;
-import com.iridium.iridiumskyblock.configs.Config;
-import com.iridium.iridiumskyblock.configs.Messages;
-import com.iridium.iridiumskyblock.configs.Missions;
+import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
-import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.runnables.InitIslandBlocksRunnable;
 import com.iridium.iridiumskyblock.runnables.InitIslandBlocksWithSenderRunnable;
-import com.iridium.iridiumskyblock.support.AdvancedSpawners;
-import com.iridium.iridiumskyblock.support.EpicSpawners;
-import com.iridium.iridiumskyblock.support.MergedSpawners;
-import com.iridium.iridiumskyblock.support.UltimateStacker;
-import com.iridium.iridiumskyblock.support.Wildstacker;
+import com.iridium.iridiumskyblock.support.*;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
@@ -34,16 +26,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 public class Island {
@@ -685,7 +668,6 @@ public class Island {
 
     private void pasteSchematic() {
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
-            IridiumSkyblock.getInstance().getLogger().info(fakeSchematic.name);
             if (fakeSchematic.name.equals(schematic)) {
                 if (IridiumSkyblock.getInstance().schems.containsKey(fakeSchematic)) {
                     IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), this);
