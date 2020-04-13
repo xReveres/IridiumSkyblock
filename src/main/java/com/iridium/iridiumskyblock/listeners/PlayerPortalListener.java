@@ -13,6 +13,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public class PlayerPortalListener implements Listener {
 
+    public final boolean supports = XMaterial.supports(15);
+
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent event) {
         try {
@@ -35,7 +37,7 @@ public class PlayerPortalListener implements Listener {
                 return;
             }
 
-            if (XMaterial.supports(15))
+            if (supports)
                 event.setCanCreatePortal(true);
             else {
                 try {
