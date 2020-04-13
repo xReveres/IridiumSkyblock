@@ -11,8 +11,6 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -28,7 +26,7 @@ public class IslandManager {
 
     public Map<Integer, Island> islands = new HashMap<>();
     public Map<String, User> users = new HashMap<>();
-    public Map<List<Integer>, Set<Integer>> islandCache = new ConcurrentHashMap<>();
+    public Map<List<Integer>, Set<Integer>> islandCache = new HashMap<>();
 
     int length = 1;
     int current = 0;
@@ -149,18 +147,25 @@ public class IslandManager {
         final double x = location.getX();
         final double z = location.getZ();
 
-        final Set<Integer> islandIds = new CopyOnWriteArraySet<>(islandCache.computeIfAbsent(chunkKey, (hash) -> islands
+        final Set<Integer> islandIds = islandCache.computeIfAbsent(chunkKey, (hash) -> islands
                 .values()
-                .parallelStream()
+                .stream()
                 .filter(island -> island.isInIsland(x, z))
                 .map(Island::getId)
-                .collect(Collectors.toSet())));
+                .collect(Collectors.toSet()));
 
         for (int id : islandIds) {
             final Island island = islands.get(id);
             if (island == null) continue;
             if (island.isInIsland(x, z)) return island;
         }
+
+        for (Island island : islands.values()) {
+            if (!island.isInIsland(x, z)) continue;
+            islandIds.add(island.getId());
+            return island;
+        }
+
         return null;
     }
 
@@ -188,8 +193,6 @@ public class IslandManager {
         final int id = island.getId();
         islands.remove(id);
         islandCache
-                .entrySet()
-                .parallelStream()
-                .forEach(entry -> entry.getValue().remove(id));
+                .forEach((key, value) -> value.remove(id));
     }
 }

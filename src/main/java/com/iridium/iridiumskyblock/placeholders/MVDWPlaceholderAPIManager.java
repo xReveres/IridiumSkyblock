@@ -256,7 +256,7 @@ public class MVDWPlaceholderAPIManager {
             return hours + "";
         });
 
-        for (int i = 0; i < 10; i++) { //TODO there is probabbly a more efficient way to do this?
+        for (int i = 0; i < 10; i++) { //TODO there is probably a more efficient way to do this?
             int finalI = i;
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_name_" + (i + 1), e -> {
                 List<Island> islands = Utils.getTopIslands();

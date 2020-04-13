@@ -3,54 +3,20 @@ package com.iridium.iridiumskyblock.api;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
+import lombok.Getter;
+import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
-public class IslandDemoteEvent extends Event {
-    private static HandlerList handlers = new HandlerList();
-    private Island island;
-    private User target;
-    private User demoter;
-    private Role role;
-    private boolean cancel;
+public class IslandDemoteEvent extends IslandEvent {
+    @Getter @NotNull private final User target;
+    @Getter @NotNull private final User demoter;
+    @Getter @NotNull private final Role role;
+    @Getter @Setter private boolean cancelled;
 
-    public IslandDemoteEvent(Island island, User target, User demoter, Role role) {
-        this.island = island;
+    public IslandDemoteEvent(@NotNull Island island, @NotNull User target, @NotNull User demoter, @NotNull Role role) {
+        super(island);
         this.target = target;
         this.demoter = demoter;
         this.role = role;
-    }
-
-    public boolean isCancelled() {
-        return this.cancel;
-    }
-
-    public void setCancelled(boolean cancel) {
-        this.cancel = cancel;
-    }
-
-    public User getTarget() {
-        return target;
-    }
-
-    public User getDemoter() {
-        return demoter;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public Island getIsland() {
-        return island;
     }
 }
