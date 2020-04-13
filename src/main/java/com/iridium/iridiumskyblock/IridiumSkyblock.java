@@ -167,14 +167,6 @@ public class IridiumSkyblock extends JavaPlugin {
             if (!loadConfigs()) return;
             saveConfigs();
 
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
-            if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
-            if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) new MergedSpawners();
-            if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) new UltimateStacker();
-            if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) new EpicSpawners();
-            if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) new AdvancedSpawners();
-            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
-                registerListeners(new ExpansionUnregisterListener());
             startCounting();
             getLanguages();
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
@@ -215,6 +207,15 @@ public class IridiumSkyblock extends JavaPlugin {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
+                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
+                if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) new MergedSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) new UltimateStacker();
+                if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) new EpicSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) new AdvancedSpawners();
+                if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+                    registerListeners(new ExpansionUnregisterListener());
 
                 getLogger().info("-------------------------------");
                 getLogger().info("");
