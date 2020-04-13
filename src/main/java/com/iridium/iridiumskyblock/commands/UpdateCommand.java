@@ -37,7 +37,6 @@ public class UpdateCommand extends Command {
             boolean out = true;
             for (Island island : IridiumSkyblock.getIslandManager().islands.values()) {
                 island.valuableBlocks.clear();
-                island.spawners.clear();
                 if (!island.updating) {
                     island.forceInitBlocks(out ? sender : null, blocksPerTick, "Everyone");
                     out = false;

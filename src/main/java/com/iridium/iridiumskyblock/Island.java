@@ -4,9 +4,13 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
-import com.iridium.iridiumskyblock.configs.*;
+import com.iridium.iridiumskyblock.configs.BlockValues;
+import com.iridium.iridiumskyblock.configs.Config;
+import com.iridium.iridiumskyblock.configs.Messages;
+import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.runnables.InitIslandBlocksRunnable;
 import com.iridium.iridiumskyblock.runnables.InitIslandBlocksWithSenderRunnable;
@@ -14,6 +18,7 @@ import com.iridium.iridiumskyblock.support.AdvancedSpawners;
 import com.iridium.iridiumskyblock.support.EpicSpawners;
 import com.iridium.iridiumskyblock.support.MergedSpawners;
 import com.iridium.iridiumskyblock.support.UltimateStacker;
+import com.iridium.iridiumskyblock.support.Wildstacker;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
@@ -29,10 +34,17 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-
-import static com.iridium.iridiumskyblock.support.Wildstacker.enabled;
-import static com.iridium.iridiumskyblock.support.Wildstacker.getSpawnerAmount;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 
 public class Island {
 
@@ -413,21 +425,18 @@ public class Island {
 
         final BlockValues blockValues = IridiumSkyblock.getBlockValues();
         final Map<XMaterial, Double> blockValueMap = blockValues.blockvalue;
-        
-        double value = valuableBlocks
-                .entrySet()
-                .stream()
-                .mapToDouble(entry -> {
-                    final String item = entry.getKey();
-                    final Optional<XMaterial> xmaterial = XMaterial.matchXMaterial(item);
-                    if (!xmaterial.isPresent()) return 0;
 
-                    final Double blockValue = blockValueMap.get(xmaterial.get());
-                    if (blockValue == null) return 0;
+        double value = 0;
+        for (Map.Entry<String, Integer> entry : valuableBlocks.entrySet()) {
+            final String item = entry.getKey();
+            final Optional<XMaterial> xmaterial = XMaterial.matchXMaterial(item);
+            if (!xmaterial.isPresent()) continue;
 
-                    return entry.getValue() * blockValue;
-                })
-                .sum();
+            final Double blockValue = blockValueMap.get(xmaterial.get());
+            if (blockValue == null) continue;
+
+            value += (entry.getValue() * blockValue);
+        }
 
         final Config config = IridiumSkyblock.getConfiguration();
         final IslandManager islandManager = IridiumSkyblock.getIslandManager();
@@ -449,9 +458,30 @@ public class Island {
         final int maxChunkX = pos2Chunk.getX();
         final int maxChunkZ = pos2Chunk.getZ();
 
+        final double minX = pos1.getX();
+        final double minZ = pos1.getZ();
+        final double maxX = pos2.getZ();
+        final double maxZ = pos2.getZ();
+
         final Map<String, Double> spawnerValueMap = blockValues.spawnervalue;
 
+        Function<CreatureSpawner, Integer> getSpawnerAmount;
+        if (Wildstacker.enabled) {
+            getSpawnerAmount = Wildstacker::getSpawnerAmount;
+        } else if (MergedSpawners.enabled) {
+            getSpawnerAmount = MergedSpawners::getSpawnerAmount;
+        } else if (UltimateStacker.enabled) {
+            getSpawnerAmount = UltimateStacker::getSpawnerAmount;
+        } else if (EpicSpawners.enabled) {
+            getSpawnerAmount = EpicSpawners::getSpawnerAmount;
+        } else if (AdvancedSpawners.enabled) {
+            getSpawnerAmount = AdvancedSpawners::getSpawnerAmount;
+        } else {
+            getSpawnerAmount = null;
+        }
+
         spawners.clear();
+
         for (World world: worlds) {
             for (int X = minChunkX; X <= maxChunkX; X++) {
                 for (int Z = minChunkZ; Z <= maxChunkZ; Z++) {
@@ -460,29 +490,22 @@ public class Island {
                         if (!(state instanceof CreatureSpawner)) continue;
 
                         final CreatureSpawner spawner = (CreatureSpawner) state;
+                        final Location location = spawner.getLocation();
+                        final double x = location.getX();
+                        final double z = location.getZ();
+                        if (x < minX || x > maxX || z < minZ || z > maxZ) continue;
+
                         final EntityType type = spawner.getSpawnedType();
                         final String typeName = type.name();
                         final Double spawnerValue = spawnerValueMap.get(typeName);
                         if (spawnerValue == null) continue;
 
-                        int amount;
-                        if (enabled) {
-                            amount = getSpawnerAmount(spawner);
-                        } else if (MergedSpawners.enabled) {
-                            amount = MergedSpawners.getSpawnerAmount(spawner);
-                        } else if (UltimateStacker.enabled) {
-                            amount = UltimateStacker.getSpawnerAmount(spawner);
-                        } else if (EpicSpawners.enabled) {
-                            amount = EpicSpawners.getSpawnerAmount(spawner);
-                        } else if (AdvancedSpawners.enabled) {
-                            amount = AdvancedSpawners.getSpawnerAmount(spawner);
-                        } else {
-                            amount = 1;
-                        }
+                        final int amount = (getSpawnerAmount == null) ? 1 : getSpawnerAmount.apply(spawner);
                         spawners.compute(typeName, (name, original) -> {
                             if (original == null) return amount;
                             return original + amount;
                         });
+                        
                         value += (spawnerValue * amount);
                     }
                 }
