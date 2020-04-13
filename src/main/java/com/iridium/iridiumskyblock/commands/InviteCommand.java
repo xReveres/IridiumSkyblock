@@ -33,7 +33,7 @@ public class InviteCommand extends Command {
                 if (u.getIsland() == null) {
                     if (user.bypassing || user.getIsland().getPermissions(user.role).inviteMembers) {
                         u.invites.add(user.getIsland().getId());
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerInvited.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerInvited.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         if (player.getPlayer() != null) {
                             BaseComponent[] components = TextComponent.fromLegacyText(Utils.color(IridiumSkyblock.getMessages().invitedByPlayer.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
 
