@@ -1,9 +1,11 @@
 package com.iridium.iridiumskyblock;
 
+import lombok.Getter;
+
 public enum Role {
     Owner(4), CoOwner(3), Moderator(2), Member(1), Visitor(-1);
 
-    int rank;
+    @Getter int rank;
 
     Role(int rank) {
         this.rank = rank;
@@ -24,9 +26,5 @@ public enum Role {
             }
         }
         return null;
-    }
-
-    public int getRank() {
-        return rank;
     }
 }

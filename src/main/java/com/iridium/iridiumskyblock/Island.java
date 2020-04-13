@@ -15,6 +15,8 @@ import com.iridium.iridiumskyblock.support.AdvancedSpawners;
 import com.iridium.iridiumskyblock.support.EpicSpawners;
 import com.iridium.iridiumskyblock.support.MergedSpawners;
 import com.iridium.iridiumskyblock.support.UltimateStacker;
+import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -59,52 +61,52 @@ public class Island {
         }
     }
 
-    private String owner;
-    private Set<String> members;
-    private Location pos1;
-    private Location pos2;
-    private Location center;
-    private Location home;
-    private Location netherhome;
+    @Getter private String owner;
+    @Getter private Set<String> members;
+    @Getter private Location pos1;
+    @Getter private Location pos2;
+    @Getter private Location center;
+    @Getter @Setter private Location home;
+    @Setter private Location netherhome;
 
-    private transient UpgradeGUI upgradeGUI;
-    private transient BoosterGUI boosterGUI;
-    private transient MissionsGUI missionsGUI;
-    private transient MembersGUI membersGUI;
-    private transient WarpGUI warpGUI;
-    private transient BorderColorGUI borderColorGUI;
-    private transient SchematicSelectGUI schematicSelectGUI;
-    private transient PermissionsGUI permissionsGUI;
-    private transient IslandMenuGUI islandMenuGUI;
-    private transient CoopGUI coopGUI;
-    private transient BankGUI bankGUI;
-    private transient BiomeGUI biomeGUI;
+    @Getter private transient UpgradeGUI upgradeGUI;
+    @Getter private transient BoosterGUI boosterGUI;
+    @Getter private transient MissionsGUI missionsGUI;
+    @Getter private transient MembersGUI membersGUI;
+    @Getter private transient WarpGUI warpGUI;
+    @Getter private transient BorderColorGUI borderColorGUI;
+    @Getter private transient SchematicSelectGUI schematicSelectGUI;
+    @Getter private transient PermissionsGUI permissionsGUI;
+    @Getter private transient IslandMenuGUI islandMenuGUI;
+    @Getter private transient CoopGUI coopGUI;
+    @Getter private transient BankGUI bankGUI;
+    @Getter private transient BiomeGUI biomeGUI;
 
-    private int id;
+    @Getter private int id;
 
-    private int spawnerBooster;
-    private int farmingBooster;
-    private int expBooster;
-    private int flightBooster;
+    @Getter @Setter private int spawnerBooster;
+    @Getter @Setter private int farmingBooster;
+    @Getter @Setter private int expBooster;
+    @Getter @Setter private int flightBooster;
 
     private transient int boosterid;
 
-    private int crystals;
+    @Getter @Setter private int crystals;
 
-    private int sizeLevel;
-    private int memberLevel;
-    private int warpLevel;
-    private int oreLevel;
+    @Getter private int sizeLevel;
+    @Getter @Setter private int memberLevel;
+    @Getter @Setter private int warpLevel;
+    @Getter @Setter private int oreLevel;
 
     public transient int generateID;
 
-    private double value;
+    @Getter private double value;
 
     public Map<String, Integer> valuableBlocks;
     public transient Set<Location> tempValues;
     public transient Map<String, Integer> spawners;
 
-    private final List<Warp> warps;
+    @Getter private final List<Warp> warps;
 
     private double startvalue;
 
@@ -112,13 +114,13 @@ public class Island {
 
     private Map<String, Integer> missionLevels = new HashMap<>();
 
-    private boolean visit;
+    @Getter @Setter private boolean visit;
 
-    private Color borderColor;
+    @Getter @Setter private Color borderColor;
 
     private Map<Role, Permissions> permissions;
 
-    private String schematic;
+    @Getter @Setter private String schematic;
 
     private Set<String> bans;
 
@@ -128,12 +130,12 @@ public class Island {
 
     public transient Set<Integer> coopInvites;
 
-    private String name;
+    @Setter private String name;
 
     public double money;
     public int exp;
 
-    public XBiome biome;
+    @Getter private XBiome biome;
 
     public transient Set<Location> failedGenerators;
 
@@ -1016,40 +1018,12 @@ public class Island {
         }
     }
 
-    public Location getPos1() {
-        return pos1;
-    }
-
-    public Location getPos2() {
-        return pos2;
-    }
-
-    public Location getCenter() {
-        return center;
-    }
-
-    public Location getHome() {
-        return home;
-    }
-
     public Location getNetherhome() {
         if (netherhome == null) {
             netherhome = getHome().clone();
             netherhome.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
         }
         return netherhome;
-    }
-
-    public void setHome(Location home) {
-        this.home = home;
-    }
-
-    public void setNetherhome(Location netherhome) {
-        this.netherhome = netherhome;
-    }
-
-    public String getOwner() {
-        return owner;
     }
 
     public void setOwner(OfflinePlayer owner) {
@@ -1067,106 +1041,6 @@ public class Island {
         User.getUser(getOwner()).role = Role.Owner;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public BiomeGUI getBiomeGUI() {
-        return biomeGUI;
-    }
-
-    public BankGUI getBankGUI() {
-        return bankGUI;
-    }
-
-    public CoopGUI getCoopGUI() {
-        return coopGUI;
-    }
-
-    public UpgradeGUI getUpgradeGUI() {
-        return upgradeGUI;
-    }
-
-    public BoosterGUI getBoosterGUI() {
-        return boosterGUI;
-    }
-
-    public SchematicSelectGUI getSchematicSelectGUI() {
-        return schematicSelectGUI;
-    }
-
-    public MissionsGUI getMissionsGUI() {
-        return missionsGUI;
-    }
-
-    public MembersGUI getMembersGUI() {
-        return membersGUI;
-    }
-
-    public WarpGUI getWarpGUI() {
-        return warpGUI;
-    }
-
-    public PermissionsGUI getPermissionsGUI() {
-        return permissionsGUI;
-    }
-
-    public IslandMenuGUI getIslandMenuGUI() {
-        return islandMenuGUI;
-    }
-
-    public BorderColorGUI getBorderColorGUI() {
-        return borderColorGUI;
-    }
-
-    public int getSpawnerBooster() {
-        return spawnerBooster;
-    }
-
-    public void setSpawnerBooster(int spawnerBooster) {
-        this.spawnerBooster = spawnerBooster;
-    }
-
-    public int getFarmingBooster() {
-        return farmingBooster;
-    }
-
-    public void setFarmingBooster(int farmingBooster) {
-        this.farmingBooster = farmingBooster;
-    }
-
-    public int getExpBooster() {
-        return expBooster;
-    }
-
-    public void setExpBooster(int expBooster) {
-        this.expBooster = expBooster;
-    }
-
-    public int getFlightBooster() {
-        return flightBooster;
-    }
-
-    public void setFlightBooster(int flightBooster) {
-        this.flightBooster = flightBooster;
-    }
-
-    public int getCrystals() {
-        return crystals;
-    }
-
-    public void setCrystals(int crystals) {
-        this.crystals = crystals;
-    }
-
-    public Set<String> getMembers() {
-        return members;
-    }
-
-    public int getSizeLevel() {
-        return sizeLevel;
-    }
-
     public void setSizeLevel(int sizeLevel) {
         this.sizeLevel = sizeLevel;
 
@@ -1176,77 +1050,13 @@ public class Island {
         setBiome(biome);
     }
 
-    public int getMemberLevel() {
-        return memberLevel;
-    }
-
-    public void setMemberLevel(int memberLevel) {
-        this.memberLevel = memberLevel;
-    }
-
-    public int getWarpLevel() {
-        return warpLevel;
-    }
-
-    public void setWarpLevel(int warpLevel) {
-        this.warpLevel = warpLevel;
-    }
-
-    public int getOreLevel() {
-        return oreLevel;
-    }
-
-    public void setOreLevel(int oreLevel) {
-        this.oreLevel = oreLevel;
-    }
-
     public void removeWarp(Warp warp) {
         warps.remove(warp);
-    }
-
-    public List<Warp> getWarps() {
-        return warps;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public Color getBorderColor() {
-        return borderColor;
-    }
-
-    public void setBorderColor(Color borderColor) {
-        this.borderColor = borderColor;
-    }
-
-    public boolean isVisit() {
-        return visit;
-    }
-
-    public void setVisit(boolean visit) {
-        this.visit = visit;
-    }
-
-    public String getSchematic() {
-        return schematic;
-    }
-
-    public void setSchematic(String schematic) {
-        this.schematic = schematic;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getName() {
         if (name == null) name = User.getUser(getOwner()).name;
         return name;
-    }
-
-    public XBiome getBiome() {
-        return biome;
     }
 
     public Map<String, Integer> getMissionLevels() {

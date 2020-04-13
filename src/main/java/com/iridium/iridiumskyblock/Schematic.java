@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.google.gson.JsonParser;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -26,21 +27,21 @@ public class Schematic {
         v1_13, v_1_8
     }
 
-    private short width;
-    private short length;
-    private short height;
+    @Getter private final short width;
+    @Getter private final short length;
+    @Getter private final short height;
     private List<Tag> tileEntities;
 
-    private byte[] blocks;
-    private byte[] data;
+    @Getter private byte[] blocks;
+    @Getter private byte[] data;
     private byte[] blockdata;
     private Map<String, Tag> palette;
 
-    private File file;
+    private final File file;
 
     private Integer version;
 
-    private SchematicVersion schematicVersion;
+    private final SchematicVersion schematicVersion;
 
     public Schematic(File file, short width, short length, short height, List<Tag> tileEntities, byte[] blocks, byte[] data, List<Tag> entities) {
         this.blocks = blocks;
@@ -74,41 +75,6 @@ public class Schematic {
         this.tileEntities = tileEntities;
         this.version = version;
         this.file = file;
-    }
-
-    /**
-     * @return the blocks
-     */
-    public byte[] getBlocks() {
-        return blocks;
-    }
-
-    /**
-     * @return the data
-     */
-    public byte[] getData() {
-        return data;
-    }
-
-    /**
-     * @return the width
-     */
-    public short getWidth() {
-        return width;
-    }
-
-    /**
-     * @return the length
-     */
-    public short getLength() {
-        return length;
-    }
-
-    /**
-     * @return the height
-     */
-    public short getHeight() {
-        return height;
     }
 
     public void pasteSchematic(Location loc, Island island) {

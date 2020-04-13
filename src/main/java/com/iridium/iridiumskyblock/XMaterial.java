@@ -28,6 +28,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.WordUtils;
@@ -1089,12 +1090,13 @@ public enum XMaterial {
     ZOMBIE_SPAWN_EGG(383, 54, "MONSTER_EGG"),
     ZOMBIE_VILLAGER_SPAWN_EGG(393, 27, "MONSTER_EGG"),
     ZOMBIE_WALL_HEAD(397, 2, "SKULL", "SKULL_ITEM");
+
     /**
      * The current version of the server in the a form of a major version.
      *
      * @since 1.0.0
      */
-    private static final int VERSION = Integer.parseInt(getMajorVersion(Bukkit.getServer().getClass().getPackage().getName()));
+    @Getter private static final int version = Integer.parseInt(getMajorVersion(Bukkit.getServer().getClass().getPackage().getName()));
 
     /**
      * Cached result if the server version is after the v1.13 flattening update.
@@ -1112,7 +1114,7 @@ public enum XMaterial {
      * @since 2.0.0
      */
     public static boolean supports(int version) {
-        return VERSION >= version;
+        return XMaterial.version >= version;
     }
 
     /**
@@ -1206,15 +1208,21 @@ public enum XMaterial {
     private static final Pattern FORMAT_PATTERN = Pattern.compile("\\W+");
 
     /**
-     * The data value of this material https://minecraft.gamepedia.com/Java_Edition_data_values/Pre-flattening
+     * The data value of this material <a href="https://minecraft.gamepedia.com/Java_Edition_data_values/Pre-flattening">pre-flattening</a>.
+     * <p>
+     * Can be accessed with {@link ItemStack#getData()} then {@code MaterialData#getData()}
+     * or {@link ItemStack#getDurability()} if not damageable.
      *
-     * @see #getData()
+     * @return data of this material, or 0 if none.
+     * @since 1.0.0
      */
-    public final byte data;
+    @Getter public final byte data;
+
     /**
      * A list of material names that was being used for older verions.
      */
     private final String[] legacy;
+
     /**
      * The data value of this material https://minecraft.gamepedia.com/Java_Edition_data_values/Pre-flattening
      *
@@ -1234,10 +1242,6 @@ public enum XMaterial {
 
     XMaterial(int id, String... legacy) {
         this(id, 0, legacy);
-    }
-
-    public static double getVersion() {
-        return VERSION;
     }
 
     /**
@@ -1751,20 +1755,6 @@ public enum XMaterial {
      */
     public boolean isDamageable() {
         return isDamageable(this.name());
-    }
-
-    /**
-     * The data value of this material <a href="https://minecraft.gamepedia.com/Java_Edition_data_values/Pre-flattening">pre-flattening</a>.
-     * <p>
-     * Can be accessed with {@link ItemStack#getData()} then {@code MaterialData#getData()}
-     * or {@link ItemStack#getDurability()} if not damageable.
-     *
-     * @return data of this material, or 0 if none.
-     * @since 1.0.0
-     */
-    @SuppressWarnings("deprecation")
-    public byte getData() {
-        return data;
     }
 
     /**

@@ -1,27 +1,10 @@
 package com.iridium.iridiumskyblock.api;
 
 import com.iridium.iridiumskyblock.Island;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
-public class IslandDeleteEvent extends Event {
-    private static HandlerList handlers = new HandlerList();
-    private Island island;
-
-    public IslandDeleteEvent(Island island) {
-        this.island = island;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public Island getIsland() {
-        return island;
+public class IslandDeleteEvent extends IslandEvent {
+    public IslandDeleteEvent(@NotNull Island island) {
+        super(island);
     }
 }
