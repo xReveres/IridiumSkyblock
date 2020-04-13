@@ -4,10 +4,9 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
-import com.iridium.iridiumskyblock.configs.Config;
-import com.iridium.iridiumskyblock.configs.Messages;
-import com.iridium.iridiumskyblock.configs.Missions;
-import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.configs.*;
+import com.iridium.iridiumskyblock.configs.Missions.Mission;
+import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.runnables.InitIslandBlocksRunnable;
 import com.iridium.iridiumskyblock.runnables.InitIslandBlocksWithSenderRunnable;
@@ -358,34 +357,52 @@ public class Island {
         IridiumSkyblock.nms.sendWorldBorder(p, borderColor, Integer.MAX_VALUE, getCenter().clone());
     }
 
-    public void completeMission(String mission) {
-        if (!getMissionLevels().containsKey(mission)) getMissionLevels().put(mission, 1);
-        missions.put(mission, (IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly ? 0 : Integer.MIN_VALUE));
-        for (Missions.Mission m : IridiumSkyblock.getMissions().missions) {
-            if (m.name.equalsIgnoreCase(mission)) {
-                int crystalReward = m.levels.get(getMissionLevels().get(mission)).crystalReward;
-                int vaultReward = m.levels.get(getMissionLevels().get(mission)).vaultReward;
-                this.crystals += crystalReward;
-                this.money += vaultReward;
+    public void completeMission(String missionName) {
+        missionLevels.putIfAbsent(missionName, 1);
 
-                for (String member : members) {
-                    Player p = Bukkit.getPlayer(User.getUser(member).name);
-                    if (p != null) {
-                        IridiumSkyblock.nms.sendTitle(p, IridiumSkyblock.getMessages().missionComplete.replace("%mission%", mission).replace("%level%", getMissionLevels().get(mission) + ""), 20, 40, 20);
-                        IridiumSkyblock.nms.sendSubTitle(p, IridiumSkyblock.getMessages().rewards.replace("%crystalsReward%", crystalReward + "").replace("%vaultReward%", vaultReward + ""), 20, 40, 20);
-                    }
-                }
+        final Config config = IridiumSkyblock.getConfiguration();
+        missions.put(missionName, (config.missionRestart == MissionRestart.Instantly ? 0 : Integer.MIN_VALUE));
 
-                //Reset current mission status
-                if (m.levels.containsKey(getMissionLevels().get(mission) + 1)) {
-                    //We have another mission, put us on the next level
-                    missions.remove(mission);
-                    getMissionLevels().put(mission, getMissionLevels().get(mission) + 1);
-                } else if (IridiumSkyblock.getConfiguration().missionRestart == MissionRestart.Instantly) {
-                    missions.remove(mission);
-                    missionLevels.remove(mission);
-                }
-            }
+        final Mission mission = IridiumSkyblock
+                .getMissions()
+                .missions
+                .stream()
+                .filter(m -> m.name.equalsIgnoreCase(missionName))
+                .findAny()
+                .orElse(null);
+        if (mission == null) return;
+
+        final Map<Integer, MissionData> levels = mission.levels;
+        final int levelProgress = missionLevels.get(missionName);
+        final MissionData level = levels.get(levelProgress);
+        final int crystalReward = level.crystalReward;
+        final int vaultReward = level.vaultReward;
+        this.crystals += crystalReward;
+        this.money += vaultReward;
+
+        final Messages messages = IridiumSkyblock.getMessages();
+        final String titleMessage = messages.missionComplete
+                .replace("%mission%", missionName)
+                .replace("%level%", levelProgress + "");
+        final String subTitleMessage = messages.rewards
+                .replace("%crystalsReward%", crystalReward + "")
+                .replace("%vaultReward%", vaultReward + "");
+        for (String member : members) {
+            final User user = User.getUser(member);
+            final Player p = Bukkit.getPlayer(user.name);
+            if (p == null) continue;
+            IridiumSkyblock.nms.sendTitle(p, titleMessage, 20, 40, 20);
+            IridiumSkyblock.nms.sendSubTitle(p, subTitleMessage, 20, 40, 20);
+        }
+
+        //Reset current mission status
+        if (mission.levels.containsKey(levelProgress + 1)) {
+            //We have another mission, put us on the next level
+            missions.remove(missionName);
+            missionLevels.put(missionName, levelProgress + 1);
+        } else if (config.missionRestart == MissionRestart.Instantly) {
+            missions.remove(missionName);
+            missionLevels.remove(missionName);
         }
     }
 
@@ -393,72 +410,91 @@ public class Island {
         if (valuableBlocks == null) valuableBlocks = new HashMap<>();
         if (spawners == null) spawners = new HashMap<>();
         if (tempValues == null) tempValues = new HashSet<>();
-        double value = 0;
-        for (String item : valuableBlocks.keySet()) {
-            Optional<XMaterial> material = XMaterial.matchXMaterial(item);
-            if (material.isPresent()) {
-                if (IridiumSkyblock.getBlockValues().blockvalue.containsKey(material.get())) {
-                    value += valuableBlocks.get(item) * IridiumSkyblock.getBlockValues().blockvalue.get(material.get());
-                }
-            }
+
+        final BlockValues blockValues = IridiumSkyblock.getBlockValues();
+        final Map<XMaterial, Double> blockValueMap = blockValues.blockvalue;
+        
+        double value = valuableBlocks
+                .entrySet()
+                .stream()
+                .mapToDouble(entry -> {
+                    final String item = entry.getKey();
+                    final Optional<XMaterial> xmaterial = XMaterial.matchXMaterial(item);
+                    if (!xmaterial.isPresent()) return 0;
+
+                    final Double blockValue = blockValueMap.get(xmaterial.get());
+                    if (blockValue == null) return 0;
+
+                    return entry.getValue() * blockValue;
+                })
+                .sum();
+
+        final Config config = IridiumSkyblock.getConfiguration();
+        final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+
+        final Set<World> worlds = new HashSet<>();
+        final World islandWorld = islandManager.getWorld();
+        worlds.add(islandWorld);
+
+        if (config.netherIslands) {
+            final World netherIslandWorld = islandManager.getNetherWorld();
+            worlds.add(netherIslandWorld);
         }
+
+        final Chunk pos1Chunk = pos1.getChunk();
+        final int minChunkX = pos1Chunk.getX();
+        final int minChunkZ = pos1Chunk.getZ();
+
+        final Chunk pos2Chunk = pos2.getChunk();
+        final int maxChunkX = pos2Chunk.getX();
+        final int maxChunkZ = pos2Chunk.getZ();
+
+        final Map<String, Double> spawnerValueMap = blockValues.spawnervalue;
+
         spawners.clear();
-        for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
-            for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
-                Chunk c = IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z);
-                for (BlockState state : c.getTileEntities()) {
-                    if (state instanceof CreatureSpawner) {
-                        CreatureSpawner spawner = (CreatureSpawner) state;
-                        if (IridiumSkyblock.getBlockValues().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
-                            int amount = 1;
-                            if (enabled) {
-                                amount = getSpawnerAmount(spawner);
-                            } else if (MergedSpawners.enabled) {
-                                amount = MergedSpawners.getSpawnerAmount(spawner);
-                            } else if (UltimateStacker.enabled) {
-                                amount = UltimateStacker.getSpawnerAmount(spawner);
-                            } else if (EpicSpawners.enabled) {
-                                amount = EpicSpawners.getSpawnerAmount(spawner);
-                            } else if (AdvancedSpawners.enabled) {
-                                amount = AdvancedSpawners.getSpawnerAmount(spawner);
-                            }
-                            if (spawners.containsKey(spawner.getSpawnedType().name())) {
-                                spawners.put(spawner.getSpawnedType().name(), spawners.get(spawner.getSpawnedType().name()) + amount);
-                            } else {
-                                spawners.put(spawner.getSpawnedType().name(), amount);
-                            }
-                            value += IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name()) * amount;
+        for (World world: worlds) {
+            for (int X = minChunkX; X <= maxChunkX; X++) {
+                for (int Z = minChunkZ; Z <= maxChunkZ; Z++) {
+                    final Chunk chunk = world.getChunkAt(X, Z);
+                    for (BlockState state : chunk.getTileEntities()) {
+                        if (!(state instanceof CreatureSpawner)) continue;
+
+                        final CreatureSpawner spawner = (CreatureSpawner) state;
+                        final EntityType type = spawner.getSpawnedType();
+                        final String typeName = type.name();
+                        final Double spawnerValue = spawnerValueMap.get(typeName);
+                        if (spawnerValue == null) continue;
+
+                        int amount;
+                        if (enabled) {
+                            amount = getSpawnerAmount(spawner);
+                        } else if (MergedSpawners.enabled) {
+                            amount = MergedSpawners.getSpawnerAmount(spawner);
+                        } else if (UltimateStacker.enabled) {
+                            amount = UltimateStacker.getSpawnerAmount(spawner);
+                        } else if (EpicSpawners.enabled) {
+                            amount = EpicSpawners.getSpawnerAmount(spawner);
+                        } else if (AdvancedSpawners.enabled) {
+                            amount = AdvancedSpawners.getSpawnerAmount(spawner);
+                        } else {
+                            amount = 1;
                         }
-                    }
-                }
-                if (IridiumSkyblock.getConfiguration().netherIslands) {
-                    c = IridiumSkyblock.getIslandManager().getNetherWorld().getChunkAt(X, Z);
-                    for (BlockState state : c.getTileEntities()) {
-                        if (state instanceof CreatureSpawner) {
-                            CreatureSpawner spawner = (CreatureSpawner) state;
-                            if (IridiumSkyblock.getBlockValues().spawnervalue.containsKey(spawner.getSpawnedType().name())) {
-                                double temp = IridiumSkyblock.getBlockValues().spawnervalue.get(spawner.getSpawnedType().name());
-                                if (enabled) {
-                                    temp *= getSpawnerAmount(spawner);
-                                } else if (MergedSpawners.enabled) {
-                                    temp *= MergedSpawners.getSpawnerAmount(spawner);
-                                } else if (UltimateStacker.enabled) {
-                                    temp *= UltimateStacker.getSpawnerAmount(spawner);
-                                } else if (EpicSpawners.enabled) {
-                                    temp *= EpicSpawners.getSpawnerAmount(spawner);
-                                }
-                                value += temp;
-                            }
-                        }
+                        spawners.compute(typeName, (name, original) -> {
+                            if (original == null) return amount;
+                            return original + amount;
+                        });
+                        value += (spawnerValue * amount);
                     }
                 }
             }
         }
+
         this.value = value;
         if (startvalue == -1) startvalue = value;
-        for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
-            if (!getMissionLevels().containsKey(mission.name)) getMissionLevels().put(mission.name, 1);
-            if (mission.levels.get(getMissionLevels().get(mission.name)).type == MissionType.VALUE_INCREASE) {
+        
+        for (Mission mission : IridiumSkyblock.getMissions().missions) {
+            missionLevels.putIfAbsent(mission.name, 1);
+            if (mission.levels.get(missionLevels.get(mission.name)).type == MissionType.VALUE_INCREASE) {
                 setMission(mission.name, (int) (value - startvalue));
             }
         }
@@ -587,9 +623,7 @@ public class Island {
 
     public long canGenerate() {
         if (lastRegen == null) return 0;
-        if (new Date().after(lastRegen)) {
-            return 0;
-        }
+        if (new Date().after(lastRegen)) return 0;
         return lastRegen.getTime() - System.currentTimeMillis();
     }
 
