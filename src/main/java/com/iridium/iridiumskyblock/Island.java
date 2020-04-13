@@ -406,12 +406,14 @@ public class Island {
     }
 
     public void sendBorder(Player p) {
+        double size = IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size;
+        if (size % 2 == 0) size++;
         if (p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-            IridiumSkyblock.nms.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + 1, getCenter());
+            IridiumSkyblock.nms.sendWorldBorder(p, borderColor, size, getCenter());
         } else if (IridiumSkyblock.getConfiguration().netherIslands) {
             Location loc = getCenter().clone();
             loc.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-            IridiumSkyblock.nms.sendWorldBorder(p, borderColor, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + 1, loc);
+            IridiumSkyblock.nms.sendWorldBorder(p, borderColor, size, loc);
         }
     }
 
@@ -588,9 +590,9 @@ public class Island {
 
     public boolean isInIsland(double x, double z) {
         return x >= pos1.getX()
-            && x <= pos2.getX()
-            && z >= pos1.getZ()
-            && z <= pos2.getZ();
+                && x <= pos2.getX()
+                && z >= pos1.getZ()
+                && z <= pos2.getZ();
     }
 
     public void init() {

@@ -63,6 +63,7 @@ public class PlayerTalkListener implements Listener {
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat)
                             .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getValue() + "")
                             .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
+                            .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, String.format("%.2f", island.getValue()))
                             .replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "")
                             .replace("%player%", player.getName())
                             .replace("%message%", event.getMessage()));
