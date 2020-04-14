@@ -41,7 +41,7 @@ public class InitIslandBlocksIterator implements Iterator<Long> {
         islandMinX = pos1.getX();
         islandMinZ = pos1.getZ();
 
-        final Location pos2 = island.getPos1();
+        final Location pos2 = island.getPos2();
         islandMaxX = pos2.getX();
         islandMaxZ = pos2.getZ();
 
@@ -53,9 +53,9 @@ public class InitIslandBlocksIterator implements Iterator<Long> {
     @Override
     public boolean hasNext() {
         return currentX < islandMaxX
-            || currentZ < islandMaxZ
-            || currentY < maxWorldHeight
-            || (config.netherIslands && currentWorld.getName().equals(config.worldName));
+                || currentZ < islandMaxZ
+                || currentY < maxWorldHeight
+                || (config.netherIslands && currentWorld.getName().equals(config.worldName));
     }
 
     @Override
