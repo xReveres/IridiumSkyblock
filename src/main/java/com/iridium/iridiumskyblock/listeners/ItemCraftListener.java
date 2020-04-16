@@ -4,6 +4,8 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +25,13 @@ public class ItemCraftListener implements Listener {
             }
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+        if (event.getInventory().getType() == InventoryType.ANVIL && Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal).isSimilar(event.getCurrentItem())) {
+            event.setCancelled(true);
         }
     }
 }
