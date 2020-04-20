@@ -55,6 +55,13 @@ public class PlayerTalkListener implements Listener {
                     format = format.replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getValue() + "");
                 }
             }
+            if (format.contains(IridiumSkyblock.getConfiguration().chatLevelPlaceholder)) {
+                if (island == null) {
+                    format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, "");
+                } else {
+                    format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, String.format("%.2f", island.getValue()));
+                }
+            }
 
             if (island != null && user.islandChat) {
                 for (String member : island.getMembers()) {

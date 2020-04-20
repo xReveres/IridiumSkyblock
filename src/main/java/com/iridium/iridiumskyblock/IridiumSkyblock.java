@@ -29,35 +29,50 @@ import java.util.*;
 
 public class IridiumSkyblock extends JavaPlugin {
 
-    @Getter public static Config configuration;
-    @Getter public static Messages messages;
-    @Getter public static Missions missions;
+    @Getter
+    public static Config configuration;
+    @Getter
+    public static Messages messages;
+    @Getter
+    public static Missions missions;
     public static Upgrades upgrades;
-    @Getter public static Boosters boosters;
-    @Getter public static Inventories inventories;
-    @Getter public static Schematics schematics;
-    @Getter public static Commands commands;
-    @Getter public static BlockValues blockValues;
-    @Getter public static Shop shop;
+    @Getter
+    public static Boosters boosters;
+    @Getter
+    public static Inventories inventories;
+    @Getter
+    public static Schematics schematics;
+    @Getter
+    public static Commands commands;
+    @Getter
+    public static BlockValues blockValues;
+    @Getter
+    public static Shop shop;
     public static TopGUI topGUI;
-    @Getter public static ShopGUI shopGUI;
+    @Getter
+    public static ShopGUI shopGUI;
     public static Border border;
     public static Map<Integer, VisitGUI> visitGUI;
     public static Map<Integer, List<String>> oreUpgradeCache = new HashMap<>();
     public static Map<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
     public static SkyblockGenerator generator;
     public static WorldEdit worldEdit;
-    @Getter private static IridiumSkyblock instance;
-    @Getter private static Persist persist;
+    @Getter
+    private static IridiumSkyblock instance;
+    @Getter
+    private static Persist persist;
 
-    @Getter public static IslandManager islandManager;
-    @Getter private static CommandManager commandManager;
+    @Getter
+    public static IslandManager islandManager;
+    @Getter
+    private static CommandManager commandManager;
     public Map<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
     public Map<Schematics.FakeSchematic, Schematic> netherschems = new HashMap<>();
     public boolean updatingBlocks = false;
     public Map<String, String> languages = new HashMap<>();
     public LanguagesGUI languagesGUI;
-    @Getter private String latest;
+    @Getter
+    private String latest;
 
     public Map<UUID, Island> entities = new HashMap<>();
 
@@ -538,6 +553,8 @@ public class IridiumSkyblock extends JavaPlugin {
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
         border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
+
+        missions.missions.remove(null);
 
 
         commandManager = new CommandManager("island");
