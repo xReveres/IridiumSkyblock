@@ -23,6 +23,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.util.BoundingBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,52 +56,92 @@ public class Island {
         }
     }
 
-    @Getter private String owner;
-    @Getter private Set<String> members;
-    @Getter private Location pos1;
-    @Getter private Location pos2;
-    @Getter private Location center;
-    @Getter @Setter private Location home;
-    @Setter private Location netherhome;
+    @Getter
+    private String owner;
+    @Getter
+    private Set<String> members;
+    @Getter
+    private Location pos1;
+    @Getter
+    private Location pos2;
+    @Getter
+    private Location center;
+    @Getter
+    @Setter
+    private Location home;
+    @Setter
+    private Location netherhome;
 
-    @Getter private transient UpgradeGUI upgradeGUI;
-    @Getter private transient BoosterGUI boosterGUI;
-    @Getter private transient MissionsGUI missionsGUI;
-    @Getter private transient MembersGUI membersGUI;
-    @Getter private transient WarpGUI warpGUI;
-    @Getter private transient BorderColorGUI borderColorGUI;
-    @Getter private transient SchematicSelectGUI schematicSelectGUI;
-    @Getter private transient PermissionsGUI permissionsGUI;
-    @Getter private transient IslandMenuGUI islandMenuGUI;
-    @Getter private transient CoopGUI coopGUI;
-    @Getter private transient BankGUI bankGUI;
-    @Getter private transient BiomeGUI biomeGUI;
+    @Getter
+    private transient UpgradeGUI upgradeGUI;
+    @Getter
+    private transient BoosterGUI boosterGUI;
+    @Getter
+    private transient MissionsGUI missionsGUI;
+    @Getter
+    private transient MembersGUI membersGUI;
+    @Getter
+    private transient WarpGUI warpGUI;
+    @Getter
+    private transient BorderColorGUI borderColorGUI;
+    @Getter
+    private transient SchematicSelectGUI schematicSelectGUI;
+    @Getter
+    private transient PermissionsGUI permissionsGUI;
+    @Getter
+    private transient IslandMenuGUI islandMenuGUI;
+    @Getter
+    private transient CoopGUI coopGUI;
+    @Getter
+    private transient BankGUI bankGUI;
+    @Getter
+    private transient BiomeGUI biomeGUI;
 
-    @Getter private int id;
+    @Getter
+    private int id;
 
-    @Getter @Setter private int spawnerBooster;
-    @Getter @Setter private int farmingBooster;
-    @Getter @Setter private int expBooster;
-    @Getter @Setter private int flightBooster;
+    @Getter
+    @Setter
+    private int spawnerBooster;
+    @Getter
+    @Setter
+    private int farmingBooster;
+    @Getter
+    @Setter
+    private int expBooster;
+    @Getter
+    @Setter
+    private int flightBooster;
 
     private transient int boosterid;
 
-    @Getter @Setter private int crystals;
+    @Getter
+    @Setter
+    private int crystals;
 
-    @Getter private int sizeLevel;
-    @Getter @Setter private int memberLevel;
-    @Getter @Setter private int warpLevel;
-    @Getter @Setter private int oreLevel;
+    @Getter
+    private int sizeLevel;
+    @Getter
+    @Setter
+    private int memberLevel;
+    @Getter
+    @Setter
+    private int warpLevel;
+    @Getter
+    @Setter
+    private int oreLevel;
 
     public transient int generateID;
 
-    @Getter private double value;
+    @Getter
+    private double value;
 
     public Map<String, Integer> valuableBlocks;
     public transient Set<Location> tempValues;
     public transient Map<String, Integer> spawners;
 
-    @Getter private final List<Warp> warps;
+    @Getter
+    private final List<Warp> warps;
 
     private double startvalue;
 
@@ -108,13 +149,19 @@ public class Island {
 
     private Map<String, Integer> missionLevels = new HashMap<>();
 
-    @Getter @Setter private boolean visit;
+    @Getter
+    @Setter
+    private boolean visit;
 
-    @Getter @Setter private Color borderColor;
+    @Getter
+    @Setter
+    private Color borderColor;
 
     private Map<Role, Permissions> permissions;
 
-    @Getter @Setter private String schematic;
+    @Getter
+    @Setter
+    private String schematic;
 
     private Set<String> bans;
 
@@ -124,12 +171,14 @@ public class Island {
 
     public transient Set<Integer> coopInvites;
 
-    @Setter private String name;
+    @Setter
+    private String name;
 
     public double money;
     public int exp;
 
-    @Getter private XBiome biome;
+    @Getter
+    private XBiome biome;
 
     public transient Set<Location> failedGenerators;
 
@@ -192,7 +241,7 @@ public class Island {
         final World islandWorld = islandManager.getWorld();
         final double maxY = islandWorld.getMaxHeight();
 
-        return (long ) (width * maxY * depth);
+        return (long) (width * maxY * depth);
     }
 
     public void initBlocks() {
@@ -467,7 +516,7 @@ public class Island {
 
         spawners.clear();
 
-        for (World world: worlds) {
+        for (World world : worlds) {
             for (int X = minChunkX; X <= maxChunkX; X++) {
                 for (int Z = minChunkZ; Z <= maxChunkZ; Z++) {
                     final Chunk chunk = world.getChunkAt(X, Z);
@@ -490,7 +539,7 @@ public class Island {
                             if (original == null) return amount;
                             return original + amount;
                         });
-                        
+
                         value += (spawnerValue * amount);
                     }
                 }
@@ -499,7 +548,7 @@ public class Island {
 
         this.value = value;
         if (startvalue == -1) startvalue = value;
-        
+
         for (Mission mission : IridiumSkyblock.getMissions().missions) {
             missionLevels.putIfAbsent(mission.name, 1);
             if (mission.levels.get(missionLevels.get(mission.name)).type == MissionType.VALUE_INCREASE) {
@@ -1041,20 +1090,14 @@ public class Island {
     }
 
     public void killEntities() {
-        for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
-            for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
-                Chunk overworld = IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z);
-                Chunk nether = IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z);
-                for (Entity e : overworld.getEntities()) {
-                    if (!e.getType().equals(EntityType.PLAYER)) {
-                        e.remove();
-                    }
-                }
-                for (Entity e : nether.getEntities()) {
-                    if (!e.getType().equals(EntityType.PLAYER)) {
-                        e.remove();
-                    }
-                }
+        for (Entity entity : IridiumSkyblock.getIslandManager().getWorld().getNearbyEntities(new BoundingBox(pos1.getX(), 0, pos1.getZ(), pos2.getX(), IridiumSkyblock.getIslandManager().getWorld().getMaxHeight(), pos2.getZ()))) {
+            if (!entity.getType().equals(EntityType.PLAYER)) {
+                entity.remove();
+            }
+        }
+        for (Entity entity : IridiumSkyblock.getIslandManager().getNetherWorld().getNearbyEntities(new BoundingBox(pos1.getX(), 0, pos1.getZ(), pos2.getX(), IridiumSkyblock.getIslandManager().getNetherWorld().getMaxHeight(), pos2.getZ()))) {
+            if (!entity.getType().equals(EntityType.PLAYER)) {
+                entity.remove();
             }
         }
     }
