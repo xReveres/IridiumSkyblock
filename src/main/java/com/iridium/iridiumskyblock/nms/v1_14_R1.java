@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.nms;
 
 import com.iridium.iridiumskyblock.Color;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.XMaterial;
 import net.minecraft.server.v1_14_R1.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -25,7 +25,7 @@ public class v1_14_R1 implements NMS {
         }
         XMaterial material = XMaterial.requestOldXMaterial(blockId, (byte) 0);
         if (material != null && material.parseMaterial() != null) {
-            block.setBlockData(Bukkit.getUnsafe().fromLegacy(material.parseMaterial(), data), false);
+            block.setBlockData(IridiumSkyblock.getInstance().fromLegacy(material.parseMaterial(), data), false);
         }
     }
 

@@ -11,6 +11,8 @@ import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
@@ -88,6 +90,8 @@ public class IridiumSkyblock extends JavaPlugin {
         }
         return upgrades;
     }
+
+    private HashMap<String, BlockData> legacy = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -670,6 +674,12 @@ public class IridiumSkyblock extends JavaPlugin {
         }
         getConfiguration().biomes.sort(Comparator.comparing(XBiome::toString));
         return true;
+    }
+
+    public BlockData fromLegacy(Material material, byte data) {
+        if (!legacy.containsKey(material.name() + data))
+            legacy.put(material.name() + data, Bukkit.getUnsafe().fromLegacy(material, data));
+        return legacy.get(material.name() + data);
     }
 
     public void saveData() {
