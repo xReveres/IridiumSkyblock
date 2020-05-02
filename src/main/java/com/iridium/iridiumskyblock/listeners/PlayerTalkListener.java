@@ -67,7 +67,7 @@ public class PlayerTalkListener implements Listener {
                 for (String member : island.getMembers()) {
                     final Player islandPlayer = Bukkit.getPlayer(User.getUser(member).name);
                     if (islandPlayer == null) continue;
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat)
+                    islandPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat)
                             .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getValue() + "")
                             .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
                             .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, String.format("%.2f", island.getValue()))
