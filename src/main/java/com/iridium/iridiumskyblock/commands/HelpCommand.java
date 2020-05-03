@@ -31,7 +31,7 @@ public class HelpCommand extends Command {
         int current = 0;
         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpHeader));
         for (com.iridium.iridiumskyblock.commands.Command command : IridiumSkyblock.getCommandManager().commands) {
-            if ((p.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) && command.isEnabled()) {
+            if ((p.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("") || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) && command.isEnabled()) {
                 if (current >= (page - 1) * 18 && current < page * 18)
                     p.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", command.getAliases().get(0)).replace("%description%", command.getDescription())));
                 current++;
