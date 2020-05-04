@@ -23,7 +23,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.util.BoundingBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -1090,12 +1089,12 @@ public class Island {
     }
 
     public void killEntities() {
-        for (Entity entity : IridiumSkyblock.getIslandManager().getWorld().getNearbyEntities(new BoundingBox(pos1.getX(), 0, pos1.getZ(), pos2.getX(), IridiumSkyblock.getIslandManager().getWorld().getMaxHeight(), pos2.getZ()))) {
+        for (Entity entity : IridiumSkyblock.getIslandManager().getWorld().getNearbyEntities(getCenter(), IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00, 255, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00)) {
             if (!entity.getType().equals(EntityType.PLAYER)) {
                 entity.remove();
             }
         }
-        for (Entity entity : IridiumSkyblock.getIslandManager().getNetherWorld().getNearbyEntities(new BoundingBox(pos1.getX(), 0, pos1.getZ(), pos2.getX(), IridiumSkyblock.getIslandManager().getNetherWorld().getMaxHeight(), pos2.getZ()))) {
+        for (Entity entity : IridiumSkyblock.getIslandManager().getNetherWorld().getNearbyEntities(getCenter(), IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00, 255, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00)) {
             if (!entity.getType().equals(EntityType.PLAYER)) {
                 entity.remove();
             }
