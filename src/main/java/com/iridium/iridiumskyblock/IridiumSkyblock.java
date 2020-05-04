@@ -1,5 +1,7 @@
 package com.iridium.iridiumskyblock;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.gui.*;
@@ -188,48 +190,64 @@ public class IridiumSkyblock extends JavaPlugin {
                 getLogger().info("");
                 getLogger().info("-------------------------------");
 
-                Bukkit.getScheduler().scheduleAsyncDelayedTask(this, () -> {
-                    try {
-                        latest = new BufferedReader(new InputStreamReader(new URL("https://api.spigotmc.org/legacy/update.php?resource=62480").openConnection().getInputStream())).readLine();
-                    } catch (IOException e) {
-                        getLogger().warning("Failed to connect to api.spigotmc.org");
-                    }
-                    if (latest != null && !latest.equals(getDescription().getVersion())) {
-                        getLogger().info("Newer version available: " + latest);
-                        if (getConfiguration().automaticUpdate) {
-                            getLogger().info("Attempting to download version: " + latest);
-                            try {
-                                getFile().renameTo(new File(getFile().getParentFile(), "/IridiumSkyblock-" + latest + ".jar"));
-                                URL url = new URL("http://www.iridiumllc.com/IridiumSkyblock-" + latest + ".jar");
-                                URLConnection conn = url.openConnection();
-                                conn.setConnectTimeout(15000);
-                                conn.setReadTimeout(15000);
-                                conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-                                conn.setAllowUserInteraction(false);
-                                conn.setDoOutput(true);
-                                InputStream in = conn.getInputStream();
-
-                                File file = new File(Bukkit.getUpdateFolderFile() + "/IridiumSkyblock-" + latest + ".jar");
-                                file.createNewFile();
-                                OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-                                byte[] buffer = new byte[1024];
-
-                                int numRead;
-                                while ((numRead = in.read(buffer)) != -1) {
-                                    out.write(buffer, 0, numRead);
-                                }
-                                in.close();
-                                out.close();
-                            } catch (Exception e) {
-                                getLogger().info("Failed to connect to update server");
-                            }
-                        }
-                    }
-                });
+                update();
             });
         } catch (Exception e) {
             sendErrorMessage(e);
         }
+    }
+
+    private void update() {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            latest = getVersion();
+            if (latest != null && !latest.equals(getDescription().getVersion())) {
+                getLogger().info("Newer version available: " + latest);
+                if (getConfiguration().automaticUpdate) {
+                    getLogger().info("Attempting to download version: " + latest);
+                    try {
+                        getFile().renameTo(new File(getFile().getParentFile(), "/IridiumSkyblock-" + latest + ".jar"));
+                        URL url = new URL("http://www.iridiumllc.com/IridiumSkyblock-" + latest + ".jar");
+                        URLConnection conn = url.openConnection();
+                        conn.setConnectTimeout(15000);
+                        conn.setReadTimeout(15000);
+                        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                        conn.setAllowUserInteraction(false);
+                        conn.setDoOutput(true);
+                        InputStream in = conn.getInputStream();
+
+                        File file = new File(Bukkit.getUpdateFolderFile() + "/IridiumSkyblock-" + latest + ".jar");
+                        file.createNewFile();
+                        OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+                        byte[] buffer = new byte[1024];
+
+                        int numRead;
+                        while ((numRead = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, numRead);
+                        }
+                        in.close();
+                        out.close();
+                    } catch (Exception e) {
+                        getLogger().info("Failed to connect to update server");
+                    }
+                }
+            }
+        });
+    }
+
+    private String getVersion() {
+        try {
+            URL url = new URL("https://api.spigotmc.org/simple/0.1/index.php?action=getResource&id=62480");
+            URLConnection connection = url.openConnection();
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36");
+            InputStream response = connection.getInputStream();
+            Scanner scanner = new Scanner(response);
+            String responseBody = scanner.useDelimiter("\\A").next();
+            JsonObject object = (JsonObject) new JsonParser().parse(responseBody);
+            return object.get("current_version").getAsString();
+        } catch (Exception e) {
+            getLogger().warning("Failed to connect to api.spigotmc.org");
+        }
+        return getDescription().getVersion();
     }
 
     public void getLanguages() {
