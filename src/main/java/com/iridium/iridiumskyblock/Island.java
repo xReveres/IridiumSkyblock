@@ -1094,11 +1094,16 @@ public class Island {
                 entity.remove();
             }
         }
-        for (Entity entity : IridiumSkyblock.getIslandManager().getNetherWorld().getNearbyEntities(getCenter(), IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00, 255, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00)) {
-            if (!entity.getType().equals(EntityType.PLAYER)) {
-                entity.remove();
-            }
-        }
+		if (IridiumSkyblock.getConfiguration().netherIslands) {
+		    Location netherCenter = getCenter().clone();
+		    netherCenter.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+
+			for (Entity entity : IridiumSkyblock.getIslandManager().getNetherWorld().getNearbyEntities(netherCenter, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00, 255, IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size / 2.00)) {
+				if (!entity.getType().equals(EntityType.PLAYER)) {
+					entity.remove();
+				}
+			}
+		}
     }
 
     public Location getNetherhome() {
