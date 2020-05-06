@@ -470,8 +470,8 @@ public class IridiumSkyblock extends JavaPlugin {
                     if (islands.hasNext()) {
                         int id = islands.next();
                         Island island = islandManager.getIslandViaId(id);
-                        if (!island.updating) {
-                            if (island != null) {
+                        if (island != null) {
+                            if (!island.updating) {
                                 updatingBlocks = true;
                                 island.initBlocks();
                             }
