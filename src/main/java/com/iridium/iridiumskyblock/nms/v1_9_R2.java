@@ -7,21 +7,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_9_R2.CraftChunk;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.InventoryHolder;
 
 public class v1_9_R2 implements NMS {
     @Override
     public void setBlockFast(Block block, int blockId, byte data) {
-        BlockState state = block.getState();
-        if (state.getType().name().endsWith("AIR") && blockId == 0) return;
-        if (state instanceof InventoryHolder) {
-            ((InventoryHolder) state).getInventory().clear();
-        }
         net.minecraft.server.v1_9_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_9_R2.CraftWorld) block.getWorld()).getHandle();
         net.minecraft.server.v1_9_R2.BlockPosition bp = new net.minecraft.server.v1_9_R2.BlockPosition(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ());
         net.minecraft.server.v1_9_R2.IBlockData ibd = net.minecraft.server.v1_9_R2.Block.getByCombinedId(blockId + (data << 12));

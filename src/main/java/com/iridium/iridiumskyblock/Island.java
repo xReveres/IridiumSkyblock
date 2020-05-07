@@ -387,14 +387,12 @@ public class Island {
     }
 
     public void sendBorder(Player p) {
-        IridiumSkyblock.getInstance().getLogger().info("1");
         double size = IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size;
         if (size % 2 == 0) size++;
         String worldname = p.getLocation().getWorld().getName();
         if (worldname.equals(IridiumSkyblock.getIslandManager().getWorld().getName())) {
             IridiumSkyblock.nms.sendWorldBorder(p, borderColor, size, getCenter());
         } else if (IridiumSkyblock.getConfiguration().netherIslands && worldname.equals(IridiumSkyblock.getIslandManager().getNetherWorld().getName())) {
-            IridiumSkyblock.getInstance().getLogger().info("2");
             Location loc = getCenter().clone();
             loc.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
             IridiumSkyblock.nms.sendWorldBorder(p, borderColor, size, loc);

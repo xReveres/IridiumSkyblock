@@ -7,21 +7,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_8_R3.CraftChunk;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.InventoryHolder;
 
 public class v1_8_R3 implements NMS {
     @Override
     public void setBlockFast(Block block, int blockId, byte data) {
-        BlockState state = block.getState();
-        if (state.getType().name().endsWith("AIR") && blockId == 0) return;
-        if (state instanceof InventoryHolder) {
-            ((InventoryHolder) state).getInventory().clear();
-        }
         net.minecraft.server.v1_8_R3.World nmsWorld = ((org.bukkit.craftbukkit.v1_8_R3.CraftWorld) block.getWorld()).getHandle();
         net.minecraft.server.v1_8_R3.BlockPosition bp = new net.minecraft.server.v1_8_R3.BlockPosition(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ());
         net.minecraft.server.v1_8_R3.IBlockData ibd = net.minecraft.server.v1_8_R3.Block.getByCombinedId(blockId + (data << 12));
@@ -38,7 +31,6 @@ public class v1_8_R3 implements NMS {
     public void sendWorldBorder(Player player, Color color, double size, Location centerLocation) {
         WorldBorder worldBorder = new WorldBorder();
         worldBorder.world = ((CraftWorld) centerLocation.getWorld()).getHandle();
-        IridiumSkyblock.getInstance().getLogger().info(centerLocation.toString());
 
         if (centerLocation.getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
             worldBorder.setCenter(8 * (centerLocation.getBlockX() + 0.5), 8 * (centerLocation.getBlockZ() + 0.5));
