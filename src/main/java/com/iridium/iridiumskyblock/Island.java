@@ -1056,12 +1056,13 @@ public class Island {
 
     public void setBiome(XBiome biome) {
         this.biome = biome;
+        final World world = IridiumSkyblock.getIslandManager().getWorld();
         biome.setBiome(getPos1(), getPos2());
         for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
             for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
-                for (Player p : IridiumSkyblock.getIslandManager().getWorld().getPlayers()) {
-                    if (p.getLocation().getWorld().equals(IridiumSkyblock.getIslandManager().getWorld())) {
-                        IridiumSkyblock.nms.sendChunk(p, IridiumSkyblock.getIslandManager().getWorld().getChunkAt(X, Z));
+                for (Player p : world.getPlayers()) {
+                    if (p.getLocation().getWorld().equals(world)) {
+                        IridiumSkyblock.nms.sendChunk(p, world.getChunkAt(X, Z));
                     }
                 }
             }
@@ -1071,10 +1072,12 @@ public class Island {
     public void deleteBlocks() {
         valuableBlocks.clear();
         calculateIslandValue();
+        final World world = IridiumSkyblock.getIslandManager().getWorld();
+        final World nether = IridiumSkyblock.getIslandManager().getNetherWorld();
         for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
             for (int Y = 0; Y <= 255; Y++) {
                 for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
-                    IridiumSkyblock.nms.setBlockFast(IridiumSkyblock.getIslandManager().getWorld().getBlockAt(X, Y, Z), 0, (byte) 0);
+                    IridiumSkyblock.nms.setBlockFast(world.getBlockAt(X, Y, Z), 0, (byte) 0);
                 }
             }
         }
@@ -1082,7 +1085,7 @@ public class Island {
             for (int X = getPos1().getBlockX(); X <= getPos2().getBlockX(); X++) {
                 for (int Y = 0; Y <= 255; Y++) {
                     for (int Z = getPos1().getBlockZ(); Z <= getPos2().getBlockZ(); Z++) {
-                        IridiumSkyblock.nms.setBlockFast(IridiumSkyblock.getIslandManager().getWorld().getBlockAt(X, Y, Z), 0, (byte) 0);
+                        IridiumSkyblock.nms.setBlockFast(nether.getBlockAt(X, Y, Z), 0, (byte) 0);
                     }
                 }
             }
