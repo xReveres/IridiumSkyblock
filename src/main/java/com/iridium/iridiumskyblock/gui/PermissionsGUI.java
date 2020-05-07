@@ -20,12 +20,6 @@ public class PermissionsGUI extends GUI implements Listener {
     public PermissionsGUI(Island island) {
         super(island, IridiumSkyblock.getInventories().permissionsGUISize, IridiumSkyblock.getInventories().permissionsGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
-        int i = 11;
-        for (Role role : Role.values()) {
-            permissions.put(role, new PermissionsGUI(island, role));
-            setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandRoles, Collections.singletonList(new Utils.Placeholder("role", role.toString()))));
-            i++;
-        }
     }
 
     public PermissionsGUI(Island island, Role role) {
@@ -37,22 +31,31 @@ public class PermissionsGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
-        if (role != null && getIsland() != null) {
-            int i = 0;
-            try {
-                for (Field field : Permissions.class.getDeclaredFields()) {
-                    Object object = field.get(getIsland().getPermissions(role));
-                    if (object instanceof Boolean) {
-                        if ((Boolean) object) {
-                            setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandPermissionAllow, Collections.singletonList(new Utils.Placeholder("permission", IridiumSkyblock.getMessages().permissions.getOrDefault(field.getName(), field.getName())))));
-                        } else {
-                            setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandPermissionDeny, Collections.singletonList(new Utils.Placeholder("permission", IridiumSkyblock.getMessages().permissions.getOrDefault(field.getName(), field.getName())))));
+        if (getIsland() != null) {
+            if (role != null) {
+                int i = 0;
+                try {
+                    for (Field field : Permissions.class.getDeclaredFields()) {
+                        Object object = field.get(getIsland().getPermissions(role));
+                        if (object instanceof Boolean) {
+                            if ((Boolean) object) {
+                                setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandPermissionAllow, Collections.singletonList(new Utils.Placeholder("permission", IridiumSkyblock.getMessages().permissions.getOrDefault(field.getName(), field.getName())))));
+                            } else {
+                                setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandPermissionDeny, Collections.singletonList(new Utils.Placeholder("permission", IridiumSkyblock.getMessages().permissions.getOrDefault(field.getName(), field.getName())))));
+                            }
                         }
+                        i++;
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                int i = 11;
+                for (Role role : Role.values()) {
+                    permissions.put(role, new PermissionsGUI(getIsland(), role));
+                    setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandRoles, Collections.singletonList(new Utils.Placeholder("role", role.toString()))));
                     i++;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
