@@ -296,7 +296,7 @@ public enum XBiome {
      * @since 1.0.0
      */
     @Nonnull
-    public CompletableFuture<Void> setBiome(@Nonnull Location start, @Nonnull Location end) {
+    public void setBiome(@Nonnull Location start, @Nonnull Location end) {
         Objects.requireNonNull(start, "Start location cannot be null");
         Objects.requireNonNull(end, "End location cannot be null");
         if (!start.getWorld().getName().equals(end.getWorld().getName()))
@@ -305,14 +305,11 @@ public enum XBiome {
         Biome biome = this.parseBiome();
         if (biome == null) throw new IllegalArgumentException("Unsupported Biome: " + this.name());
 
-        // Apparently setBiome is thread-safe.
-        return CompletableFuture.runAsync(() -> {
-            for (int x = start.getBlockX(); x < end.getBlockX(); x++) {
-                for (int z = start.getBlockZ(); z < end.getBlockZ(); z++) {
-                    Block block = new Location(start.getWorld(), x, 0, z).getBlock();
-                    if (block.getBiome() != biome) block.setBiome(biome);
-                }
+        for (int x = start.getBlockX(); x < end.getBlockX(); x++) {
+            for (int z = start.getBlockZ(); z < end.getBlockZ(); z++) {
+                Block block = new Location(start.getWorld(), x, 0, z).getBlock();
+                if (block.getBiome() != biome) block.setBiome(biome);
             }
-        });
+        }
     }
 }
