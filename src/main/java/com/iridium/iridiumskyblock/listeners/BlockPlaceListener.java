@@ -1,18 +1,12 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.IslandManager;
-import com.iridium.iridiumskyblock.MissionType;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
-import com.iridium.iridiumskyblock.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,7 +39,7 @@ public class BlockPlaceListener implements Listener {
             if (max != null) {
                 if (island.valuableBlocks.getOrDefault(xmaterial.name(), 0) >= max) {
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().blockLimitReached
-                        .replace("%prefix%", config.prefix)));
+                            .replace("%prefix%", config.prefix)));
                     event.setCancelled(true);
                     return;
                 }
@@ -64,10 +58,10 @@ public class BlockPlaceListener implements Listener {
 
                     if (
                             conditions.isEmpty()
-                            ||
-                            conditions.contains(xmaterial.name())
-                            ||
-                            conditions.contains(((Crops) block.getState().getData()).getState().toString())
+                                    ||
+                                    conditions.contains(xmaterial.name())
+                                    ||
+                                    conditions.contains(((Crops) block.getState().getData()).getState().toString())
                     )
                         island.addMission(mission.name, 1);
                 }
@@ -99,7 +93,8 @@ public class BlockPlaceListener implements Listener {
             });
             if (island.updating)
                 island.tempValues.add(location);
-            island.calculateIslandValue();
+
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }

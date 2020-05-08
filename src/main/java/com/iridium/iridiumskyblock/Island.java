@@ -521,6 +521,7 @@ public class Island {
                 for (int Z = minChunkZ; Z <= maxChunkZ; Z++) {
                     final Chunk chunk = world.getChunkAt(X, Z);
                     for (BlockState state : chunk.getTileEntities()) {
+                        if (isInIsland(state.getLocation())) continue;
                         if (!(state instanceof CreatureSpawner)) continue;
 
                         final CreatureSpawner spawner = (CreatureSpawner) state;

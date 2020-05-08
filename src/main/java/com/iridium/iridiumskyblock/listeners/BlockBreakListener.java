@@ -1,13 +1,8 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Missions;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.IslandManager;
-import com.iridium.iridiumskyblock.MissionType;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
-import com.iridium.iridiumskyblock.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -84,7 +79,8 @@ public class BlockBreakListener implements Listener {
                 island.valuableBlocks.computeIfPresent(materialName, (name, original) -> original - 1);
                 if (island.updating)
                     island.tempValues.remove(location);
-                island.calculateIslandValue();
+
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
             }
 
             island.failedGenerators.remove(location);
