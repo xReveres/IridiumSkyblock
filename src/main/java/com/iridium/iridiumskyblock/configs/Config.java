@@ -16,6 +16,7 @@ public class Config {
     public String chatValuePlaceholder = "[ISLAND_VALUE]";
     public String chatNAMEPlaceholder = "[ISLAND_NAME]";
     public String chatLevelPlaceholder = "[ISLAND_LEVEL]";
+    public String placeholderDefaultValue = "N/A";
     public boolean createCooldown = true;
     public boolean doIslandBackup = true;
     public boolean islandShop = true;
