@@ -463,13 +463,15 @@ public class Island {
         double value = 0;
         for (Map.Entry<String, Integer> entry : valuableBlocks.entrySet()) {
             final String item = entry.getKey();
+            final int amount = entry.getValue();
+            if (amount < 1) continue;
             final Optional<XMaterial> xmaterial = XMaterial.matchXMaterial(item);
             if (!xmaterial.isPresent()) continue;
 
             final Double blockValue = blockValueMap.get(xmaterial.get());
             if (blockValue == null) continue;
 
-            value += (entry.getValue() * blockValue);
+            value += (amount * blockValue);
         }
 
         final Config config = IridiumSkyblock.getConfiguration();
