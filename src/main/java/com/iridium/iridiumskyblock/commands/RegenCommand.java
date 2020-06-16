@@ -1,9 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.command.CommandSender;
@@ -67,6 +64,42 @@ public class RegenCommand extends Command {
                 }
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+        } else {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player p = (Player) sender;
+        if (island != null) {
+            if (IridiumSkyblock.getInstance().schems.size() == 1) {
+                p.openInventory(new ConfirmationGUI(island, () -> {
+                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                        island.setSchematic(schematic.name);
+                        island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
+                        island.setNetherhome(island.getNetherhome().add(schematic.x, schematic.y, schematic.z));
+                    }
+                    island.pasteSchematic(true);
+                    if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
+                        island.resetMissions();
+                        island.setSizeLevel(1);
+                        island.setMemberLevel(1);
+                        island.setWarpLevel(1);
+                        island.setOreLevel(1);
+                        island.setFlightBooster(0);
+                        island.setExpBooster(0);
+                        island.setFarmingBooster(0);
+                        island.setSpawnerBooster(0);
+                        island.setCrystals(0);
+                        island.exp = 0;
+                        island.money = 0;
+                    }
+                    island.teleportPlayersHome();
+                }, IridiumSkyblock.getMessages().resetAction).getInventory());
+            } else {
+                p.openInventory(island.getSchematicSelectGUI().getInventory());
             }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

@@ -90,6 +90,8 @@ public class Island {
     @Getter
     private transient IslandMenuGUI islandMenuGUI;
     @Getter
+    private transient IslandAdminGUI islandAdminGUI;
+    @Getter
     private transient CoopGUI coopGUI;
     @Getter
     private transient BankGUI bankGUI;
@@ -648,6 +650,7 @@ public class Island {
         schematicSelectGUI = new SchematicSelectGUI(this);
         permissionsGUI = new PermissionsGUI(this);
         islandMenuGUI = new IslandMenuGUI(this);
+        islandAdminGUI = new IslandAdminGUI(this);
         coopGUI = new CoopGUI(this);
         bankGUI = new BankGUI(this);
         biomeGUI = new BiomeGUI(this);
@@ -875,6 +878,7 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getWarpGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getPermissionsGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getIslandMenuGUI().scheduler);
+        Bukkit.getScheduler().cancelTask(getIslandAdminGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getCoopGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
         if (generateID != -1) Bukkit.getScheduler().cancelTask(generateID);

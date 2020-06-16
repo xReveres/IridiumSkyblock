@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.ChatColor;
@@ -23,7 +24,7 @@ public class HelpCommand extends Command {
         if (args.length == 2) {
             try {
                 page = Integer.parseInt(args[1]);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 return;
             }
         }
@@ -53,6 +54,11 @@ public class HelpCommand extends Command {
             }
         }
         p.getPlayer().spigot().sendMessage(components);
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

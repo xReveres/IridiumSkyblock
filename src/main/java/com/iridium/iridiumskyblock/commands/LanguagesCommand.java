@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,6 +18,11 @@ public class LanguagesCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         p.openInventory(IridiumSkyblock.getInstance().languagesGUI.pages.get(1).getInventory());
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

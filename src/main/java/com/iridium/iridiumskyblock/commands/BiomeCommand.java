@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.command.CommandSender;
@@ -21,6 +22,16 @@ public class BiomeCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             p.openInventory(user.getIsland().getBiomeGUI().pages.get(1).getInventory());
+        } else {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player p = (Player) sender;
+        if (island != null) {
+            p.openInventory(island.getBiomeGUI().pages.get(1).getInventory());
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

@@ -15,7 +15,7 @@ import java.util.List;
 public class JoinCommand extends Command {
 
     public JoinCommand() {
-        super(Collections.singletonList("join"),"Join another players island", "", true);
+        super(Collections.singletonList("join"), "Join another players island", "", true);
     }
 
     @Override
@@ -46,6 +46,11 @@ public class JoinCommand extends Command {
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

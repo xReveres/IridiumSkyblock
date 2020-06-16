@@ -68,6 +68,11 @@ public class GiveUpgradeCommand extends Command {
     }
 
     @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
+    }
+
+    @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
         if (args.length == 3) {
             return Arrays.asList("size", "member", "warp", "ores");

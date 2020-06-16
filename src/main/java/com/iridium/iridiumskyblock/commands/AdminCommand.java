@@ -21,26 +21,57 @@ public class AdminCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        if (args.length != 2) {
-            Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(p.getLocation());
-            if (island != null) {
-                p.openInventory(island.getIslandMenuGUI().getInventory());
-            } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is admin <player>");
+        //Open island admin gui
+        if (args.length == 2) {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
+            if (player != null) {
+                User u = User.getUser(player);
+                if (u.getIsland() != null) {
+                    p.openInventory(u.getIsland().getIslandAdminGUI().getInventory());
+                } else {
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                }
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
-            return;
-        }
-        OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-        if (player != null) {
-            User u = User.getUser(player);
-            if (u.getIsland() != null) {
-                p.openInventory(u.getIsland().getIslandMenuGUI().getInventory());
-            } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        } else if (args.length >= 2) {
+            Island island = null;
+            try {
+                int id = Integer.parseInt(args[1]);
+                island = IridiumSkyblock.getIslandManager().getIslandViaId(id);
+            } catch (NumberFormatException e) {
+                OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
+                if (player != null) {
+                    User u = User.getUser(player);
+                    if (u.getIsland() != null) {
+                        p.openInventory(u.getIsland().getIslandAdminGUI().getInventory());
+                    } else {
+                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    }
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                }
+            }
+            if (island != null) {
+                for (com.iridium.iridiumskyblock.commands.Command command : IridiumSkyblock.getCommandManager().commands) {
+                    if (command.getAliases().contains(args[2]) && command.isEnabled()) {
+                        if ((sender.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("") || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) && command.isEnabled()) {
+                            command.admin(sender, args, island);
+                        } else {
+                            // No permission
+                            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        }
+                        return;
+                    }
+                }
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage("/is admin <island>");
         }
+
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

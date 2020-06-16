@@ -41,6 +41,20 @@ public class MembersCommand extends Command {
     }
 
     @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player p = (Player) sender;
+        if (island != null) {
+            p.openInventory(island.getMembersGUI().getInventory());
+        } else {
+            if (args.length == 2) {
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            } else {
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+        }
+    }
+
+    @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
         return null;
     }

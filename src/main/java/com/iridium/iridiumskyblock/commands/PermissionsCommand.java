@@ -25,6 +25,14 @@ public class PermissionsCommand extends Command {
     }
 
     @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player player = (Player) sender;
+        if (island != null) {
+            player.openInventory(island.getPermissionsGUI().getInventory());
+        }
+    }
+
+    @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
         return null;
     }

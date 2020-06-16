@@ -1,9 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,19 +24,35 @@ public class SetNameCommand extends Command {
         }
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
-                if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
-                    user.getIsland().setName(args[1]);
-                    for (String member : user.getIsland().getMembers()) {
-                        Player player = Bukkit.getPlayer(User.getUser(member).name);
-                        if (player != null) {
-                            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().changesIslandName.replace("%player%", p.getName()).replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                        }
+                user.getIsland().setName(args[1]);
+                for (String member : user.getIsland().getMembers()) {
+                    Player player = Bukkit.getPlayer(User.getUser(member).name);
+                    if (player != null) {
+                        player.sendMessage(Utils.color(IridiumSkyblock.getMessages().changesIslandName.replace("%player%", p.getName()).replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
-                } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            }
+        } else {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player p = (Player) sender;
+        if (args.length != 2) {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is admin <island> setname <Island Name>");
+            return;
+        }
+        if (island != null) {
+            island.setName(args[1]);
+            for (String member : island.getMembers()) {
+                Player player = Bukkit.getPlayer(User.getUser(member).name);
+                if (player != null) {
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().changesIslandName.replace("%player%", p.getName()).replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                }
             }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

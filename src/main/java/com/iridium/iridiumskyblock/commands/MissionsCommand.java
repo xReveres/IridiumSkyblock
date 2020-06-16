@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ import java.util.List;
 public class MissionsCommand extends Command {
 
     public MissionsCommand() {
-        super(Collections.singletonList("missions"),"Opens the missions GUI", "", true);
+        super(Collections.singletonList("missions"), "Opens the missions GUI", "", true);
     }
 
     @Override
@@ -21,6 +22,16 @@ public class MissionsCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             p.openInventory(user.getIsland().getMissionsGUI().getInventory());
+        } else {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player p = (Player) sender;
+        if (island != null) {
+            p.openInventory(island.getMissionsGUI().getInventory());
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

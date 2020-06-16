@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ import java.util.List;
 public class CreateCommand extends Command {
 
     public CreateCommand() {
-        super(Collections.singletonList("create"),"Creates a new island", "", true);
+        super(Collections.singletonList("create"), "Creates a new island", "", true);
     }
 
     @Override
@@ -24,6 +25,11 @@ public class CreateCommand extends Command {
         } else {
             IridiumSkyblock.getIslandManager().createIsland(p);
         }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

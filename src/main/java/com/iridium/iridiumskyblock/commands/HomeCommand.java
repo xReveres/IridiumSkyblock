@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ import java.util.List;
 public class HomeCommand extends Command {
 
     public HomeCommand() {
-        super(Collections.singletonList("home"),"Teleport to your island home", "", true);
+        super(Collections.singletonList("home"), "Teleport to your island home", "", true);
     }
 
     @Override
@@ -22,11 +23,19 @@ public class HomeCommand extends Command {
         if (user.getIsland() != null) {
             user.getIsland().teleportHome(p);
         } else {
-            if(IridiumSkyblock.getConfiguration().createIslandonHome){
+            if (IridiumSkyblock.getConfiguration().createIslandonHome) {
                 IridiumSkyblock.getIslandManager().createIsland(p);
-            }else {
+            } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
+        }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player p = (Player) sender;
+        if (island != null) {
+            island.teleportHome(p);
         }
     }
 
