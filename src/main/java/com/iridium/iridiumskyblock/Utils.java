@@ -233,8 +233,8 @@ public class Utils {
         if (loc == null) return false;
         if (loc.getY() < 1) return false;
         if (!island.isInIsland(loc)) return false;
-        if (!XMaterial.matchXMaterial(loc.getBlock().getType()).name().endsWith("AIR")) return false;
-        if (XMaterial.matchXMaterial(loc.clone().add(0, -1, 0).getBlock().getType()).name().endsWith("AIR"))
+        if (!loc.getBlock().getType().name().endsWith("AIR")) return false;
+        if (loc.clone().add(0, -1, 0).getBlock().getType().name().endsWith("AIR"))
             return false;
         return !loc.clone().add(0, -1, 0).getBlock().isLiquid();
     }
