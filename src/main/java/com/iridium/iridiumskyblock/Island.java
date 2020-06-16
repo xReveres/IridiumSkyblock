@@ -950,7 +950,7 @@ public class Island {
 
     public boolean isBanned(User user) {
         if (bans == null) bans = new HashSet<>();
-        return bans.contains(user.player);
+        return bans.contains(user.player) && !user.bypassing;
     }
 
     public void addCoop(Island island) {
