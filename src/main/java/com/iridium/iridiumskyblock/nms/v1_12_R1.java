@@ -33,7 +33,7 @@ public class v1_12_R1 implements NMS {
         worldBorder.world = ((CraftWorld) centerLocation.getWorld()).getHandle();
 
         if (centerLocation.getWorld().equals(IridiumSkyblock.getIslandManager().getNetherWorld())) {
-            worldBorder.setCenter(8 * (centerLocation.getBlockX() + 0.5), 8 * (centerLocation.getBlockZ() + 0.5));
+            worldBorder.setCenter(centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
         } else {
             worldBorder.setCenter(centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
         }
