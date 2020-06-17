@@ -43,21 +43,21 @@ public class BlockBreakListener implements Listener {
                     final List<String> conditions = level.conditions;
 
                     if (
-                        conditions.isEmpty()
-                        ||
-                        conditions.contains(XMaterial.matchXMaterial(block.getType()).name())
-                        ||
-                        (
-                            block.getState().getData() instanceof Crops
-                            &&
-                            conditions.contains(((Crops) block.getState().getData()).getState().toString())
-                        )
+                            conditions.isEmpty()
+                                    ||
+                                    conditions.contains(XMaterial.matchXMaterial(block.getType()).name())
+                                    ||
+                                    (
+                                            block.getState().getData() instanceof Crops
+                                                    &&
+                                                    conditions.contains(((Crops) block.getState().getData()).getState().toString())
+                                    )
                     )
                         island.addMission(mission.name, 1);
                 }
             }
 
-            if (!island.getPermissions(user).breakBlocks)
+            if (!island.getPermissions(user).breakBlocks || (!island.getPermissions(user).breakSpawners && XMaterial.matchXMaterial(block.getType()).equals(XMaterial.SPAWNER)))
                 event.setCancelled(true);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
