@@ -19,7 +19,7 @@ public class ItemCraftListener implements Listener {
             if (inventory.getResult() == null) return;
 
             for (ItemStack itemStack : inventory.getContents()) {
-                if (!Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal).isSimilar(itemStack)) continue;
+                if (Utils.getCrystals(itemStack) == 0) continue;
                 inventory.setResult(null);
                 return;
             }
@@ -30,7 +30,7 @@ public class ItemCraftListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getInventory().getType() == InventoryType.ANVIL && Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal).isSimilar(event.getCurrentItem())) {
+        if (event.getInventory().getType() == InventoryType.ANVIL && Utils.getCrystals(event.getCurrentItem()) != 0) {
             event.setCancelled(true);
         }
     }

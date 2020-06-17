@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.support.Vault;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -450,6 +451,22 @@ public class Utils {
                 amount = 0;
             }
         }
+    }
+
+    public static ItemStack getCrystals(int amount) {
+        ItemStack itemStack = makeItemHidden(IridiumSkyblock.getInventories().crystal, Collections.singletonList(new Placeholder("amount", amount + "")));
+        NBTItem nbtItem = new NBTItem(itemStack);
+        nbtItem.setInteger("crystals", amount);
+        return nbtItem.getItem();
+    }
+
+    public static int getCrystals(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
+        NBTItem nbtItem = new NBTItem(itemStack);
+        if (nbtItem.hasKey("crystals")) {
+            return nbtItem.getInteger("crystals");
+        }
+        return 0;
     }
 
     public static class Placeholder {

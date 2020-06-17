@@ -68,16 +68,19 @@ public class BankGUI extends GUI implements Listener {
             if (e.getSlot() == (IridiumSkyblock.getInventories().crystals.slot == null ? 13 : IridiumSkyblock.getInventories().crystals.slot)) {
                 if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
-                        for (int i = 0; i < island.getCrystals(); i++) {
-                            p.getInventory().addItem(Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal));
-                        }
+                        p.getInventory().addItem(Utils.getCrystals(island.getCrystals()));
                         island.setCrystals(0);
                     }
                 } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
                     int i = 0;
                     for (ItemStack itemStack : p.getInventory().getContents()) {
-                        if (itemStack != null && itemStack.isSimilar(Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal))) {
-                            island.setCrystals(island.getCrystals() + itemStack.getAmount());
+                        if (itemStack == null) {
+                            i++;
+                            continue;
+                        }
+                        int crystals = Utils.getCrystals(itemStack) * itemStack.getAmount();
+                        if (crystals != 0) {
+                            island.setCrystals(island.getCrystals() + crystals);
                             p.getInventory().clear(i);
                         }
                         i++;
@@ -85,8 +88,13 @@ public class BankGUI extends GUI implements Listener {
                 } else if (e.getClick().equals(ClickType.RIGHT)) {
                     int i = 0;
                     for (ItemStack itemStack : p.getInventory().getContents()) {
-                        if (itemStack != null && itemStack.isSimilar(Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal))) {
-                            island.setCrystals(island.getCrystals() + itemStack.getAmount());
+                        if (itemStack == null) {
+                            i++;
+                            continue;
+                        }
+                        int crystals = Utils.getCrystals(itemStack) * itemStack.getAmount();
+                        if (crystals != 0) {
+                            island.setCrystals(island.getCrystals() + crystals);
                             p.getInventory().clear(i);
                             return;
                         }
@@ -96,12 +104,7 @@ public class BankGUI extends GUI implements Listener {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                         if (island.getCrystals() > 0) {
                             island.setCrystals(island.getCrystals() - 1);
-                            p.getInventory().addItem(Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal));
-                        } else {
-                            for (int i = 0; i < island.getCrystals(); i++) {
-                                p.getInventory().addItem(Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal));
-                            }
-                            island.setCrystals(0);
+                            p.getInventory().addItem(Utils.getCrystals(1));
                         }
                     }
                 }
@@ -117,8 +120,8 @@ public class BankGUI extends GUI implements Listener {
                         island.money += Vault.econ.getBalance(p);
                         Vault.econ.withdrawPlayer(p, Vault.econ.getBalance(p));
                     } else if (e.getClick().equals(ClickType.RIGHT)) {
-                        double depositValue = Vault.econ.getBalance(p) > 1000 ? 1000: Vault.econ.getBalance(p);
-                        if(!(island.money > Double.MAX_VALUE - depositValue)){
+                        double depositValue = Vault.econ.getBalance(p) > 1000 ? 1000 : Vault.econ.getBalance(p);
+                        if (!(island.money > Double.MAX_VALUE - depositValue)) {
                             island.money += depositValue;
                             Vault.econ.withdrawPlayer(p, depositValue);
                         }

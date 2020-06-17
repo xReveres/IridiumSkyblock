@@ -109,6 +109,7 @@ public class Messages {
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help";
     public String noPermissionBuild = "%prefix% &7You do not have permission to build on this island";
     public String noPermissionBreakSpawners = "%prefix% &7You do not have permission to break spawners on this island";
+    public String depositedCrystals = "%prefix% &7You have deposited %amount% crystals into your island bank";
 
     public Map<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {
