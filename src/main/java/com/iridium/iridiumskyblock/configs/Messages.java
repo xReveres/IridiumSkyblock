@@ -107,6 +107,8 @@ public class Messages {
     public String alreadyRecalculating = "%prefix% &7Already recalculating %player%'s Island";
     public String blockLimitReached = "%prefix% &7The island limit for this block has already been reached";
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help";
+    public String noPermissionBuild = "%prefix% &7You do not have permission to build on this island";
+    public String noPermissionBreakSpawners = "%prefix% &7You do not have permission to break spawners on this island";
 
     public Map<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {
