@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.IslandManager;
 import com.iridium.iridiumskyblock.User;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,6 +12,7 @@ import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -20,6 +20,24 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 public class EntityDamageByEntityListener implements Listener {
+
+    @EventHandler
+    public void onEntityDamageEvent(EntityDamageEvent event) {
+        final Entity damagee = event.getEntity();
+        if (!(damagee instanceof Player)) return;
+        final Player player = (Player) damagee;
+        final User user = User.getUser(player);
+        final Location damageeLocation = damagee.getLocation();
+        final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+        final Island island = islandManager.getIslandViaLocation(damageeLocation);
+        if (island == null) return;
+
+        //The user is visiting this island, so disable damage
+        if (user.islandID != island.getId() && IridiumSkyblock.getConfiguration().disablePvPOnIslands) {
+            event.setCancelled(true);
+        }
+
+    }
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
