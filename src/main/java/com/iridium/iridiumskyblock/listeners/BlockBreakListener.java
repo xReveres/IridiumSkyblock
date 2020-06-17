@@ -57,13 +57,14 @@ public class BlockBreakListener implements Listener {
                 }
             }
 
-            if (!island.getPermissions(user).breakBlocks || (!island.getPermissions(user).breakSpawners && XMaterial.matchXMaterial(block.getType()).equals(XMaterial.SPAWNER)))
+            if (!island.getPermissions(user).breakBlocks || (!island.getPermissions(user).breakSpawners && XMaterial.matchXMaterial(block.getType()).equals(XMaterial.SPAWNER))) {
                 if (XMaterial.matchXMaterial(block.getType()).equals(XMaterial.SPAWNER)) {
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermissionBreakSpawners.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermissionBuild.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
-            event.setCancelled(true);
+                event.setCancelled(true);
+            }
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }

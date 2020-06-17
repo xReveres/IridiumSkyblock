@@ -9,8 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,13 +44,12 @@ public class LanguagesGUI extends GUI implements Listener {
         languages.clear();
         int slot = 0;
         int i = 0;
-        ArrayList<String> langs = new ArrayList<>(IridiumSkyblock.getInstance().languages.keySet());
-        java.util.Collections.sort(langs);
-        for (String language : langs) {
+        java.util.Collections.sort(IridiumSkyblock.getInstance().languages);
+        for (String language : IridiumSkyblock.getInstance().languages) {
             if (i >= (page - 1) * 45 && i < page * 54) {
                 if (slot < 45) {
                     languages.put(slot, language);
-                    setItem(slot, Utils.makeItem(XMaterial.PAPER, 1, "&b&l" + language, Arrays.asList("", "&7Translated by: " + IridiumSkyblock.getInstance().languages.get(language))));
+                    setItem(slot, Utils.makeItem(XMaterial.PAPER, 1, "&b&l" + language));
                     slot++;
                 }
             }
