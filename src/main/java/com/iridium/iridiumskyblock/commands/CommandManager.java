@@ -124,15 +124,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     }
                 }
             }
-            int current = 0;
-            cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpHeader));
-            for (com.iridium.iridiumskyblock.commands.Command command : IridiumSkyblock.getCommandManager().commands) {
-                if ((cs.hasPermission(command.getPermission()) || command.getPermission().equalsIgnoreCase("") || command.getPermission().equalsIgnoreCase("iridiumskyblock.")) && command.isEnabled()) {
-                    if (current < 18)
-                        cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", command.getAliases().get(0)).replace("%description%", command.getDescription())));
-                    current++;
-                }
-            }
+            cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().unknownCommand.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
