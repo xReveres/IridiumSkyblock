@@ -21,9 +21,11 @@ public class PlayerTeleportListener implements Listener {
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
 
+            if (user.islandID == island.getId()) return;
+
             if ((island.isVisit() && !island.isBanned(user)) || user.bypassing) {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> island.sendBorder(player), 1);
-                if(user.islandID!=island.getId()){
+                if (user.islandID != island.getId()) {
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(island.getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     for (String pl : island.getMembers()) {
                         Player p = Bukkit.getPlayer(User.getUser(pl).name);
