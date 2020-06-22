@@ -49,12 +49,9 @@ public class WarpGUI extends GUI implements Listener {
             if (warps.containsKey(e.getSlot())) {
                 Island.Warp warp = warps.get(e.getSlot());
                 if (e.getClick().equals(ClickType.RIGHT)) {
-                    //Confirmation GUI
-                    p.openInventory(new ConfirmationGUI(getIsland(), () -> {
-                        u.getIsland().removeWarp(warps.get(e.getSlot()));
-                        getInventory().clear();
-                        addContent();
-                    }, IridiumSkyblock.getMessages().deleteAction).getInventory());
+                    u.getIsland().removeWarp(warps.get(e.getSlot()));
+                    getInventory().clear();
+                    addContent();
                 } else {
                     if (warp.getPassword().isEmpty()) {
                         p.teleport(warp.getLocation());
