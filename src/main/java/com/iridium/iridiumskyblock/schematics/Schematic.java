@@ -60,24 +60,24 @@ public class Schematic implements WorldEdit {
                     CompoundTag t = (CompoundTag) tag;
                     Map<String, Tag> tags = t.getValue();
 
-                    int x = schematicData.getChildTag(tags, "x", IntTag.class).getValue();
-                    int y = schematicData.getChildTag(tags, "y", IntTag.class).getValue();
-                    int z = schematicData.getChildTag(tags, "z", IntTag.class).getValue();
+                    int x = SchematicData.getChildTag(tags, "x", IntTag.class).getValue();
+                    int y = SchematicData.getChildTag(tags, "y", IntTag.class).getValue();
+                    int z = SchematicData.getChildTag(tags, "z", IntTag.class).getValue();
                     Block block = new Location(location.getWorld(), x + location.getX(), y + location.getY(), z + location.getZ()).getBlock();
 
-                    String id = schematicData.getChildTag(tags, "id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
+                    String id = SchematicData.getChildTag(tags, "id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
                     if (id.equalsIgnoreCase("chest")) {
-                        List<Tag> items = schematicData.getChildTag(tags, "Items", ListTag.class).getValue();
+                        List<Tag> items = SchematicData.getChildTag(tags, "Items", ListTag.class).getValue();
                         if (block.getState() instanceof Chest) {
                             Chest chest = (Chest) block.getState();
                             for (Tag item : items) {
                                 if (!(item instanceof CompoundTag))
                                     continue;
                                 Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
-                                byte slot = schematicData.getChildTag(itemtag, "Slot", ByteTag.class).getValue();
-                                String name = (schematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
-                                Byte amount = schematicData.getChildTag(itemtag, "Count", ByteTag.class).getValue();
-                                short damage = schematicData.getChildTag(itemtag, "Damage", ShortTag.class).getValue();
+                                byte slot = SchematicData.getChildTag(itemtag, "Slot", ByteTag.class).getValue();
+                                String name = (SchematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
+                                Byte amount = SchematicData.getChildTag(itemtag, "Count", ByteTag.class).getValue();
+                                short damage = SchematicData.getChildTag(itemtag, "Damage", ShortTag.class).getValue();
                                 XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) damage);
                                 if (material != null) {
                                     ItemStack itemStack = material.parseItem(true);
@@ -92,18 +92,18 @@ public class Schematic implements WorldEdit {
                         if (block.getState() instanceof Sign) {
                             Sign sign = (Sign) block.getState();
                             JsonParser parser = new JsonParser();
-                            String line1 = parser.parse(schematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(schematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                            String line2 = parser.parse(schematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(schematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                            String line3 = parser.parse(schematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(schematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                            String line4 = parser.parse(schematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(schematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                            if (!parser.parse(schematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(schematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                line1 = ChatColor.valueOf(parser.parse(schematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
-                            if (!parser.parse(schematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(schematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                line2 = ChatColor.valueOf(parser.parse(schematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
-                            if (!parser.parse(schematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(schematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                line3 = ChatColor.valueOf(parser.parse(schematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
-                            if (!parser.parse(schematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(schematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                line4 = ChatColor.valueOf(parser.parse(schematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
+                            String line1 = parser.parse(SchematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(SchematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                            String line2 = parser.parse(SchematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(SchematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                            String line3 = parser.parse(SchematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(SchematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                            String line4 = parser.parse(SchematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsString().isEmpty() ? "" : parser.parse(SchematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                            if (!parser.parse(SchematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(SchematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                line1 = ChatColor.valueOf(parser.parse(SchematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
+                            if (!parser.parse(SchematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(SchematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                line2 = ChatColor.valueOf(parser.parse(SchematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
+                            if (!parser.parse(SchematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(SchematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                line3 = ChatColor.valueOf(parser.parse(SchematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
+                            if (!parser.parse(SchematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsString().isEmpty() && parser.parse(SchematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                line4 = ChatColor.valueOf(parser.parse(SchematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
                             sign.setLine(0, line1);
                             sign.setLine(1, line2);
                             sign.setLine(2, line3);
@@ -123,7 +123,7 @@ public class Schematic implements WorldEdit {
                                 int index = y * width * length + z * width + x;
                                 Block block = new Location(location.getWorld(), x + location.getX(), y + location.getY(), z + location.getZ()).getBlock();
                                 for (String s : schematicData.getPalette().keySet()) {
-                                    int i = schematicData.getChildTag(schematicData.getPalette(), s, IntTag.class).getValue();
+                                    int i = SchematicData.getChildTag(schematicData.getPalette(), s, IntTag.class).getValue();
                                     if (schematicData.getBlockdata()[index] == i) {
                                         block.setBlockData(Bukkit.createBlockData(s), false);
                                     }
@@ -140,25 +140,25 @@ public class Schematic implements WorldEdit {
                                 CompoundTag t = (CompoundTag) tag;
                                 Map<String, Tag> tags = t.getValue();
 
-                                int[] pos = schematicData.getChildTag(tags, "Pos", IntArrayTag.class).getValue();
+                                int[] pos = SchematicData.getChildTag(tags, "Pos", IntArrayTag.class).getValue();
 
                                 int x = pos[0];
                                 int y = pos[1];
                                 int z = pos[2];
 
                                 Block block = new Location(location.getWorld(), x + location.getX(), y + location.getY(), z + location.getZ()).getBlock();
-                                String id = schematicData.getChildTag(tags, "Id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
+                                String id = SchematicData.getChildTag(tags, "Id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
                                 if (id.equalsIgnoreCase("chest")) {
-                                    List<Tag> items = schematicData.getChildTag(tags, "Items", ListTag.class).getValue();
+                                    List<Tag> items = SchematicData.getChildTag(tags, "Items", ListTag.class).getValue();
                                     if (block.getState() instanceof Chest) {
                                         Chest chest = (Chest) block.getState();
                                         for (Tag item : items) {
                                             if (!(item instanceof CompoundTag))
                                                 continue;
                                             Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
-                                            byte slot = schematicData.getChildTag(itemtag, "Slot", ByteTag.class).getValue();
-                                            String name = (schematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
-                                            Byte amount = schematicData.getChildTag(itemtag, "Count", ByteTag.class).getValue();
+                                            byte slot = SchematicData.getChildTag(itemtag, "Slot", ByteTag.class).getValue();
+                                            String name = (SchematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
+                                            Byte amount = SchematicData.getChildTag(itemtag, "Count", ByteTag.class).getValue();
                                             XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) -1);
                                             if (material != null) {
                                                 ItemStack itemStack = material.parseItem(true);
@@ -173,18 +173,18 @@ public class Schematic implements WorldEdit {
                                     if (block.getState() instanceof Sign) {
                                         Sign sign = (Sign) block.getState();
                                         JsonParser parser = new JsonParser();
-                                        String line1 = parser.parse(schematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                                        String line2 = parser.parse(schematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                                        String line3 = parser.parse(schematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                                        String line4 = parser.parse(schematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
-                                        if (parser.parse(schematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                            line1 = ChatColor.valueOf(parser.parse(schematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
-                                        if (parser.parse(schematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                            line2 = ChatColor.valueOf(parser.parse(schematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
-                                        if (parser.parse(schematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                            line3 = ChatColor.valueOf(parser.parse(schematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
-                                        if (parser.parse(schematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
-                                            line4 = ChatColor.valueOf(parser.parse(schematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
+                                        String line1 = parser.parse(SchematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                        String line2 = parser.parse(SchematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                        String line3 = parser.parse(SchematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                        String line4 = parser.parse(SchematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString().replace("[ISLAND_OWNER]", User.getUser(island.getOwner()).name);
+                                        if (parser.parse(SchematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                            line1 = ChatColor.valueOf(parser.parse(SchematicData.getChildTag(tags, "Text1", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line1;
+                                        if (parser.parse(SchematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                            line2 = ChatColor.valueOf(parser.parse(SchematicData.getChildTag(tags, "Text2", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line2;
+                                        if (parser.parse(SchematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                            line3 = ChatColor.valueOf(parser.parse(SchematicData.getChildTag(tags, "Text3", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line3;
+                                        if (parser.parse(SchematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().has("color"))
+                                            line4 = ChatColor.valueOf(parser.parse(SchematicData.getChildTag(tags, "Text4", StringTag.class).getValue()).getAsJsonObject().get("extra").getAsJsonArray().get(0).getAsJsonObject().get("color").getAsString().toUpperCase()) + line4;
                                         sign.setLine(0, line1);
                                         sign.setLine(1, line2);
                                         sign.setLine(2, line3);

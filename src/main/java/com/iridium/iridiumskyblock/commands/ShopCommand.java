@@ -5,13 +5,13 @@ import com.iridium.iridiumskyblock.Island;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ShopCommand extends Command {
 
     public ShopCommand() {
-        super(Arrays.asList("shop"), "Access the Skyblock Shop", "", true);
+        super(Collections.singletonList("shop"), "Access the Skyblock Shop", "", true);
     }
 
     @Override

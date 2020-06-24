@@ -8,13 +8,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HelpCommand extends Command {
 
     public HelpCommand() {
-        super(Arrays.asList("help"), "Displays the plugin commands", "", true);
+        super(Collections.singletonList("help"), "Displays the plugin commands", "", true);
     }
 
     @Override

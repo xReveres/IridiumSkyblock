@@ -22,7 +22,7 @@ public class VisitGUI extends GUI implements Listener {
 
     public Map<Integer, Integer> islands = new HashMap<>();
 
-    private int page;
+    private final int page;
 
     public VisitGUI(int page) {
         super(IridiumSkyblock.getInventories().visitGUISize, IridiumSkyblock.getInventories().visitGUITitle);

@@ -14,78 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
-
-    public static Object getObject(List<String> fields) {
-        Object object = IridiumSkyblock.getInstance();
-        for (String field : fields) {
-            try {
-                if (object instanceof List) {
-                    List<Object> objects = (List<Object>) object;
-                    if (objects.size() > Integer.parseInt(field)) {
-                        object = objects.get(Integer.parseInt(field));
-                    } else {
-                        return object;
-                    }
-                } else if (object instanceof HashSet) {
-                    Set<Object> objects = (HashSet<Object>) object;
-                    int i = 0;
-                    for (Object o : objects) {
-                        if ((i == Integer.parseInt(field))) {
-                            object = o;
-                        }
-                        i++;
-                    }
-                } else {
-                    object = object.getClass().getField(field).get(object);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return object;
-    }
-
-    public static Field getField(List<String> fields) {
-        Object object = IridiumSkyblock.getInstance();
-        Field f = null;
-        for (String field : fields) {
-            try {
-                if (object instanceof List) {
-                    List<Object> objects = (List<Object>) object;
-                    if (objects.size() > Integer.parseInt(field)) {
-                        f = object.getClass().getField(field);
-                        f.setAccessible(true);
-                        object = objects.get(Integer.parseInt(field));
-                    } else {
-                        return f;
-                    }
-                } else if (object instanceof HashSet) {
-                    Set<Object> objects = (HashSet<Object>) object;
-                    int i = 0;
-                    for (Object o : objects) {
-                        if ((i == Integer.parseInt(field))) {
-                            f = object.getClass().getField(field);
-                            f.setAccessible(true);
-                            object = o;
-                        }
-                        i++;
-                    }
-                } else {
-                    f = object.getClass().getField(field);
-                    f.setAccessible(true);
-                    object = object.getClass().getField(field).get(object);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return f;
-    }
 
     public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Object object) {
         ItemStack item = new ItemStack(material, amount, (short) type);
@@ -471,8 +403,8 @@ public class Utils {
 
     public static class Placeholder {
 
-        private String key;
-        private String value;
+        private final String key;
+        private final String value;
 
         public Placeholder(String key, String value) {
             this.key = "{" + key + "}";

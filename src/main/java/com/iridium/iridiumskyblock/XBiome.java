@@ -151,7 +151,7 @@ public enum XBiome {
      * @since 1.0.0
      */
     private static final Pattern FORMAT_PATTERN = Pattern.compile("\\d+|\\W+");
-    private String[] legacy;
+    private final String[] legacy;
 
     XBiome(String... legacy) {
         this.legacy = legacy;

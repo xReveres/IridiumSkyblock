@@ -96,7 +96,7 @@ public class IridiumSkyblock extends JavaPlugin {
         return upgrades;
     }
 
-    private HashMap<String, BlockData> legacy = new HashMap<>();
+    private final HashMap<String, BlockData> legacy = new HashMap<>();
 
     public static File schematicFolder;
 

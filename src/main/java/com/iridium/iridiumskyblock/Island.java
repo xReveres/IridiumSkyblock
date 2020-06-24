@@ -191,8 +191,6 @@ public class Island {
 
     public transient boolean updating = false;
 
-    public int percent = 0;
-
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
@@ -591,8 +589,9 @@ public class Island {
             teleportHome(Bukkit.getPlayer(user.name));
             user.invites.clear();
         } else {
-            if (Bukkit.getPlayer(user.name) != null) {
-                Bukkit.getPlayer(user.name).sendMessage(Utils.color(IridiumSkyblock.getMessages().maxMemberCount.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            Player player = Bukkit.getPlayer(user.name);
+            if (player != null) {
+                player.sendMessage(Utils.color(IridiumSkyblock.getMessages().maxMemberCount.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
         getMembersGUI().getInventory().clear();
@@ -743,7 +742,8 @@ public class Island {
         if (IridiumSkyblock.getConfiguration().clearInventories) {
             for (String player : members) {
                 User user = User.getUser(player);
-                if (Bukkit.getPlayer(user.name) != null) Bukkit.getPlayer(user.name).getInventory().clear();
+                Player p = Bukkit.getPlayer(user.name);
+                if (p != null) p.getInventory().clear();
             }
         }
     }
@@ -1103,7 +1103,6 @@ public class Island {
     }
 
     public void setOwner(OfflinePlayer owner) {
-
         for (String player : members) {
             User user = User.getUser(player);
             Player p = Bukkit.getPlayer(user.name);
