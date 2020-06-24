@@ -25,7 +25,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 
@@ -163,6 +162,9 @@ public class Island {
     @Getter
     @Setter
     private String schematic;
+    @Getter
+    @Setter
+    private String netherschematic;
 
     private Set<String> bans;
 
@@ -631,6 +633,13 @@ public class Island {
     }
 
     public void init() {
+        if (getNetherschematic() == null) {
+            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
+                if (fakeSchematic.name.equals(getSchematic())) {
+                    setNetherschematic(fakeSchematic.netherisland);
+                }
+            }
+        }
         updating = false;
         if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
         if (valuableBlocks == null) valuableBlocks = new HashMap<>();
@@ -699,7 +708,7 @@ public class Island {
         pasteSchematic();
         killEntities();
         //Reset island home
-        for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+        for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
             if (!schematic.name.equals(this.schematic)) continue;
             home = new Location(IridiumSkyblock.getIslandManager().getWorld(), getCenter().getX() + schematic.x, schematic.y, getCenter().getZ() + schematic.z);
         }
@@ -722,37 +731,12 @@ public class Island {
     }
 
     private void pasteSchematic() {
-        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
-            if (fakeSchematic.name.equals(schematic)) {
-                if (IridiumSkyblock.getInstance().schems.containsKey(fakeSchematic)) {
-                    IridiumSkyblock.getInstance().schems.get(fakeSchematic).pasteSchematic(getCenter().clone(), this);
-                } else {
-                    IridiumSkyblock.getInstance().getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
-                    getCenter().getBlock().setType(Material.STONE);
-                }
-                if (IridiumSkyblock.getConfiguration().debugSchematics) {
-                    File schematicFolder = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
-                    try {
-                        Schematic.debugSchematic(new File(schematicFolder, fakeSchematic.name));
-                        if (IridiumSkyblock.getConfiguration().netherIslands)
-                            Schematic.debugSchematic(new File(schematicFolder, fakeSchematic.netherisland));
-                    } catch (IOException e) {
-                    }
-                }
-                Location center = getCenter().clone();
-                if (IridiumSkyblock.getConfiguration().netherIslands) {
-                    center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-                    if (IridiumSkyblock.getInstance().netherschems.containsKey(fakeSchematic)) {
-                        IridiumSkyblock.getInstance().netherschems.get(fakeSchematic).pasteSchematic(center, this);
-                    } else {
-                        IridiumSkyblock.getInstance().getLogger().warning("Failed to load schematic: " + fakeSchematic.netherisland);
-                    }
-                }
-                return;
-            }
+        IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, schematic), getCenter().clone(), this);
+        Location center = getCenter().clone();
+        if (IridiumSkyblock.getConfiguration().netherIslands) {
+            center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+            IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), getCenter().clone(), this);
         }
-        IridiumSkyblock.getInstance().getLogger().warning("Could not find schematic: " + schematic);
-        getCenter().getBlock().setType(Material.STONE);
     }
 
     public void clearInventories() {
@@ -776,9 +760,10 @@ public class Island {
         if (getSchematic() == null) {
             User u = User.getUser(p);
             if (u.getIsland().equals(this)) {
-                if (IridiumSkyblock.getInstance().schems.size() == 1) {
-                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                if (IridiumSkyblock.getSchematics().schematics.size() == 1) {
+                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
                         setSchematic(schematic.name);
+                        setNetherschematic(schematic.netherisland);
                     }
                 } else {
                     p.openInventory(getSchematicSelectGUI().getInventory());
@@ -821,8 +806,8 @@ public class Island {
         if (getSchematic() == null) {
             User u = User.getUser(p);
             if (u.getIsland().equals(this)) {
-                if (IridiumSkyblock.getInstance().schems.size() == 1) {
-                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                if (IridiumSkyblock.getSchematics().schematics.size() == 1) {
+                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
                         setSchematic(schematic.name);
                     }
                 } else {

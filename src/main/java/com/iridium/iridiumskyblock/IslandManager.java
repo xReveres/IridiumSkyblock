@@ -2,24 +2,12 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class IslandManager {
@@ -81,8 +69,8 @@ public class IslandManager {
         user.islandID = nextID;
         user.role = Role.Owner;
 
-        if (IridiumSkyblock.getInstance().schems.size() == 1) {
-            for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+        if (IridiumSkyblock.getSchematics().schematics.size() == 1) {
+            for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
                 island.setSchematic(schematic.name);
                 island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
                 island.setNetherhome(island.getNetherhome().add(schematic.x, schematic.y, schematic.z));

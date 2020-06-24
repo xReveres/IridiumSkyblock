@@ -25,9 +25,9 @@ public class RegenCommand extends Command {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
                     long time = user.getIsland().canGenerate() / 1000;
                     if (time == 0 || user.bypassing) {
-                        if (IridiumSkyblock.getInstance().schems.size() == 1) {
+                        if (IridiumSkyblock.getSchematics().schematics.size() == 1) {
                             p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
-                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
                                     user.getIsland().setSchematic(schematic.name);
                                     user.getIsland().setHome(user.getIsland().getHome().add(schematic.x, schematic.y, schematic.z));
                                     user.getIsland().setNetherhome(user.getIsland().getNetherhome().add(schematic.x, schematic.y, schematic.z));
@@ -74,9 +74,9 @@ public class RegenCommand extends Command {
     public void admin(CommandSender sender, String[] args, Island island) {
         Player p = (Player) sender;
         if (island != null) {
-            if (IridiumSkyblock.getInstance().schems.size() == 1) {
+            if (IridiumSkyblock.getSchematics().schematics.size() == 1) {
                 p.openInventory(new ConfirmationGUI(island, () -> {
-                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
+                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
                         island.setSchematic(schematic.name);
                         island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
                         island.setNetherhome(island.getNetherhome().add(schematic.x, schematic.y, schematic.z));

@@ -21,7 +21,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
         if (getInventory().getViewers().isEmpty()) return;
         if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
             int i = 0;
-            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().schems.keySet()) {
+            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (fakeSchematic.slot == null) fakeSchematic.slot = i;
                 try {
                     setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1, fakeSchematic.displayname, fakeSchematic.lore));
@@ -53,9 +53,11 @@ public class SchematicSelectGUI extends GUI implements Listener {
                     }
                     if (getIsland().getSchematic() == null) {
                         getIsland().setSchematic(fakeSchematic.name);
+                        getIsland().setNetherschematic(fakeSchematic.netherisland);
                         getIsland().pasteSchematic((Player) e.getWhoClicked(), false);
                     } else {
                         getIsland().setSchematic(fakeSchematic.name);
+                        getIsland().setNetherschematic(fakeSchematic.netherisland);
                         getIsland().pasteSchematic(true);
                     }
                     getIsland().setHome(getIsland().getHome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));

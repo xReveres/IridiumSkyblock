@@ -9,6 +9,10 @@ import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
+import com.iridium.iridiumskyblock.schematics.Schematic;
+import com.iridium.iridiumskyblock.schematics.WorldEdit;
+import com.iridium.iridiumskyblock.schematics.WorldEdit6;
+import com.iridium.iridiumskyblock.schematics.WorldEdit7;
 import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
 import lombok.Getter;
@@ -61,6 +65,7 @@ public class IridiumSkyblock extends JavaPlugin {
     public static Map<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
     public static SkyblockGenerator generator;
     public static WorldEdit worldEdit;
+    public static Schematic schematic;
     @Getter
     private static IridiumSkyblock instance;
     @Getter
@@ -70,8 +75,6 @@ public class IridiumSkyblock extends JavaPlugin {
     public static IslandManager islandManager;
     @Getter
     private static CommandManager commandManager;
-    public Map<Schematics.FakeSchematic, Schematic> schems = new HashMap<>();
-    public Map<Schematics.FakeSchematic, Schematic> netherschems = new HashMap<>();
     public boolean updatingBlocks = false;
     public List<String> languages = new ArrayList<>();
     public LanguagesGUI languagesGUI;
@@ -94,6 +97,8 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     private HashMap<String, BlockData> legacy = new HashMap<>();
+
+    public static File schematicFolder;
 
     @Override
     public void onEnable() {
@@ -160,13 +165,19 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 setupPlaceholderAPI();
 
+                schematic = new Schematic();
+
                 Plugin worldedit = Bukkit.getPluginManager().getPlugin("WorldEdit");
                 if (worldedit != null) {
                     if (worldedit.getDescription().getVersion().startsWith("6")) {
                         worldEdit = new WorldEdit6();
                     } else if (worldedit.getDescription().getVersion().startsWith("7")) {
                         worldEdit = new WorldEdit7();
+                    } else {
+                        worldEdit = schematic;
                     }
+                } else {
+                    worldEdit = schematic;
                 }
 
                 try {
@@ -511,7 +522,7 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void loadSchematics() throws IOException {
-        File schematicFolder = new File(getDataFolder(), "schematics");
+        schematicFolder = new File(getDataFolder(), "schematics");
         if (!schematicFolder.exists()) {
             schematicFolder.mkdir();
         }
@@ -526,22 +537,22 @@ public class IridiumSkyblock extends JavaPlugin {
             }
         }
 
-        schems.clear();
-
         for (Schematics.FakeSchematic fakeSchematic : schematics.schematics) {
-            File schem = new File(schematicFolder, fakeSchematic.name);
+            if (fakeSchematic.netherisland == null) {
+                fakeSchematic.netherisland = fakeSchematic.name;
+            }
+            File overworld = new File(schematicFolder, fakeSchematic.name);
+            File nether = new File(schematicFolder, fakeSchematic.netherisland);
             try {
-                if (schem.exists()) {
-                    schems.put(fakeSchematic, Schematic.loadSchematic(schem));
-                    if (fakeSchematic.netherisland == null) {
-                        fakeSchematic.netherisland = fakeSchematic.name;
-                    }
-                    schem = new File(schematicFolder, fakeSchematic.netherisland);
-                    if (schem.exists()) {
-                        netherschems.put(fakeSchematic, Schematic.loadSchematic(schem));
-                    }
+                if (overworld.exists()) {
+                    schematic.getSchematicData(overworld);
                 } else {
                     IridiumSkyblock.getInstance().getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
+                }
+                if (nether.exists()) {
+                    schematic.getSchematicData(nether);
+                } else {
+                    IridiumSkyblock.getInstance().getLogger().warning("Failed to load schematic: " + fakeSchematic.netherisland);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
