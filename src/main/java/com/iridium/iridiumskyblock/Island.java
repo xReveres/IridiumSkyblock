@@ -382,12 +382,6 @@ public class Island {
         }
     }
 
-    public void hideBorder() {
-        for (Player p : getPlayersOnIsland()) {
-            hideBorder(p);
-        }
-    }
-
     public void sendBorder(Player p) {
         double size = IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size;
         if (size % 2 == 0) size++;
@@ -398,6 +392,12 @@ public class Island {
             Location loc = getCenter().clone();
             loc.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
             IridiumSkyblock.nms.sendWorldBorder(p, borderColor, size, loc);
+        }
+    }
+
+    public void hideBorder() {
+        for (Player p : getPlayersOnIsland()) {
+            hideBorder(p);
         }
     }
 
@@ -698,8 +698,13 @@ public class Island {
         return lastRegen.getTime() - System.currentTimeMillis();
     }
 
+    public void teleportPlayersHome() {
+        for (Player p : getPlayersOnIsland()) {
+            teleportHome(p);
+        }
+    }
+
     public void pasteSchematic(boolean deleteBlocks) {
-        //TODO
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
         lastRegen = c.getTime();
@@ -710,12 +715,6 @@ public class Island {
         for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
             if (!schematic.name.equals(this.schematic)) continue;
             home = new Location(IridiumSkyblock.getIslandManager().getWorld(), getCenter().getX() + schematic.x, schematic.y, getCenter().getZ() + schematic.z);
-        }
-    }
-
-    public void teleportPlayersHome() {
-        for (Player p : getPlayersOnIsland()) {
-            teleportHome(p);
         }
     }
 
