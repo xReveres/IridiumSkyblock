@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -58,6 +59,12 @@ public class PlayerPortalListener implements Listener {
                 event.setTo(island.getNetherhome());
             else if (worldName.equals(IridiumSkyblock.getConfiguration().netherWorldName))
                 event.setTo(island.getHome());
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                Island is = IridiumSkyblock.getIslandManager().getIslandViaLocation(player.getLocation());
+                if (is != null) {
+                    is.sendBorder(player);
+                }
+            });
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
