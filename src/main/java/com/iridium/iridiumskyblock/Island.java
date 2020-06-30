@@ -498,7 +498,7 @@ public class Island {
 
         final double minX = pos1.getX();
         final double minZ = pos1.getZ();
-        final double maxX = pos2.getZ();
+        final double maxX = pos2.getX();
         final double maxZ = pos2.getZ();
 
         final Map<String, Double> spawnerValueMap = blockValues.spawnervalue;
