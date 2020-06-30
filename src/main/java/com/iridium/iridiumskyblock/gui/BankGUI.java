@@ -68,8 +68,10 @@ public class BankGUI extends GUI implements Listener {
             if (e.getSlot() == (IridiumSkyblock.getInventories().crystals.slot == null ? 13 : IridiumSkyblock.getInventories().crystals.slot)) {
                 if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
-                        p.getInventory().addItem(Utils.getCrystals(island.getCrystals()));
-                        island.setCrystals(0);
+                        if (island.getCrystals() > 0) {
+                            p.getInventory().addItem(Utils.getCrystals(island.getCrystals()));
+                            island.setCrystals(0);
+                        }
                     }
                 } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
                     int i = 0;
