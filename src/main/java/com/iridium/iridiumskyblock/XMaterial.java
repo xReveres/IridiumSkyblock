@@ -1198,8 +1198,7 @@ public enum XMaterial {
      *
      * @since 1.0.0
      */
-    @Getter
-    private static final int version = Integer.parseInt(getMajorVersion(Bukkit.getServer().getClass().getPackage().getName()));
+    @Getter private static final int version = Integer.parseInt(getMajorVersion(Bukkit.getServer().getClass().getPackage().getName()));
 
     /**
      * Cached result if the server version is after the v1.13 flattening update.
@@ -1319,8 +1318,7 @@ public enum XMaterial {
      * @return data of this material, or 0 if none.
      * @since 1.0.0
      */
-    @Getter
-    public final byte data;
+    @Getter public final byte data;
 
     /**
      * A list of material names that was being used for older verions.
