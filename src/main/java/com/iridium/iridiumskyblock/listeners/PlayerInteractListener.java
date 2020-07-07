@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -62,34 +63,6 @@ public class PlayerInteractListener implements Listener {
                 } else if (!user.bypassing) {
                     event.setCancelled(true);
                     return;
-                }
-            }
-
-            final ItemStack item = event.getItem();
-            if (IridiumSkyblock.getConfiguration().allowWaterInNether
-                    && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                    && item != null
-                    && block != null) {
-                final World world = block.getWorld();
-                if (!world.getEnvironment().equals(World.Environment.NETHER)) return;
-                if (!item.getType().equals(Material.WATER_BUCKET)) return;
-
-                event.setCancelled(true);
-
-                final BlockFace face = event.getBlockFace();
-                block.getRelative(face).setType(Material.WATER);
-
-                final Block relative = block.getRelative(face);
-                final BlockPlaceEvent blockPlaceEvent = new BlockPlaceEvent(relative, relative.getState(), block, item, player, false);
-                if (blockPlaceEvent.isCancelled()) {
-                    block.getRelative(face).setType(Material.AIR);
-                } else if (player.getGameMode().equals(GameMode.SURVIVAL)) {
-                    if (item.getAmount() == 1) {
-                        item.setType(Material.BUCKET);
-                    } else {
-                        item.setAmount(item.getAmount() - 1);
-                        player.getInventory().addItem(new ItemStack(Material.BUCKET));
-                    }
                 }
             }
         } catch (Exception e) {
