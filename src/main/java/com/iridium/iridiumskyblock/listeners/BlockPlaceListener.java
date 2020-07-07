@@ -27,7 +27,15 @@ public class BlockPlaceListener implements Listener {
             final Location location = block.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) return;
+            if (island == null) {
+                User user = User.getUser(event.getPlayer());
+                if (islandManager.isIslandWorld(event.getBlock().getWorld())) {
+                    if (!user.bypassing) {
+                        event.setCancelled(true);
+                    }
+                }
+                return;
+            }
 
             final Player player = event.getPlayer();
             final User user = User.getUser(player);

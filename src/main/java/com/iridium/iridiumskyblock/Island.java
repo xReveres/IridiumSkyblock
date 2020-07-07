@@ -11,6 +11,7 @@ import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.runnables.InitIslandBlocksRunnable;
 import com.iridium.iridiumskyblock.runnables.InitIslandBlocksWithSenderRunnable;
 import com.iridium.iridiumskyblock.support.*;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
@@ -462,18 +463,18 @@ public class Island {
         final BlockValues blockValues = IridiumSkyblock.getBlockValues();
         final Map<XMaterial, Double> blockValueMap = blockValues.blockvalue;
 
-        double value = 0;
+        BigDecimal value = BigDecimal.ZERO;
         for (Map.Entry<String, Integer> entry : valuableBlocks.entrySet()) {
             final String item = entry.getKey();
-            final int amount = entry.getValue();
-            if (amount < 1) continue;
+            final BigDecimal amount = BigDecimal.valueOf(entry.getValue());
+            if (amount.intValue() < 1) continue;
             final Optional<XMaterial> xmaterial = XMaterial.matchXMaterial(item);
             if (!xmaterial.isPresent()) continue;
 
-            final Double blockValue = blockValueMap.get(xmaterial.get());
-            if (blockValue == null) continue;
+            if (!blockValueMap.containsKey(xmaterial.get())) continue;
+            final BigDecimal blockValue = BigDecimal.valueOf(blockValueMap.get(xmaterial.get()));
 
-            value += (amount * blockValue);
+            value = value.add(blockValue.multiply(amount));
         }
 
         final Config config = IridiumSkyblock.getConfiguration();
@@ -498,7 +499,7 @@ public class Island {
 
         final double minX = pos1.getX();
         final double minZ = pos1.getZ();
-        final double maxX = pos2.getZ();
+        final double maxX = pos2.getX();
         final double maxZ = pos2.getZ();
 
         final Map<String, Double> spawnerValueMap = blockValues.spawnervalue;
@@ -536,28 +537,28 @@ public class Island {
 
                         final EntityType type = spawner.getSpawnedType();
                         final String typeName = type.name();
-                        final Double spawnerValue = spawnerValueMap.get(typeName);
-                        if (spawnerValue == null) continue;
+                        final BigDecimal spawnerValue = BigDecimal.valueOf(spawnerValueMap.get(typeName));
+                        if (!spawnerValueMap.containsKey(typeName)) continue;
 
-                        final int amount = (getSpawnerAmount == null) ? 1 : getSpawnerAmount.apply(spawner);
+                        final BigDecimal amount = (getSpawnerAmount == null) ? BigDecimal.ONE : BigDecimal.valueOf(getSpawnerAmount.apply(spawner));
                         spawners.compute(typeName, (name, original) -> {
-                            if (original == null) return amount;
-                            return original + amount;
+                            if (original == null) return amount.intValue();
+                            return original + amount.intValue();
                         });
 
-                        value += (spawnerValue * amount);
+                        value = value.add(spawnerValue.multiply(amount));
                     }
                 }
             }
         }
 
-        this.value = value;
-        if (startvalue == -1) startvalue = value;
+        this.value = value.doubleValue();
+        if (startvalue == -1) startvalue = value.doubleValue();
 
         for (Mission mission : IridiumSkyblock.getMissions().missions) {
             missionLevels.putIfAbsent(mission.name, 1);
             if (mission.levels.get(missionLevels.get(mission.name)).type == MissionType.VALUE_INCREASE) {
-                setMission(mission.name, (int) (value - startvalue));
+                setMission(mission.name, (int) (value.doubleValue() - startvalue));
             }
         }
     }

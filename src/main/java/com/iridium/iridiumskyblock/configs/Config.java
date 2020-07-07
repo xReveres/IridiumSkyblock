@@ -23,6 +23,7 @@ public class Config {
     public boolean automaticUpdate = true;
     public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
+    public boolean forceShortPortalRadius = true;
     public boolean islandMenu = true;
     public boolean voidTeleport = true;
     public boolean notifyAvailableUpdate = true;
@@ -80,4 +81,5 @@ public class Config {
     public List<XBiome> biomes = Arrays.asList(XBiome.values());
 
     public List<EntityType> blockedEntities = Arrays.asList(EntityType.PRIMED_TNT, EntityType.MINECART_TNT, EntityType.FIREBALL, EntityType.SMALL_FIREBALL, EntityType.ENDER_PEARL);
+
 }
