@@ -32,9 +32,9 @@ public class BlockPlaceListener implements Listener {
                 if (islandManager.isIslandWorld(event.getBlock().getWorld())) {
                     if (!user.bypassing) {
                         event.setCancelled(true);
-                        return;
                     }
                 }
+                return;
             }
 
             final Player player = event.getPlayer();
