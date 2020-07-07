@@ -471,8 +471,8 @@ public class Island {
             final Optional<XMaterial> xmaterial = XMaterial.matchXMaterial(item);
             if (!xmaterial.isPresent()) continue;
 
-            final BigDecimal blockValue = BigDecimal.valueOf(blockValueMap.get(xmaterial.get()));
             if (!blockValueMap.containsKey(xmaterial.get())) continue;
+            final BigDecimal blockValue = BigDecimal.valueOf(blockValueMap.get(xmaterial.get()));
 
             value = value.add(blockValue.multiply(amount));
         }
