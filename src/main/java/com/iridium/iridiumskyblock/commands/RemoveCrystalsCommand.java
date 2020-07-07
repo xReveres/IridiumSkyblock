@@ -36,7 +36,7 @@ public class RemoveCrystalsCommand extends Command {
                         island.setCrystals(island.getCrystals() - amount);
                         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().removedcrystals.replace("%crystals%", args[2]).replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     } else {
-                        // TODO: Make this message configurable
+                        //TODO: Make this message configurable
                         sender.sendMessage(args[2] + " is not a number");
                     }
                 } else {

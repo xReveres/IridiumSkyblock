@@ -37,7 +37,7 @@ public class GiveCrystalsCommand extends Command {
                         if (player.getPlayer() != null)
                             player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().givenCrystals.replace("%crystals%", args[2]).replace("%player%", sender.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     } else {
-                        // TODO: Make this message configurable
+                        //TODO: Make this message configurable
                         sender.sendMessage(args[2] + " is not a number");
                     }
                 } else {

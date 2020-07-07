@@ -46,7 +46,7 @@ public class GiveBoosterCommand extends Command {
                             island.setSpawnerBooster(amount);
                         }
                     } else {
-                        // TODO: Make this message configurable
+                        //TODO: Make this message configurable
                         sender.sendMessage(args[2] + " is not a number");
                     }
                 } else {

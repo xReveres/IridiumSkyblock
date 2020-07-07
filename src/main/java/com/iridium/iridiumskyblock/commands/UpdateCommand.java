@@ -29,7 +29,7 @@ public class UpdateCommand extends Command {
             if (StringUtils.isNumeric(args[2])) {
                 blocksPerTick = Integer.parseInt(args[2]);
             } else {
-                // TODO: Make this message configurable
+                //TODO: Make this message configurable
                 sender.sendMessage(args[2] + " is not a number");
             }
         }
