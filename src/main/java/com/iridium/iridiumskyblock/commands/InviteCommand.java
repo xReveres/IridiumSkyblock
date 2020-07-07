@@ -28,35 +28,20 @@ public class InviteCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-        if (player != null) {
-            User u = User.getUser(player);
-            if (user.getIsland() != null) {
-                if (u.getIsland() == null) {
-                    if (user.bypassing || user.getIsland().getPermissions(user.role).inviteMembers) {
-                        u.invites.add(user.getIsland().getId());
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerInvited.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                        if (player.getPlayer() != null) {
-                            BaseComponent[] components = TextComponent.fromLegacyText(Utils.color(IridiumSkyblock.getMessages().invitedByPlayer.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-
-                            ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is join " + p.getName());
-                            HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to join players island!").create());
-                            for (BaseComponent component : components) {
-                                component.setClickEvent(clickEvent);
-                                component.setHoverEvent(hoverEvent);
-                            }
-                            player.getPlayer().spigot().sendMessage(components);
-                        }
-                    } else {
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
+        User u = User.getUser(player);
+        if (user.getIsland() != null) {
+            if (u.getIsland() == null) {
+                if (user.bypassing || user.getIsland().getPermissions(user.role).inviteMembers) {
+                    u.invites.add(user.getIsland().getId());
+                    runCommand(p, player);
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 
@@ -68,31 +53,34 @@ public class InviteCommand extends Command {
         }
         Player p = (Player) sender;
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-        if (player != null) {
-            User u = User.getUser(player);
-            if (island != null) {
-                if (u.getIsland() == null) {
-                    u.invites.add(island.getId());
-                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerInvited.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    if (player.getPlayer() != null) {
-                        BaseComponent[] components = TextComponent.fromLegacyText(Utils.color(IridiumSkyblock.getMessages().invitedByPlayer.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-
-                        ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is join " + p.getName());
-                        HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to join players island!").create());
-                        for (BaseComponent component : components) {
-                            component.setClickEvent(clickEvent);
-                            component.setHoverEvent(hoverEvent);
-                        }
-                        player.getPlayer().spigot().sendMessage(components);
-                    }
-                } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
+        User u = User.getUser(player);
+        if (island != null) {
+            if (u.getIsland() == null) {
+                u.invites.add(island.getId());
+                runCommand(p, player);
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        }
+    }
+
+    private void runCommand(Player player, OfflinePlayer invitedPlayer) {
+        player.sendMessage(Utils
+            .color(IridiumSkyblock.getMessages().playerInvited.replace("%player%", invitedPlayer.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        if (invitedPlayer.getPlayer() != null) {
+            BaseComponent[] components = TextComponent.fromLegacyText(Utils.color(IridiumSkyblock.getMessages().invitedByPlayer.replace("%player%", player
+                .getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+
+            ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is join " + player
+                .getName());
+            HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to join players island!").create());
+            for (BaseComponent component : components) {
+                component.setClickEvent(clickEvent);
+                component.setHoverEvent(hoverEvent);
+            }
+            invitedPlayer.getPlayer().spigot().sendMessage(components);
         }
     }
 

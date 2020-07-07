@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -30,7 +31,7 @@ public class GiveBoosterCommand extends Command {
             if (player != null) {
                 Island island = User.getUser(player).getIsland();
                 if (island != null) {
-                    try {
+                    if (args.length == 3 || StringUtils.isNumeric(args[3])) {
                         int amount = args.length == 3 ? 3600 : Integer.parseInt(args[3]);
                         if (args[2].equalsIgnoreCase("exp")) {
                             island.setExpBooster(amount);
@@ -44,8 +45,8 @@ public class GiveBoosterCommand extends Command {
                         if (args[2].equalsIgnoreCase("spawner")) {
                             island.setSpawnerBooster(amount);
                         }
-                    } catch (Exception e) {
-                        sender.sendMessage(args[2] + "is not a number");
+                    } else {
+                        sender.sendMessage(args[2] + " is not a number"); // TODO: Make this message configurable
                     }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

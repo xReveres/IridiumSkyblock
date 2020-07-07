@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -25,10 +26,10 @@ public class UpdateCommand extends Command {
         }
         int blocksPerTick = 1000;
         if (args.length == 3) {
-            try {
+            if (StringUtils.isNumeric(args[2])) {
                 blocksPerTick = Integer.parseInt(args[2]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(args[2] + "is not a number");
+            } else {
+                sender.sendMessage(args[2] + " is not a number"); // TODO: Make this message configurable
             }
         }
 
@@ -50,19 +51,15 @@ public class UpdateCommand extends Command {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
 
-        if (player != null) {
-            User u = User.getUser(player);
-            if (u.getIsland() != null) {
-                if (u.getIsland().updating) {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().alreadyRecalculating.replace("%player%", User.getUser(u.getIsland().getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    return;
-                }
-                u.getIsland().forceInitBlocks(sender, blocksPerTick, User.getUser(u.getIsland().getOwner()).name);
-            } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        User u = User.getUser(player);
+        if (u.getIsland() != null) {
+            if (u.getIsland().updating) {
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().alreadyRecalculating.replace("%player%", User.getUser(u.getIsland().getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                return;
             }
+            u.getIsland().forceInitBlocks(sender, blocksPerTick, User.getUser(u.getIsland().getOwner()).name);
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

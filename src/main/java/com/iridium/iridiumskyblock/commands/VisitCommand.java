@@ -26,19 +26,15 @@ public class VisitCommand extends Command {
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-        if (player != null) {
-            User user = User.getUser(player);
-            if (user.getIsland() != null) {
-                if (user.getIsland().isVisit() || User.getUser(p).bypassing) {
-                    user.getIsland().teleportHome(p);
-                } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
+        User user = User.getUser(player);
+        if (user.getIsland() != null) {
+            if (user.getIsland().isVisit() || User.getUser(p).bypassing) {
+                user.getIsland().teleportHome(p);
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

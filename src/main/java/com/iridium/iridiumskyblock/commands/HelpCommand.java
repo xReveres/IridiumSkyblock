@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
 import net.md_5.bungee.api.chat.*;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,11 +23,10 @@ public class HelpCommand extends Command {
         Player p = (Player) cs;
         int page = 1;
         if (args.length == 2) {
-            try {
-                page = Integer.parseInt(args[1]);
-            } catch (NumberFormatException e) {
+            if (!StringUtils.isNumeric(args[1])) {
                 return;
             }
+            page = Integer.parseInt(args[1]);
         }
         int maxpage = (int) Math.ceil(IridiumSkyblock.getCommandManager().commands.size() / 18.00);
         int current = 0;

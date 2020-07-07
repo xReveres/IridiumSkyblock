@@ -27,24 +27,20 @@ public class JoinCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-        if (player != null) {
-            User u = User.getUser(player);
-            if (u.getIsland() != null) {
-                if (user.getIsland() == null) {
-                    Island island = u.getIsland();
-                    if (user.invites.contains(island.getId())) {
-                        island.addUser(user);
-                    } else {
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noActiveInvites.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
+        User u = User.getUser(player);
+        if (u.getIsland() != null) {
+            if (user.getIsland() == null) {
+                Island island = u.getIsland();
+                if (user.invites.contains(island.getId())) {
+                    island.addUser(user);
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noActiveInvites.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

@@ -29,19 +29,15 @@ public class BanCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-            if (player != null) {
-                if (!user.getIsland().equals(User.getUser(player).getIsland())) {
-                    user.getIsland().addBan(User.getUser(player));
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerBanned.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    if (player.getPlayer() != null) {
-                        if (user.getIsland().isInIsland(player.getPlayer().getLocation())) {
-                            player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                            user.getIsland().spawnPlayer(player.getPlayer());
-                        }
+            if (!user.getIsland().equals(User.getUser(player).getIsland())) {
+                user.getIsland().addBan(User.getUser(player));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerBanned.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                if (player.getPlayer() != null) {
+                    if (user.getIsland().isInIsland(player.getPlayer().getLocation())) {
+                        player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        user.getIsland().spawnPlayer(player.getPlayer());
                     }
                 }
-            } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
@@ -57,19 +53,15 @@ public class BanCommand extends Command {
         }
         if (island != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[3]);
-            if (player != null) {
-                if (!island.equals(User.getUser(player).getIsland())) {
-                    island.addBan(User.getUser(player));
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerBanned.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    if (player.getPlayer() != null) {
-                        if (island.isInIsland(player.getPlayer().getLocation())) {
-                            player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                            island.spawnPlayer(player.getPlayer());
-                        }
+            if (!island.equals(User.getUser(player).getIsland())) {
+                island.addBan(User.getUser(player));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerBanned.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                if (player.getPlayer() != null) {
+                    if (island.isInIsland(player.getPlayer().getLocation())) {
+                        player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        island.spawnPlayer(player.getPlayer());
                     }
                 }
-            } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
