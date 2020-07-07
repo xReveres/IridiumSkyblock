@@ -19,7 +19,7 @@ public class PlayerPortalListener implements Listener {
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent event) {
         try {
-            final Location fromLocation = event.getFrom();
+            final Location fromLocation = event.getFrom().clone();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             final Island island = islandManager.getIslandViaLocation(fromLocation);
             if (island == null) return;
@@ -55,6 +55,11 @@ public class PlayerPortalListener implements Listener {
             if (world == null) return;
 
             final String worldName = world.getName();
+            // This setting forces portal search radius to 16, avoiding conflicts with bordering portals
+            // (May have unintended consequences...?)
+            if(IridiumSkyblock.getConfiguration().forceShortPortalRadius)
+                event.setSearchRadius(16);
+
             if (worldName.equals(IridiumSkyblock.getConfiguration().worldName))
                 event.setTo(island.getNetherhome());
             else if (worldName.equals(IridiumSkyblock.getConfiguration().netherWorldName))
