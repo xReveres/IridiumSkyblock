@@ -168,7 +168,13 @@ public class IridiumSkyblock extends JavaPlugin {
                 schematic = new Schematic();
 
                 Plugin worldedit = Bukkit.getPluginManager().getPlugin("WorldEdit");
-                if (worldedit != null) {
+                Plugin asyncworldedit = Bukkit.getPluginManager().getPlugin("AsyncWorldEdit");
+                /*
+                If AsyncWorldEdit is loaded, then the schematic wont get pasted instantly.
+                This will cause the plugin to try to teleport to the island, however as the schematic hasnt been pasted yet
+                it will keep retrying to paste the schematic and get caught into a constant loop of pasting the island until the server crashes
+                 */
+                if (worldedit != null && asyncworldedit == null) {
                     if (worldedit.getDescription().getVersion().startsWith("6")) {
                         worldEdit = new WorldEdit6();
                     } else if (worldedit.getDescription().getVersion().startsWith("7")) {
