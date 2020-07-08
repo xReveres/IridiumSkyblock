@@ -24,29 +24,25 @@ public class KickCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p); // User kicking the player
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-        if (player != null) {
-            User u = User.getUser(player); // Player we want to kick
-            if (user.getIsland() != null) {
-                if (user.getIsland().equals(u.getIsland())) {
-                    if (u.role.equals(Role.Owner)) {
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    } else {
-                        if (user.bypassing || user.getIsland().getPermissions(u.getRole()).kickMembers) {
-                            user.getIsland().removeUser(u);
-                            if (player.getPlayer() != null)
-                                player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                        } else {
-                            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                        }
-                    }
+        User u = User.getUser(player); // Player we want to kick
+        if (user.getIsland() != null) {
+            if (user.getIsland().equals(u.getIsland())) {
+                if (u.role.equals(Role.Owner)) {
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    if (user.bypassing || user.getIsland().getPermissions(u.getRole()).kickMembers) {
+                        user.getIsland().removeUser(u);
+                        if (player.getPlayer() != null)
+                            player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    } else {
+                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    }
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 
@@ -56,27 +52,22 @@ public class KickCommand extends Command {
             sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is admin <island> kick <player>");
             return;
         }
-        Player p = (Player) sender;
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-        if (player != null) {
-            User u = User.getUser(player); // Player we want to kick
-            if (island != null) {
-                if (island.equals(u.getIsland())) {
-                    if (u.role.equals(Role.Owner)) {
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    } else {
-                        island.removeUser(u);
-                        if (player.getPlayer() != null)
-                            player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
+        User u = User.getUser(player); // Player we want to kick
+        if (island != null) {
+            if (island.equals(u.getIsland())) {
+                if (u.role.equals(Role.Owner)) {
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    island.removeUser(u);
+                    if (player.getPlayer() != null)
+                        player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

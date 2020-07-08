@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -30,12 +31,13 @@ public class RemoveCrystalsCommand extends Command {
             if (player != null) {
                 Island island = User.getUser(player).getIsland();
                 if (island != null) {
-                    try {
+                    if (StringUtils.isNumeric(args[2])) {
                         int amount = Integer.parseInt(args[2]);
                         island.setCrystals(island.getCrystals() - amount);
                         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().removedcrystals.replace("%crystals%", args[2]).replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    } catch (Exception e) {
-                        sender.sendMessage(args[2] + "is not a number");
+                    } else {
+                        //TODO: Make this message configurable
+                        sender.sendMessage(args[2] + " is not a number");
                     }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

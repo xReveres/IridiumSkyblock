@@ -56,7 +56,7 @@ public class GiveUpgradeCommand extends Command {
                             }
                         }
                     } catch (NumberFormatException e) {
-                        sender.sendMessage(args[2] + "is not a number");
+                        sender.sendMessage(args[2] + " is not a number");
                     }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

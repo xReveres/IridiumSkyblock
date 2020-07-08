@@ -31,14 +31,10 @@ public class TransferCommand extends Command {
             Island island = user.getIsland();
             if (island.getOwner().equals(p.getUniqueId().toString())) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-                if (player != null) {
-                    if (User.getUser(player).getIsland() == island) {
-                        p.openInventory(new ConfirmationGUI(user.getIsland(), () -> island.setOwner(player), IridiumSkyblock.getMessages().transferAction.replace("%player%", player.getName())).getInventory());
-                    } else {
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
+                if (User.getUser(player).getIsland() == island) {
+                    p.openInventory(new ConfirmationGUI(user.getIsland(), () -> island.setOwner(player), IridiumSkyblock.getMessages().transferAction.replace("%player%", player.getName())).getInventory());
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else {
                 sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
@@ -57,14 +53,10 @@ public class TransferCommand extends Command {
         Player p = (Player) sender;
         if (island != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-            if (player != null) {
-                if (User.getUser(player).getIsland() == island) {
-                    p.openInventory(new ConfirmationGUI(island, () -> island.setOwner(player), IridiumSkyblock.getMessages().transferAction.replace("%player%", player.getName())).getInventory());
-                } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
+            if (User.getUser(player).getIsland() == island) {
+                p.openInventory(new ConfirmationGUI(island, () -> island.setOwner(player), IridiumSkyblock.getMessages().transferAction.replace("%player%", player.getName())).getInventory());
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

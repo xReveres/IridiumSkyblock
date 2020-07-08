@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -23,33 +24,15 @@ public class AdminCommand extends Command {
         Player p = (Player) sender;
         //Open island admin gui
         if (args.length == 2) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-            if (player != null) {
-                User u = User.getUser(player);
-                if (u.getIsland() != null) {
-                    p.openInventory(u.getIsland().getIslandAdminGUI().getInventory());
-                } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-            }
+            runCommand(args, p);
         } else if (args.length >= 2) {
-            Island island = null;
-            try {
-                int id = Integer.parseInt(args[1]);
-                island = IridiumSkyblock.getIslandManager().getIslandViaId(id);
-            } catch (NumberFormatException e) {
-                OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-                if (player != null) {
-                    User u = User.getUser(player);
-                    if (u.getIsland() != null) {
-                        p.openInventory(u.getIsland().getIslandAdminGUI().getInventory());
-                    } else {
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
+            Island island;
+            if (!StringUtils.isNumeric(args[1])) {
+                runCommand(args, p);
+                return;
             }
+            int id = Integer.parseInt(args[1]);
+            island = IridiumSkyblock.getIslandManager().getIslandViaId(id);
             if (island != null) {
                 for (com.iridium.iridiumskyblock.commands.Command command : IridiumSkyblock.getCommandManager().commands) {
                     if (command.getAliases().contains(args[2]) && command.isEnabled()) {
@@ -67,6 +50,16 @@ public class AdminCommand extends Command {
             sender.sendMessage("/is admin <island>");
         }
 
+    }
+
+    private void runCommand(String[] args, Player p) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
+        User u = User.getUser(player);
+        if (u.getIsland() != null) {
+            p.openInventory(u.getIsland().getIslandAdminGUI().getInventory());
+        } else {
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        }
     }
 
     @Override
