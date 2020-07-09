@@ -11,7 +11,7 @@ import java.util.List;
 public class ReloadCommand extends Command {
 
     public ReloadCommand() {
-        super(Collections.singletonList("reload"), "Reload your configurations", "reload", false);
+        super(Collections.singletonList("reload"), "Reload your configurations", "iridiumskyblock.reload", false);
     }
 
     @Override

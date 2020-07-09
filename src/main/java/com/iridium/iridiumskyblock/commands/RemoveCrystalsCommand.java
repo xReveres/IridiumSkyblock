@@ -15,7 +15,7 @@ import java.util.List;
 public class RemoveCrystalsCommand extends Command {
 
     public RemoveCrystalsCommand() {
-        super(Collections.singletonList("removecrystals"), "remove a player's Crystals", "removecrystals", false);
+        super(Collections.singletonList("removecrystals"), "remove a player's Crystals", "iridiumskyblock.removecrystals", false);
     }
 
     @Override

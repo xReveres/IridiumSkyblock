@@ -16,7 +16,7 @@ import java.util.List;
 public class AdminCommand extends Command {
 
     public AdminCommand() {
-        super(Collections.singletonList("admin"), "Control a players Island", "admin", true);
+        super(Collections.singletonList("admin"), "Control a players Island", "iridiumskyblock.admin", true);
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
 public class GiveCrystalsCommand extends Command {
 
     public GiveCrystalsCommand() {
-        super(Collections.singletonList("givecrystals"), "Give a player Crystals", "givecrystals", false);
+        super(Collections.singletonList("givecrystals"), "Give a player Crystals", "iridiumskyblock.givecrystals", false);
     }
 
     @Override

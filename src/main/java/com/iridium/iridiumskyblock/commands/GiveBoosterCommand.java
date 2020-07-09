@@ -16,7 +16,7 @@ import java.util.List;
 public class GiveBoosterCommand extends Command {
 
     public GiveBoosterCommand() {
-        super(Collections.singletonList("givebooster"), "Give an Island a Booster", "givebooster", false);
+        super(Collections.singletonList("givebooster"), "Give an Island a Booster", "iridiumskyblock.givebooster", false);
     }
 
     @Override
