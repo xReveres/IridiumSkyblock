@@ -537,8 +537,8 @@ public class Island {
 
                         final EntityType type = spawner.getSpawnedType();
                         final String typeName = type.name();
-                        final BigDecimal spawnerValue = BigDecimal.valueOf(spawnerValueMap.get(typeName));
                         if (!spawnerValueMap.containsKey(typeName)) continue;
+                        final BigDecimal spawnerValue = BigDecimal.valueOf(spawnerValueMap.get(typeName));
 
                         final BigDecimal amount = (getSpawnerAmount == null) ? BigDecimal.ONE : BigDecimal.valueOf(getSpawnerAmount.apply(spawner));
                         spawners.compute(typeName, (name, original) -> {
