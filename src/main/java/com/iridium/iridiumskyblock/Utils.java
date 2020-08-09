@@ -229,7 +229,7 @@ public class Utils {
 
                 new Placeholder("sizeblocks", IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(island.getSizeLevel()).size + ""),
                 new Placeholder("membercount", IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(island.getMemberLevel()).size + ""),
-                new Placeholder("warpcount", IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.get(island.getMemberLevel()).size + ""),
+                new Placeholder("warpcount", IridiumSkyblock.getUpgrades().warpUpgrade.upgrades.get(island.getWarpLevel()).size + ""),
 
                 new Placeholder("sizelevel", island.getSizeLevel() + ""),
                 new Placeholder("memberlevel", island.getMemberLevel() + ""),
