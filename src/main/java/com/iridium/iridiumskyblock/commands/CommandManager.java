@@ -117,11 +117,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                         } else {
                             u.getIsland().teleportHome(p);
                         }
-                        return true;
                     } else {
                         IridiumSkyblock.getIslandManager().createIsland(p);
-                        return true;
                     }
+                    return true;
                 }
             }
             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().unknownCommand.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

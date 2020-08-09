@@ -13,7 +13,7 @@ import java.util.List;
 public class BypassCommand extends Command {
 
     public BypassCommand() {
-        super(Collections.singletonList("bypass"), "Bypass all island restrictions", "bypass", true);
+        super(Collections.singletonList("bypass"), "Bypass all island restrictions", "iridiumskyblock.bypass", true);
     }
 
     @Override

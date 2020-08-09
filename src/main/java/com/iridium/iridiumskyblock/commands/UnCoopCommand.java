@@ -28,18 +28,14 @@ public class UnCoopCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-            if (player != null) {
-                if (!user.getIsland().equals(User.getUser(player).getIsland()) && User.getUser(player).getIsland() != null) {
-                    if (user.bypassing || user.getIsland().getPermissions(user.getRole()).coop) {
-                        user.getIsland().removeCoop(User.getUser(player).getIsland());
-                    } else {
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
+            if (!user.getIsland().equals(User.getUser(player).getIsland()) && User.getUser(player).getIsland() != null) {
+                if (user.bypassing || user.getIsland().getPermissions(user.getRole()).coop) {
+                    user.getIsland().removeCoop(User.getUser(player).getIsland());
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
@@ -54,14 +50,10 @@ public class UnCoopCommand extends Command {
         }
         if (island != null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-            if (player != null) {
-                if (!island.equals(User.getUser(player).getIsland()) && User.getUser(player).getIsland() != null) {
-                    island.removeCoop(User.getUser(player).getIsland());
-                } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
+            if (!island.equals(User.getUser(player).getIsland()) && User.getUser(player).getIsland() != null) {
+                island.removeCoop(User.getUser(player).getIsland());
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

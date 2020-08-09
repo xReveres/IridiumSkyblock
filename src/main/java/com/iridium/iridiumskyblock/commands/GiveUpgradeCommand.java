@@ -15,7 +15,7 @@ import java.util.List;
 public class GiveUpgradeCommand extends Command {
 
     public GiveUpgradeCommand() {
-        super(Collections.singletonList("giveupgrade"), "Give an Island an Upgrade", "giveupgrade", false);
+        super(Collections.singletonList("giveupgrade"), "Give an Island an Upgrade", "iridiumskyblock.giveupgrade", false);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class GiveUpgradeCommand extends Command {
                             }
                         }
                     } catch (NumberFormatException e) {
-                        sender.sendMessage(args[2] + "is not a number");
+                        sender.sendMessage(args[2] + " is not a number");
                     }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

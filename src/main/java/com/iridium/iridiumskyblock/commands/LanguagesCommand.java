@@ -11,7 +11,7 @@ import java.util.List;
 public class LanguagesCommand extends Command {
 
     public LanguagesCommand() {
-        super(Arrays.asList("language", "languages", "translate"), "Change the plugin language", "language", true);
+        super(Arrays.asList("language", "languages", "translate"), "Change the plugin language", "iridiumskyblock.language", true);
     }
 
     @Override

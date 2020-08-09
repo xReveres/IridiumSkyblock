@@ -154,7 +154,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 shopGUI = new ShopGUI();
                 visitGUI = new HashMap<>();
 
-                registerListeners(new EntitySpawnListener(), new LeafDecayListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener());
+                registerListeners(new EntitySpawnListener(), new LeafDecayListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener());
 
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
 
@@ -168,7 +168,13 @@ public class IridiumSkyblock extends JavaPlugin {
                 schematic = new Schematic();
 
                 Plugin worldedit = Bukkit.getPluginManager().getPlugin("WorldEdit");
-                if (worldedit != null) {
+                Plugin asyncworldedit = Bukkit.getPluginManager().getPlugin("AsyncWorldEdit");
+                /*
+                If AsyncWorldEdit is loaded, then the schematic wont get pasted instantly.
+                This will cause the plugin to try to teleport to the island, however as the schematic hasnt been pasted yet
+                it will keep retrying to paste the schematic and get caught into a constant loop of pasting the island until the server crashes
+                 */
+                if (worldedit != null && asyncworldedit == null) {
                     if (worldedit.getDescription().getVersion().startsWith("6")) {
                         worldEdit = new WorldEdit6();
                     } else if (worldedit.getDescription().getVersion().startsWith("7")) {
