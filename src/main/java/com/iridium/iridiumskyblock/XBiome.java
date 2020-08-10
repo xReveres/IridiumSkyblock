@@ -26,7 +26,6 @@ import com.google.common.base.Optional;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
@@ -126,6 +125,7 @@ public enum XBiome {
     WOODED_MOUNTAINS("EXTREME_HILLS_WITH_TREES", "EXTREME_HILLS_PLUS"),
     BAMBOO_JUNGLE,
     BAMBOO_JUNGLE_HILLS;
+    public final boolean supports = XMaterial.supports(16);
 
     /**
      * A cached list of {@link XBiome#values()} to avoid allocating memory for
@@ -308,7 +308,7 @@ public enum XBiome {
 
         for (int x = start.getBlockX(); x < end.getBlockX(); x++) {
             // y loop for 1.16+ support (vertical biomes)
-            for (int y = 0; y < 256; y++) {
+            for (int y = 0; y < (supports ? 256 : 1); y++) {
                 for (int z = start.getBlockZ(); z < end.getBlockZ(); z++) {
                     Block block = new Location(start.getWorld(), x, y, z).getBlock();
                     if (block.getBiome() != biome) block.setBiome(biome);
