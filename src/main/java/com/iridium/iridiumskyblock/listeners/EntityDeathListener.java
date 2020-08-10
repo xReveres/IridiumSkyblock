@@ -38,7 +38,7 @@ public class EntityDeathListener implements Listener {
                 if (level.type != MissionType.ENTITY_KILL) continue;
 
                 final List<String> conditions = level.conditions;
-                if (conditions.isEmpty() || conditions.contains(entity.toString()))
+                if (conditions.isEmpty() || conditions.contains(entity.getName()) || conditions.contains(entity.toString()))
                     userIsland.addMission(mission.name, 1);
             }
 
