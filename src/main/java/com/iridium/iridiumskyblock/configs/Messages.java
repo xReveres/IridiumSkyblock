@@ -101,16 +101,15 @@ public class Messages {
     public String islandDeleted = "%prefix% &7Your island has been deleted";
     public String mustBeInIsland = "%prefix% &7You must be in your island to do this.";
     public String cannotSellItem = "%prefix% &7This is not a sellable item.";
-    public String updateStarted = "%prefix% &7%player%'s Island is being recalculated";
-    public String updateFinished = "%prefix% &7%player%'s Island recalculation has finished";
-    public String updatePercent = "%prefix% &7Recalculating %player%'s Island %percent%% complete";
-    public String alreadyRecalculating = "%prefix% &7Already recalculating %player%'s Island";
     public String blockLimitReached = "%prefix% &7The island limit for this block has already been reached";
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help";
     public String noPermissionBuild = "%prefix% &7You do not have permission to build on this island";
     public String noPermissionBreakSpawners = "%prefix% &7You do not have permission to break spawners on this island";
     public String depositedCrystals = "%prefix% &7You have deposited %amount% crystals into your island bank";
     public String helpPageHoverMessage = "Click to go to page %page%";
+    public String calculatingIslands = "%prefix% &7Calculating Players islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
+    public String calculatingFinished = "%prefix% &7Calculating Players islands Finished";
+    public String calculationAlreadyInProcess = "%prefix% &7Calculating Players islands already in Process";
 
     public Map<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {

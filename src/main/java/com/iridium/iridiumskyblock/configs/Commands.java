@@ -47,4 +47,5 @@ public class Commands {
     public BiomeCommand biomeCommand = new BiomeCommand();
     public HelpCommand helpCommand = new HelpCommand();
     public LanguagesCommand languagesCommand = new LanguagesCommand();
+    public RecalculateCommand recalculateCommand = new RecalculateCommand();
 }
