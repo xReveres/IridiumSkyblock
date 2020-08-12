@@ -29,9 +29,10 @@ public class RecalculateCommand extends Command {
         final IslandManager manager = IridiumSkyblock.getIslandManager();
         int interval = 5; // four islands every second
         int total = manager.islands.size();
-        int totalSecconds = total * (interval / 20);
+        double totalSecconds = total * (interval / 20.00);
         int minutes = (int) Math.floor(totalSecconds / 60.00);
-        int seconds = totalSecconds - (minutes * 60);
+        double seconds = (int) (totalSecconds - (minutes * 60));
+        sender.sendMessage(total + " " + totalSecconds + " " + minutes + " " + seconds);
         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculatingIslands.replace("%seconds%", seconds + "").replace("%minutes%", minutes + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             ListIterator<Integer> islands = new ArrayList<>(manager.islands.keySet()).listIterator();

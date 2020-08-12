@@ -252,7 +252,7 @@ public class Island {
         for (int x = minx; x <= maxx; x++) {
             for (int z = minz; z <= maxz; z++) {
                 Chunk chunk = manager.getWorld().getChunkAt(x, z);
-                ChunkSnapshot snapshot = chunk.getChunkSnapshot();
+                ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
 
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     for (int y = 0; y < 256; y++) {
@@ -272,6 +272,8 @@ public class Island {
                                 final XMaterial xMaterial = XMaterial.matchXMaterial(material);
                                 if (!(Utils.isBlockValuable(xMaterial)))
                                     continue;
+                                if (!isInIsland(x1 + (minx * 16), z1 + (minz * 16)))
+                                    continue;
                                 valuableBlocks.compute(xMaterial.name(), (xmaterialName, original) -> {
                                     if (original == null) return 1;
                                     return original + 1;
@@ -280,16 +282,6 @@ public class Island {
                         }
                     }
                 });
-
-                for (BlockState state : chunk.getTileEntities()) {
-                    if (state instanceof CreatureSpawner) {
-                        CreatureSpawner spawner = (CreatureSpawner) state;
-                        spawners.compute(spawner.getSpawnedType().name(), (name, original) -> {
-                            if (original == null) return 1;
-                            return original + 1;
-                        });
-                    }
-                }
             }
         }
         Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
