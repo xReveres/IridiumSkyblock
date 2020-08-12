@@ -254,14 +254,16 @@ public class Island {
                 Chunk chunk = manager.getWorld().getChunkAt(x, z);
                 ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
 
-                Chunk netherchunk = manager.getWorld().getChunkAt(x, z);
+                Chunk netherchunk = manager.getNetherWorld().getChunkAt(x, z);
                 ChunkSnapshot nethersnapshot = netherchunk.getChunkSnapshot(false, false, false);
 
+                int finalX = x;
+                int finalZ = z;
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     for (int y = 0; y < 256; y++) {
                         for (int x1 = 0; x1 < 16; x1++) {
                             for (int z1 = 0; z1 < 16; z1++) {
-                                if (!isInIsland(x1 + (minx * 16), z1 + (minz * 16)))
+                                if (!isInIsland(x1 + (16 * finalX), z1 + (16 * finalZ)))
                                     continue;
                                 final Material material;
                                 final Material nethermaterial;
@@ -297,7 +299,9 @@ public class Island {
                 });
             }
         }
-        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
+        Bukkit.getScheduler().
+
+                runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
     }
 
     public void resetMissions() {
