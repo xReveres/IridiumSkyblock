@@ -75,7 +75,6 @@ public class IridiumSkyblock extends JavaPlugin {
     public static IslandManager islandManager;
     @Getter
     private static CommandManager commandManager;
-    public boolean updatingBlocks = false;
     public List<String> languages = new ArrayList<>();
     public LanguagesGUI languagesGUI;
     @Getter
@@ -480,23 +479,18 @@ public class IridiumSkyblock extends JavaPlugin {
 
             @Override
             public void run() {
-                if (!updatingBlocks) {
-                    if (!islands.hasNext()) {
-                        islands = new ArrayList<>(islandManager.islands.keySet()).listIterator();
-                    }
-                    if (islands.hasNext()) {
-                        int id = islands.next();
-                        Island island = islandManager.getIslandViaId(id);
-                        if (island != null) {
-                            if (!island.updating) {
-                                updatingBlocks = true;
-                                island.initBlocks();
-                            }
-                        }
+                if (!islands.hasNext()) {
+                    islands = new ArrayList<>(islandManager.islands.keySet()).listIterator();
+                }
+                if (islands.hasNext()) {
+                    int id = islands.next();
+                    Island island = islandManager.getIslandViaId(id);
+                    if (island != null) {
+                        island.initBlocks();
                     }
                 }
             }
-        }, 0, 0);
+        }, 0, getConfiguration().valueUpdateInterval);
     }
 
     public void sendErrorMessage(Exception e) {

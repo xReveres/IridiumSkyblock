@@ -8,24 +8,19 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.gui.*;
-import com.iridium.iridiumskyblock.runnables.InitIslandBlocksRunnable;
-import com.iridium.iridiumskyblock.runnables.InitIslandBlocksWithSenderRunnable;
 import com.iridium.iridiumskyblock.support.*;
-import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Function;
 
@@ -138,7 +133,6 @@ public class Island {
     private double value;
 
     public Map<String, Integer> valuableBlocks;
-    public transient Set<Location> tempValues;
     public transient Map<String, Integer> spawners;
 
     @Getter
@@ -188,17 +182,12 @@ public class Island {
 
     private Date lastRegen;
 
-    private transient int initBlocks;
-
-    public transient boolean updating = false;
-
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
         this.biome = IridiumSkyblock.getConfiguration().defaultBiome;
         valuableBlocks = new HashMap<>();
         spawners = new HashMap<>();
-        tempValues = new HashSet<>();
         this.owner = user.player;
         this.name = user.name;
         this.pos1 = pos1;
@@ -247,72 +236,51 @@ public class Island {
     }
 
     public void initBlocks() {
-        updating = true;
-
-        final Config config = IridiumSkyblock.getConfiguration();
         final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
-        final BukkitScheduler scheduler = Bukkit.getScheduler();
-        final Runnable task = new InitIslandBlocksRunnable(this, config.blocksPerTick, () -> {
-            if (IridiumSkyblock.blockspertick != -1) {
-                config.blocksPerTick = IridiumSkyblock.blockspertick;
-                IridiumSkyblock.blockspertick = -1;
-            }
-            scheduler.cancelTask(initBlocks);
-            initBlocks = -1;
-            plugin.updatingBlocks = false;
-            updating = false;
-            valuableBlocks.clear();
-            spawners.clear();
-            for (Location location : tempValues) {
-                final Block block = location.getBlock();
-                if (!(Utils.isBlockValuable(block) || !(block.getState() instanceof CreatureSpawner))) continue;
-                final Material material = block.getType();
-                final XMaterial xmaterial = XMaterial.matchXMaterial(material);
-                valuableBlocks.compute(xmaterial.name(), (xmaterialName, original) -> {
-                    if (original == null) return 1;
-                    return original + 1;
-                });
-            }
-            tempValues.clear();
-            calculateIslandValue();
-        });
-        initBlocks = scheduler.scheduleSyncRepeatingTask(plugin, task, 0, 1);
-    }
+        final IslandManager manager = IridiumSkyblock.getIslandManager();
 
-    public void forceInitBlocks(CommandSender sender, int blocksPerTick, String name) {
-        final Config config = IridiumSkyblock.getConfiguration();
-        final Messages messages = IridiumSkyblock.getMessages();
-        if (sender != null)
-            sender.sendMessage(Utils.color(messages.updateStarted
-                    .replace("%player%", name)
-                    .replace("%prefix%", config.prefix)));
-        updating = true;
-        final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
-        final BukkitScheduler scheduler = Bukkit.getScheduler();
-        final Runnable task = new InitIslandBlocksWithSenderRunnable(this, blocksPerTick, sender, name, () -> {
-            if (sender != null)
-                sender.sendMessage(Utils.color(messages.updateFinished
-                        .replace("%player%", name)
-                        .replace("%prefix%", config.prefix)));
-            scheduler.cancelTask(initBlocks);
-            initBlocks = -1;
-            updating = false;
-            valuableBlocks.clear();
-            spawners.clear();
-            for (Location location : tempValues) {
-                final Block block = location.getBlock();
-                if (!(Utils.isBlockValuable(block) || !(block.getState() instanceof CreatureSpawner))) continue;
-                final Material material = block.getType();
-                final XMaterial xmaterial = XMaterial.matchXMaterial(material);
-                valuableBlocks.compute(xmaterial.name(), (xmaterialName, original) -> {
-                    if (original == null) return 1;
-                    return original + 1;
+        int minx = pos1.getChunk().getX();
+        int minz = pos1.getChunk().getZ();
+        int maxx = pos2.getChunk().getX();
+        int maxz = pos2.getChunk().getZ();
+
+        valuableBlocks.clear();
+        spawners.clear();
+
+        for (int x = minx; x <= maxx; x++) {
+            for (int z = minz; z <= maxz; z++) {
+                Chunk chunk = manager.getWorld().getChunkAt(x, z);
+                ChunkSnapshot snapshot = chunk.getChunkSnapshot();
+
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                    for (int y = 0; y < 256; y++) {
+                        for (int x1 = 0; x1 < 16; x1++) {
+                            for (int z1 = 0; z1 < 16; z1++) {
+                                final Material material = snapshot.getBlockType(x1, y, z1);
+                                final XMaterial xMaterial = XMaterial.matchXMaterial(material);
+                                if (!(Utils.isBlockValuable(xMaterial)))
+                                    continue;
+                                valuableBlocks.compute(xMaterial.name(), (xmaterialName, original) -> {
+                                    if (original == null) return 1;
+                                    return original + 1;
+                                });
+                            }
+                        }
+                    }
                 });
+
+                for (BlockState state : chunk.getTileEntities()) {
+                    if (state instanceof CreatureSpawner) {
+                        CreatureSpawner spawner = (CreatureSpawner) state;
+                        spawners.compute(spawner.getSpawnedType().name(), (name, original) -> {
+                            if (original == null) return 1;
+                            return original + 1;
+                        });
+                    }
+                }
             }
-            tempValues.clear();
-            calculateIslandValue();
-        });
-        initBlocks = scheduler.scheduleSyncRepeatingTask(plugin, task, 0, 1);
+        }
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
     }
 
     public void resetMissions() {
@@ -458,7 +426,6 @@ public class Island {
     public void calculateIslandValue() {
         if (valuableBlocks == null) valuableBlocks = new HashMap<>();
         if (spawners == null) spawners = new HashMap<>();
-        if (tempValues == null) tempValues = new HashSet<>();
 
         final BlockValues blockValues = IridiumSkyblock.getBlockValues();
         final Map<XMaterial, Double> blockValueMap = blockValues.blockvalue;
@@ -640,11 +607,9 @@ public class Island {
                 }
             }
         }
-        updating = false;
         if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
         if (valuableBlocks == null) valuableBlocks = new HashMap<>();
         if (spawners == null) spawners = new HashMap<>();
-        if (tempValues == null) tempValues = new HashSet<>();
         if (members == null) {
             members = new HashSet<>();
             members.add(owner);
@@ -859,10 +824,6 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getCoopGUI().scheduler);
         Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
         if (generateID != -1) Bukkit.getScheduler().cancelTask(generateID);
-        if (updating) {
-            Bukkit.getScheduler().cancelTask(initBlocks);
-            IridiumSkyblock.getInstance().updatingBlocks = false;
-        }
         permissions.clear();
         clearInventories();
         spawnPlayers();
