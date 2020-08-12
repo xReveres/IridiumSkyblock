@@ -262,10 +262,10 @@ public class Island {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     for (int x1 = 0; x1 < 16; x1++) {
                         for (int z1 = 0; z1 < 16; z1++) {
+                            if (!isInIsland(x1 + (16 * finalX), z1 + (16 * finalZ)))
+                                continue;
                             final int maxy = snapshot.getHighestBlockYAt(x1, z1);
                             for (int y = 0; y < maxy; y++) {
-                                if (!isInIsland(x1 + (16 * finalX), z1 + (16 * finalZ)))
-                                    continue;
                                 final Material material;
                                 if (ISFLAT) {
                                     material = snapshot.getBlockType(x1, y, z1);
@@ -289,8 +289,6 @@ public class Island {
 
                             final int nethermaxy = nethersnapshot.getHighestBlockYAt(x1, z1);
                             for (int y = 0; y < nethermaxy; y++) {
-                                if (!isInIsland(x1 + (16 * finalX), z1 + (16 * finalZ)))
-                                    continue;
                                 final Material material;
                                 if (ISFLAT) {
                                     material = nethersnapshot.getBlockType(x1, y, z1);
