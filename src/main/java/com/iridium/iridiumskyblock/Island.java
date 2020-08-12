@@ -254,30 +254,43 @@ public class Island {
                 Chunk chunk = manager.getWorld().getChunkAt(x, z);
                 ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
 
+                Chunk netherchunk = manager.getWorld().getChunkAt(x, z);
+                ChunkSnapshot nethersnapshot = netherchunk.getChunkSnapshot(false, false, false);
+
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     for (int y = 0; y < 256; y++) {
                         for (int x1 = 0; x1 < 16; x1++) {
                             for (int z1 = 0; z1 < 16; z1++) {
+                                if (!isInIsland(x1 + (minx * 16), z1 + (minz * 16)))
+                                    continue;
                                 final Material material;
+                                final Material nethermaterial;
                                 if (ISFLAT) {
                                     material = snapshot.getBlockType(x1, y, z1);
+                                    nethermaterial = nethersnapshot.getBlockType(x1, y, z1);
                                 } else {
                                     try {
                                         material = (Material) Material.class.getMethod("getMaterial", int.class).invoke(null, ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class).invoke(snapshot, x1, y, z1));
+                                        nethermaterial = (Material) Material.class.getMethod("getMaterial", int.class).invoke(null, ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class).invoke(nethersnapshot, x1, y, z1));
                                     } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                                         e.printStackTrace();
                                         return;
                                     }
                                 }
                                 final XMaterial xMaterial = XMaterial.matchXMaterial(material);
-                                if (!(Utils.isBlockValuable(xMaterial)))
-                                    continue;
-                                if (!isInIsland(x1 + (minx * 16), z1 + (minz * 16)))
-                                    continue;
-                                valuableBlocks.compute(xMaterial.name(), (xmaterialName, original) -> {
-                                    if (original == null) return 1;
-                                    return original + 1;
-                                });
+                                final XMaterial netherxMaterial = XMaterial.matchXMaterial(nethermaterial);
+                                if (Utils.isBlockValuable(xMaterial)) {
+                                    valuableBlocks.compute(xMaterial.name(), (xmaterialName, original) -> {
+                                        if (original == null) return 1;
+                                        return original + 1;
+                                    });
+                                }
+                                if (Utils.isBlockValuable(netherxMaterial)) {
+                                    valuableBlocks.compute(netherxMaterial.name(), (xmaterialName, original) -> {
+                                        if (original == null) return 1;
+                                        return original + 1;
+                                    });
+                                }
                             }
                         }
                     }
