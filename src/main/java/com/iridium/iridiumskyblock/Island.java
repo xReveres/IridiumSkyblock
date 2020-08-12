@@ -20,6 +20,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Function;
@@ -181,6 +182,7 @@ public class Island {
     public transient Set<Location> failedGenerators;
 
     private Date lastRegen;
+    public static final transient boolean ISFLAT = XMaterial.supports(13);
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
@@ -256,7 +258,17 @@ public class Island {
                     for (int y = 0; y < 256; y++) {
                         for (int x1 = 0; x1 < 16; x1++) {
                             for (int z1 = 0; z1 < 16; z1++) {
-                                final Material material = snapshot.getBlockType(x1, y, z1);
+                                final Material material;
+                                if (ISFLAT) {
+                                    material = snapshot.getBlockType(x1, y, z1);
+                                } else {
+                                    try {
+                                        material = (Material) Material.class.getMethod("getMaterial", int.class).invoke(null, ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class).invoke(snapshot, x1, y, z1));
+                                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                        e.printStackTrace();
+                                        return;
+                                    }
+                                }
                                 final XMaterial xMaterial = XMaterial.matchXMaterial(material);
                                 if (!(Utils.isBlockValuable(xMaterial)))
                                     continue;
