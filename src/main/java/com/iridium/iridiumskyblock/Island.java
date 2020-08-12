@@ -252,43 +252,59 @@ public class Island {
         for (int x = minx; x <= maxx; x++) {
             for (int z = minz; z <= maxz; z++) {
                 Chunk chunk = manager.getWorld().getChunkAt(x, z);
-                ChunkSnapshot snapshot = chunk.getChunkSnapshot(false, false, false);
+                ChunkSnapshot snapshot = chunk.getChunkSnapshot(true, false, false);
 
                 Chunk netherchunk = manager.getNetherWorld().getChunkAt(x, z);
-                ChunkSnapshot nethersnapshot = netherchunk.getChunkSnapshot(false, false, false);
+                ChunkSnapshot nethersnapshot = netherchunk.getChunkSnapshot(true, false, false);
 
                 int finalX = x;
                 int finalZ = z;
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    for (int y = 0; y < 256; y++) {
-                        for (int x1 = 0; x1 < 16; x1++) {
-                            for (int z1 = 0; z1 < 16; z1++) {
+                    for (int x1 = 0; x1 < 16; x1++) {
+                        for (int z1 = 0; z1 < 16; z1++) {
+                            final int maxy = snapshot.getHighestBlockYAt(x1, z1);
+                            for (int y = 0; y < maxy; y++) {
                                 if (!isInIsland(x1 + (16 * finalX), z1 + (16 * finalZ)))
                                     continue;
                                 final Material material;
-                                final Material nethermaterial;
                                 if (ISFLAT) {
                                     material = snapshot.getBlockType(x1, y, z1);
-                                    nethermaterial = nethersnapshot.getBlockType(x1, y, z1);
                                 } else {
                                     try {
                                         material = (Material) Material.class.getMethod("getMaterial", int.class).invoke(null, ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class).invoke(snapshot, x1, y, z1));
-                                        nethermaterial = (Material) Material.class.getMethod("getMaterial", int.class).invoke(null, ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class).invoke(nethersnapshot, x1, y, z1));
                                     } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                                         e.printStackTrace();
                                         return;
                                     }
                                 }
                                 final XMaterial xMaterial = XMaterial.matchXMaterial(material);
-                                final XMaterial netherxMaterial = XMaterial.matchXMaterial(nethermaterial);
                                 if (Utils.isBlockValuable(xMaterial)) {
                                     valuableBlocks.compute(xMaterial.name(), (xmaterialName, original) -> {
                                         if (original == null) return 1;
                                         return original + 1;
                                     });
                                 }
-                                if (Utils.isBlockValuable(netherxMaterial)) {
-                                    valuableBlocks.compute(netherxMaterial.name(), (xmaterialName, original) -> {
+                            }
+
+
+                            final int nethermaxy = nethersnapshot.getHighestBlockYAt(x1, z1);
+                            for (int y = 0; y < nethermaxy; y++) {
+                                if (!isInIsland(x1 + (16 * finalX), z1 + (16 * finalZ)))
+                                    continue;
+                                final Material material;
+                                if (ISFLAT) {
+                                    material = nethersnapshot.getBlockType(x1, y, z1);
+                                } else {
+                                    try {
+                                        material = (Material) Material.class.getMethod("getMaterial", int.class).invoke(null, ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class).invoke(nethersnapshot, x1, y, z1));
+                                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                        e.printStackTrace();
+                                        return;
+                                    }
+                                }
+                                final XMaterial xMaterial = XMaterial.matchXMaterial(material);
+                                if (Utils.isBlockValuable(xMaterial)) {
+                                    valuableBlocks.compute(xMaterial.name(), (xmaterialName, original) -> {
                                         if (original == null) return 1;
                                         return original + 1;
                                     });

@@ -486,7 +486,6 @@ public class IridiumSkyblock extends JavaPlugin {
                     int id = islands.next();
                     Island island = islandManager.getIslandViaId(id);
                     if (island != null) {
-                        getLogger().info("Updating: " + User.getUser(island.getOwner()).name);
                         island.initBlocks();
                     }
                 }

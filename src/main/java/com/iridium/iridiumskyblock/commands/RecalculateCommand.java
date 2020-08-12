@@ -27,7 +27,7 @@ public class RecalculateCommand extends Command {
             return;
         }
         final IslandManager manager = IridiumSkyblock.getIslandManager();
-        int interval = 20;
+        int interval = 5;
         int total = manager.islands.size();
         double totalSecconds = total * (interval / 20.00);
         int minutes = (int) Math.floor(totalSecconds / 60.00);
