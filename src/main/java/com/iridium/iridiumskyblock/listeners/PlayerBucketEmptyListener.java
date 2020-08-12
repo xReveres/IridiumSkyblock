@@ -29,7 +29,7 @@ public class PlayerBucketEmptyListener implements Listener {
             block = event.getBlock();
         } else {
             try {
-                block = (Block) event.getClass().getMethod("getClickedBlock").invoke(event);
+                block = (Block) PlayerBucketEmptyListener.class.getMethod("getBlockClicked").invoke(event);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
                 return;
