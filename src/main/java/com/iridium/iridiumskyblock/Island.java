@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Function;
@@ -182,7 +183,21 @@ public class Island {
     public transient Set<Location> failedGenerators;
 
     private Date lastRegen;
-    public static final transient boolean ISFLAT = XMaterial.supports(13);
+
+
+    private static final transient boolean ISFLAT = XMaterial.supports(13);
+    private static transient Method getMaterial;
+    private static transient Method getBlock;
+
+    static {
+        try {
+            getMaterial = Material.class.getMethod("getMaterial", int.class);
+            getBlock = ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class);
+        } catch (NoSuchMethodException e) {
+            getMaterial = null;
+            getBlock = null;
+        }
+    }
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
         User user = User.getUser(owner);
@@ -221,22 +236,6 @@ public class Island {
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
 
-    public long getBlockCount() {
-        final double minX = pos1.getX();
-        final double maxX = pos2.getX();
-        final double width = maxX - minX;
-
-        final double minZ = pos1.getZ();
-        final double maxZ = pos2.getZ();
-        final double depth = maxZ - minZ;
-
-        final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-        final World islandWorld = islandManager.getWorld();
-        final double maxY = islandWorld.getMaxHeight();
-
-        return (long) (width * maxY * depth);
-    }
-
     public void initBlocks() {
         final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
         final IslandManager manager = IridiumSkyblock.getIslandManager();
@@ -271,8 +270,8 @@ public class Island {
                                     material = snapshot.getBlockType(x1, y, z1);
                                 } else {
                                     try {
-                                        material = (Material) Material.class.getMethod("getMaterial", int.class).invoke(null, ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class).invoke(snapshot, x1, y, z1));
-                                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                        material = (Material) getMaterial.invoke(null, getBlock.invoke(snapshot, x1, y, z1));
+                                    } catch (IllegalAccessException | InvocationTargetException e) {
                                         e.printStackTrace();
                                         return;
                                     }
@@ -294,8 +293,8 @@ public class Island {
                                     material = nethersnapshot.getBlockType(x1, y, z1);
                                 } else {
                                     try {
-                                        material = (Material) Material.class.getMethod("getMaterial", int.class).invoke(null, ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class).invoke(nethersnapshot, x1, y, z1));
-                                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                        material = (Material) getMaterial.invoke(null, getBlock.invoke(nethersnapshot, x1, y, z1));
+                                    } catch (IllegalAccessException | InvocationTargetException e) {
                                         e.printStackTrace();
                                         return;
                                     }
