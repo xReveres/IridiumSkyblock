@@ -107,7 +107,7 @@ public class Messages {
     public String noPermissionBreakSpawners = "%prefix% &7You do not have permission to break spawners on this island";
     public String depositedCrystals = "%prefix% &7You have deposited %amount% crystals into your island bank";
     public String helpPageHoverMessage = "Click to go to page %page%";
-    public String calculatingIslands = "%prefix% &7Calculating Players islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
+    public String calculatingIslands = "%prefix% &7Calculating %amount% Players islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
     public String calculatingFinished = "%prefix% &7Calculating Players islands Finished";
     public String calculationAlreadyInProcess = "%prefix% &7Calculating Players islands already in Process";
 

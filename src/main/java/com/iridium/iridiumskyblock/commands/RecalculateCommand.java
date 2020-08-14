@@ -33,7 +33,7 @@ public class RecalculateCommand extends Command {
         int minutes = (int) Math.floor(totalSecconds / 60.00);
         double seconds = (int) (totalSecconds - (minutes * 60));
         sender.sendMessage(total + " " + totalSecconds + " " + minutes + " " + seconds);
-        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculatingIslands.replace("%seconds%", seconds + "").replace("%minutes%", minutes + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculatingIslands.replace("%amount%", total + "").replace("%seconds%", seconds + "").replace("%minutes%", minutes + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             ListIterator<Integer> islands = new ArrayList<>(manager.islands.keySet()).listIterator();
 
