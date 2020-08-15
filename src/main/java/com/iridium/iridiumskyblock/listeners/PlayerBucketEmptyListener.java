@@ -26,7 +26,7 @@ public class PlayerBucketEmptyListener implements Listener {
         final Material type = event.getBucket();
         final ItemStack item = event.getPlayer().getItemInHand();
         Block block;
-        final boolean isInPaper113 = Bukkit.getVersion().equals("Paper") && Bukkit.getBukkitVersion().contains("1.13");
+        final boolean isInPaper113 = Bukkit.getVersion().contains("Paper") && Bukkit.getBukkitVersion().contains("1.13");
         if (supports && !isInPaper113) {
             block = event.getBlock();
         } else {
