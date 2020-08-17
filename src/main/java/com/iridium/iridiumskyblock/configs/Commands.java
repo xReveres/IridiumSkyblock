@@ -48,4 +48,6 @@ public class Commands {
     public HelpCommand helpCommand = new HelpCommand();
     public LanguagesCommand languagesCommand = new LanguagesCommand();
     public RecalculateCommand recalculateCommand = new RecalculateCommand();
+    public AddValueCommand addValueCommand = new AddValueCommand();
+    public RemoveValueCommand removeValueCommand = new RemoveValueCommand();
 }

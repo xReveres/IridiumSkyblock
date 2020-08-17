@@ -134,6 +134,9 @@ public class Island {
     @Getter
     private double value;
 
+    @Getter
+    private double extravalue;
+
     public Map<String, Integer> valuableBlocks;
     public transient Map<String, Integer> spawners;
 
@@ -562,6 +565,7 @@ public class Island {
                 setMission(mission.name, (int) (value.doubleValue() - startvalue));
             }
         }
+        this.value += this.extravalue;
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
@@ -1088,6 +1092,15 @@ public class Island {
             }
         }
     }
+
+    public void addExtraValue(double amount) {
+        this.extravalue += amount;
+    }
+
+    public void removeExtraValue(double amount) {
+        this.extravalue -= amount;
+    }
+
 
     public Location getNetherhome() {
         if (netherhome == null) {
