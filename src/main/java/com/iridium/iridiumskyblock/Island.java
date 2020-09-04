@@ -137,7 +137,7 @@ public class Island {
     @Getter
     private double extravalue;
 
-    public Map<String, Integer> valuableBlocks;
+    public transient Map<String, Integer> valuableBlocks;
     public transient Map<String, Integer> spawners;
 
     @Getter
