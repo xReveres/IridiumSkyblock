@@ -26,6 +26,7 @@ public class Messages {
     public String flightEnabled = "%prefix% &7Your flight has been enabled.";
     public String flightBoosterNotActive = "%prefix% &7Your flight booster is not active.";
     public String notEnoughCrystals = "%prefix% &7You don't have enough island crystals.";
+    public String playerNotEnoughCrystals = "%prefix% &7%player% doesn't have enough island crystals.";
     public String maxLevelReached = "%prefix% &7Maximum level reached.";
     public String crystalAmount = "%prefix% &7You have %crystals% crystals.";
     public String maxMemberCount = "%prefix% &7Maximum member count reached.";
