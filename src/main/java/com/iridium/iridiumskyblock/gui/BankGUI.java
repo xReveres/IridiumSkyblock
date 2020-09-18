@@ -69,8 +69,13 @@ public class BankGUI extends GUI implements Listener {
                 if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                         if (island.getCrystals() > 0) {
-                            p.getInventory().addItem(Utils.getCrystals(island.getCrystals()));
-                            island.setCrystals(0);
+                            if (p.getInventory().firstEmpty() != -1){
+                                p.getInventory().addItem(Utils.getCrystals(island.getCrystals()));
+                                island.setCrystals(0);
+                            } else {
+                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().inventoryFull
+                                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            }
                         }
                     }
                 } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
@@ -105,8 +110,13 @@ public class BankGUI extends GUI implements Listener {
                 } else if (e.getClick().equals(ClickType.LEFT)) {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                         if (island.getCrystals() > 0) {
-                            island.setCrystals(island.getCrystals() - 1);
-                            p.getInventory().addItem(Utils.getCrystals(1));
+                            if (p.getInventory().firstEmpty() != -1){
+                                island.setCrystals(island.getCrystals() - 1);
+                                p.getInventory().addItem(Utils.getCrystals(1));
+                            } else {
+                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().inventoryFull
+                                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            }
                         }
                     }
                 }

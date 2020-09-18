@@ -110,6 +110,7 @@ public class Messages {
     public String calculatingIslands = "%prefix% &7Calculating %amount% Players islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
     public String calculatingFinished = "%prefix% &7Calculating Players islands Finished";
     public String calculationAlreadyInProcess = "%prefix% &7Calculating Players islands already in Process";
+    public String inventoryFull = "%prefix% &7Your inventory is full";
 
     public Map<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {
