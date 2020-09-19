@@ -26,6 +26,7 @@ public class Messages {
     public String flightEnabled = "%prefix% &7Your flight has been enabled.";
     public String flightBoosterNotActive = "%prefix% &7Your flight booster is not active.";
     public String notEnoughCrystals = "%prefix% &7You don't have enough island crystals.";
+    public String playerNotEnoughCrystals = "%prefix% &7%player% doesn't have enough island crystals.";
     public String maxLevelReached = "%prefix% &7Maximum level reached.";
     public String crystalAmount = "%prefix% &7You have %crystals% crystals.";
     public String maxMemberCount = "%prefix% &7Maximum member count reached.";
@@ -110,6 +111,7 @@ public class Messages {
     public String calculatingIslands = "%prefix% &7Calculating %amount% Players islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
     public String calculatingFinished = "%prefix% &7Calculating Players islands Finished";
     public String calculationAlreadyInProcess = "%prefix% &7Calculating Players islands already in Process";
+    public String inventoryFull = "%prefix% &7Your inventory is full";
 
     public Map<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {
