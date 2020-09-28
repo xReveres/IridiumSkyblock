@@ -690,12 +690,13 @@ public class Island {
             if (expBooster > 0) expBooster--;
             if (flightBooster == 1) {
                 for (String player : members) {
-                    Player p = Bukkit.getPlayer(player);
+                    User user = User.getUser(player);
+                    Player p = Bukkit.getPlayer(user.name);
                     if (p != null) {
                         if ((!p.hasPermission("IridiumSkyblock.Fly") && !p.hasPermission("iridiumskyblock.fly")) && p.getGameMode().equals(GameMode.SURVIVAL)) {
                             p.setAllowFlight(false);
                             p.setFlying(false);
-                            User.getUser(p).flying = false;
+                            user.flying = false;
                         }
                     }
                 }
