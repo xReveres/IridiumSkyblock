@@ -112,6 +112,8 @@ public class Messages {
     public String calculatingFinished = "%prefix% &7Calculating Players islands Finished";
     public String calculationAlreadyInProcess = "%prefix% &7Calculating Players islands already in Process";
     public String inventoryFull = "%prefix% &7Your inventory is full";
+    public String islandUpgraded = "%prefix% &7%player% upgraded your island's %upgradename% Upgrade from level %oldlvl% to level %newlvl%";
+    public String activatedBooster = "%prefix% &7%player% activated your islands %boostername% Booester";
 
     public Map<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {
