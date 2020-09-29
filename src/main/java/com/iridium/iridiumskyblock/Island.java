@@ -4,7 +4,7 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
-import com.iridium.iridiumskyblock.api.IslandRegenEvent;
+import com.iridium.iridiumskyblock.api.MissionCompleteEvent;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
@@ -449,7 +449,7 @@ public class Island {
         final int vaultReward = level.vaultReward;
         this.crystals += crystalReward;
         this.money += vaultReward;
-
+        Bukkit.getPluginManager().callEvent(new MissionCompleteEvent(missionName, level.type, levelProgress));
         final Messages messages = IridiumSkyblock.getMessages();
         final String titleMessage = messages.missionComplete
                 .replace("%mission%", missionName)
@@ -690,13 +690,12 @@ public class Island {
             if (expBooster > 0) expBooster--;
             if (flightBooster == 1) {
                 for (String player : members) {
-                    User user = User.getUser(player);
-                    Player p = Bukkit.getPlayer(user.name);
+                    Player p = Bukkit.getPlayer(player);
                     if (p != null) {
                         if ((!p.hasPermission("IridiumSkyblock.Fly") && !p.hasPermission("iridiumskyblock.fly")) && p.getGameMode().equals(GameMode.SURVIVAL)) {
                             p.setAllowFlight(false);
                             p.setFlying(false);
-                            user.flying = false;
+                            User.getUser(p).flying = false;
                         }
                     }
                 }
@@ -726,9 +725,6 @@ public class Island {
     }
 
     public void pasteSchematic(boolean deleteBlocks) {
-        IslandRegenEvent event = new IslandRegenEvent(this);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.cancelled) return;
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
         lastRegen = c.getTime();
@@ -809,7 +805,7 @@ public class Island {
                 sendBorder(p);
             } else {
                 User.getUser(p).teleportingHome = true;
-                pasteSchematic(p, true);
+                pasteSchematic(p, false);
             }
         }
     }
