@@ -9,12 +9,10 @@ import org.jetbrains.annotations.NotNull;
 public class MissionCompleteEvent extends IslandEvent {
     @NotNull @Getter String missionName;
     @NotNull @Getter MissionType missionType;
-    @NotNull @Getter User usercompleted;
     @Getter int missionLevel;
 
     public MissionCompleteEvent(@NotNull Island island, @NotNull String missionName, @NotNull MissionType missionType, int missionLevel) {
         super(island);
-        this.usercompleted = usercompleted;
         this.missionName = missionName;
         this.missionType = missionType;
         this.missionLevel = missionLevel;
