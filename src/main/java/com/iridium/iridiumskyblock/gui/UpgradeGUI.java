@@ -32,6 +32,7 @@ public class UpgradeGUI extends GUI implements Listener {
                 setItem(IridiumSkyblock.getUpgrades().warpUpgrade.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().warp, getIsland()));
             if (IridiumSkyblock.getUpgrades().oresUpgrade.enabled)
                 setItem(IridiumSkyblock.getUpgrades().oresUpgrade.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().ores, getIsland()));
+            setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
         }
     }
 
@@ -51,6 +52,9 @@ public class UpgradeGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             Player p = (Player) e.getWhoClicked();
+            if (e.getSlot() == getInventory().getSize() - 5) {
+                e.getWhoClicked().openInventory(getIsland().getIslandMenuGUI().getInventory());
+            }
             if (e.getSlot() == IridiumSkyblock.getUpgrades().sizeUpgrade.slot && IridiumSkyblock.getUpgrades().sizeUpgrade.enabled) {
                 if (IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.containsKey(getIsland().getSizeLevel() + 1)) {
                     Upgrades.IslandUpgrade upgrade = IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(getIsland().getSizeLevel() + 1);

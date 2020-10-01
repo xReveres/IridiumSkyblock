@@ -79,10 +79,10 @@ public class Inventories {
     public Item visitisland = new Item(XMaterial.PLAYER_HEAD, 1, "&b&l{player}", "{player}", Arrays.asList("&b&l * &7Island: &b{name}", "&b&l * &7Rank: &b{rank}", "&b&l * &7Value: &b{value}", "&b&l * &7Votes: &b{votes}", "", "&b&l[!] &bLeft Click to Teleport to this island.", "&b&l[!] &bRight Click to (un)vote for this island."));
 
 
-    public Item red = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lRed", new ArrayList<>());
-    public Item green = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lGreen", new ArrayList<>());
-    public Item blue = new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 1, "&b&lBlue", new ArrayList<>());
-    public Item off = new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 1, "&f&lOff", new ArrayList<>());
+    public Item red = new Item(XMaterial.RED_STAINED_GLASS_PANE,10, 1, "&c&lRed", new ArrayList<>());
+    public Item green = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 12,1, "&a&lGreen", new ArrayList<>());
+    public Item blue = new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 14,1, "&b&lBlue", new ArrayList<>());
+    public Item off = new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 16,1, "&f&lOff", new ArrayList<>());
 
     public Map<Item, String> menu = new HashMap<Item, String>() {{
         put(new Item(XMaterial.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home")), "is home");
