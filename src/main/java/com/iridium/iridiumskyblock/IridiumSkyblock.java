@@ -587,6 +587,11 @@ public class IridiumSkyblock extends JavaPlugin {
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
         border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
 
+        if (inventories.red.slot == null) inventories.red.slot = 10;
+        if (inventories.green.slot == null) inventories.green.slot = 12;
+        if (inventories.blue.slot == null) inventories.blue.slot = 14;
+        if (inventories.off.slot == null) inventories.off.slot = 16;
+
         missions.missions.remove(null);
 
 
