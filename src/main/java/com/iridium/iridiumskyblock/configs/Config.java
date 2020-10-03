@@ -19,7 +19,7 @@ public class Config {
     public String placeholderDefaultValue = "N/A";
     public boolean createCooldown = true;
     public boolean doIslandBackup = true;
-    public boolean islandShop = true;
+    public boolean islandShop = false;
     public boolean automaticUpdate = true;
     public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
