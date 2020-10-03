@@ -191,6 +191,9 @@ public class Island {
 
     private Date lastRegen;
 
+    private List<Player> playersOnIsland;
+    private long lastPlayerCaching;
+
 
     private static final transient boolean ISFLAT = XMaterial.supports(13);
     private static transient Method getMaterial;
@@ -239,6 +242,8 @@ public class Island {
         this.coop = new HashSet<>();
         this.bans = new HashSet<>();
         this.votes = new HashSet<>();
+        this.playersOnIsland = new ArrayList<>();
+        this.lastPlayerCaching = 0L;
         init();
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
@@ -1036,13 +1041,20 @@ public class Island {
     }
 
     public List<Player> getPlayersOnIsland() {
-        List<Player> players = new ArrayList<>();
+        if (System.currentTimeMillis() >= this.lastPlayerCaching + (IridiumSkyblock.getConfiguration().playersOnIslandRefreshTime
+            * 1000L)) {
+            reloadPlayersOnIsland();
+        }
+        return this.playersOnIsland;
+    }
+
+    public void reloadPlayersOnIsland() {
+        playersOnIsland.clear();
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (isInIsland(p.getLocation())) {
-                players.add(p);
+                playersOnIsland.add(p);
             }
         }
-        return players;
     }
 
     public void spawnPlayer(Player player) {
