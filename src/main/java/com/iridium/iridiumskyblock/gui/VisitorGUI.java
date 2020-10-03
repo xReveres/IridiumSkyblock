@@ -1,22 +1,27 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
-import org.bukkit.Bukkit;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VisitorGUI extends GUI implements Listener {
-    public Map<Integer,Player> visitors = new HashMap<>();
+    public Map<Integer, Player> visitors = new HashMap<>();
 
     public VisitorGUI(Island island) {
         super(island, IridiumSkyblock.getInventories().visitorGUISize, IridiumSkyblock.getInventories().visitorGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
+
     @Override
     public void addContent() {
         super.addContent();
@@ -26,20 +31,17 @@ public class VisitorGUI extends GUI implements Listener {
         visitors.clear();
         setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
         int i = 0;
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (island.isInIsland(p.getLocation()) && (island != User.getUser(p).getIsland())) {
+        for (Player p : island.getPlayersOnIsland()) {
+            if (!island.getMembers().contains(p.getUniqueId().toString())) {
+                if (i >= getInventory().getSize()) return;
                 ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandVisitors, Collections.singletonList(new Utils.Placeholder("player", p.getName())));
                 setItem(i, head);
-                visitors.put(i,p);
+                visitors.put(i, p);
                 i++;
             }
         }
-        for (int x = 0; x < getInventory().getSize(); x++) {
-            if (!visitors.containsKey(x) && x != getInventory().getSize() - 5 ){
-                setItem(x,Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
-            }
-        }
     }
+
     @Override
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
@@ -62,7 +64,8 @@ public class VisitorGUI extends GUI implements Listener {
                         visitors.clear();
                         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().expelledVisitor.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
                         visitor.sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenExpelled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%kicker%", p.getName() + "")));
-                        p.updateInventory();
+                        getInventory().clear();
+                        addContent();
                     }
                 }
             }

@@ -1,19 +1,19 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class ExpelCommand extends Command {
     public ExpelCommand() {
-        super(Collections.singletonList("expel"), "Kick a visitor from your island", "", true);
+        super(Arrays.asList("expel", "visitors"), "Kick a visitor from your island", "", true);
     }
 
     @Override
