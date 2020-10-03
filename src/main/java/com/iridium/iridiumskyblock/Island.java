@@ -1040,14 +1040,14 @@ public class Island {
     }
 
     public List<Player> getPlayersOnIsland() {
-        if (System.currentTimeMillis() >= this.lastPlayerCaching + (IridiumSkyblock.getConfiguration().playersOnIslandRefreshTime
-            * 1000L)) {
+        if (System.currentTimeMillis() >= lastPlayerCaching + (IridiumSkyblock.getConfiguration().playersOnIslandRefreshTime * 1000L)) {
             reloadPlayersOnIsland();
         }
-        return this.playersOnIsland;
+        return playersOnIsland;
     }
 
     public void reloadPlayersOnIsland() {
+        lastPlayerCaching = System.currentTimeMillis();
         playersOnIsland.clear();
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (isInIsland(p.getLocation())) {
