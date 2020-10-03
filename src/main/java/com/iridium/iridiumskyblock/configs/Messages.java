@@ -114,6 +114,10 @@ public class Messages {
     public String inventoryFull = "%prefix% &7Your inventory is full";
     public String islandUpgraded = "%prefix% &7%player% upgraded your island's %upgradename% Upgrade from level %oldlvl% to level %newlvl%";
     public String activatedBooster = "%prefix% &7%player% activated your islands %boostername% Booester";
+    public String youHaveBeenExpelled = "%prefix% &7You were expelled from %kicker%'s island!";
+    public String expelledVisitor = "%prefix% &7%player% has been expelled from your island.";
+    public String cantExpelPlayer = "%prefix% &7%player% cannot be expelled!";
+    public String cantExpelMember = "%prefix% &7%player% is in your island team";
 
     public Map<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {
