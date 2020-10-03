@@ -86,6 +86,7 @@ public class EntityTargetLivingEntityListener implements Listener {
     }
 
     // Check if the time of the existing cooldown has passed
+    // The current time has to be higher than the creation time of the cooldown + the time of the cooldown in milliseconds
     if (System.currentTimeMillis() >= entityTargetCooldowns.get(entity) + IridiumSkyblock.getConfiguration().intervalBetweenMobTarget * 1000L) {
       entityTargetCooldowns.remove(entity);
       return false;
