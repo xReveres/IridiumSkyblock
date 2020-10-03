@@ -38,16 +38,17 @@ public class EntityTargetLivingEntityListener implements Listener {
       return;
     }
 
-    // Check if this entity is allowed to target an entity
-    LivingEntity entity = (LivingEntity) event.getEntity();
-    if (isOnTargetCooldown(entity)) {
-      return;
-    }
-
     // Check if the player is on an island
     Player targetedPlayer = (Player) event.getTarget();
     Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(targetedPlayer.getLocation());
     if (island == null) {
+      return;
+    }
+
+    // Check if this entity is allowed to target an entity
+    LivingEntity entity = (LivingEntity) event.getEntity();
+    if (isOnTargetCooldown(entity)) {
+      event.setCancelled(true);
       return;
     }
 
