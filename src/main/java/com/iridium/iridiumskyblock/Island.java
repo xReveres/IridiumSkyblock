@@ -449,7 +449,7 @@ public class Island {
         final int vaultReward = level.vaultReward;
         this.crystals += crystalReward;
         this.money += vaultReward;
-        Bukkit.getPluginManager().callEvent(new MissionCompleteEvent(missionName, level.type, levelProgress));
+        Bukkit.getPluginManager().callEvent(new MissionCompleteEvent(this,missionName, level.type, levelProgress));
         final Messages messages = IridiumSkyblock.getMessages();
         final String titleMessage = messages.missionComplete
                 .replace("%mission%", missionName)
