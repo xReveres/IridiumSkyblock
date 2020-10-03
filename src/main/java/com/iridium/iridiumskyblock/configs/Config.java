@@ -36,6 +36,7 @@ public class Config {
     public boolean disablePvPBetweenIslandMembers = true;
     public boolean disablePvPOnIslands = true;
     public boolean allowMobGuestTargeting = true;
+    public boolean disableBypassOnJoin = true;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
     public int distance = 151;
