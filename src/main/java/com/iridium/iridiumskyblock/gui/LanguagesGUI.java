@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
@@ -67,7 +68,7 @@ public class LanguagesGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (e.getSlot() == getInventory().getSize() - 5) {
-                e.getWhoClicked().openInventory(getIsland().getIslandMenuGUI().getInventory());
+                e.getWhoClicked().openInventory(User.getUser(e.getWhoClicked().getUniqueId().toString()).getIsland().getIslandMenuGUI().getInventory());
             }
             if (languages.containsKey(e.getSlot())) {
                 IridiumSkyblock.getInstance().setLanguage(languages.get(e.getSlot()), (Player) e.getWhoClicked());
