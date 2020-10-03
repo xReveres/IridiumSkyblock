@@ -71,7 +71,7 @@ public class EntityTargetLivingEntityListener implements Listener {
       return false;
     }
 
-    if (System.currentTimeMillis() >= entityTargetCooldowns.get(entity) + IridiumSkyblock.getConfiguration().intervalBetweenMobTarget) {
+    if (System.currentTimeMillis() >= entityTargetCooldowns.get(entity) + IridiumSkyblock.getConfiguration().intervalBetweenMobTarget * 1000L) {
       entityTargetCooldowns.remove(entity);
       return false;
     }
