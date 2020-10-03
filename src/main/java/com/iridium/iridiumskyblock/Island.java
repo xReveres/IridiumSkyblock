@@ -4,6 +4,7 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
+import com.iridium.iridiumskyblock.api.IslandWorthCalculatedEvent;
 import com.iridium.iridiumskyblock.api.MissionCompleteEvent;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
@@ -331,9 +332,7 @@ public class Island {
                 });
             }
         }
-        Bukkit.getScheduler().
-
-                runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
     }
 
     public void resetMissions() {
@@ -582,6 +581,8 @@ public class Island {
             }
         }
         this.value += this.extravalue;
+
+        Bukkit.getPluginManager().callEvent(new IslandWorthCalculatedEvent(this, this.value));
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
