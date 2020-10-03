@@ -242,8 +242,6 @@ public class Island {
         this.coop = new HashSet<>();
         this.bans = new HashSet<>();
         this.votes = new HashSet<>();
-        this.playersOnIsland = new ArrayList<>();
-        this.lastPlayerCaching = 0L;
         init();
         Bukkit.getPluginManager().callEvent(new IslandCreateEvent(owner, this));
     }
@@ -678,7 +676,8 @@ public class Island {
             members = new HashSet<>();
             members.add(owner);
         }
-
+        this.playersOnIsland = new ArrayList<>();
+        this.lastPlayerCaching = 0L;
         upgradeGUI = new UpgradeGUI(this);
         boosterGUI = new BoosterGUI(this);
         missionsGUI = new MissionsGUI(this);
