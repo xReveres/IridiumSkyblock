@@ -448,7 +448,7 @@ public class Island {
         final int vaultReward = level.vaultReward;
         this.crystals += crystalReward;
         this.money += vaultReward;
-        Bukkit.getPluginManager().callEvent(new MissionCompleteEvent(this,missionName, level.type, levelProgress));
+        Bukkit.getPluginManager().callEvent(new MissionCompleteEvent(this, missionName, level.type, levelProgress));
         final Messages messages = IridiumSkyblock.getMessages();
         final String titleMessage = messages.missionComplete
                 .replace("%mission%", missionName)
@@ -582,7 +582,9 @@ public class Island {
         }
         this.value += this.extravalue;
 
-        Bukkit.getPluginManager().callEvent(new IslandWorthCalculatedEvent(this, this.value));
+        IslandWorthCalculatedEvent islandWorthCalculatedEvent = new IslandWorthCalculatedEvent(this, this.value);
+        Bukkit.getPluginManager().callEvent(islandWorthCalculatedEvent);
+        this.value = islandWorthCalculatedEvent.getIslandWorth();
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
