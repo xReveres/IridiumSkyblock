@@ -439,7 +439,7 @@ public class Utils {
 
         public static String format(double number) {
             if (!IridiumSkyblock.getConfiguration().displayNumberAbbreviations) {
-                return String.valueOf(number);
+                return NumberFormat.getInstance().format(number);
             }
             return IridiumSkyblock.getConfiguration().prettierAbbreviations ? formatPrettyNumber(new BigDecimal(number)) : formatNumber(number);
         }
