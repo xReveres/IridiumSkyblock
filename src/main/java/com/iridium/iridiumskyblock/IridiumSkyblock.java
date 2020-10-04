@@ -461,7 +461,7 @@ public class IridiumSkyblock extends JavaPlugin {
                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                             if (p != null) {
                                 if (cm != island.money && cc != island.getCrystals() && ce != island.exp)
-                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", island.exp - ce + "").replace("%crystals%", island.getCrystals() - cc + "").replace("%money%", island.money - cm + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", Utils.NumberFormatter.format(island.exp - ce)).replace("%crystals%", Utils.NumberFormatter.format(island.getCrystals() - cc)).replace("%money%", Utils.NumberFormatter.format(island.money - cm)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }
                     }

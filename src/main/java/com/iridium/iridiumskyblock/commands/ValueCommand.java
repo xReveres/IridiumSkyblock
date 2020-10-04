@@ -30,7 +30,7 @@ public class ValueCommand extends Command {
             island = user.getIsland();
         }
         if (island != null) {
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandValue.replace("%value%", island.getValue() + "").replace("%rank%", Utils.getIslandRank(island) + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandValue.replace("%value%", island.getFormattedValue()).replace("%rank%", Utils.getIslandRank(island) + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

@@ -52,14 +52,14 @@ public class PlayerTalkListener implements Listener {
                 if (island == null) {
                     format = format.replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, "");
                 } else {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getValue() + "");
+                    format = format.replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue());
                 }
             }
             if (format.contains(IridiumSkyblock.getConfiguration().chatLevelPlaceholder)) {
                 if (island == null) {
                     format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, "");
                 } else {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, String.format("%.2f", island.getValue()));
+                    format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedValue());
                 }
             }
 
@@ -68,9 +68,9 @@ public class PlayerTalkListener implements Listener {
                     final Player islandPlayer = Bukkit.getPlayer(User.getUser(member).name);
                     if (islandPlayer == null) continue;
                     islandPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat)
-                            .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getValue() + "")
+                            .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue())
                             .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
-                            .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, String.format("%.2f", island.getValue()))
+                            .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedValue())
                             .replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "")
                             .replace("%player%", player.getName())
                             .replace("%message%", event.getMessage()));

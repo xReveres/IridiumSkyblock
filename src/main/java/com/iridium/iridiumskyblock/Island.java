@@ -194,7 +194,6 @@ public class Island {
     private List<Player> playersOnIsland;
     private long lastPlayerCaching;
 
-
     private static final transient boolean ISFLAT = XMaterial.supports(13);
     private static transient Method getMaterial;
     private static transient Method getBlock;
@@ -1181,5 +1180,21 @@ public class Island {
     public Map<String, Integer> getMissionLevels() {
         if (missionLevels == null) missionLevels = new HashMap<>();
         return missionLevels;
+    }
+
+    public String getFormattedValue() {
+        return Utils.NumberFormatter.format(value);
+    }
+
+    public String getFormattedMoney() {
+        return Utils.NumberFormatter.format(money);
+    }
+
+    public String getFormattedExp() {
+        return Utils.NumberFormatter.format(exp);
+    }
+
+    public String getFormattedCrystals() {
+        return Utils.NumberFormatter.format(crystals);
     }
 }
