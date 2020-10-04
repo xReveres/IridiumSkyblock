@@ -17,6 +17,9 @@ public class Config {
     public String chatNAMEPlaceholder = "[ISLAND_NAME]";
     public String chatLevelPlaceholder = "[ISLAND_LEVEL]";
     public String placeholderDefaultValue = "N/A";
+    public String thousandAbbreviation = "k";
+    public String millionAbbreviation = "M";
+    public String billionAbbreviation = "B";
     public boolean createCooldown = true;
     public boolean doIslandBackup = true;
     public boolean islandShop = false;
@@ -37,6 +40,8 @@ public class Config {
     public boolean disablePvPOnIslands = true;
     public boolean allowMobGuestTargeting = true;
     public boolean disableBypassOnJoin = true;
+    public boolean displayNumberAbbreviations = true;
+    public boolean prettierAbbreviations = true;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
     public int distance = 151;
@@ -45,6 +50,7 @@ public class Config {
     public int playersOnIslandRefreshTime = 15;
     public int intervalBetweenMobTarget = 15;
     public int islandMoneyPerValue = 1000;
+    public int numberAbbreviationDecimalPlaces = 2;
     public double valuePerLevel = 100.00;
     public double dailyMoneyInterest = 0.5;
     public double dailyCrystalsInterest = 5;

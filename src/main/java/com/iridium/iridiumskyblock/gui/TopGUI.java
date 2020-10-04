@@ -30,14 +30,14 @@ public class TopGUI extends GUI implements Listener {
             if (top.size() >= i) {
                 Island island = top.get(i - 1);
                 User owner = User.getUser(island.getOwner());
-                ArrayList<Utils.Placeholder> placeholders = new ArrayList<>(Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", i + ""), new Utils.Placeholder("level", NumberFormat.getInstance().format(island.getValue() / IridiumSkyblock.getConfiguration().valuePerLevel) + ""), new Utils.Placeholder("value", NumberFormat.getInstance().format(island.getValue()) + "")));
+                ArrayList<Utils.Placeholder> placeholders = new ArrayList<>(Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", i + ""), new Utils.Placeholder("level", Utils.NumberFormatter.format(island.getValue() / IridiumSkyblock.getConfiguration().valuePerLevel)), new Utils.Placeholder("value", island.getFormattedValue())));
                 for (XMaterial item : IridiumSkyblock.getBlockValues().blockvalue.keySet()) {
                     placeholders.add(new Utils.Placeholder(item.name() + "_amount", "" + island.valuableBlocks.getOrDefault(item.name(), 0)));
                 }
                 for (String item : IridiumSkyblock.getBlockValues().spawnervalue.keySet()) {
                     placeholders.add(new Utils.Placeholder(item + "_amount", "" + island.spawners.getOrDefault(item, 0)));
                 }
-                placeholders.add(new Utils.Placeholder("ISLANDBANK_value", IridiumSkyblock.getConfiguration().islandMoneyPerValue != 0 ? (getIsland().money / IridiumSkyblock.getConfiguration().islandMoneyPerValue) + "" : "0"));
+                placeholders.add(new Utils.Placeholder("ISLANDBANK_value", IridiumSkyblock.getConfiguration().islandMoneyPerValue != 0 ? Utils.NumberFormatter.format(island.money / IridiumSkyblock.getConfiguration().islandMoneyPerValue) : "0"));
                 ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().topisland, placeholders);
                 islands.put(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), island.getId());
                 setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), head);

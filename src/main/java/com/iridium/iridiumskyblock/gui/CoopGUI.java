@@ -39,7 +39,7 @@ public class CoopGUI extends GUI implements Listener {
                 if (is != null) {
                     islands.put(i, id);
                     User user = User.getUser(is.getOwner());
-                    ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandcoop, Arrays.asList(new Utils.Placeholder("player", user.name), new Utils.Placeholder("name", is.getName()), new Utils.Placeholder("rank", Utils.getIslandRank(is) + ""), new Utils.Placeholder("value", NumberFormat.getInstance().format(is.getValue()) + "")));
+                    ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandcoop, Arrays.asList(new Utils.Placeholder("player", user.name), new Utils.Placeholder("name", is.getName()), new Utils.Placeholder("rank", Utils.getIslandRank(is) + ""), new Utils.Placeholder("value", is.getFormattedValue())));
                     setItem(i, head);
                     i++;
                 } else {

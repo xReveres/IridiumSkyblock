@@ -3,6 +3,9 @@ package com.iridium.iridiumskyblock;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.support.Vault;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -264,10 +267,10 @@ public class Utils {
                 new Placeholder("flightbooster_vaultcost", IridiumSkyblock.getBoosters().flightBooster.vaultCost + ""),
 
                 //Bank
-                new Placeholder("experience", island.exp + ""),
-                new Placeholder("crystals", island.getCrystals() + ""),
-                new Placeholder("money", island.money + ""),
-                new Placeholder("value", island.getValue() + "")
+                new Placeholder("experience", island.getFormattedExp()),
+                new Placeholder("crystals", island.getFormattedCrystals()),
+                new Placeholder("money", island.getFormattedMoney()),
+                new Placeholder("value", island.getFormattedValue())
         ));
         return placeholders;
     }
@@ -420,4 +423,73 @@ public class Utils {
             return line.replace(key, value);
         }
     }
+
+    public static class NumberFormatter {
+        private static final String FORMAT = "%." + IridiumSkyblock.getConfiguration().numberAbbreviationDecimalPlaces + "f";
+        private static final long ONE_THOUSAND_LONG = 1000;
+        private static final long ONE_MILLION_LONG = 1000000;
+        private static final long ONE_BILLION_LONG = 1000000000;
+
+        private static final BigDecimal ONE_THOUSAND = new BigDecimal(1000);
+        private static final BigDecimal ONE_MILLION = new BigDecimal(1000000);
+        private static final BigDecimal ONE_BILLION = new BigDecimal(1000000000);
+        private static final int ONE_THOUSAND_LENGTH = ONE_THOUSAND.toBigInteger().toString().length();
+        private static final int ONE_MILLION_LENGTH = ONE_MILLION.toBigInteger().toString().length();
+        private static final int ONE_BILLION_LENGTH = ONE_BILLION.toBigInteger().toString().length();
+
+        public static String format(double number) {
+            if (!IridiumSkyblock.getConfiguration().displayNumberAbbreviations) {
+                return NumberFormat.getInstance().format(number);
+            }
+            return IridiumSkyblock.getConfiguration().prettierAbbreviations ? formatPrettyNumber(new BigDecimal(number)) : formatNumber(number);
+        }
+
+        private static String formatNumber(double number) {
+            StringBuilder output = new StringBuilder();
+
+            if (number < 0) {
+                output.append("ERROR");
+            } else if (number < ONE_THOUSAND_LONG) {
+                output.append(String.format(FORMAT, number));
+            } else if (number < ONE_MILLION_LONG) {
+                output.append(String.format(FORMAT, number / ONE_THOUSAND_LONG)).append(IridiumSkyblock.getConfiguration().thousandAbbreviation);
+            } else if (number < ONE_BILLION_LONG) {
+                output.append(String.format(FORMAT, number / ONE_MILLION_LONG)).append(IridiumSkyblock.getConfiguration().millionAbbreviation);
+            } else {
+                output.append(String.format(FORMAT, number / ONE_BILLION_LONG)).append(IridiumSkyblock.getConfiguration().billionAbbreviation);
+            }
+
+            return output.toString();
+        }
+
+        private static String formatPrettyNumber(BigDecimal bigDecimal) {
+            bigDecimal = bigDecimal.setScale(IridiumSkyblock.getConfiguration().numberAbbreviationDecimalPlaces, RoundingMode.HALF_DOWN);
+
+            int length = bigDecimal.stripTrailingZeros().toString().split("\\.")[0].length();
+            StringBuilder outputStringBuilder = new StringBuilder();
+
+            if (length <= 0) {
+                outputStringBuilder
+                    .append("ERROR");
+            } else if (length < ONE_THOUSAND_LENGTH) {
+                outputStringBuilder
+                    .append(bigDecimal.stripTrailingZeros().toPlainString());
+            } else if (length < ONE_MILLION_LENGTH) {
+                outputStringBuilder
+                    .append(bigDecimal.divide(ONE_THOUSAND, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                    .append(IridiumSkyblock.getConfiguration().thousandAbbreviation);
+            } else if (length < ONE_BILLION_LENGTH) {
+                outputStringBuilder
+                    .append(bigDecimal.divide(ONE_MILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                    .append(IridiumSkyblock.getConfiguration().millionAbbreviation);
+            } else {
+                outputStringBuilder
+                    .append(bigDecimal.divide(ONE_BILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                    .append(IridiumSkyblock.getConfiguration().billionAbbreviation);
+            }
+
+            return outputStringBuilder.toString();
+        }
+    }
+
 }
