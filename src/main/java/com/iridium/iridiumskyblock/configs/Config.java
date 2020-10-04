@@ -17,7 +17,7 @@ public class Config {
     public String chatNAMEPlaceholder = "[ISLAND_NAME]";
     public String chatLevelPlaceholder = "[ISLAND_LEVEL]";
     public String placeholderDefaultValue = "N/A";
-    public String thousandAbbreviation = "k";
+    public String thousandAbbreviation = "K";
     public String millionAbbreviation = "M";
     public String billionAbbreviation = "B";
     public boolean createCooldown = true;
