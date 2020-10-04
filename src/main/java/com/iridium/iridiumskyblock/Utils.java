@@ -465,7 +465,7 @@ public class Utils {
         private static String formatPrettyNumber(BigDecimal bigDecimal) {
             bigDecimal = bigDecimal.setScale(IridiumSkyblock.getConfiguration().numberAbbreviationDecimalPlaces, RoundingMode.HALF_DOWN);
 
-            int length = bigDecimal.stripTrailingZeros().toString().split("\\.")[0].length();
+            int length = bigDecimal.stripTrailingZeros().toPlainString().split("\\.")[0].length();
             StringBuilder outputStringBuilder = new StringBuilder();
 
             if (length <= 0) {
