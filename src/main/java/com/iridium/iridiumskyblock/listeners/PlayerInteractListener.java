@@ -58,8 +58,6 @@ public class PlayerInteractListener implements Listener {
                     event.setCancelled(true);
                     return;
                 }
-            } else {
-                event.setCancelled(true);
             }
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
