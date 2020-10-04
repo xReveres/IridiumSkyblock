@@ -586,6 +586,8 @@ public class Island {
             }
         }
         this.value += this.extravalue;
+        if (IridiumSkyblock.getConfiguration().islandMoneyPerValue != 0)
+            this.value += this.money / IridiumSkyblock.getConfiguration().islandMoneyPerValue;
 
         IslandWorthCalculatedEvent islandWorthCalculatedEvent = new IslandWorthCalculatedEvent(this, this.value);
         Bukkit.getPluginManager().callEvent(islandWorthCalculatedEvent);

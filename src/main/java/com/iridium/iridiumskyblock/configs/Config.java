@@ -44,6 +44,7 @@ public class Config {
     public int valueUpdateInterval = 20 * 30;
     public int playersOnIslandRefreshTime = 15;
     public int intervalBetweenMobTarget = 15;
+    public int islandMoneyPerValue = 1000;
     public double valuePerLevel = 100.00;
     public double dailyMoneyInterest = 0.5;
     public double dailyCrystalsInterest = 5;

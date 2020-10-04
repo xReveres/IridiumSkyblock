@@ -37,6 +37,7 @@ public class TopGUI extends GUI implements Listener {
                 for (String item : IridiumSkyblock.getBlockValues().spawnervalue.keySet()) {
                     placeholders.add(new Utils.Placeholder(item + "_amount", "" + island.spawners.getOrDefault(item, 0)));
                 }
+                placeholders.add(new Utils.Placeholder("ISLANDBANK_value", IridiumSkyblock.getConfiguration().islandMoneyPerValue != 0 ? (getIsland().money / IridiumSkyblock.getConfiguration().islandMoneyPerValue) + "" : "0"));
                 ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().topisland, placeholders);
                 islands.put(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), island.getId());
                 setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), head);
