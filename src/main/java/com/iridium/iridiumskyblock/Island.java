@@ -191,7 +191,7 @@ public class Island {
 
     private Date lastRegen;
 
-    private List<Player> playersOnIsland;
+    private transient List<Player> playersOnIsland;
     private long lastPlayerCaching;
 
     private static final transient boolean ISFLAT = XMaterial.supports(13);
