@@ -83,7 +83,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         try {
-            if ((IridiumSkyblock.getConfiguration().mainCommandPermEnable) && (!cs.hasPermission(IridiumSkyblock.getConfiguration().mainCommandPerm) || !IridiumSkyblock.getConfiguration().mainCommandPerm.equalsIgnoreCase(""))){
+            if(!IridiumSkyblock.getConfiguration().mainCommandPerm.equalsIgnoreCase("") && !cs.hasPermission(IridiumSkyblock.getConfiguration().mainCommandPerm)){
                 cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%",IridiumSkyblock.getConfiguration().prefix)));
                 return false;
             }
