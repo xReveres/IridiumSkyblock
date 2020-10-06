@@ -20,6 +20,8 @@ public class Config {
     public String thousandAbbreviation = "K";
     public String millionAbbreviation = "M";
     public String billionAbbreviation = "B";
+    public String mainCommandPerm = "";
+    public boolean mainCommandPermEnable = false;
     public boolean createCooldown = true;
     public boolean doIslandBackup = true;
     public boolean islandShop = false;
