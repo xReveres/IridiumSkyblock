@@ -113,7 +113,7 @@ public class Messages {
     public String calculationAlreadyInProcess = "%prefix% &7Calculating Players islands already in Process";
     public String inventoryFull = "%prefix% &7Your inventory is full";
     public String islandUpgraded = "%prefix% &7%player% upgraded your island's %upgradename% Upgrade from level %oldlvl% to level %newlvl%";
-    public String activatedBooster = "%prefix% &7%player% activated your islands %boostername% Booester";
+    public String activatedBooster = "%prefix% &7%player% activated your islands %boostername% Booster";
     public String youHaveBeenExpelled = "%prefix% &7You were expelled from %kicker%'s island!";
     public String expelledVisitor = "%prefix% &7%player% has been expelled from your island.";
     public String cantExpelPlayer = "%prefix% &7%player% cannot be expelled!";
