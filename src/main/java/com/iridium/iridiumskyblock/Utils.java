@@ -433,9 +433,6 @@ public class Utils {
         private static final BigDecimal ONE_THOUSAND = new BigDecimal(1000);
         private static final BigDecimal ONE_MILLION = new BigDecimal(1000000);
         private static final BigDecimal ONE_BILLION = new BigDecimal(1000000000);
-        private static final int ONE_THOUSAND_LENGTH = ONE_THOUSAND.toBigInteger().toString().length();
-        private static final int ONE_MILLION_LENGTH = ONE_MILLION.toBigInteger().toString().length();
-        private static final int ONE_BILLION_LENGTH = ONE_BILLION.toBigInteger().toString().length();
 
         public static String format(double number) {
             if (!IridiumSkyblock.getConfiguration().displayNumberAbbreviations) {
@@ -464,21 +461,19 @@ public class Utils {
 
         private static String formatPrettyNumber(BigDecimal bigDecimal) {
             bigDecimal = bigDecimal.setScale(IridiumSkyblock.getConfiguration().numberAbbreviationDecimalPlaces, RoundingMode.HALF_DOWN);
-
-            int length = bigDecimal.stripTrailingZeros().toPlainString().split("\\.")[0].length();
             StringBuilder outputStringBuilder = new StringBuilder();
 
-            if (length <= 0) {
+            if (bigDecimal.compareTo(BigDecimal.ZERO) <= 0) {
                 outputStringBuilder
                     .append("ERROR");
-            } else if (length < ONE_THOUSAND_LENGTH) {
+            } else if (bigDecimal.compareTo(ONE_THOUSAND) < 0) {
                 outputStringBuilder
                     .append(bigDecimal.stripTrailingZeros().toPlainString());
-            } else if (length < ONE_MILLION_LENGTH) {
+            } else if (bigDecimal.compareTo(ONE_MILLION) < 0) {
                 outputStringBuilder
                     .append(bigDecimal.divide(ONE_THOUSAND, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
                     .append(IridiumSkyblock.getConfiguration().thousandAbbreviation);
-            } else if (length < ONE_BILLION_LENGTH) {
+            } else if (bigDecimal.compareTo(ONE_BILLION) < 0) {
                 outputStringBuilder
                     .append(bigDecimal.divide(ONE_MILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
                     .append(IridiumSkyblock.getConfiguration().millionAbbreviation);
