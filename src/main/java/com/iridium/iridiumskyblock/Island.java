@@ -11,6 +11,7 @@ import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.support.*;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
@@ -141,8 +142,8 @@ public class Island {
     @Getter
     private double extravalue;
 
-    public transient Map<String, Integer> valuableBlocks;
-    public transient Map<String, Integer> spawners;
+    public transient ConcurrentHashMap<String, Integer> valuableBlocks;
+    public transient ConcurrentHashMap<String, Integer> spawners;
 
     @Getter
     private final List<Warp> warps;
@@ -212,8 +213,8 @@ public class Island {
         User user = User.getUser(owner);
         user.role = Role.Owner;
         this.biome = IridiumSkyblock.getConfiguration().defaultBiome;
-        valuableBlocks = new HashMap<>();
-        spawners = new HashMap<>();
+        valuableBlocks = new ConcurrentHashMap<>();
+        spawners = new ConcurrentHashMap<>();
         this.owner = user.player;
         this.name = user.name;
         this.pos1 = pos1;
@@ -480,8 +481,8 @@ public class Island {
     }
 
     public void calculateIslandValue() {
-        if (valuableBlocks == null) valuableBlocks = new HashMap<>();
-        if (spawners == null) spawners = new HashMap<>();
+        if (valuableBlocks == null) valuableBlocks = new ConcurrentHashMap<>();
+        if (spawners == null) spawners = new ConcurrentHashMap<>();
 
         final BlockValues blockValues = IridiumSkyblock.getBlockValues();
         final Map<XMaterial, Double> blockValueMap = blockValues.blockvalue;
@@ -671,8 +672,8 @@ public class Island {
             }
         }
         if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
-        if (valuableBlocks == null) valuableBlocks = new HashMap<>();
-        if (spawners == null) spawners = new HashMap<>();
+        if (valuableBlocks == null) valuableBlocks = new ConcurrentHashMap<>();
+        if (spawners == null) spawners = new ConcurrentHashMap<>();
         if (members == null) {
             members = new HashSet<>();
             members.add(owner);
