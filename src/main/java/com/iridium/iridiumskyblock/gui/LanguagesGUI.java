@@ -25,6 +25,10 @@ public class LanguagesGUI extends GUI implements Listener {
 
     public LanguagesGUI() {
         pages = new HashMap<>();
+        if (IridiumSkyblock.getInstance().languages.isEmpty()) {
+            pages.put(1, new LanguagesGUI(1, this));
+            return;
+        }
         for (int i = 1; i <= Math.ceil(IridiumSkyblock.getInstance().languages.size() / 45.00); i++) {
             pages.put(i, new LanguagesGUI(i, this));
         }
