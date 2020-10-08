@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,8 +21,23 @@ public class WorldBorderCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         User user = User.getUser(p);
-        if (user.getIsland() != null) {
-            p.openInventory(user.getIsland().getBorderColorGUI().getInventory());
+        Island island = user.getIsland();
+        if (island != null) {
+            if (args.length == 2) {
+                if (args[1].equalsIgnoreCase("red")) {
+                    island.setBorderColor(Color.Red);
+                } else if (args[1].equalsIgnoreCase("blue")) {
+                    island.setBorderColor(Color.Blue);
+                } else if (args[1].equalsIgnoreCase("green")) {
+                    island.setBorderColor(Color.Green);
+                } else if (args[1].equalsIgnoreCase("off")) {
+                    island.setBorderColor(Color.Off);
+                } else {
+                    p.openInventory(island.getBorderColorGUI().getInventory());
+                }
+            }else {
+                p.openInventory(island.getBorderColorGUI().getInventory());
+            }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
