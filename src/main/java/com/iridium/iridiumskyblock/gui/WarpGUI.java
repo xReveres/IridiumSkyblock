@@ -35,7 +35,7 @@ public class WarpGUI extends GUI implements Listener {
                 setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandWarp, Collections.singletonList(new Utils.Placeholder("warp", warp.getName()))));
                 i++;
             }
-            setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
         }
     }
 
@@ -47,7 +47,7 @@ public class WarpGUI extends GUI implements Listener {
             User u = User.getUser(p);
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
-            if (e.getSlot() == getInventory().getSize() - 5) {
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
                 e.getWhoClicked().openInventory(getIsland().getIslandMenuGUI().getInventory());
             }
             if (warps.containsKey(e.getSlot())) {

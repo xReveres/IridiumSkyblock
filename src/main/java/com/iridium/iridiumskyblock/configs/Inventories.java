@@ -42,6 +42,8 @@ public class Inventories {
     public int shopGUISize = 54;
     public int biomeGUISize = 54;
 
+    public boolean backButtons = true;
+
     //Boosters
     public Item spawner = new Item(XMaterial.SPAWNER, 1, "&b&lIncreased Mobs", Arrays.asList("&7Are your spawners too slow? Buy this", "&7booster and increase spawner rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{spawnerbooster_minutes} minutes and {spawnerbooster_seconds}seconds", "&b&l * &7Booster Cost: &b{spawnerbooster_crystalcost} Crystals and ${spawnerbooster_vaultcost}", "", "&b&l[!] &bRight Click to Purchase this Booster."));
     public Item farming = new Item(XMaterial.WHEAT, 1, "&b&lIncreased Crops", Arrays.asList("&7Are your crops too slow? Buy this", "&7booster and increase crop growth rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{farmingbooster_minutes} minutes and {farmingbooster_seconds}seconds", "&b&l * &7Booster Cost: &b{farmingbooster_crystalcost} Crystals and ${farmingbooster_vaultcost}", "", "&b&l[!] &bRight Click to Purchase this Booster."));
@@ -87,7 +89,7 @@ public class Inventories {
     public Item off = new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 16,1, "&f&lOff", new ArrayList<>());
 
     public Map<Item, String> menu = new HashMap<Item, String>() {{
-        put(new Item(XMaterial.PLAYER_HEAD,1,1,"&b&lIsland Visitors",Collections.singletonList("&7View your island Visitors")), "is expel");
+        put(new Item(XMaterial.PLAYER_HEAD,1,1,"&b&lIsland Visitors","Servers",Collections.singletonList("&7View your island Visitors")), "is expel");
         put(new Item(XMaterial.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home")), "is home");
         put(new Item(XMaterial.PLAYER_HEAD, 14, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island Members.")), "is members");
         put(new Item(XMaterial.GRASS_BLOCK, 36, 1, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island.")), "is regen");

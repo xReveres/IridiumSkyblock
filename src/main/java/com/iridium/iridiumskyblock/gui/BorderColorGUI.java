@@ -24,7 +24,7 @@ public class BorderColorGUI extends GUI implements Listener {
         if (IridiumSkyblock.border.BlueEnabled) setItem(IridiumSkyblock.getInventories().blue.slot,Utils.makeItem(IridiumSkyblock.getInventories().blue));
         if (IridiumSkyblock.border.GreenEnabled) setItem(IridiumSkyblock.getInventories().green.slot,Utils.makeItem(IridiumSkyblock.getInventories().green));
         if (IridiumSkyblock.border.OffEnabled) setItem(IridiumSkyblock.getInventories().off.slot,Utils.makeItem(IridiumSkyblock.getInventories().off));
-        setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+        if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
     }
 
     @EventHandler
@@ -33,7 +33,7 @@ public class BorderColorGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (e.getCurrentItem() != null) {
-                if (e.getSlot() == getInventory().getSize() - 5) {
+                if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
                     e.getWhoClicked().openInventory(getIsland().getIslandMenuGUI().getInventory());
                 }
                 if (e.getSlot() == IridiumSkyblock.getInventories().blue.slot)

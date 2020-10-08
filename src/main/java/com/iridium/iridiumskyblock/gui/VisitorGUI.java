@@ -29,7 +29,6 @@ public class VisitorGUI extends GUI implements Listener {
         Island island = getIsland();
         if (island == null) return;
         visitors.clear();
-        setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
         int i = 0;
         for (Player p : island.getPlayersOnIsland()) {
             if (!island.getMembers().contains(p.getUniqueId().toString())) {
@@ -40,6 +39,7 @@ public class VisitorGUI extends GUI implements Listener {
                 i++;
             }
         }
+        if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class VisitorGUI extends GUI implements Listener {
             Island island = getIsland();
             e.setCancelled(true);
             int i = e.getSlot();
-            if (i == getInventory().getSize() - 5) {
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
                 e.getWhoClicked().openInventory(getIsland().getIslandMenuGUI().getInventory());
             }
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
