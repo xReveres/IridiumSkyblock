@@ -24,13 +24,13 @@ public class WorldBorderCommand extends Command {
         Island island = user.getIsland();
         if (island != null) {
             if (args.length == 2) {
-                if (args[1].equalsIgnoreCase("red")) {
+                if (args[1].equalsIgnoreCase("red") && IridiumSkyblock.border.RedEnabled) {
                     island.setBorderColor(Color.Red);
-                } else if (args[1].equalsIgnoreCase("blue")) {
+                } else if (args[1].equalsIgnoreCase("blue") && IridiumSkyblock.border.BlueEnabled) {
                     island.setBorderColor(Color.Blue);
-                } else if (args[1].equalsIgnoreCase("green")) {
+                } else if (args[1].equalsIgnoreCase("green") && IridiumSkyblock.border.GreenEnabled) {
                     island.setBorderColor(Color.Green);
-                } else if (args[1].equalsIgnoreCase("off")) {
+                } else if (args[1].equalsIgnoreCase("off") && IridiumSkyblock.border.OffEnabled) {
                     island.setBorderColor(Color.Off);
                 } else {
                     p.openInventory(island.getBorderColorGUI().getInventory());
