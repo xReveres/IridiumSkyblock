@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,6 +56,15 @@ public class WorldBorderCommand extends Command {
 
     @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
+        if (args.length == 2){
+            ArrayList<String> result = new ArrayList<>();
+            if (IridiumSkyblock.border.BlueEnabled) result.add("blue");
+            if (IridiumSkyblock.border.OffEnabled) result.add("off");
+            if (IridiumSkyblock.border.GreenEnabled) result.add("green");
+            if (IridiumSkyblock.border.RedEnabled) result.add("red");
+            return result;
+
+        }
         return null;
     }
 }
