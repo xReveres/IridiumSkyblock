@@ -170,13 +170,21 @@ public class IridiumSkyblock extends JavaPlugin {
                 Plugin asyncworldedit = Bukkit.getPluginManager().getPlugin("AsyncWorldEdit");
                 /*
                 If AsyncWorldEdit is loaded, then the schematic wont get pasted instantly.
-                This will cause the plugin to try to teleport to the island, however as the schematic hasnt been pasted yet
+                This will cause the plugin to try to teleport to the island, however as the schematic hasn't been pasted yet
                 it will keep retrying to paste the schematic and get caught into a constant loop of pasting the island until the server crashes
                  */
                 if (worldedit != null && asyncworldedit == null) {
-                    if (worldedit.getDescription().getVersion().startsWith("6")) {
+                    String worldEditVersion = worldedit.getDescription().getVersion();
+                    // See https://regex101.com/r/j4CEMo/1.
+                    // This regex may be updated to support future releases of WorldEdit (version 10+).
+                    if (XMaterial.supports(13) && !worldEditVersion.matches("(7\\.[2-9]+.*|[^0-7]\\.[2-9]+.*)")) {
+                        getLogger().warning("Your current WorldEdit version has problems with the island schematics!");
+                        getLogger().warning("Please update to the newest version immediately!");
+                        getLogger().warning("A fallback system is now used");
+                        worldEdit = schematic;
+                    } else if (worldEditVersion.startsWith("6")) {
                         worldEdit = new WorldEdit6();
-                    } else if (worldedit.getDescription().getVersion().startsWith("7")) {
+                    } else if (worldEditVersion.startsWith("7")) {
                         worldEdit = new WorldEdit7();
                     } else {
                         worldEdit = schematic;
