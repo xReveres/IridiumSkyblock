@@ -180,10 +180,9 @@ public class IridiumSkyblock extends JavaPlugin {
                     if (XMaterial.supports(13) && !worldEditVersion.matches("(7\\.[2-9]+.*|[^0-7]\\.[2-9]+.*)")) {
                         getLogger().warning("Your current WorldEdit version has problems with the island schematics!");
                         getLogger().warning("Please update to the newest version immediately!");
-                        getLogger().warning("The plugin will shutdown now.");
-                        throw new RuntimeException("Wrong WorldEdit version");
-                    }
-                    if (worldEditVersion.startsWith("6")) {
+                        getLogger().warning("A fallback system is now used");
+                        worldEdit = schematic;
+                    } else if (worldEditVersion.startsWith("6")) {
                         worldEdit = new WorldEdit6();
                     } else if (worldEditVersion.startsWith("7")) {
                         worldEdit = new WorldEdit7();
