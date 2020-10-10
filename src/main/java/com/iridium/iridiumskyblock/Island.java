@@ -818,7 +818,7 @@ public class Island {
                 sendBorder(p);
             } else {
                 User.getUser(p).teleportingHome = true;
-                pasteSchematic(p, false);
+                pasteSchematic(p, true);
             }
         }
     }
