@@ -430,6 +430,7 @@ public class Utils {
         private static final long ONE_MILLION_LONG = 1000000;
         private static final long ONE_BILLION_LONG = 1000000000;
 
+        private static final BigDecimal MINUS_ONE = new BigDecimal(-1);
         private static final BigDecimal ONE_THOUSAND = new BigDecimal(1000);
         private static final BigDecimal ONE_MILLION = new BigDecimal(1000000);
         private static final BigDecimal ONE_BILLION = new BigDecimal(1000000000);
@@ -463,9 +464,10 @@ public class Utils {
             bigDecimal = bigDecimal.setScale(IridiumSkyblock.getConfiguration().numberAbbreviationDecimalPlaces, RoundingMode.HALF_DOWN);
             StringBuilder outputStringBuilder = new StringBuilder();
 
-            if (bigDecimal.compareTo(BigDecimal.ZERO) <= 0) {
+            if (bigDecimal.compareTo(BigDecimal.ZERO) < 0) {
                 outputStringBuilder
-                    .append("ERROR");
+                    .append("-")
+                    .append(formatPrettyNumber(bigDecimal.multiply(MINUS_ONE)));
             } else if (bigDecimal.compareTo(ONE_THOUSAND) < 0) {
                 outputStringBuilder
                     .append(bigDecimal.stripTrailingZeros().toPlainString());
