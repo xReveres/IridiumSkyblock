@@ -17,5 +17,8 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
+**Console Error**
+If applicable, a pastebin link of any console errors
+
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
