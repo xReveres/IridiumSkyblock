@@ -23,7 +23,6 @@ public class MissionsGUI extends GUI implements Listener {
         if (getInventory().getViewers().isEmpty()) return;
         if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
             Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
-            setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
             for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
                 List<Utils.Placeholder> placeholderList = Utils.getIslandPlaceholders(island);
 
@@ -37,8 +36,9 @@ public class MissionsGUI extends GUI implements Listener {
                 placeholderList.add(new Utils.Placeholder("crystalsReward", data.crystalReward + ""));
                 placeholderList.add(new Utils.Placeholder("amount", data.amount + ""));
                 placeholderList.add(new Utils.Placeholder("status", island.getMission(mission.name) == Integer.MIN_VALUE ? IridiumSkyblock.getMessages().completed : island.getMission(mission.name) + "/" + data.amount + ""));
-                if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+                setItem(mission.item.slot, Utils.makeItemHidden(mission.item, placeholderList));
             }
+            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
         }
     }
 
