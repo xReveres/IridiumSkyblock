@@ -762,11 +762,14 @@ public class Island {
     }
 
     private void pasteSchematic() {
-        IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, schematic), getCenter().clone(), this);
-        Location center = getCenter().clone();
-        if (IridiumSkyblock.getConfiguration().netherIslands) {
-            center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-            IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), center.clone(), this);
+        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
+            if (!fakeSchematic.name.equals(this.schematic)) continue;
+            IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, schematic), getCenter().clone().add(fakeSchematic.xOffset, fakeSchematic.yOffset, fakeSchematic.zOffset), this);
+            Location center = getCenter().clone();
+            if (IridiumSkyblock.getConfiguration().netherIslands) {
+                center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+                IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), center.clone().add(fakeSchematic.xOffset, fakeSchematic.yOffset, fakeSchematic.zOffset), this);
+            }
         }
     }
 
