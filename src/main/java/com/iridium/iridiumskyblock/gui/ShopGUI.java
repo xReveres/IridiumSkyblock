@@ -118,7 +118,10 @@ public class ShopGUI extends GUI implements Listener {
                                 int index = 0;
                                 for (ItemStack itemStack : e.getWhoClicked().getInventory().getContents()) {
                                     // Don't remove this statement (read code above for reason)
-                                    if (itemStack == null) continue;
+                                    if (itemStack == null) {
+                                        index++;
+                                        continue;
+                                    }
                                     if (removed >= item.amount) break;
                                     if (!itemStack.getType().isAir()) {
                                         if (item.material.isSimilar(itemStack)) {
