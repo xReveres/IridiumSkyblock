@@ -599,6 +599,9 @@ public class IridiumSkyblock extends JavaPlugin {
         if (inventories.green.slot == null) inventories.green.slot = 12;
         if (inventories.blue.slot == null) inventories.blue.slot = 14;
         if (inventories.off.slot == null) inventories.off.slot = 16;
+        for (Schematics.FakeSchematic schematic : schematics.schematics){
+            if (schematic.biome == null) schematic.biome = XBiome.PLAINS;
+        }
 
         missions.missions.remove(null);
 
