@@ -748,6 +748,7 @@ public class Island {
         for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
             if (!schematic.name.equals(this.schematic)) continue;
             home = new Location(IridiumSkyblock.getIslandManager().getWorld(), getCenter().getX() + schematic.x, schematic.y, getCenter().getZ() + schematic.z);
+            this.setBiome(schematic.biome);
         }
     }
 
