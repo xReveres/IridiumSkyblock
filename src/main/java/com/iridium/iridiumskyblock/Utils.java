@@ -3,9 +3,6 @@ package com.iridium.iridiumskyblock;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.support.Vault;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.NumberFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,6 +14,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -406,6 +408,21 @@ public class Utils {
             return nbtItem.getInteger("crystals");
         }
         return 0;
+    }
+
+
+    public static String getCurrentTimeStamp(Date date, String format) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat(format);//dd/MM/yyyy
+        return sdfDate.format(date);
+    }
+
+    public static Date getLocalDateTime(String time, String format) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat(format);//dd/MM/yyyy
+        try {
+            return sdfDate.parse(time);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     public static class Placeholder {
