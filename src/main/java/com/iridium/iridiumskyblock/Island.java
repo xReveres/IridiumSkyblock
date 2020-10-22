@@ -4,12 +4,14 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
+import com.iridium.iridiumskyblock.api.IslandWorthCalculatedEvent;
 import com.iridium.iridiumskyblock.api.MissionCompleteEvent;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.support.*;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
@@ -95,6 +97,8 @@ public class Island {
     private transient BankGUI bankGUI;
     @Getter
     private transient BiomeGUI biomeGUI;
+    @Getter
+    private transient VisitorGUI visitorGUI;
 
     @Getter
     private int id;
@@ -138,8 +142,8 @@ public class Island {
     @Getter
     private double extravalue;
 
-    public transient Map<String, Integer> valuableBlocks;
-    public transient Map<String, Integer> spawners;
+    public transient ConcurrentHashMap<String, Integer> valuableBlocks;
+    public transient ConcurrentHashMap<String, Integer> spawners;
 
     @Getter
     private final List<Warp> warps;
@@ -188,6 +192,8 @@ public class Island {
 
     private Date lastRegen;
 
+    private transient List<Player> playersOnIsland;
+    private long lastPlayerCaching;
 
     private static final transient boolean ISFLAT = XMaterial.supports(13);
     private static transient Method getMaterial;
@@ -207,8 +213,8 @@ public class Island {
         User user = User.getUser(owner);
         user.role = Role.Owner;
         this.biome = IridiumSkyblock.getConfiguration().defaultBiome;
-        valuableBlocks = new HashMap<>();
-        spawners = new HashMap<>();
+        valuableBlocks = new ConcurrentHashMap<>();
+        spawners = new ConcurrentHashMap<>();
         this.owner = user.player;
         this.name = user.name;
         this.pos1 = pos1;
@@ -331,9 +337,7 @@ public class Island {
                 });
             }
         }
-        Bukkit.getScheduler().
-
-                runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
     }
 
     public void resetMissions() {
@@ -449,7 +453,7 @@ public class Island {
         final int vaultReward = level.vaultReward;
         this.crystals += crystalReward;
         this.money += vaultReward;
-        Bukkit.getPluginManager().callEvent(new MissionCompleteEvent(missionName, level.type, levelProgress));
+        Bukkit.getPluginManager().callEvent(new MissionCompleteEvent(this, missionName, level.type, levelProgress));
         final Messages messages = IridiumSkyblock.getMessages();
         final String titleMessage = messages.missionComplete
                 .replace("%mission%", missionName)
@@ -477,8 +481,8 @@ public class Island {
     }
 
     public void calculateIslandValue() {
-        if (valuableBlocks == null) valuableBlocks = new HashMap<>();
-        if (spawners == null) spawners = new HashMap<>();
+        if (valuableBlocks == null) valuableBlocks = new ConcurrentHashMap<>();
+        if (spawners == null) spawners = new ConcurrentHashMap<>();
 
         final BlockValues blockValues = IridiumSkyblock.getBlockValues();
         final Map<XMaterial, Double> blockValueMap = blockValues.blockvalue;
@@ -582,6 +586,12 @@ public class Island {
             }
         }
         this.value += this.extravalue;
+        if (IridiumSkyblock.getConfiguration().islandMoneyPerValue != 0)
+            this.value += this.money / IridiumSkyblock.getConfiguration().islandMoneyPerValue;
+
+        IslandWorthCalculatedEvent islandWorthCalculatedEvent = new IslandWorthCalculatedEvent(this, this.value);
+        Bukkit.getPluginManager().callEvent(islandWorthCalculatedEvent);
+        this.value = islandWorthCalculatedEvent.getIslandWorth();
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
@@ -662,13 +672,14 @@ public class Island {
             }
         }
         if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
-        if (valuableBlocks == null) valuableBlocks = new HashMap<>();
-        if (spawners == null) spawners = new HashMap<>();
+        if (valuableBlocks == null) valuableBlocks = new ConcurrentHashMap<>();
+        if (spawners == null) spawners = new ConcurrentHashMap<>();
         if (members == null) {
             members = new HashSet<>();
             members.add(owner);
         }
-
+        this.playersOnIsland = new ArrayList<>();
+        this.lastPlayerCaching = 0L;
         upgradeGUI = new UpgradeGUI(this);
         boosterGUI = new BoosterGUI(this);
         missionsGUI = new MissionsGUI(this);
@@ -682,6 +693,8 @@ public class Island {
         coopGUI = new CoopGUI(this);
         bankGUI = new BankGUI(this);
         biomeGUI = new BiomeGUI(this);
+        visitorGUI = new VisitorGUI(this);
+
         failedGenerators = new HashSet<>();
         coopInvites = new HashSet<>();
         boosterid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
@@ -735,6 +748,7 @@ public class Island {
         for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
             if (!schematic.name.equals(this.schematic)) continue;
             home = new Location(IridiumSkyblock.getIslandManager().getWorld(), getCenter().getX() + schematic.x, schematic.y, getCenter().getZ() + schematic.z);
+            this.setBiome(schematic.biome);
         }
     }
 
@@ -749,11 +763,14 @@ public class Island {
     }
 
     private void pasteSchematic() {
-        IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, schematic), getCenter().clone(), this);
-        Location center = getCenter().clone();
-        if (IridiumSkyblock.getConfiguration().netherIslands) {
-            center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-            IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), center.clone(), this);
+        for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
+            if (!fakeSchematic.name.equals(this.schematic)) continue;
+            IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, schematic), getCenter().clone().add(fakeSchematic.xOffset, fakeSchematic.yOffset, fakeSchematic.zOffset), this);
+            Location center = getCenter().clone();
+            if (IridiumSkyblock.getConfiguration().netherIslands) {
+                center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
+                IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), center.clone().add(fakeSchematic.xOffset, fakeSchematic.yOffset, fakeSchematic.zOffset), this);
+            }
         }
     }
 
@@ -805,7 +822,7 @@ public class Island {
                 sendBorder(p);
             } else {
                 User.getUser(p).teleportingHome = true;
-                pasteSchematic(p, false);
+                pasteSchematic(p, true);
             }
         }
     }
@@ -1029,13 +1046,20 @@ public class Island {
     }
 
     public List<Player> getPlayersOnIsland() {
-        List<Player> players = new ArrayList<>();
+        if (System.currentTimeMillis() >= lastPlayerCaching + (IridiumSkyblock.getConfiguration().playersOnIslandRefreshTime * 1000L)) {
+            reloadPlayersOnIsland();
+        }
+        return playersOnIsland;
+    }
+
+    public void reloadPlayersOnIsland() {
+        lastPlayerCaching = System.currentTimeMillis();
+        playersOnIsland.clear();
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (isInIsland(p.getLocation())) {
-                players.add(p);
+                playersOnIsland.add(p);
             }
         }
-        return players;
     }
 
     public void spawnPlayer(Player player) {
@@ -1161,5 +1185,21 @@ public class Island {
     public Map<String, Integer> getMissionLevels() {
         if (missionLevels == null) missionLevels = new HashMap<>();
         return missionLevels;
+    }
+
+    public String getFormattedValue() {
+        return Utils.NumberFormatter.format(value);
+    }
+
+    public String getFormattedMoney() {
+        return Utils.NumberFormatter.format(money);
+    }
+
+    public String getFormattedExp() {
+        return Utils.NumberFormatter.format(exp);
+    }
+
+    public String getFormattedCrystals() {
+        return Utils.NumberFormatter.format(crystals);
     }
 }

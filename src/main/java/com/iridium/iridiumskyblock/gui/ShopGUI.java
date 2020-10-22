@@ -84,6 +84,9 @@ public class ShopGUI extends GUI implements Listener {
     public boolean contains(Player p, XMaterial materials, int amount) {
         int total = 0;
         for (ItemStack item : p.getInventory().getContents()) {
+            // Although some IDEs might suggest to remove this,
+            // it is required because the array can contain null values.
+            // See https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/Inventory.html#getContents()
             if (item == null) continue;
             if (materials.isSimilar(item)) {
                 total += item.getAmount();
@@ -114,8 +117,13 @@ public class ShopGUI extends GUI implements Listener {
                                 int removed = 0;
                                 int index = 0;
                                 for (ItemStack itemStack : e.getWhoClicked().getInventory().getContents()) {
+                                    // Don't remove this statement (read code above for reason)
+                                    if (itemStack == null) {
+                                        index++;
+                                        continue;
+                                    }
                                     if (removed >= item.amount) break;
-                                    if (itemStack != null) {
+                                    if (!itemStack.getType().isAir()) {
                                         if (item.material.isSimilar(itemStack)) {
                                             if (removed + itemStack.getAmount() <= item.amount) {
                                                 removed += itemStack.getAmount();

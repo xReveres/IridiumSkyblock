@@ -9,11 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TopGUI extends GUI implements Listener {
 
@@ -29,24 +25,27 @@ public class TopGUI extends GUI implements Listener {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
         List<Island> top = Utils.getTopIslands();
+        ItemStack filler = Utils.makeItem(IridiumSkyblock.getInventories().topfiller);
         for (int i : IridiumSkyblock.getConfiguration().islandTopSlots.keySet()) {
             if (top.size() >= i) {
                 Island island = top.get(i - 1);
                 User owner = User.getUser(island.getOwner());
-                ArrayList<Utils.Placeholder> placeholders = new ArrayList<>(Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", i + ""), new Utils.Placeholder("level", NumberFormat.getInstance().format(island.getValue() / IridiumSkyblock.getConfiguration().valuePerLevel) + ""), new Utils.Placeholder("value", NumberFormat.getInstance().format(island.getValue()) + "")));
+                ArrayList<Utils.Placeholder> placeholders = new ArrayList<>(Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("votes", island.getVotes()+""), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", i + ""), new Utils.Placeholder("level", Utils.NumberFormatter.format(island.getValue() / IridiumSkyblock.getConfiguration().valuePerLevel)), new Utils.Placeholder("value", island.getFormattedValue())));
                 for (XMaterial item : IridiumSkyblock.getBlockValues().blockvalue.keySet()) {
                     placeholders.add(new Utils.Placeholder(item.name() + "_amount", "" + island.valuableBlocks.getOrDefault(item.name(), 0)));
                 }
                 for (String item : IridiumSkyblock.getBlockValues().spawnervalue.keySet()) {
                     placeholders.add(new Utils.Placeholder(item + "_amount", "" + island.spawners.getOrDefault(item, 0)));
                 }
+                placeholders.add(new Utils.Placeholder("ISLANDBANK_value", IridiumSkyblock.getConfiguration().islandMoneyPerValue != 0 ? Utils.NumberFormatter.format(island.money / IridiumSkyblock.getConfiguration().islandMoneyPerValue) : "0"));
                 ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().topisland, placeholders);
                 islands.put(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), island.getId());
                 setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), head);
             } else {
-                setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
+                setItem(IridiumSkyblock.getConfiguration().islandTopSlots.get(i), filler);
             }
         }
+        if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
     }
 
     @EventHandler
@@ -55,6 +54,9 @@ public class TopGUI extends GUI implements Listener {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
+                e.getWhoClicked().openInventory(User.getUser((Player) e.getWhoClicked()).getIsland().getIslandMenuGUI().getInventory());
+            }
             if (islands.containsKey(e.getSlot())) {
                 e.getWhoClicked().closeInventory();
                 Island island = IridiumSkyblock.getIslandManager().getIslandViaId(islands.get(e.getSlot()));

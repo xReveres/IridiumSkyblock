@@ -153,7 +153,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 shopGUI = new ShopGUI();
                 visitGUI = new HashMap<>();
 
-                registerListeners(new EntitySpawnListener(), new LeafDecayListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener());
+                registerListeners(new EntitySpawnListener(), new LeafDecayListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener());
 
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
 
@@ -170,13 +170,21 @@ public class IridiumSkyblock extends JavaPlugin {
                 Plugin asyncworldedit = Bukkit.getPluginManager().getPlugin("AsyncWorldEdit");
                 /*
                 If AsyncWorldEdit is loaded, then the schematic wont get pasted instantly.
-                This will cause the plugin to try to teleport to the island, however as the schematic hasnt been pasted yet
+                This will cause the plugin to try to teleport to the island, however as the schematic hasn't been pasted yet
                 it will keep retrying to paste the schematic and get caught into a constant loop of pasting the island until the server crashes
                  */
                 if (worldedit != null && asyncworldedit == null) {
-                    if (worldedit.getDescription().getVersion().startsWith("6")) {
+                    String worldEditVersion = worldedit.getDescription().getVersion();
+                    // See https://regex101.com/r/j4CEMo/1.
+                    // This regex may be updated to support future releases of WorldEdit (version 10+).
+                    if (XMaterial.supports(13) && !worldEditVersion.matches("(7\\.[2-9]+.*|[^0-7]\\.[2-9]+.*)")) {
+                        getLogger().warning("Your current WorldEdit version has problems with the island schematics!");
+                        getLogger().warning("Please update to the newest version immediately!");
+                        getLogger().warning("A fallback system is now used");
+                        worldEdit = schematic;
+                    } else if (worldEditVersion.startsWith("6")) {
                         worldEdit = new WorldEdit6();
-                    } else if (worldedit.getDescription().getVersion().startsWith("7")) {
+                    } else if (worldEditVersion.startsWith("7")) {
                         worldEdit = new WorldEdit7();
                     } else {
                         worldEdit = schematic;
@@ -461,7 +469,7 @@ public class IridiumSkyblock extends JavaPlugin {
                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                             if (p != null) {
                                 if (cm != island.money && cc != island.getCrystals() && ce != island.exp)
-                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", island.exp - ce + "").replace("%crystals%", island.getCrystals() - cc + "").replace("%money%", island.money - cm + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", Utils.NumberFormatter.format(island.exp - ce)).replace("%crystals%", Utils.NumberFormatter.format(island.getCrystals() - cc)).replace("%money%", Utils.NumberFormatter.format(island.money - cm)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }
                     }
@@ -586,6 +594,14 @@ public class IridiumSkyblock extends JavaPlugin {
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
         border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
+
+        if (inventories.red.slot == null) inventories.red.slot = 10;
+        if (inventories.green.slot == null) inventories.green.slot = 12;
+        if (inventories.blue.slot == null) inventories.blue.slot = 14;
+        if (inventories.off.slot == null) inventories.off.slot = 16;
+        for (Schematics.FakeSchematic schematic : schematics.schematics){
+            if (schematic.biome == null) schematic.biome = XBiome.PLAINS;
+        }
 
         missions.missions.remove(null);
 

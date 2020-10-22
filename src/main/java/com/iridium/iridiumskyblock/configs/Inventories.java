@@ -23,7 +23,9 @@ public class Inventories {
     public String visitGUITitle = "&7Visit an Island";
     public String shopGUITitle = "&7Island Shop";
     public String biomeGUITitle = "&7Island Biome";
+    public String visitorGUITitle = "&7Island Visitors";
 
+    public int visitorGUISize = 27;
     public int upgradeGUISize = 27;
     public int boosterGUISize = 27;
     public int missionsGUISize = 27;
@@ -39,6 +41,8 @@ public class Inventories {
     public int visitGUISize = 54;
     public int shopGUISize = 54;
     public int biomeGUISize = 54;
+
+    public boolean backButtons = true;
 
     //Boosters
     public Item spawner = new Item(XMaterial.SPAWNER, 1, "&b&lIncreased Mobs", Arrays.asList("&7Are your spawners too slow? Buy this", "&7booster and increase spawner rates x2.", "", "&b&lInformation:", "&b&l * &7Time Remaining: &b{spawnerbooster_minutes} minutes and {spawnerbooster_seconds}seconds", "&b&l * &7Booster Cost: &b{spawnerbooster_crystalcost} Crystals and ${spawnerbooster_vaultcost}", "", "&b&l[!] &bRight Click to Purchase this Booster."));
@@ -74,16 +78,18 @@ public class Inventories {
     public Item islandPermissionAllow = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&b&l{permission}", Collections.emptyList());
     public Item islandPermissionDeny = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&b&l{permission}", Collections.emptyList());
     public Item islandWarp = new Item(XMaterial.YELLOW_STAINED_GLASS_PANE, 1, "&b&l{warp}", Arrays.asList("", "&b&l[!] &bLeft Click to Teleport to this warp.", "&b&l[!] &bRight Click to Delete to warp."));
-    public Item topisland = new Item(XMaterial.PLAYER_HEAD, 1, "&b&l{player}", "{player}", Arrays.asList("&b&l * &7Island: &b{name}", "", "&b&l * &7Emerald Blocks: &b{EMERALD_BLOCK_amount}", "&b&l * &7Diamond Blocks: &b{DIAMOND_BLOCK_amount}", "&b&l * &7Gold Blocks: &b{GOLD_BLOCK_amount}", "&b&l * &7Iron Blocks: &b{IRON_BLOCK_amount}", "&b&l * &7Hopper Blocks: &b{HOPPER_amount}", "&b&l * &7Beacon Blocks: &b{BEACON_amount}", "", "&b&l * &7Rank: &b{rank}", "&b&l * &7Value: &b{value}", "", "&b&l[!] &bLeft Click to Teleport to this island."));
+    public Item topisland = new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f{player} &7(#{rank})", "{player}", Arrays.asList("", "&b&l * &7Island Name: &b{name}", "&b&l * &7Island Rank: &b{rank}", "&b&l * &7Island Value: &b{value}", "","&b&l * &7Island Bank Value: &b{ISLANDBANK_value}", "&b&l * &7Emerald Blocks: &b{EMERALD_BLOCK_amount}", "&b&l * &7Diamond Blocks: &b{DIAMOND_BLOCK_amount}", "&b&l * &7Gold Blocks: &b{GOLD_BLOCK_amount}", "&b&l * &7Iron Blocks: &b{IRON_BLOCK_amount}", "&b&l * &7Hopper Blocks: &b{HOPPER_amount}", "&b&l * &7Beacon Blocks: &b{BEACON_amount}", "", "&b&l[!] &bLeft Click to Teleport to this island."));
+    public Item topfiller = new Item(XMaterial.BARRIER, 1, " ", Collections.emptyList());
     public Item visitisland = new Item(XMaterial.PLAYER_HEAD, 1, "&b&l{player}", "{player}", Arrays.asList("&b&l * &7Island: &b{name}", "&b&l * &7Rank: &b{rank}", "&b&l * &7Value: &b{value}", "&b&l * &7Votes: &b{votes}", "", "&b&l[!] &bLeft Click to Teleport to this island.", "&b&l[!] &bRight Click to (un)vote for this island."));
+    public Item islandVisitors = new Item(XMaterial.PLAYER_HEAD,1,"&b&l{player}","{player}",Collections.singletonList("Click for expel visitor"));
 
-
-    public Item red = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lRed", new ArrayList<>());
-    public Item green = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lGreen", new ArrayList<>());
-    public Item blue = new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 1, "&b&lBlue", new ArrayList<>());
-    public Item off = new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 1, "&f&lOff", new ArrayList<>());
+    public Item red = new Item(XMaterial.RED_STAINED_GLASS_PANE,10, 1, "&c&lRed", new ArrayList<>());
+    public Item green = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 12,1, "&a&lGreen", new ArrayList<>());
+    public Item blue = new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 14,1, "&b&lBlue", new ArrayList<>());
+    public Item off = new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 16,1, "&f&lOff", new ArrayList<>());
 
     public Map<Item, String> menu = new HashMap<Item, String>() {{
+        put(new Item(XMaterial.PLAYER_HEAD,1,1,"&b&lIsland Visitors","Servers",Collections.singletonList("&7View your island Visitors")), "is expel");
         put(new Item(XMaterial.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home")), "is home");
         put(new Item(XMaterial.PLAYER_HEAD, 14, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island Members.")), "is members");
         put(new Item(XMaterial.GRASS_BLOCK, 36, 1, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island.")), "is regen");

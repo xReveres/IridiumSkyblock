@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
@@ -24,6 +25,10 @@ public class LanguagesGUI extends GUI implements Listener {
 
     public LanguagesGUI() {
         pages = new HashMap<>();
+        if (IridiumSkyblock.getInstance().languages.isEmpty()) {
+            pages.put(1, new LanguagesGUI(1, this));
+            return;
+        }
         for (int i = 1; i <= Math.ceil(IridiumSkyblock.getInstance().languages.size() / 45.00); i++) {
             pages.put(i, new LanguagesGUI(i, this));
         }
