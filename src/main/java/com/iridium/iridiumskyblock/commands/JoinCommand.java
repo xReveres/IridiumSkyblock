@@ -39,9 +39,6 @@ public class JoinCommand extends Command {
                     if (!joinEvent.isCancelled()) {
                         island.addUser(user);
                         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().joinedIsland.replace("%player%", User.getUser(island.getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }else {
-                        user.invites.clear();
-                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noActiveInvites.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noActiveInvites.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
