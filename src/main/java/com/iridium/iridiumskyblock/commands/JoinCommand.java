@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.api.IslandJoinEvent;
-import com.iridium.iridiumskyblock.api.IslandKickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
