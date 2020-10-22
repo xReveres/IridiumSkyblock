@@ -75,6 +75,17 @@ public class PlayerTalkListener implements Listener {
                             .replace("%player%", player.getName())
                             .replace("%message%", event.getMessage()));
                 }
+                for (String playerSpyingChat : IridiumSkyblock.getInstance().spyingIslandsChat)
+                {
+                    final Player soyingPlayer = Bukkit.getPlayer(playerSpyingChat);
+                    soyingPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().spyChatFormat)
+                            .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue())
+                            .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
+                            .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedValue())
+                            .replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "")
+                            .replace("%player%", player.getName())
+                            .replace("%message%", event.getMessage()));
+                }
                 event.setCancelled(true);
             }
 

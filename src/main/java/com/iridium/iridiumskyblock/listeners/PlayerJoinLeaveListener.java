@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerJoinLeaveListener implements Listener {
 
@@ -25,7 +26,9 @@ public class PlayerJoinLeaveListener implements Listener {
                     player.sendMessage(Utils.color(prefix + " &7Newer version available: " + latest));
                 }
             }
-
+            if (player.hasPermission("iridiumskyblock.ischatspy")){
+                IridiumSkyblock.getInstance().spyingIslandsChat.add(player.getName());
+            }
             final Location location = player.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             if (!islandManager.isIslandWorld(location)) return;
@@ -46,6 +49,16 @@ public class PlayerJoinLeaveListener implements Listener {
 
             Bukkit.getScheduler().runTaskLater(plugin, () -> island.sendBorder(player), 1);
         } catch (Exception e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent event){
+        try {
+            IridiumSkyblock.getInstance().spyingIslandsChat.remove(event.getPlayer());
+        }
+        catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
