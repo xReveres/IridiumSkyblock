@@ -26,9 +26,6 @@ public class PlayerJoinLeaveListener implements Listener {
                     player.sendMessage(Utils.color(prefix + " &7Newer version available: " + latest));
                 }
             }
-            if (player.hasPermission("iridiumskyblock.ischatspy")){
-                IridiumSkyblock.getInstance().spyingIslandsChat.add(player.getName());
-            }
             final Location location = player.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             if (!islandManager.isIslandWorld(location)) return;
@@ -53,13 +50,4 @@ public class PlayerJoinLeaveListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onLeave(PlayerQuitEvent event){
-        try {
-            IridiumSkyblock.getInstance().spyingIslandsChat.remove(event.getPlayer());
-        }
-        catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
-    }
 }

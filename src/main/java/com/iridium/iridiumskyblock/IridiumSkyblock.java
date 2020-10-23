@@ -82,8 +82,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public Map<UUID, Island> entities = new HashMap<>();
 
-    public List<String> spyingIslandsChat = new ArrayList<>();
-
     public static NMS nms;
 
     public static int blockspertick;

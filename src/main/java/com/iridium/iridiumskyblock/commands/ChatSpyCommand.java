@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,13 +19,12 @@ public class ChatSpyCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
-        if (plugin.spyingIslandsChat.contains(p.getName())) {
-            plugin.spyingIslandsChat.remove(p.getName());
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatSpyDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-        } else {
-            plugin.spyingIslandsChat.add(p.getName());
+        User u = User.getUser(p);
+        u.spyingIslandsChat = !u.spyingIslandsChat;
+        if (u.spyingIslandsChat) {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatSpyEnabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        } else {
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatSpyDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.stream.Collectors;
+
 public class PlayerTalkListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
@@ -75,10 +77,9 @@ public class PlayerTalkListener implements Listener {
                             .replace("%player%", player.getName())
                             .replace("%message%", event.getMessage()));
                 }
-                for (String playerSpyingChat : IridiumSkyblock.getInstance().spyingIslandsChat)
+                for (Player spyingPlayer : Bukkit.getServer().getOnlinePlayers().stream().filter(onlinePlayer -> User.getUser(onlinePlayer).spyingIslandsChat).collect(Collectors.toList()))
                 {
-                    final Player soyingPlayer = Bukkit.getPlayer(playerSpyingChat);
-                    soyingPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().spyChatFormat)
+                    spyingPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().spyChatFormat)
                             .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue())
                             .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
                             .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedValue())
