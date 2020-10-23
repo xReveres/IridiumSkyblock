@@ -67,6 +67,7 @@ public class Messages {
     public String playerBanned = "%prefix% &7You have banned %player% from vising your island.";
     public String playerUnBanned = "%prefix% &7You have un-banned %player% from vising your island.";
     public String playerJoinedYourIsland = "%prefix% &7%player% has joined your island.";
+    public String joinedIsland = "%prefix% &7You have joined %player%'s island";
     public String coopAdded = "%prefix% &7You have granted %player%'s Island member permissions.";
     public String coopGiven = "%prefix% &7You have been granted Member permissions to %player%'s Island.";
     public String coopTaken = "%prefix% &7Your Member permissions have been removed for %player%'s Island.";

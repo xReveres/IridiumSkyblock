@@ -619,7 +619,6 @@ public class Island {
             user.invites.clear();
             members.add(user.player);
             teleportHome(Bukkit.getPlayer(user.name));
-            user.invites.clear();
         } else {
             Player player = Bukkit.getPlayer(user.name);
             if (player != null) {
