@@ -89,8 +89,12 @@ public class Config {
 
     public Map<XMaterial, Double> blockvalue = null;
     public Map<String, Double> spawnervalue = null;
-    public List<XBiome> biomes = Arrays.asList(XBiome.values());
-
+    public List<XBiome> biomes = null;
+    public Map<XBiome, Double> islandBiomes = new HashMap<XBiome, Double>() {{
+        for (XBiome biome : XBiome.values()) {
+            put(biome, 5000.0);
+        }
+    }};
     public List<EntityType> blockedEntities = Arrays.asList(EntityType.PRIMED_TNT, EntityType.MINECART_TNT, EntityType.FIREBALL, EntityType.SMALL_FIREBALL, EntityType.ENDER_PEARL);
 
 }

@@ -627,6 +627,14 @@ public class IridiumSkyblock extends JavaPlugin {
 
         getBlockValues().blockvalue.remove(XMaterial.AIR);
 
+        if(configuration.biomes != null){
+            configuration.islandBiomes.clear();
+            for(XBiome biome : configuration.biomes){
+                configuration.islandBiomes.put(biome, 5000.0);
+            }
+            configuration.biomes = null;
+        }
+
         oreUpgradeCache.clear();
         for (int i : getUpgrades().oresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
@@ -717,7 +725,6 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getConfiguration().biomes.sort(Comparator.comparing(XBiome::toString));
         return true;
     }
 

@@ -44,6 +44,8 @@ public class Messages {
     public String playerInvited = "%prefix% &7You have invited a player to join your island.";
     public String invitedByPlayer = "%prefix% &7You have been invited to join %player%'s island.";
     public String leftIsland = "%prefix% &7You have left your island.";
+    public String biomeChanged = "%prefix% &7%player% changed your island's biome to %biome%";
+    public String biomePurchased = "%prefix% &7You purchased %biome% Biome for $%money";
     public String regenIsland = "%prefix% &7Regenerating your island...";
     public String islandValue = "%prefix% &b&l * &7%rank%: &b%value%";
     public String playersIslandIsPrivate = "%prefix% &7That players island is private.";
