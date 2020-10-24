@@ -599,7 +599,7 @@ public class IridiumSkyblock extends JavaPlugin {
         if (inventories.green.slot == null) inventories.green.slot = 12;
         if (inventories.blue.slot == null) inventories.blue.slot = 14;
         if (inventories.off.slot == null) inventories.off.slot = 16;
-        for (Schematics.FakeSchematic schematic : schematics.schematics){
+        for (Schematics.FakeSchematic schematic : schematics.schematics) {
             if (schematic.biome == null) schematic.biome = XBiome.PLAINS;
         }
 
@@ -627,10 +627,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
         getBlockValues().blockvalue.remove(XMaterial.AIR);
 
-        if(configuration.biomes != null){
+        if (configuration.biomes != null) {
             configuration.islandBiomes.clear();
-            for(XBiome biome : configuration.biomes){
-                configuration.islandBiomes.put(biome, 5000.0);
+            for (XBiome biome : configuration.biomes) {
+                configuration.islandBiomes.put(biome, new Config.BiomeConfig());
             }
             configuration.biomes = null;
         }

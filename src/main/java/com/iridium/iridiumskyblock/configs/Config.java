@@ -90,11 +90,17 @@ public class Config {
     public Map<XMaterial, Double> blockvalue = null;
     public Map<String, Double> spawnervalue = null;
     public List<XBiome> biomes = null;
-    public Map<XBiome, Double> islandBiomes = new HashMap<XBiome, Double>() {{
+    public Map<XBiome, BiomeConfig> islandBiomes = new HashMap<XBiome, BiomeConfig>() {{
         for (XBiome biome : XBiome.values()) {
-            put(biome, 5000.0);
+            put(biome, new BiomeConfig());
         }
     }};
     public List<EntityType> blockedEntities = Arrays.asList(EntityType.PRIMED_TNT, EntityType.MINECART_TNT, EntityType.FIREBALL, EntityType.SMALL_FIREBALL, EntityType.ENDER_PEARL);
+
+    public static class BiomeConfig {
+        public double price = 5000.0;
+        public int crystals = 5;
+        public XMaterial icon = XMaterial.GRASS_BLOCK;
+    }
 
 }

@@ -68,7 +68,7 @@ public class Inventories {
 
     public Item previousPage = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", new ArrayList<>());
 
-    public Item biome = new Item(XMaterial.GRASS_BLOCK, 1, "&b&l{biome} Biome (${price})", new ArrayList<>());
+    public Item biome = new Item(XMaterial.GRASS_BLOCK, 1, "&b&l{biome} Biome", Arrays.asList("", "&bPrice: ${price}", "&bCrystals: {crystals}","&b&l[!] &bRight Click to Purchase this Biome."));
 
     public Item back = new Item(XMaterial.NETHER_STAR, 1, "&c&lBack", new ArrayList<>());
 
