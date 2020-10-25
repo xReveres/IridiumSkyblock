@@ -69,7 +69,7 @@ public class BlockPlaceListener implements Listener {
                                     ||
                                     conditions.contains(xmaterial.name())
                                     ||
-                                    conditions.contains(((Crops) block.getState().getData()).getState().toString())
+                                    (block.getState().getData() instanceof Crops && conditions.contains(((Crops) block.getState().getData()).getState().toString()))
                     )
                         island.addMission(mission.name, 1);
                 }
