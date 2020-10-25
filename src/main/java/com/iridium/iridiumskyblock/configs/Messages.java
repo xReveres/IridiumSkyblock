@@ -45,7 +45,7 @@ public class Messages {
     public String invitedByPlayer = "%prefix% &7You have been invited to join %player%'s island.";
     public String leftIsland = "%prefix% &7You have left your island.";
     public String biomeChanged = "%prefix% &7%player% changed your island's biome to %biome%";
-    public String biomePurchased = "%prefix% &7You purchased %biome% Biome for $%money";
+    public String biomePurchased = "%prefix% &7You purchased %biome% Biome for $%money%";
     public String regenIsland = "%prefix% &7Regenerating your island...";
     public String islandValue = "%prefix% &b&l * &7%rank%: &b%value%";
     public String playersIslandIsPrivate = "%prefix% &7That players island is private.";
@@ -96,6 +96,8 @@ public class Messages {
     public String visitedYourIsland = "%prefix% &7%player% is visiting your island.";
     public String cantBuy = "%prefix% &7You dont have enough money to buy this.";
     public String cantSell = "%prefix% &7You dont have this item to sell.";
+    public String shopBoughtMessage = "%prefix% &7You bought x%amount% %item% for %crystals% crystals and $%money%";
+    public String shopSoldMessage = "%prefix% &7You sold x%amount% %item% and got %crystals% crystals and $%money%";
     public String islandInterest = "%prefix% &7Your island interest has been applied giving you %crystals%Crystals $%money% and %exp%Experience.";
     public String helpfooter = "&b<< &7Page %page% of %maxpage% &b>>";
     public String previousPage = "<<";
