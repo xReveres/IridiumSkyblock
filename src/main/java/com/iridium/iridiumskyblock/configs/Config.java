@@ -23,7 +23,7 @@ public class Config {
     public String mainCommandPerm = "";
     public boolean createCooldown = true;
     public boolean doIslandBackup = true;
-    public boolean islandShop = false;
+    public boolean islandShop = true;
     public boolean automaticUpdate = true;
     public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
