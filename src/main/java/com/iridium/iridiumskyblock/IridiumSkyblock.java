@@ -278,7 +278,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             languages.clear();
             try {
-                URLConnection connection = new URL("https://iridiumllc.com/languages.php").openConnection();
+                URLConnection connection = new URL("https://raw.githubusercontent.com/IridiumLLC/IridiumSkyblockLanguages/main/Languages").openConnection();
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
                 connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -317,9 +317,8 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void downloadConfig(String language, File file) {
-        getLogger().info("https://iridiumllc.com/Languages/" + language + "/" + file.getName());
         try {
-            URLConnection connection = new URL("https://iridiumllc.com/Languages/" + language + "/" + file.getName()).openConnection();
+            URLConnection connection = new URL("https://raw.githubusercontent.com/IridiumLLC/IridiumSkyblockLanguages/main/" + language + "/" + file.getName()).openConnection();
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
