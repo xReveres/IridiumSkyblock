@@ -323,29 +323,30 @@ public class Utils {
         }
     }
 
-    public static boolean canBuy(Player p, double vault, int crystals) {
+    public static BuyResponce canBuy(Player p, double vault, int crystals) {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
+            if (u.getIsland().getCrystals() < crystals) return BuyResponce.NOT_ENOUGH_CRYSTALS;
             if (Vault.econ != null) {
-                if (Vault.econ.getBalance(p) >= vault && u.getIsland().getCrystals() >= crystals) {
+                if (Vault.econ.getBalance(p) >= vault) {
                     Vault.econ.withdrawPlayer(p, vault);
                     u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
-                    return true;
+                    return BuyResponce.SUCCESS;
                 }
             }
-            if (u.getIsland().money >= vault && u.getIsland().getCrystals() >= crystals) {
+            if (u.getIsland().money >= vault) {
                 u.getIsland().money -= vault;
                 u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
-                return true;
+                return BuyResponce.SUCCESS;
             }
         }
         if (Vault.econ != null) {
             if (Vault.econ.getBalance(p) >= vault && crystals == 0) {
                 Vault.econ.withdrawPlayer(p, vault);
-                return true;
+                return BuyResponce.SUCCESS;
             }
         }
-        return false;
+        return crystals == 0 ? BuyResponce.NOT_ENOUGH_VAULT : BuyResponce.NOT_ENOUGH_CRYSTALS;
     }
 
     public static int getExpAtLevel(final int level) {
@@ -453,6 +454,12 @@ public class Utils {
         }
     }
 
+    public static enum BuyResponce {
+        SUCCESS,
+        NOT_ENOUGH_CRYSTALS,
+        NOT_ENOUGH_VAULT
+    }
+
     public static class NumberFormatter {
         private static final String FORMAT = "%." + IridiumSkyblock.getConfiguration().numberAbbreviationDecimalPlaces + "f";
         private static final long ONE_THOUSAND_LONG = 1000;
@@ -494,23 +501,23 @@ public class Utils {
 
             if (bigDecimal.compareTo(BigDecimal.ZERO) < 0) {
                 outputStringBuilder
-                    .append("-")
-                    .append(formatPrettyNumber(bigDecimal.negate()));
+                        .append("-")
+                        .append(formatPrettyNumber(bigDecimal.negate()));
             } else if (bigDecimal.compareTo(ONE_THOUSAND) < 0) {
                 outputStringBuilder
-                    .append(bigDecimal.stripTrailingZeros().toPlainString());
+                        .append(bigDecimal.stripTrailingZeros().toPlainString());
             } else if (bigDecimal.compareTo(ONE_MILLION) < 0) {
                 outputStringBuilder
-                    .append(bigDecimal.divide(ONE_THOUSAND, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
-                    .append(IridiumSkyblock.getConfiguration().thousandAbbreviation);
+                        .append(bigDecimal.divide(ONE_THOUSAND, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                        .append(IridiumSkyblock.getConfiguration().thousandAbbreviation);
             } else if (bigDecimal.compareTo(ONE_BILLION) < 0) {
                 outputStringBuilder
-                    .append(bigDecimal.divide(ONE_MILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
-                    .append(IridiumSkyblock.getConfiguration().millionAbbreviation);
+                        .append(bigDecimal.divide(ONE_MILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                        .append(IridiumSkyblock.getConfiguration().millionAbbreviation);
             } else {
                 outputStringBuilder
-                    .append(bigDecimal.divide(ONE_BILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
-                    .append(IridiumSkyblock.getConfiguration().billionAbbreviation);
+                        .append(bigDecimal.divide(ONE_BILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                        .append(IridiumSkyblock.getConfiguration().billionAbbreviation);
             }
 
             return outputStringBuilder.toString();

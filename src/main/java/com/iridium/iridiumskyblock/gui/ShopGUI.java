@@ -189,7 +189,8 @@ public class ShopGUI extends GUI implements Listener {
                             e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cannotSellItem.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     } else if (e.getClick().equals(ClickType.LEFT)) {
-                        if (Utils.canBuy((Player) e.getWhoClicked(), item.buyVault, item.buyCrystals)) {
+                        Utils.BuyResponce responce = Utils.canBuy((Player) e.getWhoClicked(), item.buyVault, item.buyCrystals);
+                        if (responce == Utils.BuyResponce.SUCCESS) {
                             if (item.commands != null) {
                                 for (String Command : item.commands) {
                                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Command.replace("%player%", e.getWhoClicked().getName()));
@@ -210,12 +211,13 @@ public class ShopGUI extends GUI implements Listener {
                                         .replace("%money%", Utils.NumberFormatter.format(item.sellVault))));
                             }
                         } else {
-                            e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantBuy.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            e.getWhoClicked().sendMessage(Utils.color(responce == Utils.BuyResponce.NOT_ENOUGH_VAULT ? IridiumSkyblock.getMessages().cantBuy : IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     } else if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                         double buyVault = (item.buyVault / item.amount) * 64;
                         int buyCrystals = (int) Math.floor((item.buyCrystals / (double) item.amount) * 64);
-                        if (Utils.canBuy((Player) e.getWhoClicked(), buyVault, buyCrystals)) {
+                        Utils.BuyResponce responce = Utils.canBuy((Player) e.getWhoClicked(), buyVault, buyCrystals);
+                        if (responce == Utils.BuyResponce.SUCCESS) {
                             if (item.commands != null) {
                                 for (String Command : item.commands) {
                                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Command.replace("%player%", e.getWhoClicked().getName()));
@@ -236,7 +238,7 @@ public class ShopGUI extends GUI implements Listener {
                                         .replace("%money%", Utils.NumberFormatter.format(buyVault))));
                             }
                         } else {
-                            e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantBuy.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            e.getWhoClicked().sendMessage(Utils.color(responce == Utils.BuyResponce.NOT_ENOUGH_VAULT ? IridiumSkyblock.getMessages().cantBuy : IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     }
                 }

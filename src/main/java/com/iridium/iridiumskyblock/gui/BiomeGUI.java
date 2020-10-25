@@ -112,7 +112,8 @@ public class BiomeGUI extends GUI implements Listener {
                 }
                 if (biomes.containsKey(e.getSlot())) {
                     Config.BiomeConfig biomeConfig = IridiumSkyblock.getConfiguration().islandBiomes.get(biomes.get(e.getSlot()));
-                    if (Utils.canBuy(p, IridiumSkyblock.getConfiguration().islandBiomes.getOrDefault(biomes.get(e.getSlot()), new Config.BiomeConfig()).price, biomeConfig.crystals)) {
+                    Utils.BuyResponce responce = Utils.canBuy(p, IridiumSkyblock.getConfiguration().islandBiomes.getOrDefault(biomes.get(e.getSlot()), new Config.BiomeConfig()).price, biomeConfig.crystals);
+                    if (responce == Utils.BuyResponce.SUCCESS) {
                         getIsland().setBiome(biomes.get(e.getSlot()));
                         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().biomePurchased
                                 .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
@@ -121,7 +122,7 @@ public class BiomeGUI extends GUI implements Listener {
                                 .replace("%money", Utils.NumberFormatter.format(biomeConfig.price))));
                         sendBiomeChangeMessage(WordUtils.capitalize(biomes.get(e.getSlot()).name().toLowerCase().replace("_", " ")), p);
                     } else {
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantBuy.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(Utils.color(responce == Utils.BuyResponce.NOT_ENOUGH_VAULT ? IridiumSkyblock.getMessages().cantBuy : IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 }
             }
