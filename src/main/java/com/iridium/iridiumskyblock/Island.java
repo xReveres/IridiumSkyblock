@@ -895,7 +895,6 @@ public class Island {
         Bukkit.getScheduler().cancelTask(getBankGUI().scheduler);
         if (generateID != -1) Bukkit.getScheduler().cancelTask(generateID);
         permissions.clear();
-        clearInventories();
         spawnPlayers();
         for (String player : members) {
             User.getUser(player).islandID = 0;
@@ -1092,6 +1091,7 @@ public class Island {
     }
 
     public void deleteBlocks() {
+        clearInventories();
         valuableBlocks.clear();
         calculateIslandValue();
         final World world = IridiumSkyblock.getIslandManager().getWorld();
