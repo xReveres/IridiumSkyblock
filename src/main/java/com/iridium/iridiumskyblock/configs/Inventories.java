@@ -33,7 +33,7 @@ public class Inventories {
     public int coopGUISize = 27;
     public int islandMenuGUISize = 45;
     public int warpGUISize = 27;
-    public int topGUISize = 27;
+    public int topGUISize = 36;
     public int borderColorGUISize = 27;
     public int permissionsGUISize = 27;
     public int schematicselectGUISize = 27;
