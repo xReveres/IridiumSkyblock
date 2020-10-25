@@ -49,7 +49,7 @@ public class Messages {
     public String regenIsland = "%prefix% &7Regenerating your island...";
     public String islandValue = "%prefix% &b&l * &7%rank%: &b%value%";
     public String playersIslandIsPrivate = "%prefix% &7That players island is private.";
-    public String islandNowPrivate = "%prefix% &7Your island is now private.";
+    public String islandNowPrivate = "%prefix% &7Your island is now private and %amount% players have been expelled from your island";
     public String islandNowPublic = "%prefix% &7Your island is now public.";
     public String cantLeaveIfOwner = "%prefix% &7You cannot leave your island whilst owner. do /is delete instead.";
     public String cantKickOwner = "%prefix% &7You cannot kick the island owner.";
@@ -122,6 +122,7 @@ public class Messages {
     public String inventoryFull = "%prefix% &7Your inventory is full";
     public String islandUpgraded = "%prefix% &7%player% upgraded your island's %upgradename% Upgrade from level %oldlvl% to level %newlvl%";
     public String activatedBooster = "%prefix% &7%player% activated your islands %boostername% Booster";
+    public String expelledIslandLocked = "%prefix% &7%player%'s island is now private";
     public String youHaveBeenExpelled = "%prefix% &7You were expelled from %kicker%'s island!";
     public String expelledVisitor = "%prefix% &7%player% has been expelled from your island.";
     public String cantExpelPlayer = "%prefix% &7%player% cannot be expelled!";
