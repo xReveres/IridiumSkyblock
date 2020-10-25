@@ -31,6 +31,13 @@ public class ShopGUI extends GUI implements Listener {
     public ShopGUI() {
         super(IridiumSkyblock.getInventories().shopGUISize, IridiumSkyblock.getInventories().shopGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
+
+        for (Shop.ShopObject shop : IridiumSkyblock.getShop().shop) {
+            setItem(shop.slot, Utils.makeItem(shop.display, 1, shop.displayName));
+            if (!shops.containsKey(shop.slot)) {
+                shops.put(shop.slot, new ShopGUI(shop, this));
+            }
+        }
     }
 
     public ShopGUI(Shop.ShopObject shop, int page, ShopGUI root) {
@@ -61,14 +68,7 @@ public class ShopGUI extends GUI implements Listener {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
         if (!IridiumSkyblock.getConfiguration().islandShop) return;
-        if (shop == null) {
-            for (Shop.ShopObject shop : IridiumSkyblock.getShop().shop) {
-                setItem(shop.slot, Utils.makeItem(shop.display, 1, shop.displayName));
-                if (!shops.containsKey(shop.slot)) {
-                    shops.put(shop.slot, new ShopGUI(shop, this));
-                }
-            }
-        } else {
+        if (shop != null) {
             for (Shop.ShopItem item : shop.items) {
                 if (item.page == page) {
                     items.put(item.slot, item);
