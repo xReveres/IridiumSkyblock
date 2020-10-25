@@ -197,7 +197,11 @@ public class ShopGUI extends GUI implements Listener {
                             } else {
                                 ItemStack itemStack = item.material.parseItem(true);
                                 itemStack.setAmount(item.amount);
-                                e.getWhoClicked().getInventory().addItem(itemStack);
+                                if (Utils.hasOpenSlot(e.getWhoClicked().getInventory())) {
+                                    e.getWhoClicked().getInventory().addItem(itemStack);
+                                } else {
+                                    e.getWhoClicked().getLocation().getWorld().dropItem(e.getWhoClicked().getLocation(), itemStack);
+                                }
                                 e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().shopBoughtMessage
                                         .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
                                         .replace("%item%", item.material + "")
@@ -219,7 +223,11 @@ public class ShopGUI extends GUI implements Listener {
                             } else {
                                 ItemStack itemStack = item.material.parseItem(true);
                                 itemStack.setAmount(64);
-                                e.getWhoClicked().getInventory().addItem(itemStack);
+                                if (Utils.hasOpenSlot(e.getWhoClicked().getInventory())) {
+                                    e.getWhoClicked().getInventory().addItem(itemStack);
+                                } else {
+                                    e.getWhoClicked().getLocation().getWorld().dropItem(e.getWhoClicked().getLocation(), itemStack);
+                                }
                                 e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().shopBoughtMessage
                                         .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
                                         .replace("%item%", item.material + "")

@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -423,6 +424,17 @@ public class Utils {
         } catch (ParseException e) {
             return null;
         }
+    }
+
+    public static boolean hasOpenSlot(Inventory inv) {
+        for (ItemStack item : inv.getContents()) {
+            if (item == null) {
+                return true;
+            } else if (item.getType() == Material.AIR) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class Placeholder {
