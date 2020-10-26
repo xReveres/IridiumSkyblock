@@ -224,7 +224,8 @@ public class IridiumSkyblock extends JavaPlugin {
     private void update() {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             latest = getVersion();
-            if (latest != null && !latest.equals(getDescription().getVersion())) {
+            int latestNumber = Integer.parseInt(latest.replace(".", ""));
+            if (latest != null && !latest.equals(getDescription().getVersion()) && latestNumber > Integer.parseInt(getDescription().getVersion().replace(".", ""))) {
                 getLogger().info("Newer version available: " + latest);
                 if (getConfiguration().automaticUpdate) {
                     getLogger().info("Attempting to download version: " + latest);
