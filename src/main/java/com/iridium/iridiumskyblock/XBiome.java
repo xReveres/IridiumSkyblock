@@ -21,6 +21,7 @@
  */
 package com.iridium.iridiumskyblock;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 import com.google.common.cache.Cache;

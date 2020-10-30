@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Utils;
-import com.iridium.iridiumskyblock.XMaterial;
 import com.iridium.iridiumskyblock.configs.Shop;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

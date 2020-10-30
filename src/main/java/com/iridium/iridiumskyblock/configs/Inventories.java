@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.iridium.iridiumskyblock.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 
 import java.util.*;
 

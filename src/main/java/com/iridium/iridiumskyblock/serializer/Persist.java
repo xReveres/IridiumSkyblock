@@ -1,10 +1,10 @@
 package com.iridium.iridiumskyblock.serializer;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.XBiome;
-import com.iridium.iridiumskyblock.XMaterial;
 import com.iridium.iridiumskyblock.serializer.typeadapter.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

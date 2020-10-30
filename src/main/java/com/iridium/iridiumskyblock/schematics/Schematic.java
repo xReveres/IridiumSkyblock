@@ -1,10 +1,10 @@
 package com.iridium.iridiumskyblock.schematics;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonParser;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,10 +20,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Schematic implements WorldEdit {
 
     public HashMap<String, SchematicData> schematicData = new HashMap<>();
+
+    public boolean ISFLAT = XMaterial.supports(13);
 
     @Override
     public int version() {
@@ -78,8 +81,10 @@ public class Schematic implements WorldEdit {
                                 String name = (SchematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
                                 Byte amount = SchematicData.getChildTag(itemtag, "Count", ByteTag.class).getValue();
                                 short damage = SchematicData.getChildTag(itemtag, "Damage", ShortTag.class).getValue();
-                                XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) damage);
-                                if (material != null) {
+                                if (name.equalsIgnoreCase("grass")) name = "GRASS_BLOCK";
+                                Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(name.toUpperCase());
+                                if (optionalXMaterial.isPresent()) {
+                                    XMaterial material = optionalXMaterial.get();
                                     ItemStack itemStack = material.parseItem(true);
                                     if (itemStack != null) {
                                         itemStack.setAmount(amount);
@@ -115,7 +120,7 @@ public class Schematic implements WorldEdit {
             }
         } else {
             //LoadBlocks
-            if (XMaterial.ISFLAT) {
+            if (ISFLAT) {
                 try {
                     for (int x = 0; x < width; ++x) {
                         for (int y = 0; y < height; ++y) {
@@ -159,8 +164,9 @@ public class Schematic implements WorldEdit {
                                             byte slot = SchematicData.getChildTag(itemtag, "Slot", ByteTag.class).getValue();
                                             String name = (SchematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
                                             Byte amount = SchematicData.getChildTag(itemtag, "Count", ByteTag.class).getValue();
-                                            XMaterial material = XMaterial.requestOldXMaterial(name.toUpperCase(), (byte) -1);
-                                            if (material != null) {
+                                            Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(name.toUpperCase());
+                                            if (optionalXMaterial.isPresent()) {
+                                                XMaterial material = optionalXMaterial.get();
                                                 ItemStack itemStack = material.parseItem(true);
                                                 if (itemStack != null) {
                                                     itemStack.setAmount(amount);

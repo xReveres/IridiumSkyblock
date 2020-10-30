@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
 import com.iridium.iridiumskyblock.configs.Inventories;
