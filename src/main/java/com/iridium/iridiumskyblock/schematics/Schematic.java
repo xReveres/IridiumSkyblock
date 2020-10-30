@@ -78,7 +78,7 @@ public class Schematic implements WorldEdit {
                                     continue;
                                 Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
                                 byte slot = SchematicData.getChildTag(itemtag, "Slot", ByteTag.class).getValue();
-                                String name = (SchematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
+                                String name = (SchematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "").replace("reeds", "sugar_cane");
                                 Byte amount = SchematicData.getChildTag(itemtag, "Count", ByteTag.class).getValue();
                                 short damage = SchematicData.getChildTag(itemtag, "Damage", ShortTag.class).getValue();
                                 if (name.equalsIgnoreCase("grass")) name = "GRASS_BLOCK";
@@ -162,7 +162,7 @@ public class Schematic implements WorldEdit {
                                                 continue;
                                             Map<String, Tag> itemtag = ((CompoundTag) item).getValue();
                                             byte slot = SchematicData.getChildTag(itemtag, "Slot", ByteTag.class).getValue();
-                                            String name = (SchematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "");
+                                            String name = (SchematicData.getChildTag(itemtag, "id", StringTag.class).getValue()).toLowerCase().replace("minecraft:", "").replace("reeds", "sugar_cane");
                                             Byte amount = SchematicData.getChildTag(itemtag, "Count", ByteTag.class).getValue();
                                             Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(name.toUpperCase());
                                             if (optionalXMaterial.isPresent()) {
