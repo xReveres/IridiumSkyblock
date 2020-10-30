@@ -1,10 +1,10 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.cryptomorin.xseries.XBiome;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.MissionRestart;
 import com.iridium.iridiumskyblock.Permissions;
 import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.XBiome;
 import org.bukkit.entity.EntityType;
 
 import java.util.Arrays;
@@ -63,7 +63,7 @@ public class Config {
     public double dailyCrystalsInterest = 5;
     public double dailyExpInterest = 0.01;
     public XBiome defaultBiome = XBiome.PLAINS;
-    public XBiome defaultNetherBiome = XBiome.NETHER;
+    public XBiome defaultNetherBiome = XBiome.NETHER_WASTES;
     public MissionRestart missionRestart = MissionRestart.Daily;
     public String worldSpawn = "world";
     public Map<Role, Permissions> defaultPermissions = new HashMap<Role, Permissions>() {{

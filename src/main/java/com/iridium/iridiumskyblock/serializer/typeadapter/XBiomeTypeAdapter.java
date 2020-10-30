@@ -1,9 +1,10 @@
 package com.iridium.iridiumskyblock.serializer.typeadapter;
 
+import com.cryptomorin.xseries.XBiome;
 import com.google.gson.*;
-import com.iridium.iridiumskyblock.XBiome;
 
 import java.lang.reflect.Type;
+import java.util.Optional;
 
 public class XBiomeTypeAdapter implements JsonSerializer<XBiome>, JsonDeserializer<XBiome> {
 
@@ -15,6 +16,9 @@ public class XBiomeTypeAdapter implements JsonSerializer<XBiome>, JsonDeserializ
 
     @Override
     public XBiome deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
-        return XBiome.matchXBiome(jsonElement.getAsString());
+        String name = jsonElement.getAsString();
+        if (name.equalsIgnoreCase("NETHER")) return XBiome.NETHER_WASTES;
+        Optional<XBiome> optionalXBiome = XBiome.matchXBiome(name);
+        return optionalXBiome.orElse(XBiome.PLAINS);
     }
 }

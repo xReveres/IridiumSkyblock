@@ -1,6 +1,10 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
+import com.cryptomorin.xseries.XBiome;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Config;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -52,7 +56,7 @@ public class BiomeGUI extends GUI implements Listener {
         this.slot = 0;
         super.addContent();
         IridiumSkyblock.getConfiguration().islandBiomes.keySet().stream().sorted(Comparator.comparing(XBiome::toString)).forEach((biome) -> {
-            if (biome.parseBiome() != null) {
+            if (biome.getBiome() != null) {
                 if (i >= 45 * (page - 1) && slot < 45) {
                     Config.BiomeConfig biomeConfig = IridiumSkyblock.getConfiguration().islandBiomes.get(biome);
                     ItemStack itemStack = Utils.makeItem(IridiumSkyblock.getInventories().biome, Arrays.asList(

@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.cryptomorin.xseries.XBiome;
 import com.cryptomorin.xseries.XMaterial;
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
@@ -1079,16 +1080,17 @@ public class Island {
     public void setBiome(XBiome biome) {
         this.biome = biome;
         final World world = IridiumSkyblock.getIslandManager().getWorld();
-        biome.setBiome(getPos1(), getPos2());
-        for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
-            for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
-                for (Player p : world.getPlayers()) {
-                    if (p.getLocation().getWorld() == world) {
-                        IridiumSkyblock.nms.sendChunk(p, world.getChunkAt(X, Z));
+        biome.setBiome(getPos1(), getPos2()).thenRun(() -> {
+            for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
+                for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
+                    for (Player p : world.getPlayers()) {
+                        if (p.getLocation().getWorld() == world) {
+                            IridiumSkyblock.nms.sendChunk(p, world.getChunkAt(X, Z));
+                        }
                     }
                 }
             }
-        }
+        });
     }
 
     public void deleteBlocks() {
