@@ -5,25 +5,6 @@ import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.support.Vault;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,7 +18,36 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class Utils {
+
+    public static XMaterialItemId xMaterialItemId;
+
+    static {
+        {
+            InputStream inputStream = IridiumSkyblock.getInstance().getResource("itemdata.json");
+            Scanner sc = new Scanner(inputStream);
+            //Reading line by line from scanner to StringBuffer
+            StringBuffer content = new StringBuffer();
+            while (sc.hasNext()) {
+                content.append(sc.nextLine());
+            }
+            xMaterialItemId = IridiumSkyblock.getPersist().load(XMaterialItemId.class, content.toString());
+        }
+    }
 
     public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Object object) {
         ItemStack item = new ItemStack(material, amount, (short) type);
@@ -456,6 +466,25 @@ public class Utils {
         return false;
     }
 
+    public static XMaterial getXMaterialFromId(int id, byte data) {
+        for (MaterialItemId materialItemId : xMaterialItemId.items) {
+            if (materialItemId.type == id && materialItemId.meta == data) {
+                return XMaterial.matchXMaterial(materialItemId.name).get();
+            }
+        }
+        return null;
+    }
+
+    public static class XMaterialItemId {
+        List<MaterialItemId> items;
+    }
+
+    public static class MaterialItemId {
+        int type;
+        byte meta;
+        String name;
+    }
+
     public static class Placeholder {
 
         private final String key;
@@ -569,9 +598,9 @@ public class Utils {
             @Override
             public String toString() {
                 String[] transactionParts = transactionAmounts.keySet().stream()
-                    .filter(type -> transactionAmounts.get(type) != 0)
-                    .map(type -> Math.abs(transactionAmounts.get(type)) + " " + type.toString())
-                    .toArray(String[]::new);
+                        .filter(type -> transactionAmounts.get(type) != 0)
+                        .map(type -> Math.abs(transactionAmounts.get(type)) + " " + type.toString())
+                        .toArray(String[]::new);
                 return String.join(", ", transactionParts);
             }
 

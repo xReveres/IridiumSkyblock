@@ -103,4 +103,15 @@ public class Persist {
 
         return null;
     }
+
+    public <T> T load(Class<T> clazz, String content) {
+        try {
+            return gson.fromJson(content, clazz);
+        } catch (Exception ex) {
+            IridiumSkyblock.getInstance().getLogger().severe("Failed to parse json");
+            Bukkit.getPluginManager().disablePlugin(IridiumSkyblock.getInstance());
+        }
+
+        return null;
+    }
 }
