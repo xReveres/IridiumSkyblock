@@ -1080,7 +1080,7 @@ public class Island {
     public void setBiome(XBiome biome) {
         this.biome = biome;
         final World world = IridiumSkyblock.getIslandManager().getWorld();
-        biome.setBiome(getPos1(), getPos2()).thenRun(() -> {
+        biome.setBiome(getPos1(), getPos2()).thenRunAsync(() -> {
             for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
                 for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
                     for (Player p : world.getPlayers()) {
