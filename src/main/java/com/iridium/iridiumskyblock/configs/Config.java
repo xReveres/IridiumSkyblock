@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Config {
     public String prefix = "&b&lIridiumSkyblock &8»";
@@ -97,7 +98,7 @@ public class Config {
     public Map<String, Double> spawnervalue = null;
     public List<XBiome> biomes = null;
     public Map<XBiome, BiomeConfig> islandBiomes = new HashMap<XBiome, BiomeConfig>() {{
-        for (XBiome biome : XBiome.values()) {
+        for (XBiome biome : XBiome.VALUES.stream().filter(biome -> !biome.equals(XBiome.THE_VOID)).collect(Collectors.toList())) {
             put(biome, new BiomeConfig());
         }
     }};

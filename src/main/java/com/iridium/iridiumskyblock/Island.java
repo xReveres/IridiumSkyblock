@@ -100,6 +100,8 @@ public class Island {
     @Getter
     private transient BiomeGUI biomeGUI;
     @Getter
+    private transient BiomeGUI netherBiomeGUI;
+    @Getter
     private transient VisitorGUI visitorGUI;
 
     @Getter
@@ -190,6 +192,9 @@ public class Island {
     @Getter
     private XBiome biome;
 
+    @Getter
+    private XBiome netherBiome;
+
     public transient Set<Location> failedGenerators;
 
     private Date lastRegen;
@@ -215,6 +220,7 @@ public class Island {
         User user = User.getUser(owner);
         user.role = Role.Owner;
         this.biome = IridiumSkyblock.getConfiguration().defaultBiome;
+        this.netherBiome = XBiome.NETHER_WASTES;
         valuableBlocks = new ConcurrentHashMap<>();
         spawners = new ConcurrentHashMap<>();
         this.owner = user.player;
@@ -693,7 +699,8 @@ public class Island {
         islandAdminGUI = new IslandAdminGUI(this);
         coopGUI = new CoopGUI(this);
         bankGUI = new BankGUI(this);
-        biomeGUI = new BiomeGUI(this);
+        biomeGUI = new BiomeGUI(this, World.Environment.NORMAL);
+        netherBiomeGUI = new BiomeGUI(this, World.Environment.NETHER);
         visitorGUI = new VisitorGUI(this);
 
         failedGenerators = new HashSet<>();
@@ -1081,6 +1088,27 @@ public class Island {
         this.biome = biome;
         final World world = IridiumSkyblock.getIslandManager().getWorld();
         biome.setBiome(getPos1(), getPos2()).thenRunAsync(() -> {
+            for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
+                for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
+                    for (Player p : world.getPlayers()) {
+                        if (p.getLocation().getWorld() == world) {
+                            IridiumSkyblock.nms.sendChunk(p, world.getChunkAt(X, Z));
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void setNetherBiome(XBiome biome) {
+        if (!IridiumSkyblock.getConfiguration().netherIslands) return;
+        this.netherBiome = biome;
+        final World world = IridiumSkyblock.getIslandManager().getNetherWorld();
+        Location pos1 = getPos1();
+        Location pos2 = getPos2();
+        pos1.setWorld(world);
+        pos2.setWorld(world);
+        biome.setBiome(pos1, pos2).thenRunAsync(() -> {
             for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
                 for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
                     for (Player p : world.getPlayers()) {
