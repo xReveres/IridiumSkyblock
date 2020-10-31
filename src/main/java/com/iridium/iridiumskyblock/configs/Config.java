@@ -39,7 +39,6 @@ public class Config {
     public boolean clearInventories = false;
     public boolean restartUpgradesOnRegen = true;
     public boolean allowWaterInNether = true;
-    public boolean disableLeafDecay = true;
     public boolean createIslandonHome = true;
     public boolean allowExplosions = true;
     public boolean disablePvPBetweenIslandMembers = true;
