@@ -210,11 +210,13 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                     registerListeners(new ExpansionUnregisterListener());
 
-                getLogger().info("-------------------------------");
+                getLogger().info("----------------------------------------");
                 getLogger().info("");
                 getLogger().info(getDescription().getName() + " Enabled!");
+                getLogger().info("Version: " + getDescription().getVersion());
+                getLogger().info("Patreon: www.patreon.com/Peaches_MLG");
                 getLogger().info("");
-                getLogger().info("-------------------------------");
+                getLogger().info("----------------------------------------");
 
                 update();
             });
