@@ -5,7 +5,9 @@ import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.support.Vault;
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBTListCompound;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -83,7 +85,14 @@ public class Utils {
     public static ItemStack makeItem(Inventories.Item item, List<Placeholder> placeholders) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                skull.setUUID("Id", UUID.randomUUID());
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(processMultiplePlaceholders(item.headOwner, placeholders));
                 itemstack.setItemMeta(m);
@@ -97,7 +106,14 @@ public class Utils {
     public static ItemStack makeItem(Inventories.Item item) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, item.title, item.lore);
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                skull.setUUID("Id", UUID.randomUUID());
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
@@ -111,7 +127,14 @@ public class Utils {
     public static ItemStack makeItem(Inventories.Item item, Island island) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                skull.setUUID("Id", UUID.randomUUID());
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
@@ -125,7 +148,14 @@ public class Utils {
     public static ItemStack makeItemHidden(Inventories.Item item) {
         try {
             ItemStack itemstack = makeItemHidden(item.material, item.amount, item.title, item.lore);
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                skull.setUUID("Id", UUID.randomUUID());
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
@@ -143,7 +173,14 @@ public class Utils {
     public static ItemStack makeItemHidden(Inventories.Item item, List<Placeholder> placeholders) {
         try {
             ItemStack itemstack = makeItemHidden(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), color(processMultiplePlaceholders(item.lore, placeholders)));
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                skull.setUUID("Id", UUID.randomUUID());
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
