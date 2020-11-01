@@ -49,6 +49,7 @@ public class Config {
     public boolean prettierAbbreviations = true;
     public boolean logTransactions = true;
     public boolean logBankBalanceChange = true;
+    public boolean keepInventoryOnVoid = true;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
     public int distance = 151;
