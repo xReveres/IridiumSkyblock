@@ -166,6 +166,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/deps/craftbukkit/1.16.2.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.spigotmc..............</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.16.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/deps/craftbukkit/1.16.4.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
