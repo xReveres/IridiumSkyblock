@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 
 public class Utils {
 
+    private static final boolean supports = XMaterial.supports(14);
+
     public static XMaterialItemId xMaterialItemId;
 
     static {
@@ -88,7 +90,11 @@ public class Utils {
             if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
                 NBTItem nbtItem = new NBTItem(itemstack);
                 NBTCompound skull = nbtItem.addCompound("SkullOwner");
-                skull.setUUID("Id", UUID.randomUUID());
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
                 NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
                 texture.setString("Value", item.headData);
                 return nbtItem.getItem();
@@ -109,7 +115,11 @@ public class Utils {
             if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
                 NBTItem nbtItem = new NBTItem(itemstack);
                 NBTCompound skull = nbtItem.addCompound("SkullOwner");
-                skull.setUUID("Id", UUID.randomUUID());
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
                 NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
                 texture.setString("Value", item.headData);
                 return nbtItem.getItem();
@@ -130,7 +140,11 @@ public class Utils {
             if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
                 NBTItem nbtItem = new NBTItem(itemstack);
                 NBTCompound skull = nbtItem.addCompound("SkullOwner");
-                skull.setUUID("Id", UUID.randomUUID());
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
                 NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
                 texture.setString("Value", item.headData);
                 return nbtItem.getItem();
@@ -151,7 +165,11 @@ public class Utils {
             if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
                 NBTItem nbtItem = new NBTItem(itemstack);
                 NBTCompound skull = nbtItem.addCompound("SkullOwner");
-                skull.setUUID("Id", UUID.randomUUID());
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
                 NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
                 texture.setString("Value", item.headData);
                 return nbtItem.getItem();
@@ -176,7 +194,11 @@ public class Utils {
             if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
                 NBTItem nbtItem = new NBTItem(itemstack);
                 NBTCompound skull = nbtItem.addCompound("SkullOwner");
-                skull.setUUID("Id", UUID.randomUUID());
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
                 NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
                 texture.setString("Value", item.headData);
                 return nbtItem.getItem();
