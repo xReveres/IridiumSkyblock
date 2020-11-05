@@ -196,6 +196,9 @@ public class Island {
     private XBiome netherBiome;
 
     public transient Set<Location> failedGenerators;
+    public transient int interestCrystal;
+    public transient int interestExp;
+    public transient double interestMoney;
 
     private Date lastRegen;
 

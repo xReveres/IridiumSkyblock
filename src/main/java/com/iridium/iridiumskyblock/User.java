@@ -20,6 +20,7 @@ public class User {
     public boolean spyingIslandsChat;
     public boolean flying;
     public transient boolean teleportingHome;
+    public transient boolean tookInterestMessage;
     public Date lastCreate;
 
     public User(OfflinePlayer p) {

@@ -462,6 +462,9 @@ public class IridiumSkyblock extends JavaPlugin {
                             island.resetMissions();
                         }
                     }
+                    for (User user : islandManager.users.values()) {
+                        user.tookInterestMessage = false;
+                    }
                     for (Island island : islandManager.islands.values()) {
                         double cm = island.money;
                         int cc = island.getCrystals();
@@ -469,11 +472,18 @@ public class IridiumSkyblock extends JavaPlugin {
                         island.money = Math.floor(island.money * (1 + (getConfiguration().dailyMoneyInterest / 100.00)));
                         island.setCrystals((int) Math.floor(island.getCrystals() * (1 + (getConfiguration().dailyCrystalsInterest / 100.00))));
                         island.exp = (int) Math.floor(island.exp * (1 + (getConfiguration().dailyExpInterest / 100.00)));
+                        island.interestCrystal = island.getCrystals() - cc;
+                        island.interestMoney = island.money - cm;
+                        island.interestExp = island.exp - ce;
                         for (String member : island.getMembers()) {
                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                             if (p != null) {
                                 if (cm != island.money && cc != island.getCrystals() && ce != island.exp)
-                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", Utils.NumberFormatter.format(island.exp - ce)).replace("%crystals%", Utils.NumberFormatter.format(island.getCrystals() - cc)).replace("%money%", Utils.NumberFormatter.format(island.money - cm)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
+                                            .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
+                                            .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
+                                            .replace("%money%", Utils.NumberFormatter.format(island.interestMoney))
+                                            .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }
                     }
