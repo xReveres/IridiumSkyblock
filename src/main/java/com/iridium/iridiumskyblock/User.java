@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import java.util.concurrent.TimeUnit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.Date;
@@ -54,6 +55,19 @@ public class User {
         return role;
     }
 
+    public boolean isOnCooldown() {
+        return IridiumSkyblock.getConfiguration().createCooldown && this.lastCreate != null && !this.bypassing && new Date().before(this.lastCreate);
+    }
+
+    public String getCooldownTimeMessage() {
+        long time = (this.lastCreate.getTime() - System.currentTimeMillis()) / 1000;
+        int day = (int) TimeUnit.SECONDS.toDays(time);
+        int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+        int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
+        int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
+        return IridiumSkyblock.getMessages().createCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix);
+    }
+
     public static User getUser(String p) {
         if (IridiumSkyblock.getIslandManager().users == null)
             IridiumSkyblock.getIslandManager().users = new HashMap<>();
@@ -66,4 +80,5 @@ public class User {
             IridiumSkyblock.getIslandManager().users = new HashMap<>();
         return IridiumSkyblock.getIslandManager().users.containsKey(p.getUniqueId().toString()) ? IridiumSkyblock.getIslandManager().users.get(p.getUniqueId().toString()) : new User(p);
     }
+
 }

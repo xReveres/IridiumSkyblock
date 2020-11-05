@@ -50,6 +50,8 @@ public class Config {
     public boolean logTransactions = true;
     public boolean logBankBalanceChange = true;
     public boolean keepInventoryOnVoid = true;
+    public boolean createIslandOnJoin = false;
+    public boolean ignoreCooldownOnJoinCreation = false;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
     public int distance = 151;

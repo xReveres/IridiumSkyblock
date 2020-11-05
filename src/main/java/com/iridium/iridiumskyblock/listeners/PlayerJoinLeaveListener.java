@@ -27,8 +27,6 @@ public class PlayerJoinLeaveListener implements Listener {
             }
             final Location location = player.getLocation();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            if (!islandManager.isIslandWorld(location)) return;
-
             final User user = User.getUser(player);
             if (!user.tookInterestMessage) {
                 Island island = user.getIsland();
@@ -41,6 +39,16 @@ public class PlayerJoinLeaveListener implements Listener {
                 user.tookInterestMessage = true;
             }
             user.name = player.getName();
+
+            if (user.getIsland() == null && IridiumSkyblock.getConfiguration().createIslandOnJoin) {
+                if (!user.isOnCooldown() || IridiumSkyblock.getConfiguration().ignoreCooldownOnJoinCreation) {
+                    islandManager.createIsland(player);
+                } else {
+                    player.sendMessage(Utils.color(user.getCooldownTimeMessage()));
+                }
+            }
+
+            if (!islandManager.isIslandWorld(location)) return;
 
             if (user.flying && (user.getIsland() == null || user.getIsland().getFlightBooster() == 0)) {
                 player.setAllowFlight(false);
