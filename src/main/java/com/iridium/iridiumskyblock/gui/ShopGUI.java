@@ -196,7 +196,7 @@ public class ShopGUI extends GUI implements Listener {
                                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Command.replace("%player%", e.getWhoClicked().getName()));
                                 }
                             } else {
-                                ItemStack itemStack = item.material.parseItem(true);
+                                ItemStack itemStack = item.material.parseItem();
                                 itemStack.setAmount(item.amount);
                                 if (Utils.hasOpenSlot(e.getWhoClicked().getInventory())) {
                                     e.getWhoClicked().getInventory().addItem(itemStack);
@@ -224,7 +224,7 @@ public class ShopGUI extends GUI implements Listener {
                                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Command.replace("%player%", e.getWhoClicked().getName()));
                                 }
                             } else {
-                                ItemStack itemStack = item.material.parseItem(true);
+                                ItemStack itemStack = item.material.parseItem();
                                 itemStack.setAmount(64);
                                 if (Utils.hasOpenSlot(e.getWhoClicked().getInventory())) {
                                     e.getWhoClicked().getInventory().addItem(itemStack);

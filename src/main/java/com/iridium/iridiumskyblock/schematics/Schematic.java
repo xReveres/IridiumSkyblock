@@ -85,7 +85,7 @@ public class Schematic implements WorldEdit {
                                 Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(name.toUpperCase());
                                 if (optionalXMaterial.isPresent()) {
                                     XMaterial material = optionalXMaterial.get();
-                                    ItemStack itemStack = material.parseItem(true);
+                                    ItemStack itemStack = material.parseItem();
                                     if (itemStack != null) {
                                         itemStack.setAmount(amount);
                                         chest.getBlockInventory().setItem(slot, itemStack);
@@ -167,7 +167,7 @@ public class Schematic implements WorldEdit {
                                             Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(name.toUpperCase());
                                             if (optionalXMaterial.isPresent()) {
                                                 XMaterial material = optionalXMaterial.get();
-                                                ItemStack itemStack = material.parseItem(true);
+                                                ItemStack itemStack = material.parseItem();
                                                 if (itemStack != null) {
                                                     itemStack.setAmount(amount);
                                                     chest.getBlockInventory().setItem(slot, itemStack);

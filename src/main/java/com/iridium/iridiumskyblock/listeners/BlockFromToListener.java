@@ -69,7 +69,7 @@ public class BlockFromToListener implements Listener {
                 final String oreUpgrade = islandOreUpgrades.get(random.nextInt(islandOreUpgrades.size()));
 
                 final XMaterial oreUpgradeXmaterial = XMaterial.valueOf(oreUpgrade);
-                final Material oreUpgradeMaterial = oreUpgradeXmaterial.parseMaterial(true);
+                final Material oreUpgradeMaterial = oreUpgradeXmaterial.parseMaterial();
                 if (oreUpgradeMaterial == null) return;
 
                 toBlock.setType(oreUpgradeMaterial);

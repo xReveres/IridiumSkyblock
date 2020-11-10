@@ -1085,6 +1085,7 @@ public class Island {
             }
             player.teleport(world.getSpawnLocation());
         }
+        playersOnIsland.remove(player);
     }
 
     public void setBiome(XBiome biome) {

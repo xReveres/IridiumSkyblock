@@ -64,7 +64,7 @@ public class Utils {
     }
 
     public static ItemStack makeItem(XMaterial material, int amount, String name) {
-        ItemStack item = material.parseItem(true);
+        ItemStack item = material.parseItem();
         if (item == null) return null;
         item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
@@ -74,7 +74,7 @@ public class Utils {
     }
 
     public static ItemStack makeItem(XMaterial material, int amount, String name, List<String> lore) {
-        ItemStack item = material.parseItem(true);
+        ItemStack item = material.parseItem();
         if (item == null) return null;
         item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
@@ -215,7 +215,7 @@ public class Utils {
     }
 
     public static ItemStack makeItemHidden(XMaterial material, int amount, String name, List<String> lore) {
-        ItemStack item = material.parseItem(true);
+        ItemStack item = material.parseItem();
         if (item == null) return null;
         item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
