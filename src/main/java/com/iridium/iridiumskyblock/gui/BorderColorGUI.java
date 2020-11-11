@@ -48,7 +48,6 @@ public class BorderColorGUI extends GUI implements Listener {
                     IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(Color.Green);
                 if (IridiumSkyblock.border.OffEnabled && e.getSlot() == IridiumSkyblock.getInventories().off.slot)
                     IridiumSkyblock.getIslandManager().getIslandViaId(islandID).setBorderColor(Color.Off);
-                IridiumSkyblock.getIslandManager().getIslandViaId(islandID).sendBorder();
             }
         }
     }

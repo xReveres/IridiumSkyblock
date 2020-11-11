@@ -163,7 +163,6 @@ public class Island {
     private boolean visit;
 
     @Getter
-    @Setter
     private Color borderColor;
 
     private Map<Role, Permissions> permissions;
@@ -411,6 +410,11 @@ public class Island {
             permissions.put(role, new Permissions());
         }
         return permissions.get(role);
+    }
+
+    public void setBorderColor(Color color) {
+        borderColor = color;
+        sendBorder();
     }
 
     public void sendBorder() {
