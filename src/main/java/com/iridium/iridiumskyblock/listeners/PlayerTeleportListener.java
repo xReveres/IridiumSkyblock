@@ -1,12 +1,18 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+
+import java.util.UUID;
 
 public class PlayerTeleportListener implements Listener {
 
@@ -14,23 +20,49 @@ public class PlayerTeleportListener implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         try {
             final Location toLocation = event.getTo();
+            final Location fromLocation = event.getFrom();
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            final Island island = islandManager.getIslandViaLocation(toLocation);
-            if (island == null) return;
+            if (!islandManager.isIslandWorld(toLocation)) return;
+            final Island toIsland = islandManager.getIslandViaLocation(toLocation);
+            if (toIsland == null) return;
 
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
 
-            if (user.islandID == island.getId()) return;
+            if (event.getCause().equals(TeleportCause.ENDER_PEARL)) {
+                Island fromIsland = islandManager.getIslandViaLocation(fromLocation);
+                if (fromIsland == null) {
+                    if (user.getIsland() != null) {
+                        user.getIsland().teleportHome(player);
+                        return;
+                    } else {
+                        if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
+                            EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
+                            Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+                            player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
+                        } else {
+                            World world = Bukkit.getWorld(IridiumSkyblock.getConfiguration().worldSpawn);
+                            if (world == null) world = Bukkit.getWorlds().get(0);
+                            player.teleport(world.getSpawnLocation());
+                        }
+                        return;
+                    }
+                } else if (!fromIsland.isInIsland(toLocation)) {
+                    fromIsland.teleportHome(player);
+                    return;
+                }
+            }
+            if (user.islandID == toIsland.getId()) return;
 
-            if ((island.isVisit() && !island.isBanned(user)) || user.bypassing) {
-                if (!island.isInIsland(event.getFrom())) {
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> island.sendBorder(player), 1);
-                    if (user.islandID != island.getId()) {
-                        player.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(island.getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                        for (String pl : island.getMembers()) {
-                            Player p = Bukkit.getPlayer(User.getUser(pl).name);
-                            if (p != null && p.canSee(player) && !player.hasPermission("iridiumskyblock.silentvisit")) {
+            if ((toIsland.isVisit() && !toIsland.isBanned(user)) || user.bypassing) {
+                if (!toIsland.isInIsland(fromLocation)) {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendBorder(player), 1);
+                    if (user.islandID != toIsland.getId()) {
+                        player.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(toIsland.getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        if (player.hasPermission("iridiumskyblock.silentvisit")) return;
+                        for (String pl : toIsland.getMembers()) {
+                            Player p = Bukkit.getPlayer(UUID.fromString(pl));
+                            if (p != null && p.canSee(player)) {
                                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitedYourIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }

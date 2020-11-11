@@ -1084,9 +1084,7 @@ public class Island {
             player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
         } else {
             World world = Bukkit.getWorld(IridiumSkyblock.getConfiguration().worldSpawn);
-            if (world == null) {
-                world = Bukkit.getWorlds().get(0);
-            }
+            if (world == null) world = Bukkit.getWorlds().get(0);
             player.teleport(world.getSpawnLocation());
         }
         playersOnIsland.remove(player);
