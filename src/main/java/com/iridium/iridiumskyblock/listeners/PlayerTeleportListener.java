@@ -31,24 +31,8 @@ public class PlayerTeleportListener implements Listener {
 
             if (event.getCause().equals(TeleportCause.ENDER_PEARL)) {
                 Island fromIsland = islandManager.getIslandViaLocation(fromLocation);
-                if (fromIsland == null) {
-                    if (user.getIsland() != null) {
-                        user.getIsland().teleportHome(player);
-                        return;
-                    } else {
-                        if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
-                            EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
-                            Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-                            player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
-                        } else {
-                            World world = Bukkit.getWorld(IridiumSkyblock.getConfiguration().worldSpawn);
-                            if (world == null) world = Bukkit.getWorlds().get(0);
-                            player.teleport(world.getSpawnLocation());
-                        }
-                        return;
-                    }
-                } else if (!fromIsland.isInIsland(toLocation)) {
-                    fromIsland.teleportHome(player);
+                if (fromIsland == null || fromIsland.isInIsland(toLocation)) {
+                    event.setCancelled(true);
                     return;
                 }
             }
