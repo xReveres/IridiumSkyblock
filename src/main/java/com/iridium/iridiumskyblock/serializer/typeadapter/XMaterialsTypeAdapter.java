@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.serializer.typeadapter;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.*;
-import com.iridium.iridiumskyblock.XMaterial;
 
 import java.lang.reflect.Type;
 

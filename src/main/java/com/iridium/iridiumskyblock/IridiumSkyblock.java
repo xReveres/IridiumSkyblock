@@ -1,5 +1,7 @@
 package com.iridium.iridiumskyblock;
 
+import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iridium.iridiumskyblock.commands.CommandManager;
@@ -153,7 +155,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 shopGUI = new ShopGUI();
                 visitGUI = new HashMap<>();
 
-                registerListeners(new EntitySpawnListener(), new LeafDecayListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener());
+                registerListeners(new EntitySpawnListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener());
 
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
 
@@ -170,13 +172,21 @@ public class IridiumSkyblock extends JavaPlugin {
                 Plugin asyncworldedit = Bukkit.getPluginManager().getPlugin("AsyncWorldEdit");
                 /*
                 If AsyncWorldEdit is loaded, then the schematic wont get pasted instantly.
-                This will cause the plugin to try to teleport to the island, however as the schematic hasnt been pasted yet
+                This will cause the plugin to try to teleport to the island, however as the schematic hasn't been pasted yet
                 it will keep retrying to paste the schematic and get caught into a constant loop of pasting the island until the server crashes
                  */
                 if (worldedit != null && asyncworldedit == null) {
-                    if (worldedit.getDescription().getVersion().startsWith("6")) {
+                    String worldEditVersion = worldedit.getDescription().getVersion();
+                    // See https://regex101.com/r/j4CEMo/1.
+                    // This regex may be updated to support future releases of WorldEdit (version 10+).
+                    if (XMaterial.supports(13) && !worldEditVersion.matches("(7\\.[2-9]+.*|[^0-7]\\.[2-9]+.*)")) {
+                        getLogger().warning("Your current WorldEdit version has problems with the island schematics!");
+                        getLogger().warning("Please update to the newest version immediately!");
+                        getLogger().warning("A fallback system is now used");
+                        worldEdit = schematic;
+                    } else if (worldEditVersion.startsWith("6")) {
                         worldEdit = new WorldEdit6();
-                    } else if (worldedit.getDescription().getVersion().startsWith("7")) {
+                    } else if (worldEditVersion.startsWith("7")) {
                         worldEdit = new WorldEdit7();
                     } else {
                         worldEdit = schematic;
@@ -200,11 +210,13 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                     registerListeners(new ExpansionUnregisterListener());
 
-                getLogger().info("-------------------------------");
+                getLogger().info("----------------------------------------");
                 getLogger().info("");
                 getLogger().info(getDescription().getName() + " Enabled!");
+                getLogger().info("Version: " + getDescription().getVersion());
+                getLogger().info("Patreon: www.patreon.com/Peaches_MLG");
                 getLogger().info("");
-                getLogger().info("-------------------------------");
+                getLogger().info("----------------------------------------");
 
                 update();
             });
@@ -216,7 +228,8 @@ public class IridiumSkyblock extends JavaPlugin {
     private void update() {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             latest = getVersion();
-            if (latest != null && !latest.equals(getDescription().getVersion())) {
+            int latestNumber = Integer.parseInt(latest.replace(".", ""));
+            if (latest != null && !latest.equals(getDescription().getVersion()) && latestNumber > Integer.parseInt(getDescription().getVersion().replace(".", ""))) {
                 getLogger().info("Newer version available: " + latest);
                 if (getConfiguration().automaticUpdate) {
                     getLogger().info("Attempting to download version: " + latest);
@@ -270,7 +283,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             languages.clear();
             try {
-                URLConnection connection = new URL("https://iridiumllc.com/languages.php").openConnection();
+                URLConnection connection = new URL("https://raw.githubusercontent.com/IridiumLLC/IridiumSkyblockLanguages/main/Languages").openConnection();
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
                 connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -309,9 +322,8 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void downloadConfig(String language, File file) {
-        getLogger().info("https://iridiumllc.com/Languages/" + language + "/" + file.getName());
         try {
-            URLConnection connection = new URL("https://iridiumllc.com/Languages/" + language + "/" + file.getName()).openConnection();
+            URLConnection connection = new URL("https://raw.githubusercontent.com/IridiumLLC/IridiumSkyblockLanguages/main/" + language + "/" + file.getName()).openConnection();
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -450,6 +462,9 @@ public class IridiumSkyblock extends JavaPlugin {
                             island.resetMissions();
                         }
                     }
+                    for (User user : islandManager.users.values()) {
+                        user.tookInterestMessage = false;
+                    }
                     for (Island island : islandManager.islands.values()) {
                         double cm = island.money;
                         int cc = island.getCrystals();
@@ -457,11 +472,18 @@ public class IridiumSkyblock extends JavaPlugin {
                         island.money = Math.floor(island.money * (1 + (getConfiguration().dailyMoneyInterest / 100.00)));
                         island.setCrystals((int) Math.floor(island.getCrystals() * (1 + (getConfiguration().dailyCrystalsInterest / 100.00))));
                         island.exp = (int) Math.floor(island.exp * (1 + (getConfiguration().dailyExpInterest / 100.00)));
+                        island.interestCrystal = island.getCrystals() - cc;
+                        island.interestMoney = island.money - cm;
+                        island.interestExp = island.exp - ce;
                         for (String member : island.getMembers()) {
                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                             if (p != null) {
                                 if (cm != island.money && cc != island.getCrystals() && ce != island.exp)
-                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest.replace("%exp%", Utils.NumberFormatter.format(island.exp - ce)).replace("%crystals%", Utils.NumberFormatter.format(island.getCrystals() - cc)).replace("%money%", Utils.NumberFormatter.format(island.money - cm)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
+                                            .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
+                                            .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
+                                            .replace("%money%", Utils.NumberFormatter.format(island.interestMoney))
+                                            .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }
                     }
@@ -591,6 +613,9 @@ public class IridiumSkyblock extends JavaPlugin {
         if (inventories.green.slot == null) inventories.green.slot = 12;
         if (inventories.blue.slot == null) inventories.blue.slot = 14;
         if (inventories.off.slot == null) inventories.off.slot = 16;
+        for (Schematics.FakeSchematic schematic : schematics.schematics) {
+            if (schematic.biome == null) schematic.biome = XBiome.PLAINS;
+        }
 
         missions.missions.remove(null);
 
@@ -615,6 +640,14 @@ public class IridiumSkyblock extends JavaPlugin {
         }
 
         getBlockValues().blockvalue.remove(XMaterial.AIR);
+
+        if (configuration.biomes != null) {
+            configuration.islandBiomes.clear();
+            for (XBiome biome : configuration.biomes) {
+                configuration.islandBiomes.put(biome, new Config.BiomeConfig());
+            }
+            configuration.biomes = null;
+        }
 
         oreUpgradeCache.clear();
         for (int i : getUpgrades().oresUpgrade.upgrades.keySet()) {
@@ -706,7 +739,6 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getConfiguration().biomes.sort(Comparator.comparing(XBiome::toString));
         return true;
     }
 

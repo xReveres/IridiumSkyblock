@@ -22,9 +22,9 @@ class SkyblockGenerator extends ChunkGenerator {
         final Config config = IridiumSkyblock.getConfiguration();
         final String worldName = world.getName();
         if (worldName.equals(config.worldName))
-            biome = config.defaultBiome.parseBiome();
+            biome = config.defaultBiome.getBiome();
         else if (worldName.equals(config.netherWorldName))
-            biome = config.defaultNetherBiome.parseBiome();
+            biome = config.defaultNetherBiome.getBiome();
         else
             return chunkData;
         for (int x = 0; x <= 15; x++) {

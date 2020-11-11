@@ -8,6 +8,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +27,7 @@ public class PlayerInteractListener implements Listener {
             final User user = User.getUser(player);
             final Block block = event.getClickedBlock();
 
-            if (event.getAction().toString().startsWith("RIGHT_CLICK")) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
                 if (player.getItemInHand() != null) {
                     int crystals = Utils.getCrystals(player.getItemInHand()) * player.getItemInHand().getAmount();
                     if (crystals != 0) {
@@ -54,10 +56,7 @@ public class PlayerInteractListener implements Listener {
                         }
                         block.setType(Material.AIR);
                     }
-                } else if (!user.bypassing) {
-                    event.setCancelled(true);
-                    return;
-                }
+                } else if (!user.bypassing) event.setCancelled(true);
             }
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
@@ -71,13 +70,24 @@ public class PlayerInteractListener implements Listener {
             final User user = User.getUser(player);
             final Entity rightClicked = event.getRightClicked();
             final Location location = rightClicked.getLocation();
-            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            final Island island = islandManager.getIslandViaLocation(location);
+            final Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(location);
             if (island == null) return;
+            if (!island.getPermissions(user).interact) event.setCancelled(true);
+        } catch (Exception e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
 
-            if (island.getPermissions(user).interact) return;
-
-            event.setCancelled(true);
+    @EventHandler
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
+        try {
+            final Player player = event.getPlayer();
+            final User user = User.getUser(player);
+            final Entity rightClicked = event.getRightClicked();
+            final Location location = rightClicked.getLocation();
+            final Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(location);
+            if (island == null) return;
+            if (!island.getPermissions(user).interact) event.setCancelled(true);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }

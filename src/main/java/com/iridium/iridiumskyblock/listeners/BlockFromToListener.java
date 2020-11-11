@@ -1,6 +1,10 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.*;
+import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.IslandManager;
+import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -65,7 +69,7 @@ public class BlockFromToListener implements Listener {
                 final String oreUpgrade = islandOreUpgrades.get(random.nextInt(islandOreUpgrades.size()));
 
                 final XMaterial oreUpgradeXmaterial = XMaterial.valueOf(oreUpgrade);
-                final Material oreUpgradeMaterial = oreUpgradeXmaterial.parseMaterial(true);
+                final Material oreUpgradeMaterial = oreUpgradeXmaterial.parseMaterial();
                 if (oreUpgradeMaterial == null) return;
 
                 toBlock.setType(oreUpgradeMaterial);

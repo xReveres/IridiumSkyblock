@@ -1,8 +1,9 @@
 package com.iridium.iridiumskyblock.nms;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.XMaterial;
+import com.iridium.iridiumskyblock.Utils;
 import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -23,7 +24,7 @@ public class v1_14_R1 implements NMS {
         if (state instanceof InventoryHolder) {
             ((InventoryHolder) state).getInventory().clear();
         }
-        XMaterial material = XMaterial.requestOldXMaterial(blockId, (byte) 0);
+        XMaterial material = Utils.getXMaterialFromId(blockId, (byte) 0);
         if (material != null && material.parseMaterial() != null) {
             block.setBlockData(IridiumSkyblock.getInstance().fromLegacy(material.parseMaterial(), data), false);
         }

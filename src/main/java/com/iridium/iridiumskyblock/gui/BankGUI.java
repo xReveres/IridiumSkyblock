@@ -1,6 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.Utils.TransactionLogger;
+import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
+import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
 import com.iridium.iridiumskyblock.support.Vault;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +27,7 @@ public class BankGUI extends GUI implements Listener {
             setItem(IridiumSkyblock.getInventories().experience.slot == null ? 11 : IridiumSkyblock.getInventories().experience.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().experience, getIsland()));
             setItem(IridiumSkyblock.getInventories().crystals.slot == null ? 13 : IridiumSkyblock.getInventories().crystals.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().crystals, getIsland()));
             setItem(IridiumSkyblock.getInventories().money.slot == null ? 15 : IridiumSkyblock.getInventories().money.slot, Utils.makeItemHidden(IridiumSkyblock.getInventories().money, getIsland()));
-            setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
         }
 
     }
@@ -38,24 +41,28 @@ public class BankGUI extends GUI implements Listener {
             Player p = (Player) e.getWhoClicked();
             Island island = getIsland();
             User u = User.getUser(p);
-            if (e.getSlot() == getInventory().getSize() - 5) {
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
                 e.getWhoClicked().openInventory(getIsland().getIslandMenuGUI().getInventory());
             }
             if (e.getSlot() == (IridiumSkyblock.getInventories().experience.slot == null ? 11 : IridiumSkyblock.getInventories().experience.slot)) {
                 if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                         Utils.setTotalExperience(p, Utils.getTotalExperience(p) + island.exp);
+                        TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.EXPERIENCE, -island.exp));
                         island.exp = 0;
                     }
                 } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
                     island.exp += Utils.getTotalExperience(p);
+                    TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.EXPERIENCE, Utils.getTotalExperience(p)));
                     Utils.setTotalExperience(p, 0);
                 } else if (e.getClick().equals(ClickType.RIGHT)) {
                     if (Utils.getTotalExperience(p) > 100) {
                         island.exp += 100;
                         Utils.setTotalExperience(p, Utils.getTotalExperience(p) - 100);
+                        TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.EXPERIENCE, 100));
                     } else {
                         island.exp += Utils.getTotalExperience(p);
+                        TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.EXPERIENCE, Utils.getTotalExperience(p)));
                         Utils.setTotalExperience(p, 0);
                     }
                 } else if (e.getClick().equals(ClickType.LEFT)) {
@@ -63,8 +70,10 @@ public class BankGUI extends GUI implements Listener {
                         if (island.exp > 100) {
                             island.exp -= 100;
                             Utils.setTotalExperience(p, Utils.getTotalExperience(p) + 100);
+                            TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.EXPERIENCE, -100));
                         } else {
                             Utils.setTotalExperience(p, Utils.getTotalExperience(p) + island.exp);
+                            TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.EXPERIENCE, -island.exp));
                             island.exp = 0;
                         }
                     }
@@ -74,8 +83,9 @@ public class BankGUI extends GUI implements Listener {
                 if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                     if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                         if (island.getCrystals() > 0) {
-                            if (p.getInventory().firstEmpty() != -1){
+                            if (p.getInventory().firstEmpty() != -1) {
                                 p.getInventory().addItem(Utils.getCrystals(island.getCrystals()));
+                                TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.CRYSTALS, -island.getCrystals()));
                                 island.setCrystals(0);
                             } else {
                                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().inventoryFull
@@ -85,6 +95,7 @@ public class BankGUI extends GUI implements Listener {
                     }
                 } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
                     int i = 0;
+                    int total = 0;
                     for (ItemStack itemStack : p.getInventory().getContents()) {
                         if (itemStack == null) {
                             i++;
@@ -94,9 +105,11 @@ public class BankGUI extends GUI implements Listener {
                         if (crystals != 0) {
                             island.setCrystals(island.getCrystals() + crystals);
                             p.getInventory().clear(i);
+                            total += crystals;
                         }
                         i++;
                     }
+                    TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.CRYSTALS, total));
                 } else if (e.getClick().equals(ClickType.RIGHT)) {
                     int i = 0;
                     for (ItemStack itemStack : p.getInventory().getContents()) {
@@ -108,6 +121,7 @@ public class BankGUI extends GUI implements Listener {
                         if (crystals != 0) {
                             island.setCrystals(island.getCrystals() + crystals);
                             p.getInventory().clear(i);
+                            TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.CRYSTALS, crystals));
                             return;
                         }
                         i++;
@@ -118,6 +132,7 @@ public class BankGUI extends GUI implements Listener {
                             if (p.getInventory().firstEmpty() != -1){
                                 island.setCrystals(island.getCrystals() - 1);
                                 p.getInventory().addItem(Utils.getCrystals(1));
+                                TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.CRYSTALS, -1));
                             } else {
                                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().inventoryFull
                                         .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
@@ -130,26 +145,34 @@ public class BankGUI extends GUI implements Listener {
                 if (Vault.econ != null) {
                     if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                         if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
-                            Vault.econ.depositPlayer(p, island.money);
+                            double depositValue = island.money;
+                            TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, -depositValue));
                             island.money = 0;
+                            Vault.econ.depositPlayer(p, depositValue);
                         }
                     } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
-                        island.money += Vault.econ.getBalance(p);
-                        Vault.econ.withdrawPlayer(p, Vault.econ.getBalance(p));
+                        double playerBalance = Vault.econ.getBalance(p);
+                        Vault.econ.withdrawPlayer(p, playerBalance);
+                        island.money += playerBalance;
+                        TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, playerBalance));
                     } else if (e.getClick().equals(ClickType.RIGHT)) {
                         double depositValue = Vault.econ.getBalance(p) > 1000 ? 1000 : Vault.econ.getBalance(p);
                         if (!(island.money > Double.MAX_VALUE - depositValue)) {
-                            island.money += depositValue;
                             Vault.econ.withdrawPlayer(p, depositValue);
+                            island.money += depositValue;
+                            TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, depositValue));
                         }
                     } else if (e.getClick().equals(ClickType.LEFT)) {
                         if ((island.getPermissions((u.islandID == island.getId() || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                             if (island.money > 1000) {
                                 island.money -= 1000;
                                 Vault.econ.depositPlayer(p, 1000);
+                                TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, -1000));
                             } else {
-                                Vault.econ.depositPlayer(p, island.money);
+                                double depositAmount = island.money;
                                 island.money = 0;
+                                Vault.econ.depositPlayer(p, depositAmount);
+                                TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, -depositAmount));
                             }
                         }
                     }

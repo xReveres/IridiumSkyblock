@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
@@ -69,7 +70,7 @@ public class BlockPlaceListener implements Listener {
                                     ||
                                     conditions.contains(xmaterial.name())
                                     ||
-                                    conditions.contains(((Crops) block.getState().getData()).getState().toString())
+                                    (block.getState().getData() instanceof Crops && conditions.contains(((Crops) block.getState().getData()).getState().toString()))
                     )
                         island.addMission(mission.name, 1);
                 }

@@ -1,9 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
-import com.iridium.iridiumskyblock.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +24,10 @@ public class LanguagesGUI extends GUI implements Listener {
 
     public LanguagesGUI() {
         pages = new HashMap<>();
+        if (IridiumSkyblock.getInstance().languages.isEmpty()) {
+            pages.put(1, new LanguagesGUI(1, this));
+            return;
+        }
         for (int i = 1; i <= Math.ceil(IridiumSkyblock.getInstance().languages.size() / 45.00); i++) {
             pages.put(i, new LanguagesGUI(i, this));
         }
@@ -57,7 +60,6 @@ public class LanguagesGUI extends GUI implements Listener {
             i++;
         }
         setItem(getInventory().getSize() - 3, Utils.makeItem(IridiumSkyblock.getInventories().nextPage));
-        setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
         setItem(getInventory().getSize() - 7, Utils.makeItem(IridiumSkyblock.getInventories().previousPage));
     }
 
@@ -67,9 +69,6 @@ public class LanguagesGUI extends GUI implements Listener {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
-            if (e.getSlot() == getInventory().getSize() - 5) {
-                e.getWhoClicked().openInventory(User.getUser(e.getWhoClicked().getUniqueId().toString()).getIsland().getIslandMenuGUI().getInventory());
-            }
             if (languages.containsKey(e.getSlot())) {
                 IridiumSkyblock.getInstance().setLanguage(languages.get(e.getSlot()), (Player) e.getWhoClicked());
             } else if (e.getSlot() == getInventory().getSize() - 7) {

@@ -1,26 +1,58 @@
 package com.iridium.iridiumskyblock;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
+import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.support.Vault;
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.NumberFormat;
+import de.tr7zw.changeme.nbtapi.NBTListCompound;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
+
+    private static final boolean supports = XMaterial.supports(14);
+
+    public static XMaterialItemId xMaterialItemId;
+
+    static {
+        {
+            InputStream inputStream = IridiumSkyblock.getInstance().getResource("itemdata.json");
+            Scanner sc = new Scanner(inputStream);
+            //Reading line by line from scanner to StringBuffer
+            StringBuffer content = new StringBuffer();
+            while (sc.hasNext()) {
+                content.append(sc.nextLine());
+            }
+            xMaterialItemId = IridiumSkyblock.getPersist().load(XMaterialItemId.class, content.toString());
+        }
+    }
 
     public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Object object) {
         ItemStack item = new ItemStack(material, amount, (short) type);
@@ -32,7 +64,7 @@ public class Utils {
     }
 
     public static ItemStack makeItem(XMaterial material, int amount, String name) {
-        ItemStack item = material.parseItem(true);
+        ItemStack item = material.parseItem();
         if (item == null) return null;
         item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
@@ -42,7 +74,7 @@ public class Utils {
     }
 
     public static ItemStack makeItem(XMaterial material, int amount, String name, List<String> lore) {
-        ItemStack item = material.parseItem(true);
+        ItemStack item = material.parseItem();
         if (item == null) return null;
         item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
@@ -55,7 +87,18 @@ public class Utils {
     public static ItemStack makeItem(Inventories.Item item, List<Placeholder> placeholders) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), processMultiplePlaceholders(item.lore, placeholders));
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(processMultiplePlaceholders(item.headOwner, placeholders));
                 itemstack.setItemMeta(m);
@@ -69,7 +112,18 @@ public class Utils {
     public static ItemStack makeItem(Inventories.Item item) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, item.title, item.lore);
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
@@ -83,7 +137,18 @@ public class Utils {
     public static ItemStack makeItem(Inventories.Item item, Island island) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, processIslandPlaceholders(item.title, island), color(processIslandPlaceholders(item.lore, island)));
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
@@ -97,7 +162,18 @@ public class Utils {
     public static ItemStack makeItemHidden(Inventories.Item item) {
         try {
             ItemStack itemstack = makeItemHidden(item.material, item.amount, item.title, item.lore);
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
@@ -115,7 +191,18 @@ public class Utils {
     public static ItemStack makeItemHidden(Inventories.Item item, List<Placeholder> placeholders) {
         try {
             ItemStack itemstack = makeItemHidden(item.material, item.amount, processMultiplePlaceholders(item.title, placeholders), color(processMultiplePlaceholders(item.lore, placeholders)));
-            if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
                 SkullMeta m = (SkullMeta) itemstack.getItemMeta();
                 m.setOwner(item.headOwner);
                 itemstack.setItemMeta(m);
@@ -128,7 +215,7 @@ public class Utils {
     }
 
     public static ItemStack makeItemHidden(XMaterial material, int amount, String name, List<String> lore) {
-        ItemStack item = material.parseItem(true);
+        ItemStack item = material.parseItem();
         if (item == null) return null;
         item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
@@ -318,31 +405,36 @@ public class Utils {
             }
             Vault.econ.depositPlayer(p, vault);
         }
+        TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, vault).add(TransactionType.CRYSTALS, crystals));
     }
 
-    public static boolean canBuy(Player p, double vault, int crystals) {
+    public static BuyResponce canBuy(Player p, double vault, int crystals) {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
+            if (u.getIsland().getCrystals() < crystals) return BuyResponce.NOT_ENOUGH_CRYSTALS;
             if (Vault.econ != null) {
-                if (Vault.econ.getBalance(p) >= vault && u.getIsland().getCrystals() >= crystals) {
+                if (Vault.econ.getBalance(p) >= vault) {
                     Vault.econ.withdrawPlayer(p, vault);
                     u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
-                    return true;
+                    TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
+                    return BuyResponce.SUCCESS;
                 }
             }
-            if (u.getIsland().money >= vault && u.getIsland().getCrystals() >= crystals) {
+            if (u.getIsland().money >= vault) {
                 u.getIsland().money -= vault;
                 u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
-                return true;
+                TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
+                return BuyResponce.SUCCESS;
             }
         }
         if (Vault.econ != null) {
             if (Vault.econ.getBalance(p) >= vault && crystals == 0) {
                 Vault.econ.withdrawPlayer(p, vault);
-                return true;
+                TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault));
+                return BuyResponce.SUCCESS;
             }
         }
-        return false;
+        return crystals == 0 ? BuyResponce.NOT_ENOUGH_VAULT : BuyResponce.NOT_ENOUGH_CRYSTALS;
     }
 
     public static int getExpAtLevel(final int level) {
@@ -408,6 +500,51 @@ public class Utils {
         return 0;
     }
 
+
+    public static String getCurrentTimeStamp(Date date, String format) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat(format);//dd/MM/yyyy
+        return sdfDate.format(date);
+    }
+
+    public static Date getLocalDateTime(String time, String format) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat(format);//dd/MM/yyyy
+        try {
+            return sdfDate.parse(time);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    public static boolean hasOpenSlot(Inventory inv) {
+        for (ItemStack item : inv.getContents()) {
+            if (item == null) {
+                return true;
+            } else if (item.getType() == Material.AIR) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static XMaterial getXMaterialFromId(int id, byte data) {
+        for (MaterialItemId materialItemId : xMaterialItemId.items) {
+            if (materialItemId.type == id && materialItemId.meta == data) {
+                return XMaterial.matchXMaterial(materialItemId.name).get();
+            }
+        }
+        return null;
+    }
+
+    public static class XMaterialItemId {
+        List<MaterialItemId> items;
+    }
+
+    public static class MaterialItemId {
+        int type;
+        byte meta;
+        String name;
+    }
+
     public static class Placeholder {
 
         private final String key;
@@ -422,6 +559,12 @@ public class Utils {
             if (line == null) return "";
             return line.replace(key, value);
         }
+    }
+
+    public static enum BuyResponce {
+        SUCCESS,
+        NOT_ENOUGH_CRYSTALS,
+        NOT_ENOUGH_VAULT
     }
 
     public static class NumberFormatter {
@@ -463,27 +606,138 @@ public class Utils {
             bigDecimal = bigDecimal.setScale(IridiumSkyblock.getConfiguration().numberAbbreviationDecimalPlaces, RoundingMode.HALF_DOWN);
             StringBuilder outputStringBuilder = new StringBuilder();
 
-            if (bigDecimal.compareTo(BigDecimal.ZERO) <= 0) {
+            if (bigDecimal.compareTo(BigDecimal.ZERO) < 0) {
                 outputStringBuilder
-                    .append("ERROR");
+                        .append("-")
+                        .append(formatPrettyNumber(bigDecimal.negate()));
             } else if (bigDecimal.compareTo(ONE_THOUSAND) < 0) {
                 outputStringBuilder
-                    .append(bigDecimal.stripTrailingZeros().toPlainString());
+                        .append(bigDecimal.stripTrailingZeros().toPlainString());
             } else if (bigDecimal.compareTo(ONE_MILLION) < 0) {
                 outputStringBuilder
-                    .append(bigDecimal.divide(ONE_THOUSAND, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
-                    .append(IridiumSkyblock.getConfiguration().thousandAbbreviation);
+                        .append(bigDecimal.divide(ONE_THOUSAND, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                        .append(IridiumSkyblock.getConfiguration().thousandAbbreviation);
             } else if (bigDecimal.compareTo(ONE_BILLION) < 0) {
                 outputStringBuilder
-                    .append(bigDecimal.divide(ONE_MILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
-                    .append(IridiumSkyblock.getConfiguration().millionAbbreviation);
+                        .append(bigDecimal.divide(ONE_MILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                        .append(IridiumSkyblock.getConfiguration().millionAbbreviation);
             } else {
                 outputStringBuilder
-                    .append(bigDecimal.divide(ONE_BILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
-                    .append(IridiumSkyblock.getConfiguration().billionAbbreviation);
+                        .append(bigDecimal.divide(ONE_BILLION, RoundingMode.HALF_DOWN).stripTrailingZeros().toPlainString())
+                        .append(IridiumSkyblock.getConfiguration().billionAbbreviation);
             }
 
             return outputStringBuilder.toString();
+        }
+    }
+
+    public static class TransactionLogger {
+        public enum TransactionType {
+            MONEY,
+            CRYSTALS,
+            EXPERIENCE;
+
+            @Override
+            public String toString() {
+                return WordUtils.capitalize(name().toLowerCase());
+            }
+        }
+
+        public static class Transaction {
+            private final Map<TransactionType, Double> transactionAmounts = new HashMap<>();
+
+            public Transaction add(TransactionType type, double amount) {
+                transactionAmounts.put(type, amount);
+                return this;
+            }
+
+            public double getTransactionAmount() {
+                return transactionAmounts.values().stream().filter(value -> value != 0).findAny().orElse(0.0);
+            }
+
+            @Override
+            public String toString() {
+                String[] transactionParts = transactionAmounts.keySet().stream()
+                        .filter(type -> transactionAmounts.get(type) != 0)
+                        .map(type -> Math.abs(transactionAmounts.get(type)) + " " + type.toString())
+                        .toArray(String[]::new);
+                return String.join(", ", transactionParts);
+            }
+
+        }
+
+        /**
+         * @param transaction positive amount = sale, negative amount = purchase
+         */
+        public static void saveTransaction(Player player, Transaction transaction) {
+            if (!IridiumSkyblock.getConfiguration().logTransactions) {
+                return;
+            }
+
+            if (transaction.transactionAmounts.isEmpty()) {
+                return;
+            }
+
+            if (transaction.getTransactionAmount() == 0) {
+                return;
+            }
+
+            StringBuilder logEntry = new StringBuilder();
+            addTimestamp(logEntry);
+            addPlayerInfo(logEntry, player);
+            logEntry.append(transaction.getTransactionAmount() < 0 ? "Purchased for " : "Sold for ");
+            logEntry.append(transaction.toString());
+
+            appendToFile(logEntry);
+        }
+
+        /**
+         * @param transaction positive amount = deposit, negative amount = withdraw
+         */
+        public static void saveBankBalanceChange(Player player, Transaction transaction) {
+            if (!IridiumSkyblock.getConfiguration().logBankBalanceChange) {
+                return;
+            }
+
+            if (transaction.transactionAmounts.isEmpty()) {
+                return;
+            }
+
+            if (transaction.getTransactionAmount() == 0) {
+                return;
+            }
+
+            StringBuilder logEntry = new StringBuilder();
+            addTimestamp(logEntry);
+            addPlayerInfo(logEntry, player);
+            logEntry.append(transaction.getTransactionAmount() < 0 ? "Withdrew " : "Deposited ");
+            logEntry.append(transaction.toString());
+
+            appendToFile(logEntry);
+        }
+
+        private static void addTimestamp(StringBuilder stringBuilder) {
+            // Append: Year-Month-Day Hour:Minute:Second
+            Date currentDate = new Date(System.currentTimeMillis());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            stringBuilder.append("[").append(dateFormat.format(currentDate)).append("] ");
+        }
+
+        private static void addPlayerInfo(StringBuilder stringBuilder, Player player) {
+            // Append: PlayerName (PlayerUUID):
+            stringBuilder.append(player.getName()).append(" (").append(player.getUniqueId().toString()).append("): ");
+        }
+
+        private static void appendToFile(StringBuilder logEntry) {
+            logEntry.append("\r\n");
+            Path path = Paths.get("plugins", "IridiumSkyblock", "logs", "transactions.log");
+
+            try {
+                path.getParent().toFile().mkdirs();
+                Files.write(path, logEntry.toString().getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 

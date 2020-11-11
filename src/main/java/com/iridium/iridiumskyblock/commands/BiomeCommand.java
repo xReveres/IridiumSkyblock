@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,8 +21,15 @@ public class BiomeCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         User user = User.getUser(p);
+        World.Environment environment = p.getWorld().getEnvironment();
         if (user.getIsland() != null) {
-            p.openInventory(user.getIsland().getBiomeGUI().pages.get(1).getInventory());
+            switch (environment) {
+                case NORMAL:
+                    p.openInventory(user.getIsland().getBiomeGUI().pages.get(1).getInventory());
+                    break;
+                case NETHER:
+                    p.openInventory(user.getIsland().getNetherBiomeGUI().pages.get(1).getInventory());
+            }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

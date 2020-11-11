@@ -1,12 +1,17 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.iridium.iridiumskyblock.*;
+import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumskyblock.MissionRestart;
+import com.iridium.iridiumskyblock.Permissions;
+import com.iridium.iridiumskyblock.Role;
 import org.bukkit.entity.EntityType;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Config {
     public String prefix = "&b&lIridiumSkyblock &8»";
@@ -23,7 +28,7 @@ public class Config {
     public String mainCommandPerm = "";
     public boolean createCooldown = true;
     public boolean doIslandBackup = true;
-    public boolean islandShop = false;
+    public boolean islandShop = true;
     public boolean automaticUpdate = true;
     public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
@@ -34,7 +39,6 @@ public class Config {
     public boolean clearInventories = false;
     public boolean restartUpgradesOnRegen = true;
     public boolean allowWaterInNether = true;
-    public boolean disableLeafDecay = true;
     public boolean createIslandonHome = true;
     public boolean allowExplosions = true;
     public boolean disablePvPBetweenIslandMembers = true;
@@ -43,6 +47,11 @@ public class Config {
     public boolean disableBypassOnJoin = true;
     public boolean displayNumberAbbreviations = true;
     public boolean prettierAbbreviations = true;
+    public boolean logTransactions = true;
+    public boolean logBankBalanceChange = true;
+    public boolean keepInventoryOnVoid = true;
+    public boolean createIslandOnJoin = false;
+    public boolean ignoreCooldownOnJoinCreation = false;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
     public int distance = 151;
@@ -57,7 +66,7 @@ public class Config {
     public double dailyCrystalsInterest = 5;
     public double dailyExpInterest = 0.01;
     public XBiome defaultBiome = XBiome.PLAINS;
-    public XBiome defaultNetherBiome = XBiome.NETHER;
+    public XBiome defaultNetherBiome = XBiome.NETHER_WASTES;
     public MissionRestart missionRestart = MissionRestart.Daily;
     public String worldSpawn = "world";
     public Map<Role, Permissions> defaultPermissions = new HashMap<Role, Permissions>() {{
@@ -89,8 +98,18 @@ public class Config {
 
     public Map<XMaterial, Double> blockvalue = null;
     public Map<String, Double> spawnervalue = null;
-    public List<XBiome> biomes = Arrays.asList(XBiome.values());
-
+    public List<XBiome> biomes = null;
+    public Map<XBiome, BiomeConfig> islandBiomes = new HashMap<XBiome, BiomeConfig>() {{
+        for (XBiome biome : XBiome.VALUES.stream().filter(biome -> !biome.equals(XBiome.THE_VOID)).collect(Collectors.toList())) {
+            put(biome, new BiomeConfig());
+        }
+    }};
     public List<EntityType> blockedEntities = Arrays.asList(EntityType.PRIMED_TNT, EntityType.MINECART_TNT, EntityType.FIREBALL, EntityType.SMALL_FIREBALL, EntityType.ENDER_PEARL);
+
+    public static class BiomeConfig {
+        public double price = 5000.0;
+        public int crystals = 5;
+        public XMaterial icon = XMaterial.GRASS_BLOCK;
+    }
 
 }

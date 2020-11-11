@@ -1,9 +1,10 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.cryptomorin.xseries.XBlock;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.IslandManager;
-import com.iridium.iridiumskyblock.XBlock;
 import org.bukkit.CropState;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,7 +29,7 @@ public class BlockGrowListener implements Listener {
             if (island.getFarmingBooster() == 0) return;
 
             final Material material = block.getType();
-            if (!XBlock.isCrops(material)) return;
+            if (!XBlock.isCrop(XMaterial.matchXMaterial(material))) return;
 
             event.setCancelled(true);
 
