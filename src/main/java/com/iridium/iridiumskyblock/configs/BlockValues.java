@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class BlockValues {
     public Map<XMaterial, Double> blockvalue = new HashMap<XMaterial, Double>() {{
+        put(XMaterial.NETHERITE_BLOCK, 150.00);
         put(XMaterial.EMERALD_BLOCK, 20.00);
         put(XMaterial.DIAMOND_BLOCK, 10.00);
         put(XMaterial.GOLD_BLOCK, 5.00);
