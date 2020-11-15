@@ -56,7 +56,11 @@ public class EntityDamageByEntityListener implements Listener {
             final Entity damager = event.getDamager();
 
             if (damager instanceof Egg && damagee instanceof ItemFrame) {
-                event.setCancelled(true);
+                Player player = (Player) ((Egg) damager).getShooter();
+                User user = User.getUser(player);
+                if (player != null && island.getMembers().contains(player.getUniqueId().toString()) && island.isCoop(user.getIsland())) {
+                    event.setCancelled(true);
+                }
             }
             // Using suppliers to defer work if unnecessary
             // This includes seemingly innocuous downcast operations
