@@ -172,8 +172,13 @@ public class EntityDamageByEntityListener implements Listener {
             Entity entity = event.getEntity();
             Location location = entity.getLocation();
             IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            if (!islandManager.isIslandWorld(location)) return;
             Island island = islandManager.getIslandViaLocation(location);
-            if (island != null) event.setCancelled(true);
+            Player player = (Player) ((Egg) event.getRemover()).getShooter();
+            User user = User.getUser(player);
+            if (player != null && island != null && !island.getMembers().contains(player.getUniqueId().toString()) && !island.isCoop(user.getIsland())) {
+                event.setCancelled(true);
+            }
         }
     }
 }
