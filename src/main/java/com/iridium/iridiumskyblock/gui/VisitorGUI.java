@@ -32,7 +32,7 @@ public class VisitorGUI extends GUI implements Listener {
         int i = 0;
         for (Player p : island.getPlayersOnIsland()) {
             User visitorUser = User.getUser(p);
-            if (!island.getMembers().contains(p.getUniqueId().toString()) || !visitorUser.bypassing || !p.hasPermission("iridiumskyblock.silentvisit")) {
+            if (!island.getMembers().contains(p.getUniqueId().toString()) && !island.isCoop(visitorUser.getIsland()) && !(visitorUser.bypassing || p.hasPermission("iridiumskyblock.silentvisit"))) {
                 if (i >= getInventory().getSize()) return;
                 ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandVisitors, Collections.singletonList(new Utils.Placeholder("player", p.getName())));
                 setItem(i, head);
