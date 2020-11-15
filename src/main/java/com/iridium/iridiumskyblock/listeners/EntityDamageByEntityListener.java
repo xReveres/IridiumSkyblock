@@ -6,6 +6,8 @@ import com.iridium.iridiumskyblock.IslandManager;
 import com.iridium.iridiumskyblock.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Egg;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -13,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -52,6 +55,9 @@ public class EntityDamageByEntityListener implements Listener {
 
             final Entity damager = event.getDamager();
 
+            if (damager instanceof Egg && damagee instanceof ItemFrame) {
+                event.setCancelled(true);
+            }
             // Using suppliers to defer work if unnecessary
             // This includes seemingly innocuous downcast operations
             final Supplier<Player> damageePlayerSupplier = () -> (Player) damagee;
@@ -157,6 +163,17 @@ public class EntityDamageByEntityListener implements Listener {
                 event.setCancelled(true);
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
+        }
+    }
+
+    @EventHandler
+    public void onHangingByEntity(HangingBreakByEntityEvent event) {
+        if (event.getRemover() instanceof Egg && event.getEntity() instanceof ItemFrame) {
+            Entity entity = event.getEntity();
+            Location location = entity.getLocation();
+            IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            Island island = islandManager.getIslandViaLocation(location);
+            if (island != null) event.setCancelled(true);
         }
     }
 }
