@@ -58,7 +58,7 @@ public class EntityDamageByEntityListener implements Listener {
             if (damager instanceof Egg && damagee instanceof ItemFrame) {
                 Player player = (Player) ((Egg) damager).getShooter();
                 User user = User.getUser(player);
-                if (player != null && island.getMembers().contains(player.getUniqueId().toString()) && island.isCoop(user.getIsland())) {
+                if (player != null && !island.getMembers().contains(player.getUniqueId().toString()) && !island.isCoop(user.getIsland())) {
                     event.setCancelled(true);
                 }
             }
