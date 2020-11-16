@@ -143,6 +143,8 @@ public class Island {
     @Getter
     private double value;
 
+    private double lastMissionValue;
+
     @Getter
     private double extravalue;
 
@@ -244,6 +246,7 @@ public class Island {
         warpLevel = 1;
         oreLevel = 1;
         value = 0;
+        lastMissionValue = 0;
         warps = new ArrayList<>();
         startvalue = -1;
         borderColor = IridiumSkyblock.border.startingColor;
@@ -355,6 +358,7 @@ public class Island {
         if (missionLevels == null) missionLevels = new HashMap<>();
         missions.clear();
         missionLevels.clear();
+        lastMissionValue = value;
     }
 
     public int getMission(String mission) {
@@ -597,7 +601,7 @@ public class Island {
         for (Mission mission : IridiumSkyblock.getMissions().missions) {
             missionLevels.putIfAbsent(mission.name, 1);
             if (mission.levels.get(missionLevels.get(mission.name)).type == MissionType.VALUE_INCREASE) {
-                setMission(mission.name, (int) (value.doubleValue() - startvalue));
+                setMission(mission.name, (int) (value.doubleValue() - startvalue - lastMissionValue));
             }
         }
         this.value += this.extravalue;
