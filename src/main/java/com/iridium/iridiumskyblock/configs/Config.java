@@ -28,6 +28,7 @@ public class Config {
     public String mainCommandPerm = "";
     public boolean createCooldown = true;
     public boolean doIslandBackup = true;
+    public boolean bankWithdrawing = true;
     public boolean islandShop = true;
     public boolean automaticUpdate = true;
     public boolean defaultIslandPublic = true;

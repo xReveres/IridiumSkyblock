@@ -114,6 +114,7 @@ public class Messages {
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help";
     public String noPermissionBuild = "%prefix% &7You do not have permission to build on this island";
     public String noPermissionBreakSpawners = "%prefix% &7You do not have permission to break spawners on this island";
+    public String withdrawDisabled = "%prefix% &7Withdrawing and depositing money and crystals has been disabled by your administrator";
     public String depositedCrystals = "%prefix% &7You have deposited %amount% crystals into your island bank";
     public String helpPageHoverMessage = "Click to go to page %page%";
     public String calculatingIslands = "%prefix% &7Calculating %amount% Players islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
