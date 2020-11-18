@@ -203,7 +203,7 @@ public class Island {
 
     private Date lastRegen;
 
-    private transient List<Player> playersOnIsland;
+    private transient Set<Player> playersOnIsland;
     private long lastPlayerCaching;
 
     private static final transient boolean ISFLAT = XMaterial.supports(13);
@@ -696,7 +696,7 @@ public class Island {
             members = new HashSet<>();
             members.add(owner);
         }
-        this.playersOnIsland = new ArrayList<>();
+        this.playersOnIsland = new HashSet<>();
         this.lastPlayerCaching = 0L;
         upgradeGUI = new UpgradeGUI(this);
         boosterGUI = new BoosterGUI(this);
@@ -1063,7 +1063,7 @@ public class Island {
         }
     }
 
-    public List<Player> getPlayersOnIsland() {
+    public Set<Player> getPlayersOnIsland() {
         if (System.currentTimeMillis() >= lastPlayerCaching + (IridiumSkyblock.getConfiguration().playersOnIslandRefreshTime * 1000L)) {
             reloadPlayersOnIsland();
         }

@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import org.bukkit.GameMode;
@@ -59,7 +60,7 @@ public class EntityTargetLivingEntityListener implements Listener {
       event.setCancelled(true);
 
       // Try to find a new random target
-      List<Player> playersOnIsland = island.getPlayersOnIsland();
+      Set<Player> playersOnIsland = island.getPlayersOnIsland();
       if (playersOnIsland.size() != 1) {
         List<Player> possibleTargets = playersOnIsland.stream()
             .filter(player -> player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR)
