@@ -590,6 +590,13 @@ public class IridiumSkyblock extends JavaPlugin {
 
         for (Island island : islandManager.islands.values()) {
             island.init();
+            if (island.getName().length() > configuration.maxIslandName) {
+                island.setName(island.getName().substring(0, configuration.maxIslandName));
+            }
+            if (island.getName().length() < configuration.minIslandName) {
+                Player owner = Bukkit.getPlayer(UUID.fromString(island.getOwner()));
+                island.setName(owner.getName());
+            }
         }
         islandManager.getWorld().getWorldBorder().setSize(Double.MAX_VALUE);
         if (getConfiguration().netherIslands)

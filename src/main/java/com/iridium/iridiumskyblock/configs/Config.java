@@ -57,6 +57,8 @@ public class Config {
     public int regenCooldown = 3600;
     public int distance = 151;
     public int backupIntervalMinutes = 60;
+    public int maxIslandName = 16;
+    public int minIslandName = 3;
     public int valueUpdateInterval = 20 * 30;
     public int playersOnIslandRefreshTime = 15;
     public int intervalBetweenMobTarget = 15;
