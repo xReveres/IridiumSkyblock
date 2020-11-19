@@ -80,6 +80,8 @@ public class Messages {
     public String maxlevelreached = "N/A";
     public String yes = "&a&lYes";
     public String no = "&c&lNo";
+    public String islandNameTooLong = "%prefix% %name% is too long for the island name, The maximum size is %max_length%";
+    public String islandNameTooShort = "%prefix% %name% is too short for the island name, The maximum size is %min_length%";
     public String changesIslandName = "%prefix% &7%player% changed your Island name to %name%";
     public String missionComplete = "&b&lMission Complete: &7%mission% Level %level%";
     public String rewards = "&b&lReward: &7%crystalsReward% Crystals and $%vaultReward%";
