@@ -788,7 +788,7 @@ public class Island {
             Location center = getCenter().clone();
             if (IridiumSkyblock.getConfiguration().netherIslands) {
                 center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-                IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), center.clone().add(fakeSchematic.xOffset, fakeSchematic.yOffset, fakeSchematic.zOffset), this);
+                IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), center.clone().add(fakeSchematic.xNetherOffset, fakeSchematic.yNetherOffset, fakeSchematic.zNetherOffset), this);
             }
         }
     }
