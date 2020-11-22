@@ -77,6 +77,7 @@ public class v1_8_R2 implements NMS {
 
     @Override
     public void sendHologram(Player player, Location location, List<String> text) {
+        location = location.add(0, 0.4 * (text.size() - 1), 0);
         User user = User.getUser(player);
         CraftWorld craftWorld = (CraftWorld) location.getWorld();
         for (int i = -1; ++i < text.size(); ) {
