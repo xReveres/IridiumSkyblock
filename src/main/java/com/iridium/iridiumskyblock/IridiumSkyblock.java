@@ -18,6 +18,7 @@ import com.iridium.iridiumskyblock.schematics.WorldEdit7;
 import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
 import lombok.Getter;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -25,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -75,6 +77,9 @@ public class IridiumSkyblock extends JavaPlugin {
 
     @Getter
     private SpawnerSupport spawnerSupport;
+
+    @Getter
+    private Economy economy;
 
     @Getter
     public static IslandManager islandManager;
@@ -138,7 +143,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             persist = new Persist();
 
-            new Metrics(IridiumSkyblock.getInstance());
+            new Metrics(this);
 
             if (!loadConfigs()) return;
             saveConfigs();
@@ -204,7 +209,6 @@ public class IridiumSkyblock extends JavaPlugin {
                     e.printStackTrace();
                 }
 
-                if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
                 if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) spawnerSupport = new Wildstacker();
                 if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) spawnerSupport = new MergedSpawners();
                 if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) spawnerSupport = new UltimateStacker();
@@ -213,6 +217,12 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) spawnerSupport = new RoseStacker();
                 if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                     registerListeners(new ExpansionUnregisterListener());
+
+                //Register Vault
+                RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+                if (rsp != null) {
+                    economy = rsp.getProvider();
+                }
 
                 getLogger().info("----------------------------------------");
                 getLogger().info("");

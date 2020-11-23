@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
 import com.iridium.iridiumskyblock.configs.Inventories;
-import com.iridium.iridiumskyblock.support.Vault;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NBTListCompound;
@@ -393,17 +392,17 @@ public class Utils {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
             u.getIsland().setCrystals(u.getIsland().getCrystals() + crystals);
-            if (Vault.econ == null) {
+            if (IridiumSkyblock.getInstance().getEconomy() == null) {
                 u.getIsland().money += vault;
             } else {
-                Vault.econ.depositPlayer(p, vault);
+                IridiumSkyblock.getInstance().getEconomy().depositPlayer(p, vault);
             }
         } else {
-            if (Vault.econ == null) {
+            if (IridiumSkyblock.getInstance().getEconomy() == null) {
                 IridiumSkyblock.getInstance().getLogger().warning("Vault plugin not found");
                 return;
             }
-            Vault.econ.depositPlayer(p, vault);
+            IridiumSkyblock.getInstance().getEconomy().depositPlayer(p, vault);
         }
         TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, vault).add(TransactionType.CRYSTALS, crystals));
     }
@@ -412,9 +411,9 @@ public class Utils {
         User u = User.getUser(p);
         if (u.getIsland() != null) {
             if (u.getIsland().getCrystals() < crystals) return BuyResponce.NOT_ENOUGH_CRYSTALS;
-            if (Vault.econ != null) {
-                if (Vault.econ.getBalance(p) >= vault) {
-                    Vault.econ.withdrawPlayer(p, vault);
+            if (IridiumSkyblock.getInstance().getEconomy() != null) {
+                if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) >= vault) {
+                    IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, vault);
                     u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
                     TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
                     return BuyResponce.SUCCESS;
@@ -427,9 +426,9 @@ public class Utils {
                 return BuyResponce.SUCCESS;
             }
         }
-        if (Vault.econ != null) {
-            if (Vault.econ.getBalance(p) >= vault && crystals == 0) {
-                Vault.econ.withdrawPlayer(p, vault);
+        if (IridiumSkyblock.getInstance().getEconomy() != null) {
+            if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) >= vault && crystals == 0) {
+                IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, vault);
                 TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault));
                 return BuyResponce.SUCCESS;
             }
