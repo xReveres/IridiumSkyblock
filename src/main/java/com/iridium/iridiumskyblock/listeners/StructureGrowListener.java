@@ -13,6 +13,7 @@ public class StructureGrowListener implements Listener {
     @EventHandler
     public void onStructureGrowEvent(StructureGrowEvent event) {
         Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(event.getLocation());
+        if (island != null) return;
         for (BlockState blockState : event.getBlocks()) {
             if (!island.isInIsland(blockState.getLocation())) {
                 blockState.setType(Material.AIR);
