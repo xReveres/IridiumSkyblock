@@ -79,7 +79,7 @@ public class BlockPlaceListener implements Listener {
             if (!island.getPermissions(user).placeBlocks) {
                 event.setCancelled(true);
             } else {
-                if (player.isSneaking() && event.getBlockAgainst().getType() == event.getBlock().getType() && Utils.isBlockValuable(event.getBlockAgainst())) {
+                if (player.isSneaking() && event.getBlockAgainst().getType() == event.getBlock().getType() && IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(event.getBlock().getType()))) {
                     island.stackedBlocks.compute(event.getBlockAgainst().getLocation(), (loc, original) -> {
                         if (original == null) return 2;
                         return original + 1;
