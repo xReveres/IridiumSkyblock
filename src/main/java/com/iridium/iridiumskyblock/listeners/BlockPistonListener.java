@@ -17,13 +17,13 @@ import java.util.Map;
 public class BlockPistonListener implements Listener {
 
     private static final Map<BlockFace, int[]> offsets = ImmutableMap.<BlockFace, int[]>builder()
-        .put(BlockFace.EAST,  new int[]{ 1, 0, 0})
-        .put(BlockFace.WEST,  new int[]{-1, 0, 0})
-        .put(BlockFace.UP,    new int[]{ 0, 1, 0})
-        .put(BlockFace.DOWN,  new int[]{ 0,-1, 0})
-        .put(BlockFace.SOUTH, new int[]{ 0, 0, 1})
-        .put(BlockFace.NORTH, new int[]{ 0, 0,-1})
-        .build();
+            .put(BlockFace.EAST, new int[]{1, 0, 0})
+            .put(BlockFace.WEST, new int[]{-1, 0, 0})
+            .put(BlockFace.UP, new int[]{0, 1, 0})
+            .put(BlockFace.DOWN, new int[]{0, -1, 0})
+            .put(BlockFace.SOUTH, new int[]{0, 0, 1})
+            .put(BlockFace.NORTH, new int[]{0, 0, -1})
+            .build();
 
     @EventHandler
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
@@ -39,7 +39,7 @@ public class BlockPistonListener implements Listener {
                 final Location extendedBlockLocation = extendedBlock.getLocation();
                 final int[] offset = offsets.get(face);
                 extendedBlockLocation.add(offset[0], offset[1], offset[2]);
-                if (!island.isInIsland(extendedBlockLocation)) {
+                if (!island.isInIsland(extendedBlockLocation) || island.stackedBlocks.containsKey(extendedBlockLocation)) {
                     event.setCancelled(true);
                     return;
                 }
