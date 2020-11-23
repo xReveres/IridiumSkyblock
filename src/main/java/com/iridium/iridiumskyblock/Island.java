@@ -568,6 +568,8 @@ public class Island {
             getSpawnerAmount = EpicSpawners::getSpawnerAmount;
         } else if (AdvancedSpawners.enabled) {
             getSpawnerAmount = AdvancedSpawners::getSpawnerAmount;
+        }else if(RoseStacker.enabled){
+            getSpawnerAmount = RoseStacker::getSpawnerAmount;
         } else {
             getSpawnerAmount = null;
         }

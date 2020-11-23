@@ -46,6 +46,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>rosewood-repo</id>
+            <url>https://repo.rosewooddev.io/repository/public/</url>
+        </repository>
     </repositories>
 
 
@@ -249,6 +253,11 @@
             <version>2.0.8</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/deps/UltimateStacker-2.0.8.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>dev.rosewood</groupId>
+            <artifactId>rosestacker</artifactId>
+            <version>LATEST</version>
         </dependency>
 
         <dependency>
