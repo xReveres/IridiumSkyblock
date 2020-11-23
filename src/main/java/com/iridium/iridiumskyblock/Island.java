@@ -12,7 +12,7 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.gui.*;
-import com.iridium.iridiumskyblock.support.*;
+import com.iridium.iridiumskyblock.support.SpawnerSupport;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
@@ -558,18 +558,9 @@ public class Island {
         final Map<String, Double> spawnerValueMap = blockValues.spawnervalue;
 
         Function<CreatureSpawner, Integer> getSpawnerAmount;
-        if (Wildstacker.enabled) {
-            getSpawnerAmount = Wildstacker::getSpawnerAmount;
-        } else if (MergedSpawners.enabled) {
-            getSpawnerAmount = MergedSpawners::getSpawnerAmount;
-        } else if (UltimateStacker.enabled) {
-            getSpawnerAmount = UltimateStacker::getSpawnerAmount;
-        } else if (EpicSpawners.enabled) {
-            getSpawnerAmount = EpicSpawners::getSpawnerAmount;
-        } else if (AdvancedSpawners.enabled) {
-            getSpawnerAmount = AdvancedSpawners::getSpawnerAmount;
-        }else if(RoseStacker.enabled){
-            getSpawnerAmount = RoseStacker::getSpawnerAmount;
+        SpawnerSupport spawnerSupport = IridiumSkyblock.getInstance().getSpawnerSupport();
+        if (spawnerSupport != null) {
+            getSpawnerAmount = spawnerSupport::getSpawnerAmount;
         } else {
             getSpawnerAmount = null;
         }

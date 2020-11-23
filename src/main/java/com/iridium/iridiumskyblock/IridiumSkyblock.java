@@ -74,6 +74,9 @@ public class IridiumSkyblock extends JavaPlugin {
     private static Persist persist;
 
     @Getter
+    private SpawnerSupport spawnerSupport;
+
+    @Getter
     public static IslandManager islandManager;
     @Getter
     private static CommandManager commandManager;
@@ -202,12 +205,12 @@ public class IridiumSkyblock extends JavaPlugin {
                 }
 
                 if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
-                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
-                if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) new MergedSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) new UltimateStacker();
-                if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) new EpicSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) new AdvancedSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) new RoseStacker();
+                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) spawnerSupport = new Wildstacker();
+                if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) spawnerSupport = new MergedSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) spawnerSupport = new UltimateStacker();
+                if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) spawnerSupport = new EpicSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) spawnerSupport = new AdvancedSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) spawnerSupport = new RoseStacker();
                 if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                     registerListeners(new ExpansionUnregisterListener());
 
