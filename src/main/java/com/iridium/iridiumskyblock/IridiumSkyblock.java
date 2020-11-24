@@ -59,6 +59,8 @@ public class IridiumSkyblock extends JavaPlugin {
     @Getter
     public static BlockValues blockValues;
     @Getter
+    public static Stackable stackable;
+    @Getter
     public static Shop shop;
     public static TopGUI topGUI;
     @Getter
@@ -633,6 +635,7 @@ public class IridiumSkyblock extends JavaPlugin {
         blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
         border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
+        stackable = persist.getFile(Stackable.class).exists() ? persist.load(Stackable.class) : new Stackable();
 
         if (inventories.red.slot == null) inventories.red.slot = 10;
         if (inventories.green.slot == null) inventories.green.slot = 12;
@@ -648,7 +651,7 @@ public class IridiumSkyblock extends JavaPlugin {
         commandManager = new CommandManager("island");
         commandManager.registerCommands();
 
-        if (configuration == null || missions == null || messages == null || upgrades == null || boosters == null || inventories == null || schematics == null || commands == null || blockValues == null || shop == null) {
+        if (configuration == null || missions == null || messages == null || upgrades == null || boosters == null || inventories == null || schematics == null || commands == null || blockValues == null || shop == null || stackable == null) {
             return false;
         }
 
@@ -724,6 +727,10 @@ public class IridiumSkyblock extends JavaPlugin {
             getBlockValues().blockvalue = new HashMap<>(getConfiguration().blockvalue);
             getConfiguration().blockvalue = null;
         }
+        if (getConfiguration().stackable != null) {
+            getStackable().blockList = new ArrayList<>(getConfiguration().stackable);
+            getStackable().blockList = null;
+        }
         if (getConfiguration().spawnervalue != null) {
             getBlockValues().spawnervalue = new HashMap<>(getConfiguration().spawnervalue);
             getConfiguration().spawnervalue = null;
@@ -790,6 +797,7 @@ public class IridiumSkyblock extends JavaPlugin {
             if (blockValues != null) persist.save(blockValues);
             if (shop != null) persist.save(shop);
             if (border != null) persist.save(border);
+            if (stackable != null) persist.save(stackable);
         });
     }
 }
