@@ -39,7 +39,7 @@ public class BlockPistonListener implements Listener {
                 final Location extendedBlockLocation = extendedBlock.getLocation();
                 final int[] offset = offsets.get(face);
                 extendedBlockLocation.add(offset[0], offset[1], offset[2]);
-                if (!island.isInIsland(extendedBlockLocation) || island.stackedBlocks.containsKey(extendedBlockLocation)) {
+                if (!island.isInIsland(extendedBlockLocation) || island.stackedBlocks.containsKey(extendedBlock.getLocation())) {
                     event.setCancelled(true);
                     return;
                 }
