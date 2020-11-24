@@ -727,10 +727,6 @@ public class IridiumSkyblock extends JavaPlugin {
             getBlockValues().blockvalue = new HashMap<>(getConfiguration().blockvalue);
             getConfiguration().blockvalue = null;
         }
-        if (getConfiguration().stackable != null) {
-            getStackable().blockList = new ArrayList<>(getConfiguration().stackable);
-            getStackable().blockList = null;
-        }
         if (getConfiguration().spawnervalue != null) {
             getBlockValues().spawnervalue = new HashMap<>(getConfiguration().spawnervalue);
             getConfiguration().spawnervalue = null;

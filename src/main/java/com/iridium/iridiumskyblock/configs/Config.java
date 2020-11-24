@@ -54,7 +54,6 @@ public class Config {
     public boolean createIslandOnJoin = false;
     public boolean ignoreCooldownOnJoinCreation = false;
     public boolean enableBlockStacking = true;
-    public boolean useStackableList = false;
     public boolean stripTopIslandPlaceholderColors = true;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
@@ -104,7 +103,6 @@ public class Config {
 
     public Map<XMaterial, Double> blockvalue = null;
     public Map<String, Double> spawnervalue = null;
-    public List<XMaterial> stackable = null;
     public List<XBiome> biomes = null;
     public Map<XBiome, BiomeConfig> islandBiomes = new HashMap<XBiome, BiomeConfig>() {{
         for (XBiome biome : XBiome.VALUES.stream().filter(biome -> !biome.equals(XBiome.THE_VOID)).collect(Collectors.toList())) {
