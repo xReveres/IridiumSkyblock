@@ -79,13 +79,22 @@ public class BlockPlaceListener implements Listener {
             if (!island.getPermissions(user).placeBlocks) {
                 event.setCancelled(true);
             } else {
-                if (player.isSneaking() && event.getBlockAgainst().getType() == event.getBlock().getType() && IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(event.getBlock().getType()))) {
-                    island.stackedBlocks.compute(event.getBlockAgainst().getLocation(), (loc, original) -> {
-                        if (original == null) return 2;
-                        return original + 1;
-                    });
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> island.sendHomograms());
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> block.setType(Material.AIR, false));
+                if (config.enableBlockStacking) {
+                    Boolean canStack = false;
+
+                    if ((config.useStackableList && IridiumSkyblock.getStackable().blockList.contains(XMaterial.matchXMaterial(event.getBlock().getType()))) ||
+                            (!config.useStackableList && IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(event.getBlock().getType())))) {
+                        canStack = true;
+                    }
+
+                    if (player.isSneaking() && event.getBlockAgainst().getType() == event.getBlock().getType() && canStack) {
+                        island.stackedBlocks.compute(event.getBlockAgainst().getLocation(), (loc, original) -> {
+                            if (original == null) return 2;
+                            return original + 1;
+                        });
+                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> island.sendHomograms());
+                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> block.setType(Material.AIR, false));
+                    }
                 }
             }
         } catch (Exception e) {
