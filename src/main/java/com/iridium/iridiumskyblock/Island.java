@@ -12,11 +12,12 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.gui.*;
-import com.iridium.iridiumskyblock.support.*;
+import com.iridium.iridiumskyblock.support.SpawnerSupport;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
@@ -150,6 +151,7 @@ public class Island {
 
     public transient ConcurrentHashMap<String, Integer> valuableBlocks;
     public transient ConcurrentHashMap<String, Integer> spawners;
+    public ConcurrentHashMap<Location, Integer> stackedBlocks;
 
     @Getter
     private final List<Warp> warps;
@@ -271,6 +273,14 @@ public class Island {
 
         valuableBlocks.clear();
         spawners.clear();
+
+        for (Location location : stackedBlocks.keySet()) {
+            XMaterial xMaterial = XMaterial.matchXMaterial(location.getBlock().getType());
+            valuableBlocks.compute(xMaterial.name(), (xmaterialName, original) -> {
+                if (original == null) return stackedBlocks.get(location) - 1;
+                return original + (stackedBlocks.get(location) - 1);
+            });
+        }
 
         for (int x = minx; x <= maxx; x++) {
             for (int z = minz; z <= maxz; z++) {
@@ -548,16 +558,9 @@ public class Island {
         final Map<String, Double> spawnerValueMap = blockValues.spawnervalue;
 
         Function<CreatureSpawner, Integer> getSpawnerAmount;
-        if (Wildstacker.enabled) {
-            getSpawnerAmount = Wildstacker::getSpawnerAmount;
-        } else if (MergedSpawners.enabled) {
-            getSpawnerAmount = MergedSpawners::getSpawnerAmount;
-        } else if (UltimateStacker.enabled) {
-            getSpawnerAmount = UltimateStacker::getSpawnerAmount;
-        } else if (EpicSpawners.enabled) {
-            getSpawnerAmount = EpicSpawners::getSpawnerAmount;
-        } else if (AdvancedSpawners.enabled) {
-            getSpawnerAmount = AdvancedSpawners::getSpawnerAmount;
+        SpawnerSupport spawnerSupport = IridiumSkyblock.getInstance().getSpawnerSupport();
+        if (spawnerSupport != null) {
+            getSpawnerAmount = spawnerSupport::getSpawnerAmount;
         } else {
             getSpawnerAmount = null;
         }
@@ -692,6 +695,7 @@ public class Island {
         if (biome == null) biome = IridiumSkyblock.getConfiguration().defaultBiome;
         if (valuableBlocks == null) valuableBlocks = new ConcurrentHashMap<>();
         if (spawners == null) spawners = new ConcurrentHashMap<>();
+        if (stackedBlocks == null) stackedBlocks = new ConcurrentHashMap<>();
         if (members == null) {
             members = new HashSet<>();
             members.add(owner);
@@ -788,7 +792,7 @@ public class Island {
             Location center = getCenter().clone();
             if (IridiumSkyblock.getConfiguration().netherIslands) {
                 center.setWorld(IridiumSkyblock.getIslandManager().getNetherWorld());
-                IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), center.clone().add(fakeSchematic.xOffset, fakeSchematic.yOffset, fakeSchematic.zOffset), this);
+                IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, netherschematic), center.clone().add(fakeSchematic.xNetherOffset, fakeSchematic.yNetherOffset, fakeSchematic.zNetherOffset), this);
             }
         }
     }
@@ -800,6 +804,25 @@ public class Island {
                 Player p = Bukkit.getPlayer(user.name);
                 if (p != null) p.getInventory().clear();
             }
+        }
+    }
+
+    public void sendHomograms(Player player) {
+        User user = User.getUser(player);
+        for (Object object : user.getHolograms()) {
+            IridiumSkyblock.nms.removeHologram(player, object);
+        }
+        user.clearHolograms();
+        for (Location location : stackedBlocks.keySet()) {
+            Block block = location.getBlock();
+            int amount = stackedBlocks.get(location);
+            IridiumSkyblock.nms.sendHologram(player, block.getLocation().add(0.5, -0.5, 0.5), Utils.processMultiplePlaceholders(IridiumSkyblock.getMessages().stackedBlocksHologram, Arrays.asList(new Utils.Placeholder("amount", amount + ""), new Utils.Placeholder("block", XMaterial.matchXMaterial(block.getType()).toString()))));
+        }
+    }
+
+    public void sendHomograms() {
+        for (Player player : getPlayersOnIsland()) {
+            sendHomograms(player);
         }
     }
 
@@ -1097,13 +1120,18 @@ public class Island {
     public void setBiome(XBiome biome) {
         this.biome = biome;
         final World world = IridiumSkyblock.getIslandManager().getWorld();
-        biome.setBiome(getPos1(), getPos2()).thenRunAsync(() -> {
+        final List<Chunk> chunks = new ArrayList<Chunk>() {{
             for (int X = getPos1().getChunk().getX(); X <= getPos2().getChunk().getX(); X++) {
                 for (int Z = getPos1().getChunk().getZ(); Z <= getPos2().getChunk().getZ(); Z++) {
-                    for (Player p : world.getPlayers()) {
-                        if (p.getLocation().getWorld() == world) {
-                            IridiumSkyblock.nms.sendChunk(p, world.getChunkAt(X, Z));
-                        }
+                    add(world.getChunkAt(X, Z));
+                }
+            }
+        }};
+        biome.setBiome(getPos1(), getPos2()).thenRunAsync(() -> {
+            for (Chunk c : chunks) {
+                for (Player p : world.getPlayers()) {
+                    if (p.getLocation().getWorld() == world) {
+                        IridiumSkyblock.nms.sendChunk(p, c);
                     }
                 }
             }

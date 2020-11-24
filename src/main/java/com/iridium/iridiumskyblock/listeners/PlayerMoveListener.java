@@ -31,7 +31,7 @@ public class PlayerMoveListener implements Listener {
             if (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ() || event.getFrom().getY() != event.getTo().getY() && event.getTo().getY() < 0) {
                 final Island island = islandManager.getIslandViaLocation(location);
 
-                if (island != null && !island.isVisit() && !island.equals(userIsland) && !island.isCoop(userIsland)) {
+                if (island != null && !island.isVisit() && !island.equals(userIsland) && !island.isCoop(userIsland) && !user.bypassing) {
                     island.spawnPlayer(event.getPlayer());
                     return;
                 }

@@ -18,6 +18,7 @@ import com.iridium.iridiumskyblock.schematics.WorldEdit7;
 import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
 import lombok.Getter;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -25,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -72,6 +74,12 @@ public class IridiumSkyblock extends JavaPlugin {
     private static IridiumSkyblock instance;
     @Getter
     private static Persist persist;
+
+    @Getter
+    private SpawnerSupport spawnerSupport;
+
+    @Getter
+    private Economy economy;
 
     @Getter
     public static IslandManager islandManager;
@@ -135,7 +143,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             persist = new Persist();
 
-            new Metrics(IridiumSkyblock.getInstance());
+            new Metrics(this);
 
             if (!loadConfigs()) return;
             saveConfigs();
@@ -155,7 +163,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 shopGUI = new ShopGUI();
                 visitGUI = new HashMap<>();
 
-                registerListeners(new EntitySpawnListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener());
+                registerListeners(new StructureGrowListener(), new EntitySpawnListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener());
 
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveIslandManager, 0, 20 * 60);
 
@@ -201,14 +209,20 @@ public class IridiumSkyblock extends JavaPlugin {
                     e.printStackTrace();
                 }
 
-                if (Bukkit.getPluginManager().getPlugin("Vault") != null) new Vault();
-                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) new Wildstacker();
-                if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) new MergedSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) new UltimateStacker();
-                if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) new EpicSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) new AdvancedSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) spawnerSupport = new Wildstacker();
+                if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) spawnerSupport = new MergedSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) spawnerSupport = new UltimateStacker();
+                if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) spawnerSupport = new EpicSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) spawnerSupport = new AdvancedSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) spawnerSupport = new RoseStacker();
                 if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                     registerListeners(new ExpansionUnregisterListener());
+
+                //Register Vault
+                RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+                if (rsp != null) {
+                    economy = rsp.getProvider();
+                }
 
                 getLogger().info("----------------------------------------");
                 getLogger().info("");
@@ -365,6 +379,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.closeInventory();
+                User user = User.getUser(p);
+                for (Object object : user.getHolograms()) {
+                    IridiumSkyblock.nms.removeHologram(p, object);
+                }
             }
 
             getLogger().info("-------------------------------");

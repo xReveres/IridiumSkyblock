@@ -2,7 +2,9 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.Role;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Messages {
@@ -14,7 +16,7 @@ public class Messages {
     public String playerOffline = "%prefix% &7That player is currently offline.";
     public String alreadyHaveIsland = "%prefix% &7You already have an island.";
     public String playerAlreadyHaveIsland = "%prefix% &7This player already has an island.";
-    public String notInYourIsland = "%prefix% &7This player is not apart of your island.";
+    public String notInYourIsland = "%prefix% &7This player is not a part of your island.";
     public String kickedMember = "%prefix% &7%member% has been kicked from your island.";
     public String youHaveBeenKicked = "%prefix% &7You have been kicked from your island.";
     public String mustBeAPlayer = "%prefix% &7You must be a player to execute this command.";
@@ -32,7 +34,7 @@ public class Messages {
     public String maxMemberCount = "%prefix% &7Maximum member count reached.";
     public String spawnerBoosterActive = "%prefix% &7Your spawner booster is already active.";
     public String farmingBoosterActive = "%prefix% &7Your farming booster is already active.";
-    public String expBoosterActive = "%prefix% &7Your Experience booster is already active.";
+    public String expBoosterActive = "%prefix% &7Your experience booster is already active.";
     public String flightBoosterActive = "%prefix% &7Your flight booster is already active.";
     public String noActiveInvites = "%prefix% &7You do not have any active invites for this island.";
     public String giveCrystals = "%prefix% &7You gave %player% %crystals% crystals.";
@@ -48,7 +50,7 @@ public class Messages {
     public String biomePurchased = "%prefix% &7You purchased %biome% Biome for $%money%";
     public String regenIsland = "%prefix% &7Regenerating your island...";
     public String islandValue = "%prefix% &b&l * &7%rank%: &b%value%";
-    public String playersIslandIsPrivate = "%prefix% &7That players island is private.";
+    public String playersIslandIsPrivate = "%prefix% &7That player's island is private.";
     public String islandNowPrivate = "%prefix% &7Your island is now private and %amount% players have been expelled from your island";
     public String islandNowPublic = "%prefix% &7Your island is now public.";
     public String cantLeaveIfOwner = "%prefix% &7You cannot leave your island whilst owner. do /is delete instead.";
@@ -81,7 +83,7 @@ public class Messages {
     public String yes = "&a&lYes";
     public String no = "&c&lNo";
     public String islandNameTooLong = "%prefix% %name% is too long for the island name, The maximum size is %max_length%";
-    public String islandNameTooShort = "%prefix% %name% is too short for the island name, The maximum size is %min_length%";
+    public String islandNameTooShort = "%prefix% %name% is too short for the island name, The minimum size is %min_length%";
     public String changesIslandName = "%prefix% &7%player% changed your Island name to %name%";
     public String missionComplete = "&b&lMission Complete: &7%mission% Level %level%";
     public String rewards = "&b&lReward: &7%crystalsReward% Crystals and $%vaultReward%";
@@ -100,7 +102,7 @@ public class Messages {
     public String cantSell = "%prefix% &7You dont have this item to sell.";
     public String shopBoughtMessage = "%prefix% &7You bought x%amount% %item% for %crystals% crystals and $%money%";
     public String shopSoldMessage = "%prefix% &7You sold x%amount% %item% and got %crystals% crystals and $%money%";
-    public String islandInterest = "%prefix% &7Your island interest has been applied giving you %crystals%Crystals $%money% and %exp%Experience.";
+    public String islandInterest = "%prefix% &7Your island interest has been applied giving you %crystals% Crystals, $%money%, and %exp% Experience.";
     public String helpfooter = "&b<< &7Page %page% of %maxpage% &b>>";
     public String previousPage = "<<";
     public String nextPage = ">>";
@@ -130,6 +132,9 @@ public class Messages {
     public String expelledVisitor = "%prefix% &7%player% has been expelled from your island.";
     public String cantExpelPlayer = "%prefix% &7%player% cannot be expelled!";
     public String cantExpelMember = "%prefix% &7%player% is in your island team";
+    public String inviteHoverMessage = "Click to join players island!";
+
+    public List<String> stackedBlocksHologram = Arrays.asList("&b&l [{amount}X] &b{block}");
 
     public Map<Role, String> roles = new HashMap<Role, String>() {{
         for (Role role : Role.values()) {
