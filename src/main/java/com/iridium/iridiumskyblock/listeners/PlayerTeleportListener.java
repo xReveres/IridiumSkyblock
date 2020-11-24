@@ -28,7 +28,7 @@ public class PlayerTeleportListener implements Listener {
 
             if (event.getCause().equals(TeleportCause.ENDER_PEARL)) {
                 Island fromIsland = islandManager.getIslandViaLocation(fromLocation);
-                if (fromIsland == null || fromIsland.isInIsland(toLocation)) {
+                if (fromIsland == null || !fromIsland.isInIsland(toLocation)) {
                     event.setCancelled(true);
                     return;
                 }

@@ -55,6 +55,7 @@ public class Config {
     public boolean ignoreCooldownOnJoinCreation = false;
     public boolean enableBlockStacking = true;
     public boolean useStackableList = false;
+    public boolean stripTopIslandPlaceholderColors = true;
     public int deleteBackupsAfterDays = 7;
     public int regenCooldown = 3600;
     public int distance = 151;
