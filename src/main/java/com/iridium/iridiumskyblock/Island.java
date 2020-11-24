@@ -280,6 +280,9 @@ public class Island {
                 if (original == null) return stackedBlocks.get(location) - 1;
                 return original + (stackedBlocks.get(location) - 1);
             });
+            if (xMaterial == XMaterial.AIR || xMaterial == XMaterial.CAVE_AIR || xMaterial == XMaterial.VOID_AIR) {
+                stackedBlocks.remove(location);
+            }
         }
 
         for (int x = minx; x <= maxx; x++) {
