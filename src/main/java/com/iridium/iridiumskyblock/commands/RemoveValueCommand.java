@@ -32,8 +32,7 @@ public class RemoveValueCommand extends Command {
                     try {
                         island.removeExtraValue(Double.parseDouble(args[2]));
                     } catch (NumberFormatException e) {
-                        //TODO: Make this message configurable
-                        sender.sendMessage(args[2] + " is not a number");
+                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notNumber.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%error%", args[2])));
                     }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

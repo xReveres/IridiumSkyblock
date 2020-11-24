@@ -133,6 +133,7 @@ public class Messages {
     public String cantExpelPlayer = "%prefix% &7%player% cannot be expelled!";
     public String cantExpelMember = "%prefix% &7%player% is in your island team";
     public String inviteHoverMessage = "Click to join players island!";
+    public String notNumber = "%prefix &7%error% is not a number!";
 
     public List<String> stackedBlocksHologram = Arrays.asList("&b&l [{amount}X] &b{block}");
 

@@ -46,8 +46,7 @@ public class GiveBoosterCommand extends Command {
                             island.setSpawnerBooster(amount);
                         }
                     } else {
-                        //TODO: Make this message configurable
-                        sender.sendMessage(args[2] + " is not a number");
+                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notNumber.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%error%", args[2])));
                     }
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
