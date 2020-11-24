@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Container;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -85,7 +84,7 @@ public class BlockPlaceListener implements Listener {
                     Boolean canStack = false;
 
                     if ((IridiumSkyblock.getStackable().blockList.isEmpty() ? IridiumSkyblock.getBlockValues().blockvalue.keySet() : IridiumSkyblock.getStackable().blockList).contains(XMaterial.matchXMaterial(event.getBlock().getType()))) {
-                        if (!(block.getState() instanceof Container) && !(block.getState() instanceof CreatureSpawner))
+                        if (XMaterial.matchXMaterial(block.getType()) != XMaterial.HOPPER && !(block.getState() instanceof CreatureSpawner))
                             canStack = true;
                     }
 
