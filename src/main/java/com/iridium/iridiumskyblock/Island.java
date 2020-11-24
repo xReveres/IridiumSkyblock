@@ -786,6 +786,7 @@ public class Island {
     }
 
     private void pasteSchematic() {
+        stackedBlocks.clear();
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
             if (!fakeSchematic.name.equals(this.schematic)) continue;
             IridiumSkyblock.worldEdit.paste(new File(IridiumSkyblock.schematicFolder, schematic), getCenter().clone().add(fakeSchematic.xOffset, fakeSchematic.yOffset, fakeSchematic.zOffset), this);
