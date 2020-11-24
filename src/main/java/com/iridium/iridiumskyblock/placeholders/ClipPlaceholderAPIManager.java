@@ -117,18 +117,18 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             case "midnight_hours":
                 return hours + "";
         }
-        if (placeholder.startsWith("island_top_island_")) {
+        if (placeholder.startsWith("island_top_name_")) {
             try {
-                Integer integer = Integer.parseInt(placeholder.replace("island_top_island_", ""));
+                Integer integer = Integer.parseInt(placeholder.replace("island_top_name_", ""));
                 List<Island> islands = Utils.getTopIslands();
                 return islands.size() > integer - 1 ? phCheckIfStripped(Utils.getTopIslands().get(integer - 1).getName()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
-        if (placeholder.startsWith("island_top_name_")) {
+        if (placeholder.startsWith("island_top_owner_")) {
             try {
-                Integer integer = Integer.parseInt(placeholder.replace("island_top_name_", ""));
+                Integer integer = Integer.parseInt(placeholder.replace("island_top_owner_", ""));
                 List<Island> islands = Utils.getTopIslands();
                 return islands.size() > integer - 1 ? User.getUser(Utils.getTopIslands().get(integer - 1).getOwner()).name : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException e) {
