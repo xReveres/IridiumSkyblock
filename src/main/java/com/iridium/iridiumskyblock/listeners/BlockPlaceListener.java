@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -82,8 +83,9 @@ public class BlockPlaceListener implements Listener {
                 if (config.enableBlockStacking) {
                     Boolean canStack = false;
 
-                    if ((config.useStackableList && IridiumSkyblock.getStackable().blockList.contains(XMaterial.matchXMaterial(event.getBlock().getType()))) ||
-                            (!config.useStackableList && IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(event.getBlock().getType())))) {
+                    if (((config.useStackableList && IridiumSkyblock.getStackable().blockList.contains(XMaterial.matchXMaterial(event.getBlock().getType()))) ||
+                            (!config.useStackableList && IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(event.getBlock().getType())))) &&
+                                    !(event.getBlock().getState() instanceof Container)) {
                         canStack = true;
                     }
 
