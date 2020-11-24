@@ -812,12 +812,14 @@ public class Island {
     }
 
     public void sendHomograms(Player player) {
+        World world = player.getWorld();
         User user = User.getUser(player);
         for (Object object : user.getHolograms()) {
             IridiumSkyblock.nms.removeHologram(player, object);
         }
         user.clearHolograms();
         for (Location location : stackedBlocks.keySet()) {
+            if (location.getWorld() != world) continue;
             Block block = location.getBlock();
             int amount = stackedBlocks.get(location);
             IridiumSkyblock.nms.sendHologram(player, block.getLocation().add(0.5, -0.5, 0.5), Utils.processMultiplePlaceholders(IridiumSkyblock.getMessages().stackedBlocksHologram, Arrays.asList(new Utils.Placeholder("amount", amount + ""), new Utils.Placeholder("block", XMaterial.matchXMaterial(block.getType()).toString()))));
