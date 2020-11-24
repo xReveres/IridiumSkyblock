@@ -258,6 +258,7 @@
             <groupId>dev.rosewood</groupId>
             <artifactId>rosestacker</artifactId>
             <version>LATEST</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
