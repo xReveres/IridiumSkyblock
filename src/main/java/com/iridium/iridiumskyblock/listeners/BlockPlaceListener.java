@@ -93,6 +93,9 @@ public class BlockPlaceListener implements Listener {
                             if (original == null) return 2;
                             return original + 1;
                         });
+                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                            if(event.getBlockAgainst().getType().equals(Material.AIR))island.stackedBlocks.remove(event.getBlockAgainst().getLocation());
+                        });
                         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> island.sendHomograms());
                         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> block.setType(Material.AIR, false));
                     }
