@@ -50,6 +50,30 @@ public class BlockPistonListener implements Listener {
     }
 
     @EventHandler
+    public void onBlockPistonRetract(BlockPistonRetractEvent event){
+        try {
+            final Block block = event.getBlock();
+            final Location location = block.getLocation();
+            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
+            final Island island = islandManager.getIslandViaLocation(location);
+            if (island == null) return;
+
+            final BlockFace face = event.getDirection();
+            for (Block extendedBlock : event.getBlocks()) {
+                final Location extendedBlockLocation = extendedBlock.getLocation();
+                final int[] offset = offsets.get(face);
+                extendedBlockLocation.add(offset[0], offset[1], offset[2]);
+                if (!island.isInIsland(extendedBlockLocation) || island.stackedBlocks.containsKey(extendedBlock.getLocation())) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    @EventHandler
     public void onBlockPistonReact(BlockPistonRetractEvent event) {
         try {
             final Block block = event.getBlock();
