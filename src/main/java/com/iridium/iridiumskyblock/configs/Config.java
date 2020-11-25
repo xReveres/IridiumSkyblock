@@ -38,6 +38,7 @@ public class Config {
     public boolean voidTeleport = true;
     public boolean notifyAvailableUpdate = true;
     public boolean clearInventories = false;
+    public boolean clearEnderChests = false;
     public boolean restartUpgradesOnRegen = true;
     public boolean allowWaterInNether = true;
     public boolean createIslandonHome = true;
