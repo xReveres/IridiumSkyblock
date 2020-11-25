@@ -134,6 +134,7 @@ public class Messages {
     public String cantExpelMember = "%prefix% &7%player% is in your island team";
     public String inviteHoverMessage = "Click to join players island!";
     public String notNumber = "%prefix &7%error% is not a number!";
+    public String  coopHoverMessage = "Click to coop player's island!";
 
     public List<String> stackedBlocksHologram = Arrays.asList("&b&l [{amount}X] &b{block}");
 
