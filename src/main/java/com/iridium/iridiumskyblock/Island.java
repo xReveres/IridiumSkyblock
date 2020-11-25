@@ -806,7 +806,10 @@ public class Island {
             for (String player : members) {
                 User user = User.getUser(player);
                 Player p = Bukkit.getPlayer(user.name);
-                if (p != null) p.getInventory().clear();
+                if (p != null) {
+                    p.getInventory().clear();
+                    if (IridiumSkyblock.getConfiguration().clearEnderChests) p.getEnderChest().clear();
+                }
             }
         }
     }
