@@ -24,6 +24,7 @@ public class PlayerTeleportListener implements Listener {
             if (toIsland == null) return;
 
             final Player player = event.getPlayer();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendHomograms(player), 1);
             final User user = User.getUser(player);
 
             if (event.getCause().equals(TeleportCause.ENDER_PEARL)) {
@@ -38,7 +39,6 @@ public class PlayerTeleportListener implements Listener {
             if ((toIsland.isVisit() && !toIsland.isBanned(user)) || user.bypassing) {
                 if (!toIsland.isInIsland(fromLocation)) {
                     Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendBorder(player), 1);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendHomograms(player), 1);
                     if (user.islandID != toIsland.getId()) {
                         player.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(toIsland.getOwner()).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         if (player.hasPermission("iridiumskyblock.silentvisit")) return;
