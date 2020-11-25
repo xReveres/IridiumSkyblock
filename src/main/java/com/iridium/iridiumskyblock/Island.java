@@ -749,6 +749,7 @@ public class Island {
             }};
         }
         Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), (Runnable) this::sendBorder, 20);
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), (Runnable) this::sendHomograms, 20);
     }
 
     public long canGenerate() {
