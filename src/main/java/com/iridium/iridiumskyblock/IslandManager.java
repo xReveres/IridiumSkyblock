@@ -114,6 +114,7 @@ public class IslandManager {
     public void purgeIslands(int days, CommandSender sender) {
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             ListIterator<Integer> islandIds = islands.values().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+            int amount = 0;
 
             @Override
             public void run() {
@@ -131,9 +132,12 @@ public class IslandManager {
                             break;
                         }
                     }
-                    if (canDelete) island.delete();
+                    if (canDelete) {
+                        island.delete();
+                        amount++;
+                    }
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().purgingFinished.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().purgingFinished.replace("%amount%", String.valueOf(amount)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     Bukkit.getScheduler().cancelTask(id);
                     id = 0;
                 }

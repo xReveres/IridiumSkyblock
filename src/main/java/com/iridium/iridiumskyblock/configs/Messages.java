@@ -135,8 +135,8 @@ public class Messages {
     public String inviteHoverMessage = "Click to join players island!";
     public String notNumber = "%prefix &7%error% is not a number!";
     public String  coopHoverMessage = "Click to coop player's island!";
-    public String purgingIslands = "%prefix% &7Purging islands";
-    public String purgingFinished = "%prefix% &7Purging islands Finished";
+    public String purgingIslands = "%prefix% &7purging islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
+    public String purgingFinished = "%prefix% &7Purging islands Finished. Purged %amount% Islands";
     public String purgingAlreadyInProcess = "%prefix% &7Purging islands already in Process";
 
     public List<String> stackedBlocksHologram = Arrays.asList("&b&l [{amount}X] &b{block}");

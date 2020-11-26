@@ -21,7 +21,11 @@ public class PurgeCommand extends Command {
             return;
         }
         IridiumSkyblock.getIslandManager().purgeIslands(90, sender);
-        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().purgingIslands.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        int total = IridiumSkyblock.getIslandManager().islands.size();
+        double totalSeconds = total * 30;
+        int minutes = (int) Math.floor(totalSeconds / 60.00);
+        double seconds = (int) (totalSeconds - (minutes * 60));
+        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().purgingIslands.replace("%seconds%", String.valueOf(seconds)).replace("%minutes%", String.valueOf(minutes)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
     }
 
     @Override
