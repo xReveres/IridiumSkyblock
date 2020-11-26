@@ -284,6 +284,7 @@ public class Island {
                 stackedBlocks.remove(location);
             }
         }
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), (Runnable) this::sendHomograms);
 
         for (int x = minx; x <= maxx; x++) {
             for (int z = minz; z <= maxz; z++) {
