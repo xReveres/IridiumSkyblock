@@ -79,27 +79,6 @@ public class BlockPlaceListener implements Listener {
 
             if (!island.getPermissions(user).placeBlocks) {
                 event.setCancelled(true);
-            } else {
-                if (config.enableBlockStacking) {
-                    Boolean canStack = false;
-
-                    if ((IridiumSkyblock.getStackable().blockList.isEmpty() ? IridiumSkyblock.getBlockValues().blockvalue.keySet() : IridiumSkyblock.getStackable().blockList).contains(XMaterial.matchXMaterial(event.getBlock().getType()))) {
-                        if (XMaterial.matchXMaterial(block.getType()) != XMaterial.HOPPER && !(block.getState() instanceof CreatureSpawner))
-                            canStack = true;
-                    }
-
-                    if (player.isSneaking() && event.getBlockAgainst().getType() == event.getBlock().getType() && canStack) {
-                        island.stackedBlocks.compute(event.getBlockAgainst().getLocation(), (loc, original) -> {
-                            if (original == null) return 2;
-                            return original + 1;
-                        });
-                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                            if(event.getBlockAgainst().getType().equals(Material.AIR))island.stackedBlocks.remove(event.getBlockAgainst().getLocation());
-                        });
-                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> island.sendHomograms());
-                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> block.setType(Material.AIR, false));
-                    }
-                }
             }
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
@@ -114,6 +93,24 @@ public class BlockPlaceListener implements Listener {
             final IslandManager islandManager = IridiumSkyblock.getIslandManager();
             final Island island = islandManager.getIslandViaLocation(location);
             if (island == null) return;
+
+            if (IridiumSkyblock.getConfiguration().enableBlockStacking) {
+                boolean canStack = false;
+
+                if ((IridiumSkyblock.getStackable().blockList.isEmpty() ? IridiumSkyblock.getBlockValues().blockvalue.keySet() : IridiumSkyblock.getStackable().blockList).contains(XMaterial.matchXMaterial(event.getBlock().getType()))) {
+                    if (XMaterial.matchXMaterial(block.getType()) != XMaterial.HOPPER && !(block.getState() instanceof CreatureSpawner))
+                        canStack = true;
+                }
+
+                if (event.getPlayer().isSneaking() && event.getBlockAgainst().getType() == event.getBlock().getType() && canStack) {
+                    island.stackedBlocks.compute(event.getBlockAgainst().getLocation(), (loc, original) -> {
+                        if (original == null) return 2;
+                        return original + 1;
+                    });
+                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), (Runnable) island::sendHomograms);
+                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> block.setType(Material.AIR, false));
+                }
+            }
 
             if (!Utils.isBlockValuable(block)) return;
 
