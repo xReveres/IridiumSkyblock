@@ -71,6 +71,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(IridiumSkyblock.getCommands().removeValueCommand);
         registerCommand(IridiumSkyblock.getCommands().addValueCommand);
         registerCommand(IridiumSkyblock.getCommands().expelCommand);
+        registerCommand(IridiumSkyblock.getCommands().purgeCommand);
     }
 
     public void registerCommand(com.iridium.iridiumskyblock.commands.Command command) {
@@ -84,8 +85,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         try {
-            if(!IridiumSkyblock.getConfiguration().mainCommandPerm.equalsIgnoreCase("") && !cs.hasPermission(IridiumSkyblock.getConfiguration().mainCommandPerm)){
-                cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%",IridiumSkyblock.getConfiguration().prefix)));
+            if (!IridiumSkyblock.getConfiguration().mainCommandPerm.equalsIgnoreCase("") && !cs.hasPermission(IridiumSkyblock.getConfiguration().mainCommandPerm)) {
+                cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 return false;
             }
             if (args.length != 0) {

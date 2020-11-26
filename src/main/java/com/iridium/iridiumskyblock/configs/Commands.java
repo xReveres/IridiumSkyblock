@@ -52,4 +52,5 @@ public class Commands {
     public AddValueCommand addValueCommand = new AddValueCommand();
     public RemoveValueCommand removeValueCommand = new RemoveValueCommand();
     public ExpelCommand expelCommand = new ExpelCommand();
+    public PurgeCommand purgeCommand = new PurgeCommand();
 }
