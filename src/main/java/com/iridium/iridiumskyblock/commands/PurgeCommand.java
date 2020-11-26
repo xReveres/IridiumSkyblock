@@ -16,11 +16,22 @@ public class PurgeCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+        int days;
+        if (args.length < 2) {
+            sender.sendMessage("/is purge <days>");
+            return;
+        }
+        try {
+            days = Integer.parseInt(args[1]);
+        } catch (NumberFormatException exception) {
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notNumber.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            return;
+        }
         if (IridiumSkyblock.getIslandManager().id != 0) {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculationAlreadyInProcess.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return;
         }
-        IridiumSkyblock.getIslandManager().purgeIslands(90, sender);
+        IridiumSkyblock.getIslandManager().purgeIslands(days, sender);
         int total = IridiumSkyblock.getIslandManager().islands.size();
         double totalSeconds = total * 30;
         int minutes = (int) Math.floor(totalSeconds / 60.00);
