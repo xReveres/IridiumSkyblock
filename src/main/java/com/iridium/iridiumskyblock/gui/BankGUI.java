@@ -159,12 +159,15 @@ public class BankGUI extends GUI implements Listener {
                     } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
                         double playerBalance = IridiumSkyblock.getInstance().getEconomy().getBalance(p);
                         IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, playerBalance);
+                        if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) == playerBalance) return;
                         island.money += playerBalance;
                         TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, playerBalance));
                     } else if (e.getClick().equals(ClickType.RIGHT)) {
-                        double depositValue = IridiumSkyblock.getInstance().getEconomy().getBalance(p) > 1000 ? 1000 : IridiumSkyblock.getInstance().getEconomy().getBalance(p);
+                        double playerBalance = IridiumSkyblock.getInstance().getEconomy().getBalance(p);
+                        double depositValue = playerBalance > 1000 ? 1000 : playerBalance;
                         if (!(island.money > Double.MAX_VALUE - depositValue)) {
                             IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, depositValue);
+                            if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) == playerBalance) return;
                             island.money += depositValue;
                             TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, depositValue));
                         }
