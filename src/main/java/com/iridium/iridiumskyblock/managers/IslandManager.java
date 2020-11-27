@@ -112,38 +112,40 @@ public class IslandManager {
         nextID++;
     }
 
-    public void purgeIslands(int days, CommandSender sender) {
+    public int purgeIslands(int days, CommandSender sender) {
+        List<Integer> ids = islands.values().stream().filter(island -> oldIsland(days, island)).map(Island::getId).collect(Collectors.toList());
+        final ListIterator<Integer> islandIds = ids.listIterator();
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
-            ListIterator<Integer> islandIds = islands.values().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
             int amount = 0;
 
             @Override
             public void run() {
                 if (islandIds.hasNext()) {
-                    LocalDateTime now = LocalDateTime.now();
                     int i = islandIds.next();
                     Island island = getIslandViaId(i);
-                    boolean canDelete = true;
-                    for (OfflinePlayer player : island.getMembers().stream().map(s -> Bukkit.getOfflinePlayer(UUID.fromString(s))).collect(Collectors.toList())) {
-                        if (player == null) continue;
-                        LocalDateTime lastLogin = LocalDateTime.ofInstant(Instant.ofEpochMilli(player.getLastPlayed()), TimeZone.getDefault().toZoneId());
-                        Duration duration = Duration.between(lastLogin, now);
-                        if (duration.toDays() < days) {
-                            canDelete = false;
-                            break;
-                        }
-                    }
-                    if (canDelete) {
-                        island.delete();
-                        amount++;
-                    }
+                    island.delete();
+                    amount++;
                 } else {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().purgingFinished.replace("%amount%", String.valueOf(amount)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     Bukkit.getScheduler().cancelTask(id);
                     id = 0;
                 }
             }
-        }, 0, 20 * 30);
+        }, 0, 20 * 5);
+        return ids.size();
+    }
+
+    private boolean oldIsland(int days, Island island) {
+        LocalDateTime now = LocalDateTime.now();
+        for (OfflinePlayer player : island.getMembers().stream().map(s -> Bukkit.getOfflinePlayer(UUID.fromString(s))).collect(Collectors.toList())) {
+            if (player == null) continue;
+            LocalDateTime lastLogin = LocalDateTime.ofInstant(Instant.ofEpochMilli(player.getLastPlayed()), TimeZone.getDefault().toZoneId());
+            Duration duration = Duration.between(lastLogin, now);
+            if (duration.toDays() < days) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void makeWorld() {
