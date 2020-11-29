@@ -109,7 +109,7 @@ public class BlockPlaceListener implements Listener {
                         return original + 1;
                     });
                     Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), (Runnable) island::sendHomograms);
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> block.setType(Material.AIR, false));
+                    block.setType(Material.AIR, false);
                 }
             }
 
