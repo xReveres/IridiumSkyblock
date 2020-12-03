@@ -640,6 +640,9 @@ public class IridiumSkyblock extends JavaPlugin {
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
         border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
         stackable = persist.getFile(Stackable.class).exists() ? persist.load(Stackable.class) : new Stackable();
+        if (stackable.blockList.isEmpty()) {
+            stackable.blockList = Arrays.asList(XMaterial.NETHERITE_BLOCK, XMaterial.DIAMOND_BLOCK, XMaterial.EMERALD_BLOCK, XMaterial.GOLD_BLOCK, XMaterial.IRON_BLOCK);
+        }
 
         if (inventories.red.slot == null) inventories.red.slot = 10;
         if (inventories.green.slot == null) inventories.green.slot = 12;

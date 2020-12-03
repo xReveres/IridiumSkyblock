@@ -101,7 +101,7 @@ public class BlockPlaceListener implements Listener {
             if (IridiumSkyblock.getConfiguration().enableBlockStacking) {
                 boolean canStack = false;
 
-                if ((IridiumSkyblock.getStackable().blockList.isEmpty() ? IridiumSkyblock.getBlockValues().blockvalue.keySet() : IridiumSkyblock.getStackable().blockList).contains(XMaterial.matchXMaterial(event.getBlock().getType()))) {
+                if (IridiumSkyblock.getStackable().blockList.contains(XMaterial.matchXMaterial(event.getBlock().getType()))) {
                     if (XMaterial.matchXMaterial(block.getType()) != XMaterial.HOPPER && !(block.getState() instanceof CreatureSpawner))
                         canStack = true;
                 }
