@@ -22,6 +22,7 @@ import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -214,9 +215,11 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) spawnerSupport = new Wildstacker();
                 if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) spawnerSupport = new MergedSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) spawnerSupport = new UltimateStacker();
+                if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker"))
+                    spawnerSupport = new UltimateStacker();
                 if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) spawnerSupport = new EpicSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) spawnerSupport = new AdvancedSpawners();
+                if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners"))
+                    spawnerSupport = new AdvancedSpawners();
                 if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) spawnerSupport = new RoseStacker();
                 if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
                     registerListeners(new ExpansionUnregisterListener());
@@ -615,7 +618,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 island.setName(island.getName().substring(0, configuration.maxIslandName));
             }
             if (island.getName().length() < configuration.minIslandName) {
-                Player owner = Bukkit.getPlayer(UUID.fromString(island.getOwner()));
+                OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(island.getOwner()));
                 island.setName(owner.getName());
             }
         }
