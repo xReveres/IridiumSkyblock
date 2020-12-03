@@ -14,6 +14,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class EntityExplodeListener implements Listener {
@@ -57,6 +58,20 @@ public class EntityExplodeListener implements Listener {
             island.calculateIslandValue();
         } catch (Exception ex) {
             IridiumSkyblock.getInstance().sendErrorMessage(ex);
+        }
+    }
+
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent event) {
+        final Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
+        for (Block block : event.blockList()) {
+            final Location location = block.getLocation();
+            if (!island.isInIsland(location)) continue;
+            if (island.stackedBlocks.containsKey(location)) {
+                BlockState state = block.getState();
+                IridiumSkyblock.nms.setBlockFast(block, 0, (byte) 0);
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> state.update(true, false));
+            }
         }
     }
 }
