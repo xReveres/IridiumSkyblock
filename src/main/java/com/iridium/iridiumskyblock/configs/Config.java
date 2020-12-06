@@ -33,6 +33,7 @@ public class Config {
     public boolean automaticUpdate = true;
     public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
+    public boolean publicNetherPortals = true;
     public boolean forceShortPortalRadius = true;
     public boolean islandMenu = true;
     public boolean voidTeleport = true;

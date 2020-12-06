@@ -31,7 +31,7 @@ public class PlayerPortalListener implements Listener {
             if (!event.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)) return;
 
             if (!IridiumSkyblock.getConfiguration().netherIslands) {
-                event.setCancelled(true);
+                if (!IridiumSkyblock.getConfiguration().publicNetherPortals) event.setCancelled(true);
                 return;
             }
 
