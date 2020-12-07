@@ -15,7 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Crops;
 
 import java.util.List;
@@ -98,30 +100,6 @@ public class BlockPlaceListener implements Listener {
             final XMaterial xmaterial = XMaterial.matchXMaterial(material);
             if (island == null) return;
 
-            if (IridiumSkyblock.getConfiguration().enableBlockStacking) {
-                boolean canStack = false;
-
-                if (IridiumSkyblock.getStackable().blockList.contains(XMaterial.matchXMaterial(event.getBlock().getType()))) {
-                    if (XMaterial.matchXMaterial(block.getType()) != XMaterial.HOPPER && !(block.getState() instanceof CreatureSpawner))
-                        canStack = true;
-                }
-
-                if (event.getPlayer().isSneaking() && event.getBlockAgainst().getType() == event.getBlock().getType() && canStack) {
-                    island.stackedBlocks.compute(event.getBlockAgainst().getLocation(), (loc, original) -> {
-                        if (original == null) return 2;
-                        return original + 1;
-                    });
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), (Runnable) island::sendHomograms);
-                    block.setType(Material.AIR, false);
-                    island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
-                        if (original == null) return 1;
-                        return original + 1;
-                    });
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
-                    return;
-                }
-            }
-
             if (!Utils.isBlockValuable(block)) return;
             island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
                 if (original == null) return 1;
@@ -131,6 +109,44 @@ public class BlockPlaceListener implements Listener {
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    @EventHandler
+    public void onBlockClick(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        final Block block = event.getClickedBlock();
+        if (block == null || block.getType().isAir()) return;
+        final Location location = block.getLocation();
+        final Island island = IridiumSkyblock.getIslandManager().getIslandViaLocation(location);
+
+        final Material material = block.getType();
+        final XMaterial xmaterial = XMaterial.matchXMaterial(material);
+        if (island == null) return;
+        int amount = event.getPlayer().getItemInHand().getAmount();
+
+        if (IridiumSkyblock.getConfiguration().enableBlockStacking) {
+            boolean canStack = false;
+
+            if (IridiumSkyblock.getStackable().blockList.contains(xmaterial)) {
+                if (!(block.getState() instanceof CreatureSpawner))
+                    canStack = true;
+            }
+
+            if (event.getPlayer().isSneaking() && material == event.getPlayer().getItemInHand().getType() && canStack) {
+                event.setCancelled(true);
+                island.stackedBlocks.compute(location, (loc, original) -> {
+                    if (original == null) return 1 + amount;
+                    return original + amount;
+                });
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), (Runnable) island::sendHomograms);
+                event.getPlayer().setItemInHand(null);
+                island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
+                    if (original == null) return 1;
+                    return original + 1;
+                });
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
+            }
         }
     }
 }
