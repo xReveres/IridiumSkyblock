@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -32,7 +33,7 @@ public class AdminCommand extends Command {
                 return;
             }
             int id = Integer.parseInt(args[1]);
-            island = IridiumSkyblock.getIslandManager().getIslandViaId(id);
+            island = IslandManager.getIslandViaId(id);
             if (island != null) {
                 for (com.iridium.iridiumskyblock.commands.Command command : IridiumSkyblock.getCommandManager().commands) {
                     if (command.getAliases().contains(args[2]) && command.isEnabled()) {
@@ -55,8 +56,9 @@ public class AdminCommand extends Command {
     private void runCommand(String[] args, Player p) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         User u = User.getUser(player);
-        if (u.getIsland() != null) {
-            p.openInventory(u.getIsland().getIslandAdminGUI().getInventory());
+        Island island = u.getIsland();
+        if (island != null) {
+            p.openInventory(island.getIslandAdminGUI().getInventory());
         } else {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

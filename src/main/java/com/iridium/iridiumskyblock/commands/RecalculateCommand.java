@@ -7,10 +7,10 @@ import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 public class RecalculateCommand extends Command {
 
@@ -26,22 +26,21 @@ public class RecalculateCommand extends Command {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculationAlreadyInProcess.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return;
         }
-        final IslandManager manager = IridiumSkyblock.getIslandManager();
         int interval = 5;
-        int total = manager.islands.size();
+        int total = IslandManager.getLoadedIslands().size();
         double totalSeconds = total * (interval / 20.00);
         int minutes = (int) Math.floor(totalSeconds / 60.00);
         double seconds = (int) (totalSeconds - (minutes * 60));
         sender.sendMessage(total + " " + totalSeconds + " " + minutes + " " + seconds);
         sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculatingIslands.replace("%amount%", total + "").replace("%seconds%", seconds + "").replace("%minutes%", minutes + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
-            ListIterator<Integer> islands = new ArrayList<>(manager.islands.keySet()).listIterator();
+            ListIterator<Integer> islands = IslandManager.getLoadedIslands().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
             @Override
             public void run() {
                 if (islands.hasNext()) {
                     int id = islands.next();
-                    Island island = manager.getIslandViaId(id);
+                    Island island = IslandManager.getIslandViaId(id);
                     if (island != null) {
                         island.initBlocks();
                     }

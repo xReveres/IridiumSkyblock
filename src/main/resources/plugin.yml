@@ -5,9 +5,9 @@ main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
 author: IridiumLLC
 load: STARTUP
-depend: [Vault]
-softdepend: [RoseStacker, WorldEdit, PlaceholderAPI, MVdWPlaceholderAPI, WildStacker, EpicSpawners, UltimateStacker, MergedSpawner, Vault, Multiverse-Core, Essentials, EssentialsChat, ChatManager, DeluxeChat]
+depend: [ Vault ]
+softdepend: [ RoseStacker, WorldEdit, PlaceholderAPI, MVdWPlaceholderAPI, WildStacker, EpicSpawners, UltimateStacker, MergedSpawner, Vault, Multiverse-Core, Essentials, EssentialsChat, ChatManager, DeluxeChat ]
 commands:
   island:
-    aliases: ["is", "IridiumSkyblock"]
+    aliases: [ "is", "IridiumSkyblock" ]
     description: Main plugin command
