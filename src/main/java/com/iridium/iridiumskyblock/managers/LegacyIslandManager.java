@@ -31,11 +31,12 @@ public class LegacyIslandManager {
 
 
     public void moveToSQL() {
+        IridiumSkyblock.getSqlManager().deleteAll();
         IridiumSkyblock.getInstance().getLogger().info("Moving to SQL");
         Connection connection = IridiumSkyblock.getSqlManager().getConnection();
-        try {
-            if (users != null) {
-                for (String uuid : users.keySet()) {
+        if (users != null) {
+            for (String uuid : users.keySet()) {
+                try {
                     User user = users.get(uuid);
                     IridiumSkyblock.getInstance().getLogger().info("Moving User " + uuid + " To SQL");
                     UserManager.cache.put(UUID.fromString(uuid), user);
@@ -44,20 +45,24 @@ public class LegacyIslandManager {
                     insert.setString(2, IridiumSkyblock.getPersist().getGson().toJson(user));
                     insert.executeUpdate();
                     insert.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-                users = null;
             }
-            if (islandCache != null) {
-                for (List<Integer> coords : islandCache.keySet()) {
-                    for (int id : islandCache.get(coords)) {
-                        IridiumSkyblock.getInstance().getLogger().info("Moving claim to SQL");
-                        ClaimManager.addClaim(coords.get(0), coords.get(1), id);
-                    }
+            users = null;
+        }
+        if (islandCache != null) {
+            for (List<Integer> coords : islandCache.keySet()) {
+                for (int id : islandCache.get(coords)) {
+                    IridiumSkyblock.getInstance().getLogger().info("Moving claim to SQL");
+                    ClaimManager.addClaim(coords.get(0), coords.get(1), id);
                 }
-                islandCache = null;
             }
-            if (islands != null) {
-                for (Island island : islands.values()) {
+            islandCache = null;
+        }
+        if (islands != null) {
+            for (Island island : islands.values()) {
+                try {
                     IridiumSkyblock.getInstance().getLogger().info("Moving Island " + island.getId() + " To SQL");
                     PreparedStatement insert = connection.prepareStatement("INSERT INTO islands (id,json) VALUES (?,?);");
                     insert.setInt(1, island.getId());
@@ -65,14 +70,17 @@ public class LegacyIslandManager {
                     insert.executeUpdate();
                     insert.close();
                     IslandDataManager.save(island, false);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
             }
-            IslandManager.length = length;
-            IslandManager.current = current;
-            IslandManager.direction = direction;
-            IslandManager.nextID = nextID;
-            IslandManager.nextLocation = nextLocation;
-
+        }
+        IslandManager.length = length;
+        IslandManager.current = current;
+        IslandManager.direction = direction;
+        IslandManager.nextID = nextID;
+        IslandManager.nextLocation = nextLocation;
+        try {
             PreparedStatement insert = connection.prepareStatement("INSERT INTO islandmanager (nextID,length,current,direction,x,y) VALUES (?,?,?,?,?,?);");
             insert.setInt(1, IslandManager.nextID);
             insert.setInt(2, IslandManager.length);
@@ -82,7 +90,6 @@ public class LegacyIslandManager {
             insert.setDouble(6, IslandManager.nextLocation.getZ());
             insert.executeUpdate();
             insert.close();
-
             connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

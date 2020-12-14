@@ -31,6 +31,20 @@ public class SQLManager {
         }
     }
 
+    public void deleteAll() {
+        Connection connection = getConnection();
+        try {
+            connection.createStatement().executeUpdate("DELETE FROM users;");
+            connection.createStatement().executeUpdate("DELETE FROM claims;");
+            connection.createStatement().executeUpdate("DELETE FROM islands;");
+            connection.createStatement().executeUpdate("DELETE FROM islandmanager;");
+            connection.createStatement().executeUpdate("DELETE FROM islanddata;");
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public void createTables() {
         try {
             Connection connection = getConnection();
