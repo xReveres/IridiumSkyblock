@@ -267,6 +267,8 @@ public class Island {
         final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
         final boolean nether = IridiumSkyblock.getConfiguration().netherIslands;
 
+        //TODO if these chunks arnt loaded return
+
         int minx = pos1.getChunk().getX();
         int minz = pos1.getChunk().getZ();
         int maxx = pos2.getChunk().getX();
