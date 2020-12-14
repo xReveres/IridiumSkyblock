@@ -1,5 +1,5 @@
 name: IridiumSkyblock
-version: 2.6.2
+version: 2.6.3
 description: Skyblock Redefined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'

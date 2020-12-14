@@ -159,6 +159,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             startCounting();
             getLanguages();
+            moveToSQL();
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
                 IslandManager.makeWorlds();
                 IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
@@ -554,7 +555,7 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
-    public void loadManagers() {
+    public void moveToSQL() {
         sqlManager = new SQLManager();
         sqlManager.createTables();
         if (persist.getFile("islandmanager").exists()) {
@@ -562,6 +563,9 @@ public class IridiumSkyblock extends JavaPlugin {
             legacyIslandManager.moveToSQL();
             persist.getFile("islandmanager").renameTo(persist.getFile("islandmanager_old"));
         }
+    }
+
+    public void loadManagers() {
         try {
             Connection connection = getSqlManager().getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM islandmanager;");
