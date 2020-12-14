@@ -26,8 +26,9 @@ public class KickCommand extends Command {
         User user = User.getUser(p); // User kicking the player
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         User u = User.getUser(player); // Player we want to kick
-        if (user.getIsland() != null) {
-            if (user.getIsland().equals(u.getIsland())) {
+        Island island = user.getIsland();
+        if (island != null) {
+            if (island.getId() == u.islandID) {
                 if (u.role.equals(Role.Owner)) {
                     sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
@@ -71,8 +72,8 @@ public class KickCommand extends Command {
                         island.removeUser(u);
                         if (player.getPlayer() != null) {
                             player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace(
-                                "%prefix%",
-                                IridiumSkyblock.getConfiguration().prefix
+                                    "%prefix%",
+                                    IridiumSkyblock.getConfiguration().prefix
                             )));
                         }
                     }

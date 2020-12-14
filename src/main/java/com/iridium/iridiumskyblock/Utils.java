@@ -411,19 +411,20 @@ public class Utils {
 
     public static BuyResponce canBuy(Player p, double vault, int crystals) {
         User u = User.getUser(p);
-        if (u.getIsland() != null) {
-            if (u.getIsland().getCrystals() < crystals) return BuyResponce.NOT_ENOUGH_CRYSTALS;
+        Island island = u.getIsland();
+        if (island != null) {
+            if (island.getCrystals() < crystals) return BuyResponce.NOT_ENOUGH_CRYSTALS;
             if (IridiumSkyblock.getInstance().getEconomy() != null) {
                 if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) >= vault) {
                     IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, vault);
-                    u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
+                    island.setCrystals(island.getCrystals() - crystals);
                     TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
                     return BuyResponce.SUCCESS;
                 }
             }
-            if (u.getIsland().money >= vault) {
-                u.getIsland().money -= vault;
-                u.getIsland().setCrystals(u.getIsland().getCrystals() - crystals);
+            if (island.money >= vault) {
+                island.money -= vault;
+                island.setCrystals(island.getCrystals() - crystals);
                 TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
                 return BuyResponce.SUCCESS;
             }

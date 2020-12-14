@@ -560,7 +560,7 @@ public class IridiumSkyblock extends JavaPlugin {
         if (persist.getFile("islandmanager").exists()) {
             LegacyIslandManager legacyIslandManager = persist.load(LegacyIslandManager.class, persist.getFile("islandmanager"));
             legacyIslandManager.moveToSQL();
-            persist.getFile("islandmanager").delete();
+            persist.getFile("islandmanager").renameTo(persist.getFile("islandmanager_old"));
         }
         try {
             Connection connection = getSqlManager().getConnection();
