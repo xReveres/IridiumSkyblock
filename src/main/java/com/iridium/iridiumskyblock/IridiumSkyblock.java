@@ -20,6 +20,7 @@ import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -152,7 +153,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             persist = new Persist();
 
-            new Metrics(this);
+            new Metrics(this, 5825);
 
             if (!loadConfigs()) return;
             saveConfigs();
