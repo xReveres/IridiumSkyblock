@@ -65,7 +65,6 @@ public class SchematicSelectGUI extends GUI implements Listener {
                         getIsland().pasteSchematic(true);
                     }
                     getIsland().setHome(getIsland().getHome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
-                    getIsland().setNetherhome(getIsland().getNetherhome().add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z));
                     if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
                         getIsland().resetMissions();
                         getIsland().setSizeLevel(1);

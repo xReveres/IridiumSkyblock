@@ -73,8 +73,6 @@ public class Island {
     @Getter
     @Setter
     private Location home;
-    @Setter
-    private Location netherhome;
 
     @Getter
     private transient UpgradeGUI upgradeGUI;
@@ -224,7 +222,7 @@ public class Island {
         }
     }
 
-    public Island(Player owner, Location pos1, Location pos2, Location center, Location home, Location netherhome, int id) {
+    public Island(Player owner, Location pos1, Location pos2, Location center, Location home, int id) {
         User user = User.getUser(owner);
         user.role = Role.Owner;
         this.biome = IridiumSkyblock.getConfiguration().defaultBiome;
@@ -237,7 +235,6 @@ public class Island {
         this.pos2 = pos2;
         this.center = center;
         this.home = home;
-        this.netherhome = netherhome;
         this.members = new HashSet<>(Collections.singletonList(user.player));
         this.id = id;
         spawnerBooster = 0;
@@ -884,10 +881,8 @@ public class Island {
     }
 
     public void teleportNetherHome(Player p) {
-        if (getNetherhome() == null) {
-            netherhome = center;
-            netherhome.setWorld(IslandManager.getNetherWorld());
-        }
+        Location netherhome = getCenter().clone();
+        netherhome.setWorld(IslandManager.getNetherWorld());
         if (User.getUser(p).teleportingHome) {
             return;
         }
@@ -925,10 +920,9 @@ public class Island {
             sendBorder(p);
         } else {
 
-            Location loc = Utils.getNewHome(this, this.netherhome);
+            Location loc = Utils.getNewHome(this, netherhome);
             if (loc != null) {
-                this.netherhome = loc;
-                p.teleport(this.netherhome);
+                p.teleport(netherhome);
                 sendBorder(p);
             } else {
                 User.getUser(p).teleportingHome = true;
@@ -1226,10 +1220,8 @@ public class Island {
 
 
     public Location getNetherhome() {
-        if (netherhome == null) {
-            netherhome = getHome().clone();
-            netherhome.setWorld(IslandManager.getNetherWorld());
-        }
+        Location netherhome = getCenter().clone();
+        netherhome.setWorld(IslandManager.getNetherWorld());
         return netherhome;
     }
 

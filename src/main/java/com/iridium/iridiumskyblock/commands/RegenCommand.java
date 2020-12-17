@@ -30,7 +30,6 @@ public class RegenCommand extends Command {
                                 for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
                                     user.getIsland().setSchematic(schematic.name);
                                     user.getIsland().setHome(user.getIsland().getHome().add(schematic.x, schematic.y, schematic.z));
-                                    user.getIsland().setNetherhome(user.getIsland().getNetherhome().add(schematic.x, schematic.y, schematic.z));
                                 }
                                 user.getIsland().pasteSchematic(true);
                                 if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
@@ -79,7 +78,6 @@ public class RegenCommand extends Command {
                     for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
                         island.setSchematic(schematic.name);
                         island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
-                        island.setNetherhome(island.getNetherhome().add(schematic.x, schematic.y, schematic.z));
                     }
                     island.pasteSchematic(true);
                     if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {

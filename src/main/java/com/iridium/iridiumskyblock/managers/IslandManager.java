@@ -55,13 +55,7 @@ public class IslandManager {
         Location pos2 = nextLocation.clone().add((IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00), 0, (IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00));
         Location center = nextLocation.clone().add(0, 100, 0);
         Location home = nextLocation.clone();
-
-        Location netherhome = home.clone();
-
-        if (IridiumSkyblock.getConfiguration().netherIslands) {
-            netherhome.setWorld(getNetherWorld());
-        }
-        Island island = new Island(player, pos1, pos2, center, home, netherhome, nextID);
+        Island island = new Island(player, pos1, pos2, center, home, nextID);
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.getSqlManager().getConnection();
@@ -86,7 +80,6 @@ public class IslandManager {
                 island.setSchematic(schematic.name);
                 island.setNetherschematic(schematic.netherisland);
                 island.setHome(island.getHome().add(schematic.x, schematic.y, schematic.z));
-                island.setNetherhome(island.getNetherhome().add(schematic.x, schematic.y, schematic.z));
             }
             island.pasteSchematic(player, false);
         } else {
