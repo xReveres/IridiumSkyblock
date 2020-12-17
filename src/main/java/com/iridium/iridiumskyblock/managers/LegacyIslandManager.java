@@ -73,6 +73,7 @@ public class LegacyIslandManager {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
+                IslandDataManager.save(island, false);
             }
         }
         IslandManager.length = length;
