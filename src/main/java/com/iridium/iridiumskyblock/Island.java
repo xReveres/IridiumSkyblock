@@ -261,10 +261,9 @@ public class Island {
     }
 
     public void initBlocks() {
+        if (!getCenter().getWorld().isChunkLoaded(getCenter().getBlockX() >> 4, getCenter().getBlockZ() >> 4)) return;
         final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
         final boolean nether = IridiumSkyblock.getConfiguration().netherIslands;
-
-        //TODO if these chunks arnt loaded return
 
         int minx = pos1.getChunk().getX();
         int minz = pos1.getChunk().getZ();
@@ -514,6 +513,7 @@ public class Island {
     }
 
     public void calculateIslandValue() {
+        if (!getCenter().getWorld().isChunkLoaded(getCenter().getBlockX() >> 4, getCenter().getBlockZ() >> 4)) return;
         if (valuableBlocks == null) valuableBlocks = new ConcurrentHashMap<>();
         if (spawners == null) spawners = new ConcurrentHashMap<>();
 
