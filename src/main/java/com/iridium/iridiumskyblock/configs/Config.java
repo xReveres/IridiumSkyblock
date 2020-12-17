@@ -117,4 +117,7 @@ public class Config {
         public XMaterial icon = XMaterial.GRASS_BLOCK;
     }
 
+    public boolean denyNaturalSpawnWhitelist = false;
+    public List<EntityType> denyNaturalSpawn = Arrays.asList(EntityType.PHANTOM);
+
 }
