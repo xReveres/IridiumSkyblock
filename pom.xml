@@ -328,6 +328,10 @@
                             <pattern>com.cryptomorin.xseries</pattern>
                             <shadedPattern>com.iridium.iridiumskyblock</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.iridium.iridiumskyblock</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
