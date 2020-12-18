@@ -109,7 +109,7 @@ public class Config {
     }};
     public List<EntityType> blockedEntities = Arrays.asList(EntityType.PRIMED_TNT, EntityType.MINECART_TNT, EntityType.FIREBALL, EntityType.SMALL_FIREBALL, EntityType.ENDER_PEARL);
 
-    public List<EntityType> denyNaturalSpawn = Collections.singletonList(EntityType.PHANTOM);
+    public List<EntityType> denyNaturalSpawn = Collections.emptyList();
 
     public static class BiomeConfig {
         public double price = 5000.0;
