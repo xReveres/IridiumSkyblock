@@ -3,7 +3,7 @@ version: 2.6.3
 description: Skyblock Redefined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
-author: IridiumLLC
+author: IridiumDevelopment
 load: STARTUP
 depend: [ Vault ]
 softdepend: [ RoseStacker, WorldEdit, PlaceholderAPI, MVdWPlaceholderAPI, WildStacker, EpicSpawners, UltimateStacker, MergedSpawner, Vault, Multiverse-Core, Essentials, EssentialsChat, ChatManager, DeluxeChat ]
