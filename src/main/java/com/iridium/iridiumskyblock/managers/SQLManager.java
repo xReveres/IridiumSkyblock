@@ -20,11 +20,22 @@ public class SQLManager {
         final SQL sql = IridiumSkyblock.getSql();
         hikariDataSource.setMaximumPoolSize(sql.poolSize);
         hikariDataSource.setLeakDetectionThreshold(3000);
+        hikariDataSource.setConnectionTestQuery("SELECT 1;");
         if (sql.username.isEmpty()) {
             //SQL Lite
+            try {
+                Class.forName("org.sqlite.JDBC");
+            } catch (ClassNotFoundException exception) {
+                exception.printStackTrace();
+            }
             hikariDataSource.setJdbcUrl("jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sql.database + ".db"));
         } else {
             //Use SQL
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException exception) {
+                exception.printStackTrace();
+            }
             hikariDataSource.setUsername(sql.username);
             hikariDataSource.setPassword(sql.password);
             hikariDataSource.setJdbcUrl("jdbc:mysql://" + sql.host + ":" + sql.port + "/" + sql.database);
