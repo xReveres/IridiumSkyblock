@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
 import com.iridium.iridiumskyblock.configs.Inventories;
@@ -227,7 +228,7 @@ public class Utils {
     }
 
     public static String color(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
+        return IridiumColorAPI.process(string);
     }
 
     public static List<String> color(List<String> strings) {
