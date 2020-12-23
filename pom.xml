@@ -52,7 +52,7 @@
         </repository>
         <repository>
             <id>savagelabs</id>
-            <url>https://nexus.savagelabs.net</url>
+            <url>https://nexus.savagelabs.net/repository/maven-releases/</url>
         </repository>
     </repositories>
 
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumColorAPI</artifactId>
-            <version>LATEST</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
