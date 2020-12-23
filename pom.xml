@@ -53,7 +53,6 @@
         <repository>
             <id>savagelabs</id>
             <url>https://nexus.savagelabs.net</url>
-            <layout>default</layout>
         </repository>
     </repositories>
 
@@ -87,7 +86,7 @@
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumColorAPI</artifactId>
-            <version>1.0.0</version>
+            <version>LATEST</version>
         </dependency>
 
         <dependency>
