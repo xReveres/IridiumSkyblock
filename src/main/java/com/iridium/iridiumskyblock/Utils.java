@@ -55,15 +55,6 @@ public class Utils {
         }
     }
 
-    public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Object object) {
-        ItemStack item = new ItemStack(material, amount, (short) type);
-        ItemMeta m = item.getItemMeta();
-        m.setLore(lore);
-        m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-        item.setItemMeta(m);
-        return item;
-    }
-
     public static ItemStack makeItem(XMaterial material, int amount, String name) {
         ItemStack item = material.parseItem();
         if (item == null) return null;
@@ -368,19 +359,11 @@ public class Utils {
     }
 
     public static List<String> processIslandPlaceholders(List<String> lines, Island island) {
-        List<String> newlist = new ArrayList<>();
-        for (String string : lines) {
-            newlist.add(processIslandPlaceholders(string, island));
-        }
-        return newlist;
+        return lines.stream().map(s -> processIslandPlaceholders(s, island)).collect(Collectors.toList());
     }
 
     public static List<String> processMultiplePlaceholders(List<String> lines, List<Placeholder> placeholders) {
-        List<String> newlist = new ArrayList<>();
-        for (String string : lines) {
-            newlist.add(processMultiplePlaceholders(string, placeholders));
-        }
-        return newlist;
+        return lines.stream().map(s -> processMultiplePlaceholders(s, placeholders)).collect(Collectors.toList());
     }
 
     public static String processMultiplePlaceholders(String line, List<Placeholder> placeholders) {
