@@ -14,7 +14,7 @@ public class IslandAdminGUI extends GUI implements Listener {
 
     public IslandAdminGUI(Island island) {
         super(island, IridiumSkyblock.inventories.islandMenuGUISize, IridiumSkyblock.inventories.islandMenuGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

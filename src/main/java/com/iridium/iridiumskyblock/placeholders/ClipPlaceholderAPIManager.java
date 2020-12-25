@@ -5,14 +5,15 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
-import java.text.NumberFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.text.NumberFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
 
@@ -36,7 +37,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
     // Return the plugin version since this expansion is bundled with the dependency
     @Override
     public String getVersion() {
-        return IridiumSkyblock.instance.getDescription().getVersion();
+        return IridiumSkyblock.getInstance().getDescription().getVersion();
     }
 
     @Override

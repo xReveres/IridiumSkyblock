@@ -1,17 +1,12 @@
 package com.iridium.iridiumskyblock.serializer.typeadapter;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import java.lang.reflect.Type;
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+
+import java.lang.reflect.Type;
+import java.util.logging.Level;
 
 public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeserializer<Location> {
 
@@ -26,7 +21,7 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
             return object;
         } catch (Exception ex) {
             ex.printStackTrace();
-            IridiumSkyblock.instance.getLogger().log(Level.WARNING, "Error encountered while serializing a Location.");
+            IridiumSkyblock.getInstance().getLogger().log(Level.WARNING, "Error encountered while serializing a Location.");
             return object;
         }
     }
@@ -43,7 +38,7 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
                     object.get("z").getAsDouble());
         } catch (Exception ex) {
             ex.printStackTrace();
-            IridiumSkyblock.instance.getLogger().log(Level.WARNING, "Error encountered while" +
+            IridiumSkyblock.getInstance().getLogger().log(Level.WARNING, "Error encountered while" +
                     " deserializing a Location.");
             return null;
         }

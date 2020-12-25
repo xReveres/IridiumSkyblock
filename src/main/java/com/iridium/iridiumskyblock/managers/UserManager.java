@@ -2,13 +2,14 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.User;
+import org.bukkit.Bukkit;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
-import org.bukkit.Bukkit;
 
 public class UserManager {
 
@@ -55,7 +56,7 @@ public class UserManager {
     }
 
     public static void saveUser(User user, boolean async) {
-        if(async) Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.instance, () -> saveUser(user, false));
+        if(async) Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> saveUser(user, false));
             try {
                 Connection connection = IridiumSkyblock.sqlManager.getConnection();
                 PreparedStatement insert = connection.prepareStatement("UPDATE users SET json = ? WHERE UUID = ?;");

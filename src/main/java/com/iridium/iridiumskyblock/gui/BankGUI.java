@@ -1,10 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
@@ -18,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 public class BankGUI extends GUI implements Listener {
     public BankGUI(Island island) {
         super(island, IridiumSkyblock.inventories.bankGUISize, IridiumSkyblock.inventories.bankGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override
@@ -151,26 +147,26 @@ public class BankGUI extends GUI implements Listener {
                 }
             }
             if (e.getSlot() == (IridiumSkyblock.inventories.money.slot == null ? 15 : IridiumSkyblock.inventories.money.slot)) {
-                if (IridiumSkyblock.instance.economy != null) {
+                if (IridiumSkyblock.getInstance().economy != null) {
                     if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
                         if ((island.getPermissions((u.islandID == island.id || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                             double depositValue = island.money;
                             TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, -depositValue));
                             island.money = 0;
-                            IridiumSkyblock.instance.economy.depositPlayer(p, depositValue);
+                            IridiumSkyblock.getInstance().economy.depositPlayer(p, depositValue);
                         }
                     } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
-                        double playerBalance = IridiumSkyblock.instance.economy.getBalance(p);
-                        IridiumSkyblock.instance.economy.withdrawPlayer(p, playerBalance);
-                        if (IridiumSkyblock.instance.economy.getBalance(p) == playerBalance) return;
+                        double playerBalance = IridiumSkyblock.getInstance().economy.getBalance(p);
+                        IridiumSkyblock.getInstance().economy.withdrawPlayer(p, playerBalance);
+                        if (IridiumSkyblock.getInstance().economy.getBalance(p) == playerBalance) return;
                         island.money += playerBalance;
                         TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, playerBalance));
                     } else if (e.getClick().equals(ClickType.RIGHT)) {
-                        double playerBalance = IridiumSkyblock.instance.economy.getBalance(p);
+                        double playerBalance = IridiumSkyblock.getInstance().economy.getBalance(p);
                         double depositValue = playerBalance > 1000 ? 1000 : playerBalance;
                         if (!(island.money > Double.MAX_VALUE - depositValue)) {
-                            IridiumSkyblock.instance.economy.withdrawPlayer(p, depositValue);
-                            if (IridiumSkyblock.instance.economy.getBalance(p) == playerBalance) return;
+                            IridiumSkyblock.getInstance().economy.withdrawPlayer(p, depositValue);
+                            if (IridiumSkyblock.getInstance().economy.getBalance(p) == playerBalance) return;
                             island.money += depositValue;
                             TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, depositValue));
                         }
@@ -178,12 +174,12 @@ public class BankGUI extends GUI implements Listener {
                         if ((island.getPermissions((u.islandID == island.id || island.isCoop(u.getIsland())) ? (island.isCoop(u.getIsland()) ? Role.Member : u.getRole()) : Role.Visitor).withdrawBank) || u.bypassing) {
                             if (island.money > 1000) {
                                 island.money -= 1000;
-                                IridiumSkyblock.instance.economy.depositPlayer(p, 1000);
+                                IridiumSkyblock.getInstance().economy.depositPlayer(p, 1000);
                                 TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, -1000));
                             } else {
                                 double depositAmount = island.money;
                                 island.money = 0;
-                                IridiumSkyblock.instance.economy.depositPlayer(p, depositAmount);
+                                IridiumSkyblock.getInstance().economy.depositPlayer(p, depositAmount);
                                 TransactionLogger.saveBankBalanceChange(p, new Transaction().add(TransactionType.MONEY, -depositAmount));
                             }
                         }

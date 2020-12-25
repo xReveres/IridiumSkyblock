@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.serializer;
 
 import com.google.common.io.Files;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class DiscUtil {
             file.createNewFile();
             Files.write(content, file, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         } finally {
             lock.unlock();
         }

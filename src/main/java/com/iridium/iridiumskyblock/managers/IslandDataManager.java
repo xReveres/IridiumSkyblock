@@ -2,6 +2,8 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
+import org.bukkit.Bukkit;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import org.bukkit.Bukkit;
 
 public class IslandDataManager {
 
@@ -19,7 +20,7 @@ public class IslandDataManager {
     //To Index exclusive
     public static CompletableFuture<List<Integer>> getIslands(IslandSortType sortType, int fromIndex, int toIndex, boolean ignorePrivate) {
         CompletableFuture<List<Integer>> completableFuture = new CompletableFuture<>();
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             List<Integer> islands = new ArrayList<>();
             Connection connection = IridiumSkyblock.sqlManager.getConnection();
             try {
@@ -45,7 +46,7 @@ public class IslandDataManager {
     }
 
     public static void save(Island island, boolean async) {
-        if(async) Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.instance, () -> save(island, false));
+        if(async) Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> save(island, false));
             Connection connection = IridiumSkyblock.sqlManager.getConnection();
             try {
                 PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;");

@@ -13,7 +13,7 @@ public class BorderColorGUI extends GUI implements Listener {
 
     public BorderColorGUI(Island island) {
         super(island, IridiumSkyblock.inventories.borderColorGUISize, IridiumSkyblock.inventories.borderColorGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

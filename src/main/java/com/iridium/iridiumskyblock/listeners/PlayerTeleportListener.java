@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+
+import java.util.UUID;
 
 public class PlayerTeleportListener implements Listener {
 
@@ -26,7 +27,7 @@ public class PlayerTeleportListener implements Listener {
             if (toIsland == null) return;
 
             final Player player = event.getPlayer();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.instance, () -> toIsland.sendHolograms(player), 1);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendHolograms(player), 1);
             final User user = User.getUser(player);
 
             if (event.getCause().equals(TeleportCause.ENDER_PEARL)) {
@@ -40,7 +41,7 @@ public class PlayerTeleportListener implements Listener {
 
             if ((toIsland.visit && !toIsland.isBanned(user)) || user.bypassing || player.hasPermission("iridiumskyblock.visitbypass")) {
                 if (!toIsland.isInIsland(fromLocation)) {
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.instance, () -> toIsland.sendBorder(player), 1);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendBorder(player), 1);
                     if (user.islandID != toIsland.id) {
                         player.sendMessage(Utils.color(IridiumSkyblock.messages.visitingIsland.replace("%player%", User.getUser(toIsland.owner).name).replace("%prefix%", IridiumSkyblock.configuration.prefix)));
                         if (player.hasPermission("iridiumskyblock.silentvisit")) return;
@@ -57,7 +58,7 @@ public class PlayerTeleportListener implements Listener {
                 player.sendMessage(Utils.color(IridiumSkyblock.messages.playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

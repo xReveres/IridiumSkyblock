@@ -20,7 +20,7 @@ public class PlayerTalkListener implements Listener {
 
             if (user.warp != null) {
                 if (user.warp.getPassword().equals(event.getMessage())) {
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.instance, () -> { player.teleport(user.warp.getLocation()); user.warp = null; });
+                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> { player.teleport(user.warp.getLocation()); user.warp = null; });
                     player.sendMessage(Utils.color(IridiumSkyblock.messages.teleporting
                             .replace("%prefix%", IridiumSkyblock.configuration.prefix)));
                 } else {
@@ -92,7 +92,7 @@ public class PlayerTalkListener implements Listener {
 
             event.setFormat(Utils.color(format));
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

@@ -14,7 +14,7 @@ public class ConfirmationGUI extends GUI implements Listener {
 
     public ConfirmationGUI(Island island, Runnable runnable, String action) {
         super(island, 27, IridiumSkyblock.inventories.confirmationGUITitle.replace("%action%", action));
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
         this.runnable = runnable;
         for (int i = 0; i < getInventory().getSize(); i++) {
             setItem(i, Utils.makeItemHidden(IridiumSkyblock.inventories.background));
@@ -25,7 +25,7 @@ public class ConfirmationGUI extends GUI implements Listener {
 
     public ConfirmationGUI(Runnable runnable, String action) {
         super(27, IridiumSkyblock.inventories.confirmationGUITitle.replace("%action%", action));
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
         this.runnable = runnable;
         for (int i = 0; i < getInventory().getSize(); i++) {
             setItem(i, Utils.makeItemHidden(IridiumSkyblock.inventories.background));

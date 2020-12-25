@@ -4,9 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Shop;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ShopGUI extends GUI implements Listener {
 
@@ -29,7 +30,7 @@ public class ShopGUI extends GUI implements Listener {
 
     public ShopGUI() {
         super(IridiumSkyblock.inventories.shopGUISize, IridiumSkyblock.inventories.shopGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
 
         for (Shop.ShopObject shop : IridiumSkyblock.shop.shop) {
             setItem(shop.slot, Utils.makeItem(shop.display, 1, shop.displayName));
@@ -47,7 +48,7 @@ public class ShopGUI extends GUI implements Listener {
     }
 
     public ShopGUI(Shop.ShopObject shop, ShopGUI root) {
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.instance, this::addPages, 0, 5);
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 5);
         this.shop = shop;
         this.root = root;
 

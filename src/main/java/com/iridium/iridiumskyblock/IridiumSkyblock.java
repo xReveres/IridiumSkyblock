@@ -5,54 +5,10 @@ import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iridium.iridiumskyblock.commands.CommandManager;
-import com.iridium.iridiumskyblock.configs.BlockValues;
-import com.iridium.iridiumskyblock.configs.Boosters;
-import com.iridium.iridiumskyblock.configs.Border;
-import com.iridium.iridiumskyblock.configs.Commands;
-import com.iridium.iridiumskyblock.configs.Config;
-import com.iridium.iridiumskyblock.configs.Inventories;
-import com.iridium.iridiumskyblock.configs.Messages;
-import com.iridium.iridiumskyblock.configs.Missions;
-import com.iridium.iridiumskyblock.configs.SQL;
-import com.iridium.iridiumskyblock.configs.Schematics;
-import com.iridium.iridiumskyblock.configs.Shop;
-import com.iridium.iridiumskyblock.configs.Stackable;
-import com.iridium.iridiumskyblock.configs.Upgrades;
-import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
-import com.iridium.iridiumskyblock.gui.LanguagesGUI;
-import com.iridium.iridiumskyblock.gui.ShopGUI;
-import com.iridium.iridiumskyblock.gui.TopGUI;
-import com.iridium.iridiumskyblock.gui.VisitGUI;
-import com.iridium.iridiumskyblock.listeners.BlockBreakListener;
-import com.iridium.iridiumskyblock.listeners.BlockFromToListener;
-import com.iridium.iridiumskyblock.listeners.BlockGrowListener;
-import com.iridium.iridiumskyblock.listeners.BlockPistonListener;
-import com.iridium.iridiumskyblock.listeners.BlockPlaceListener;
-import com.iridium.iridiumskyblock.listeners.CreatureSpawnListener;
-import com.iridium.iridiumskyblock.listeners.EntityDamageByEntityListener;
-import com.iridium.iridiumskyblock.listeners.EntityDeathListener;
-import com.iridium.iridiumskyblock.listeners.EntityExplodeListener;
-import com.iridium.iridiumskyblock.listeners.EntityPickupItemListener;
-import com.iridium.iridiumskyblock.listeners.EntitySpawnListener;
-import com.iridium.iridiumskyblock.listeners.EntityTargetLivingEntityListener;
-import com.iridium.iridiumskyblock.listeners.ExpansionUnregisterListener;
-import com.iridium.iridiumskyblock.listeners.ItemCraftListener;
-import com.iridium.iridiumskyblock.listeners.PlayerBucketEmptyListener;
-import com.iridium.iridiumskyblock.listeners.PlayerExpChangeListener;
-import com.iridium.iridiumskyblock.listeners.PlayerFishListener;
-import com.iridium.iridiumskyblock.listeners.PlayerInteractListener;
-import com.iridium.iridiumskyblock.listeners.PlayerJoinLeaveListener;
-import com.iridium.iridiumskyblock.listeners.PlayerMoveListener;
-import com.iridium.iridiumskyblock.listeners.PlayerPortalListener;
-import com.iridium.iridiumskyblock.listeners.PlayerTalkListener;
-import com.iridium.iridiumskyblock.listeners.PlayerTeleportListener;
-import com.iridium.iridiumskyblock.listeners.SpawnerSpawnListener;
-import com.iridium.iridiumskyblock.listeners.StructureGrowListener;
-import com.iridium.iridiumskyblock.managers.IslandDataManager;
-import com.iridium.iridiumskyblock.managers.IslandManager;
-import com.iridium.iridiumskyblock.managers.LegacyIslandManager;
-import com.iridium.iridiumskyblock.managers.SQLManager;
-import com.iridium.iridiumskyblock.managers.UserManager;
+import com.iridium.iridiumskyblock.configs.*;
+import com.iridium.iridiumskyblock.gui.*;
+import com.iridium.iridiumskyblock.listeners.*;
+import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
@@ -61,40 +17,7 @@ import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.schematics.WorldEdit6;
 import com.iridium.iridiumskyblock.schematics.WorldEdit7;
 import com.iridium.iridiumskyblock.serializer.Persist;
-import com.iridium.iridiumskyblock.support.AdvancedSpawners;
-import com.iridium.iridiumskyblock.support.EpicSpawners;
-import com.iridium.iridiumskyblock.support.MergedSpawners;
-import com.iridium.iridiumskyblock.support.RoseStacker;
-import com.iridium.iridiumskyblock.support.SpawnerSupport;
-import com.iridium.iridiumskyblock.support.UltimateStacker;
-import com.iridium.iridiumskyblock.support.Wildstacker;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.net.URLConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import com.iridium.iridiumskyblock.support.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -107,6 +30,19 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.*;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.net.URLConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class IridiumSkyblock extends JavaPlugin {
 
@@ -131,7 +67,6 @@ public class IridiumSkyblock extends JavaPlugin {
     public static SkyblockGenerator generator;
     public static WorldEdit worldEdit;
     public static Schematic schematic;
-    public static IridiumSkyblock instance;
     public static Persist persist;
 
     public SpawnerSupport spawnerSupport;
@@ -149,15 +84,6 @@ public class IridiumSkyblock extends JavaPlugin {
     public static NMS nms;
 
     public static int blocksPerTick;
-
-    public static Upgrades getUpgrades() {
-        if (upgrades == null) {
-            upgrades = new Upgrades();
-            IridiumSkyblock.persist.getFile(upgrades).delete();
-            IridiumSkyblock.instance.saveConfigs();
-        }
-        return upgrades;
-    }
 
     private final HashMap<String, BlockData> legacy = new HashMap<>();
 
@@ -189,7 +115,6 @@ public class IridiumSkyblock extends JavaPlugin {
         }
         try {
             generator = new SkyblockGenerator();
-            instance = this;
 
             super.onEnable();
             Bukkit.getUpdateFolderFile().mkdir();
@@ -213,7 +138,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
 
                 // Call it as a delayed task to wait for the server to properly load first
-                Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.instance, IridiumSkyblock.instance::islandValueManager);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
 
                 topGUI = new TopGUI();
                 shopGUI = new ShopGUI();
@@ -221,8 +146,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 registerListeners(new StructureGrowListener(), new EntitySpawnListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener(), new CreatureSpawnListener());
 
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.instance, this::addPages, 0, 20 * 60);
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.instance, () -> saveData(false), 0, 20 * 60);
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20 * 60);
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> saveData(false), 0, 20 * 60);
 
                 setupPlaceholderAPI();
 
@@ -394,7 +319,7 @@ public class IridiumSkyblock extends JavaPlugin {
             if (!file.exists()) file.createNewFile();
             writeToFile(file, in);
         } catch (IOException e) {
-            IridiumSkyblock.instance.getLogger().info("Failed to connect to Translation servers");
+            getLogger().info("Failed to connect to Translation servers");
         }
     }
 
@@ -507,7 +432,7 @@ public class IridiumSkyblock extends JavaPlugin {
                         }
                     }
                 }
-                Bukkit.getScheduler().runTask(IridiumSkyblock.instance, () -> startCounting());
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> startCounting());
             }
 
         }, c.getTime());
@@ -588,16 +513,16 @@ public class IridiumSkyblock extends JavaPlugin {
                 if (overworld.exists()) {
                     schematic.getSchematicData(overworld);
                 } else {
-                    IridiumSkyblock.instance.getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
+                    getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
                 }
                 if (nether.exists()) {
                     schematic.getSchematicData(nether);
                 } else {
-                    IridiumSkyblock.instance.getLogger().warning("Failed to load schematic: " + fakeSchematic.netherisland);
+                    getLogger().warning("Failed to load schematic: " + fakeSchematic.netherisland);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                IridiumSkyblock.instance.getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
+                getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
             }
         }
     }
@@ -847,5 +772,18 @@ public class IridiumSkyblock extends JavaPlugin {
             if (border != null) persist.save(border);
             if (stackable != null) persist.save(stackable);
         });
+    }
+
+    public static Upgrades getUpgrades() {
+        if (upgrades == null) {
+            upgrades = new Upgrades();
+            IridiumSkyblock.persist.getFile(upgrades).delete();
+            IridiumSkyblock.getInstance().saveConfigs();
+        }
+        return upgrades;
+    }
+
+    public static IridiumSkyblock getInstance() {
+        return (IridiumSkyblock) Bukkit.getPluginManager().getPlugin("IridiumSkyblock");
     }
 }

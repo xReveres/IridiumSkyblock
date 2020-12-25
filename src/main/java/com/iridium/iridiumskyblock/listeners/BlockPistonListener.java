@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -12,6 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+
+import java.util.Map;
 
 public class BlockPistonListener implements Listener {
 
@@ -43,7 +44,7 @@ public class BlockPistonListener implements Listener {
                 }
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 
@@ -66,7 +67,7 @@ public class BlockPistonListener implements Listener {
                 }
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 
@@ -86,7 +87,7 @@ public class BlockPistonListener implements Listener {
                 }
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

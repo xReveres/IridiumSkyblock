@@ -1,15 +1,9 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.MissionType;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Missions;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.List;
-import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -20,6 +14,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.material.Crops;
+
+import java.util.List;
+import java.util.Map;
 
 public class BlockBreakListener implements Listener {
 
@@ -70,7 +67,7 @@ public class BlockBreakListener implements Listener {
                 event.setCancelled(true);
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 
@@ -86,7 +83,7 @@ public class BlockBreakListener implements Listener {
             final XMaterial xmaterial = XMaterial.matchXMaterial(block.getType());
             if (Utils.isBlockValuable(block) || IridiumSkyblock.configuration.limitedBlocks.containsKey(xmaterial)) {
                 island.valuableBlocks.computeIfPresent(xmaterial.name(), (name, original) -> original - 1);
-                Bukkit.getScheduler().runTask(IridiumSkyblock.instance, island::calculateIslandValue);
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
             }
 
             island.failedGenerators.remove(location);
@@ -98,12 +95,12 @@ public class BlockBreakListener implements Listener {
                     island.stackedBlocks.compute(location, (loc, original) -> original - 1);
                 }
                 //This needs to be ran a tick later since blockbreakevent gets called before the block gets removed
-                Bukkit.getScheduler().runTask(IridiumSkyblock.instance, () -> blockState.update(true, true));
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> blockState.update(true, true));
                 island.sendHolograms();
             }
 
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

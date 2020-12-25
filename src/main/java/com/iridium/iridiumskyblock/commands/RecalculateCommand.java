@@ -4,12 +4,13 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 
 public class RecalculateCommand extends Command {
 
@@ -32,7 +33,7 @@ public class RecalculateCommand extends Command {
         double seconds = (int) (totalSeconds - (minutes * 60));
         sender.sendMessage(total + " " + totalSeconds + " " + minutes + " " + seconds);
         sender.sendMessage(Utils.color(IridiumSkyblock.messages.calculatingIslands.replace("%amount%", total + "").replace("%seconds%", seconds + "").replace("%minutes%", minutes + "").replace("%prefix%", IridiumSkyblock.configuration.prefix)));
-        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.instance, new Runnable() {
+        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             ListIterator<Integer> islands = IslandManager.getLoadedIslands().stream().map(is -> is.id).collect(Collectors.toList()).listIterator();
 
             @Override

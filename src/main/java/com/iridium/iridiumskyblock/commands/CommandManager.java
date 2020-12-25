@@ -5,22 +5,23 @@ import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class CommandManager implements CommandExecutor, TabCompleter {
 
     public List<Command> commands = new ArrayList<>();
 
     public CommandManager(String command) {
-        IridiumSkyblock.instance.getCommand(command).setExecutor(this);
-        IridiumSkyblock.instance.getCommand(command).setTabCompleter(this);
+        IridiumSkyblock.getInstance().getCommand(command).setExecutor(this);
+        IridiumSkyblock.getInstance().getCommand(command).setTabCompleter(this);
     }
 
     public void registerCommands() {
@@ -111,7 +112,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             cs.sendMessage(Utils.color(IridiumSkyblock.messages.unknownCommand
                 .replace("%prefix%", IridiumSkyblock.configuration.prefix)));
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
         return true;
     }
@@ -141,7 +142,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 }
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
         return null;
     }

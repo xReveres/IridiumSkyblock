@@ -4,21 +4,22 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class VisitorGUI extends GUI implements Listener {
     public Map<Integer, Player> visitors = new HashMap<>();
 
     public VisitorGUI(Island island) {
         super(island, IridiumSkyblock.inventories.visitorGUISize, IridiumSkyblock.inventories.visitorGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

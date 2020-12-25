@@ -18,7 +18,7 @@ public class PlayerJoinLeaveListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         try {
             final Player player = event.getPlayer();
-            final IridiumSkyblock plugin = IridiumSkyblock.instance;
+            final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
             if (player.isOp()) {
                 final String latest = plugin.latest;
                 if (plugin.latest != null
@@ -67,7 +67,7 @@ public class PlayerJoinLeaveListener implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> island.sendBorder(player), 1);
             Bukkit.getScheduler().runTaskLater(plugin, () -> island.sendHolograms(player), 1);
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 

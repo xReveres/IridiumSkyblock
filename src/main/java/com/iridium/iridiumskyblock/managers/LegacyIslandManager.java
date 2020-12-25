@@ -4,6 +4,8 @@ import com.iridium.iridiumskyblock.Direction;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
+import org.bukkit.Location;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import org.bukkit.Location;
 
 public class LegacyIslandManager {
     //Used solely for converting old .json to SQL
@@ -31,13 +32,13 @@ public class LegacyIslandManager {
 
     public void moveToSQL() {
         IridiumSkyblock.sqlManager.deleteAll();
-        IridiumSkyblock.instance.getLogger().info("Moving to SQL");
+        IridiumSkyblock.getInstance().getLogger().info("Moving to SQL");
         Connection connection = IridiumSkyblock.sqlManager.getConnection();
         if (users != null) {
             for (String uuid : users.keySet()) {
                 try {
                     User user = users.get(uuid);
-                    IridiumSkyblock.instance.getLogger().info("Moving User " + uuid + " To SQL");
+                    IridiumSkyblock.getInstance().getLogger().info("Moving User " + uuid + " To SQL");
                     UserManager.cache.put(UUID.fromString(uuid), user);
                     PreparedStatement insert = connection.prepareStatement("INSERT INTO users (UUID,json) VALUES (?,?);");
                     insert.setString(1, uuid);
@@ -53,7 +54,7 @@ public class LegacyIslandManager {
         if (islandCache != null) {
             for (List<Integer> coords : islandCache.keySet()) {
                 for (int id : islandCache.get(coords)) {
-                    IridiumSkyblock.instance.getLogger().info("Moving claim to SQL");
+                    IridiumSkyblock.getInstance().getLogger().info("Moving claim to SQL");
                     ClaimManager.addClaim(coords.get(0), coords.get(1), id);
                 }
             }
@@ -62,7 +63,7 @@ public class LegacyIslandManager {
         if (islands != null) {
             for (Island island : islands.values()) {
                 try {
-                    IridiumSkyblock.instance.getLogger().info("Moving Island " + island.id + " To SQL");
+                    IridiumSkyblock.getInstance().getLogger().info("Moving Island " + island.id + " To SQL");
                     PreparedStatement insert = connection.prepareStatement("INSERT INTO islands (id,json) VALUES (?,?);");
                     insert.setInt(1, island.id);
                     insert.setString(2, IridiumSkyblock.persist.gson.toJson(island));

@@ -13,10 +13,10 @@ public class ExpansionUnregisterListener implements Listener {
         try {
             if (!event.getExpansion().getIdentifier().equals("iridiumskyblock")) return;
 
-            final IridiumSkyblock plugin = IridiumSkyblock.instance;
+            final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, plugin::setupClipsPlaceholderAPI);
         } catch (Exception ex) {
-            IridiumSkyblock.instance.sendErrorMessage(ex);
+            IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 

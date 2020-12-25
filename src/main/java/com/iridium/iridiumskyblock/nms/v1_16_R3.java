@@ -5,17 +5,7 @@ import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
-import java.util.List;
-import net.minecraft.server.v1_16_R3.ChatMessage;
-import net.minecraft.server.v1_16_R3.EntityArmorStand;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent;
-import net.minecraft.server.v1_16_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_16_R3.PacketPlayOutEntityMetadata;
-import net.minecraft.server.v1_16_R3.PacketPlayOutMapChunk;
-import net.minecraft.server.v1_16_R3.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_16_R3.PacketPlayOutTitle;
-import net.minecraft.server.v1_16_R3.PacketPlayOutWorldBorder;
-import net.minecraft.server.v1_16_R3.WorldBorder;
+import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -27,6 +17,8 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 
+import java.util.List;
+
 public class v1_16_R3 implements NMS {
     @Override
     public void setBlockFast(Block block, int blockId, byte data) {
@@ -37,7 +29,7 @@ public class v1_16_R3 implements NMS {
         }
         XMaterial material = Utils.getXMaterialFromId(blockId, (byte) 0);
         if (material != null && material.parseMaterial() != null) {
-            block.setBlockData(IridiumSkyblock.instance.fromLegacy(material.parseMaterial(), data), false);
+            block.setBlockData(IridiumSkyblock.getInstance().fromLegacy(material.parseMaterial(), data), false);
         }
     }
 

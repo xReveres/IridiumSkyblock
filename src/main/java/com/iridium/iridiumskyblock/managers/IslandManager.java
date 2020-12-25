@@ -1,14 +1,13 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumskyblock.Direction;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.SkyblockGenerator;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import org.bukkit.*;
+import org.bukkit.World.Environment;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,26 +15,8 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class IslandManager {
 
@@ -75,7 +56,7 @@ public class IslandManager {
         Location center = nextLocation.clone().add(0, 100, 0);
         Location home = nextLocation.clone();
         Island island = new Island(player, pos1, pos2, center, home, nextID);
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.sqlManager.getConnection();
                 PreparedStatement insert = connection.prepareStatement("INSERT INTO islands (id,json) VALUES (?,?);");
@@ -132,13 +113,13 @@ public class IslandManager {
 
         nextID++;
 
-        IridiumSkyblock.instance.saveData(true);
+        IridiumSkyblock.getInstance().saveData(true);
     }
 
     public static int purgeIslands(int days, CommandSender sender) {
         List<Integer> ids = getLoadedIslands().stream().filter(island -> oldIsland(days, island)).map(is -> is.id).collect(Collectors.toList());
         final ListIterator<Integer> islandIds = ids.listIterator();
-        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.instance, new Runnable() {
+        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             int amount = 0;
 
             @Override
@@ -267,7 +248,7 @@ public class IslandManager {
 
     public static void save(Island island, boolean async) {
         if (async)
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.instance, () -> save(island, false));
+            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> save(island, false));
         try {
             Connection connection = IridiumSkyblock.sqlManager.getConnection();
             PreparedStatement insert = connection.prepareStatement("UPDATE islands SET json = ? WHERE id = ?;");
@@ -284,7 +265,7 @@ public class IslandManager {
     public static void removeIsland(Island island) {
         final int id = island.id;
         cache.remove(id);
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.sqlManager.getConnection();
                 PreparedStatement insert = connection.prepareStatement("DELETE FROM islands WHERE id=?;");

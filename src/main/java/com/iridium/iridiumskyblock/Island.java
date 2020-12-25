@@ -14,59 +14,26 @@ import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import com.iridium.iridiumskyblock.gui.BankGUI;
-import com.iridium.iridiumskyblock.gui.BiomeGUI;
-import com.iridium.iridiumskyblock.gui.BoosterGUI;
-import com.iridium.iridiumskyblock.gui.BorderColorGUI;
-import com.iridium.iridiumskyblock.gui.CoopGUI;
-import com.iridium.iridiumskyblock.gui.IslandAdminGUI;
-import com.iridium.iridiumskyblock.gui.IslandMenuGUI;
-import com.iridium.iridiumskyblock.gui.MembersGUI;
-import com.iridium.iridiumskyblock.gui.MissionsGUI;
-import com.iridium.iridiumskyblock.gui.PermissionsGUI;
-import com.iridium.iridiumskyblock.gui.SchematicSelectGUI;
-import com.iridium.iridiumskyblock.gui.UpgradeGUI;
-import com.iridium.iridiumskyblock.gui.VisitorGUI;
-import com.iridium.iridiumskyblock.gui.WarpGUI;
+import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.managers.IslandDataManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.support.SpawnerSupport;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.ChunkSnapshot;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import net.md_5.bungee.api.chat.*;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 public class Island {
 
@@ -243,7 +210,7 @@ public class Island {
 
     public void initBlocks() {
         if (!center.getWorld().isChunkLoaded(center.getBlockX() >> 4, center.getBlockZ() >> 4)) return;
-        final IridiumSkyblock plugin = IridiumSkyblock.instance;
+        final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
         final boolean nether = IridiumSkyblock.configuration.netherIslands;
 
         int minX = pos1.getChunk().getX();
@@ -264,7 +231,7 @@ public class Island {
                 stackedBlocks.remove(location);
             }
         }
-        Bukkit.getScheduler().runTask(IridiumSkyblock.instance, (Runnable) this::sendHolograms);
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), (Runnable) this::sendHolograms);
 
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
@@ -279,7 +246,7 @@ public class Island {
                 computeValue(plugin, x, z, chunk);
             }
         }
-        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.instance, this::calculateIslandValue, 20);
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), this::calculateIslandValue, 20);
     }
 
     private void computeValue(IridiumSkyblock plugin, int finalX, int finalZ, Chunk chunk) {
@@ -510,7 +477,7 @@ public class Island {
         final Map<String, Double> spawnerValueMap = blockValues.spawnervalue;
 
         Function<CreatureSpawner, Integer> getSpawnerAmount;
-        SpawnerSupport spawnerSupport = IridiumSkyblock.instance.spawnerSupport;
+        SpawnerSupport spawnerSupport = IridiumSkyblock.getInstance().spawnerSupport;
         if (spawnerSupport != null) {
             getSpawnerAmount = spawnerSupport::getSpawnerAmount;
         } else {
@@ -673,7 +640,7 @@ public class Island {
 
         failedGenerators = new HashSet<>();
         coopInvites = new HashSet<>();
-        boosterId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.instance, () -> {
+        boosterId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
             if (spawnerBooster > 0) spawnerBooster--;
             if (farmingBooster > 0) farmingBooster--;
             if (expBooster > 0) expBooster--;
@@ -698,8 +665,8 @@ public class Island {
                 }
             }};
         }
-        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.instance, (Runnable) this::sendBorder, 20);
-        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.instance, (Runnable) this::sendHolograms, 20);
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), (Runnable) this::sendBorder, 20);
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), (Runnable) this::sendHolograms, 20);
     }
 
     public long canGenerate() {
@@ -919,7 +886,7 @@ public class Island {
         this.home = null;
         IslandManager.removeIsland(this);
         this.id = 0;
-        IridiumSkyblock.instance.saveConfigs();
+        IridiumSkyblock.getInstance().saveConfigs();
         Bukkit.getScheduler().cancelTask(boosterId);
         boosterId = -1;
     }

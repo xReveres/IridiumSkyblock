@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.lang.reflect.InvocationTargetException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -14,6 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class PlayerPortalListener implements Listener {
 
@@ -75,7 +76,7 @@ public class PlayerPortalListener implements Listener {
                 event.setTo(island.getNetherHome());
             else if (worldName.equals(IridiumSkyblock.configuration.netherWorldName))
                 event.setTo(island.home);
-            Bukkit.getScheduler().runTask(IridiumSkyblock.instance, () -> {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 Island is = IslandManager.getIslandViaLocation(player.getLocation());
                 if (is != null) {
                     is.sendBorder(player);
@@ -83,7 +84,7 @@ public class PlayerPortalListener implements Listener {
                 }
             });
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

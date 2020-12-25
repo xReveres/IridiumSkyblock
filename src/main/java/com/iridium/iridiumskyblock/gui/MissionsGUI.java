@@ -4,16 +4,17 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Missions;
-import java.util.List;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+
+import java.util.List;
 
 public class MissionsGUI extends GUI implements Listener {
 
     public MissionsGUI(Island island) {
         super(island, IridiumSkyblock.inventories.missionsGUISize, IridiumSkyblock.inventories.missionsGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

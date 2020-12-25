@@ -7,7 +7,7 @@ import org.bukkit.block.CreatureSpawner;
 public class Wildstacker implements SpawnerSupport {
 
     public Wildstacker() {
-        IridiumSkyblock.instance.getLogger().info("Wildstacker support loaded");
+        IridiumSkyblock.getInstance().getLogger().info("Wildstacker support loaded");
     }
 
     public int getSpawnerAmount(CreatureSpawner spawner) {

@@ -3,13 +3,14 @@ package com.iridium.iridiumskyblock.gui;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Utils;
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LanguagesGUI extends GUI implements Listener {
 
@@ -23,11 +24,11 @@ public class LanguagesGUI extends GUI implements Listener {
 
     public LanguagesGUI() {
         pages = new HashMap<>();
-        if (IridiumSkyblock.instance.languages.isEmpty()) {
+        if (IridiumSkyblock.getInstance().languages.isEmpty()) {
             pages.put(1, new LanguagesGUI(1, this));
             return;
         }
-        for (int i = 1; i <= Math.ceil(IridiumSkyblock.instance.languages.size() / 45.00); i++) {
+        for (int i = 1; i <= Math.ceil(IridiumSkyblock.getInstance().languages.size() / 45.00); i++) {
             pages.put(i, new LanguagesGUI(i, this));
         }
     }
@@ -37,7 +38,7 @@ public class LanguagesGUI extends GUI implements Listener {
         this.page = page;
         this.root = root;
         languages = new HashMap<>();
-        Bukkit.getPluginManager().registerEvents(this, IridiumSkyblock.instance);
+        Bukkit.getPluginManager().registerEvents(this, IridiumSkyblock.getInstance());
     }
 
     @Override
@@ -47,8 +48,8 @@ public class LanguagesGUI extends GUI implements Listener {
         languages.clear();
         int slot = 0;
         int i = 0;
-        java.util.Collections.sort(IridiumSkyblock.instance.languages);
-        for (String language : IridiumSkyblock.instance.languages) {
+        java.util.Collections.sort(IridiumSkyblock.getInstance().languages);
+        for (String language : IridiumSkyblock.getInstance().languages) {
             if (i >= (page - 1) * 45 && i < page * 54) {
                 if (slot < 45) {
                     languages.put(slot, language);
@@ -69,7 +70,7 @@ public class LanguagesGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (languages.containsKey(e.getSlot())) {
-                IridiumSkyblock.instance.setLanguage(languages.get(e.getSlot()), (Player) e.getWhoClicked());
+                IridiumSkyblock.getInstance().setLanguage(languages.get(e.getSlot()), (Player) e.getWhoClicked());
             } else if (e.getSlot() == getInventory().getSize() - 7) {
                 if (root.pages.containsKey(page - 1)) {
                     e.getWhoClicked().openInventory(root.pages.get(page - 1).getInventory());

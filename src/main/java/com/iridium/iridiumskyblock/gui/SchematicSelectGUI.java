@@ -16,7 +16,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
 
     public SchematicSelectGUI(Island island) {
         super(island, IridiumSkyblock.inventories.schematicselectGUISize, IridiumSkyblock.inventories.schematicselectGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

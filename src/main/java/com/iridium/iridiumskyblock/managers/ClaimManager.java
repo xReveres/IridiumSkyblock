@@ -1,18 +1,13 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import org.bukkit.Bukkit;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import org.bukkit.Bukkit;
+import java.util.*;
 
 public class ClaimManager {
 
@@ -42,7 +37,7 @@ public class ClaimManager {
     }
 
     public static void addClaim(int x, int z, int island) {
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.sqlManager.getConnection();
                 PreparedStatement insert = connection.prepareStatement("INSERT INTO claims (x,z,island) VALUES (?,?,?);");
@@ -60,7 +55,7 @@ public class ClaimManager {
     }
 
     public static void removeClaims(int island) {
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.sqlManager.getConnection();
                 PreparedStatement insert = connection.prepareStatement("DELETE FROM claims WHERE island=?;");

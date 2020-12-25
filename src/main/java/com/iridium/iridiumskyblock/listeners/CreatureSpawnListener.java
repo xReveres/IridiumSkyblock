@@ -26,7 +26,7 @@ public class CreatureSpawnListener implements Listener {
                 event.setCancelled(true);
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 

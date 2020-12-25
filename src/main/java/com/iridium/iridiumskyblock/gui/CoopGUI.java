@@ -5,9 +5,6 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,13 +13,17 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CoopGUI extends GUI implements Listener {
 
     public Map<Integer, Integer> islands = new HashMap<>();
 
     public CoopGUI(Island island) {
         super(island, IridiumSkyblock.inventories.coopGUISize, IridiumSkyblock.inventories.coopGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

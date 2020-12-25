@@ -62,7 +62,7 @@ public class PlayerInteractListener implements Listener {
                 } else if (!user.bypassing) event.setCancelled(true);
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 
@@ -77,7 +77,7 @@ public class PlayerInteractListener implements Listener {
             if (island == null) return;
             if (!island.getPermissions(user).interact) event.setCancelled(true);
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 
@@ -92,7 +92,7 @@ public class PlayerInteractListener implements Listener {
             if (island == null) return;
             if (!island.getPermissions(user).interact) event.setCancelled(true);
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

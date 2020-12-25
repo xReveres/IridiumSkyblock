@@ -23,23 +23,23 @@ public abstract class GUI {
     public GUI(Island island, int size, String name) {
         islandID = island.id;
         this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.instance, this::addContent, 0, 2);
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 2);
     }
 
     public GUI(int size, String name) {
         this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.instance, this::addContent, 0, 2);
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 2);
     }
 
     public GUI(Island island, int size, String name, int refresh) {
         islandID = island.id;
         this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.instance, this::addContent, 0, refresh);
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, refresh);
     }
 
     public GUI(int size, String name, int refresh) {
         this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.instance, this::addContent, 0, refresh);
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, refresh);
     }
 
     public void addContent() {

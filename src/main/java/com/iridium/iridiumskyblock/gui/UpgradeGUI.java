@@ -15,7 +15,7 @@ public class UpgradeGUI extends GUI implements Listener {
 
     public UpgradeGUI(Island island) {
         super(island, IridiumSkyblock.inventories.upgradeGUISize, IridiumSkyblock.inventories.upgradeGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

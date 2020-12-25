@@ -26,7 +26,7 @@ public class EntityPickupItemListener implements Listener {
             if (!island.getPermissions(user).pickupItems)
                 event.setCancelled(true);
         } catch (Exception ex) {
-            IridiumSkyblock.instance.sendErrorMessage(ex);
+            IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 }

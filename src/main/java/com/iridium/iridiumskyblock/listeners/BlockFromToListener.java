@@ -6,8 +6,6 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.List;
-import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,6 +17,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockFromToEvent;
+
+import java.util.List;
+import java.util.Random;
 
 public class BlockFromToListener implements Listener {
 
@@ -58,7 +59,7 @@ public class BlockFromToListener implements Listener {
             else if (worldName.equals(config.netherWorldName)) islandOreUpgrades = IridiumSkyblock.netherOreUpgradeCache.get(oreLevel);
             else return;
 
-            Bukkit.getScheduler().runTask(IridiumSkyblock.instance, () -> {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 final Material toMaterial = toBlock.getType();
                 if (!(toMaterial.equals(Material.COBBLESTONE) || toMaterial.equals(Material.STONE)))
                     return;
@@ -85,7 +86,7 @@ public class BlockFromToListener implements Listener {
                 }
             });
         } catch (Exception ex) {
-            IridiumSkyblock.instance.sendErrorMessage(ex);
+            IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 
@@ -101,7 +102,7 @@ public class BlockFromToListener implements Listener {
 
             island.failedGenerators.add(location);
         } catch (Exception ex) {
-            IridiumSkyblock.instance.sendErrorMessage(ex);
+            IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 

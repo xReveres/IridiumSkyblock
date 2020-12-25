@@ -82,7 +82,7 @@ public class PlayerMoveListener implements Listener {
                         .replace("%prefix%", config.prefix)));
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

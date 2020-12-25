@@ -37,7 +37,7 @@ public class BlockGrowListener implements Listener {
             blockState.setData(crops);
             blockState.update();
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

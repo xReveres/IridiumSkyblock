@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class BoosterGUI extends GUI implements Listener {
     public BoosterGUI(Island island) {
         super(island, IridiumSkyblock.inventories.boosterGUISize, IridiumSkyblock.inventories.boosterGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

@@ -7,12 +7,13 @@ import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+
+import java.util.Map;
 
 public class PlayerFishListener implements Listener {
 
@@ -38,7 +39,7 @@ public class PlayerFishListener implements Listener {
                     island.addMission(mission.name, 1);
             }
         } catch (Exception e) {
-            IridiumSkyblock.instance.sendErrorMessage(e);
+            IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
     }
 }

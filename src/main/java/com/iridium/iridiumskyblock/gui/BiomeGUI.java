@@ -6,10 +6,6 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Config;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -20,6 +16,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BiomeGUI extends GUI implements Listener {
     private int i = 0;
@@ -38,7 +39,7 @@ public class BiomeGUI extends GUI implements Listener {
 
     public BiomeGUI(Island island, World.Environment environment) {
         this.environment = environment;
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
         int size = (int) (Math.floor(Biome.values().length / ((double) IridiumSkyblock.inventories.biomeGUISize - 9)) + 1);
         for (int i = 1; i <= size; i++) {
             pages.put(i, new BiomeGUI(island, i, this));

@@ -1,15 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.api.IslandDemoteEvent;
 import com.iridium.iridiumskyblock.api.IslandPromoteEvent;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -19,13 +12,17 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MembersGUI extends GUI implements Listener {
 
     public Map<Integer, User> users = new HashMap<>();
 
     public MembersGUI(Island island) {
         super(island, IridiumSkyblock.inventories.membersGUISize, IridiumSkyblock.inventories.membersGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     @Override

@@ -1,19 +1,15 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Permissions;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PermissionsGUI extends GUI implements Listener {
 
@@ -23,7 +19,7 @@ public class PermissionsGUI extends GUI implements Listener {
 
     public PermissionsGUI(Island island) {
         super(island, IridiumSkyblock.inventories.permissionsGUISize, IridiumSkyblock.inventories.permissionsGUITitle);
-        IridiumSkyblock.instance.registerListeners(this);
+        IridiumSkyblock.getInstance().registerListeners(this);
     }
 
     public PermissionsGUI(Island island, Role role) {

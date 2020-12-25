@@ -9,28 +9,6 @@ import com.iridium.iridiumskyblock.managers.IslandManager;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NBTListCompound;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -44,6 +22,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class Utils {
 
     private static final boolean supports = XMaterial.supports(14);
@@ -52,7 +44,7 @@ public class Utils {
 
     static {
         {
-            InputStream inputStream = IridiumSkyblock.instance.getResource("itemdata.json");
+            InputStream inputStream = IridiumSkyblock.getInstance().getResource("itemdata.json");
             Scanner sc = new Scanner(inputStream);
             //Reading line by line from scanner to StringBuffer
             StringBuffer content = new StringBuffer();
@@ -386,17 +378,17 @@ public class Utils {
         Island island = u.getIsland();
         if (island != null) {
             island.crystals += crystals;
-            if (IridiumSkyblock.instance.economy == null) {
+            if (IridiumSkyblock.getInstance().economy == null) {
                 island.money += vault;
             } else {
-                IridiumSkyblock.instance.economy.depositPlayer(p, vault);
+                IridiumSkyblock.getInstance().economy.depositPlayer(p, vault);
             }
         } else {
-            if (IridiumSkyblock.instance.economy == null) {
-                IridiumSkyblock.instance.getLogger().warning("Vault plugin not found");
+            if (IridiumSkyblock.getInstance().economy == null) {
+                IridiumSkyblock.getInstance().getLogger().warning("Vault plugin not found");
                 return;
             }
-            IridiumSkyblock.instance.economy.depositPlayer(p, vault);
+            IridiumSkyblock.getInstance().economy.depositPlayer(p, vault);
         }
         TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, vault).add(TransactionType.CRYSTALS, crystals));
     }
@@ -406,9 +398,9 @@ public class Utils {
         Island island = u.getIsland();
         if (island != null) {
             if (island.crystals < crystals) return BuyResponce.NOT_ENOUGH_CRYSTALS;
-            if (IridiumSkyblock.instance.economy != null) {
-                if (IridiumSkyblock.instance.economy.getBalance(p) >= vault) {
-                    IridiumSkyblock.instance.economy.withdrawPlayer(p, vault);
+            if (IridiumSkyblock.getInstance().economy != null) {
+                if (IridiumSkyblock.getInstance().economy.getBalance(p) >= vault) {
+                    IridiumSkyblock.getInstance().economy.withdrawPlayer(p, vault);
                     island.crystals -= crystals;
                     TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
                     return BuyResponce.SUCCESS;
@@ -421,9 +413,9 @@ public class Utils {
                 return BuyResponce.SUCCESS;
             }
         }
-        if (IridiumSkyblock.instance.economy != null) {
-            if (IridiumSkyblock.instance.economy.getBalance(p) >= vault && crystals == 0) {
-                IridiumSkyblock.instance.economy.withdrawPlayer(p, vault);
+        if (IridiumSkyblock.getInstance().economy != null) {
+            if (IridiumSkyblock.getInstance().economy.getBalance(p) >= vault && crystals == 0) {
+                IridiumSkyblock.getInstance().economy.withdrawPlayer(p, vault);
                 TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault));
                 return BuyResponce.SUCCESS;
             }

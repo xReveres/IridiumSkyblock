@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -12,6 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.vehicle.VehicleCreateEvent;
+
+import java.util.UUID;
 
 public class EntitySpawnListener implements Listener {
 
@@ -24,7 +25,7 @@ public class EntitySpawnListener implements Listener {
 
         if (!IridiumSkyblock.configuration.blockedEntities.contains(event.getEntityType())) return;
 
-        IridiumSkyblock.instance.entities.put(entity.getUniqueId(), island);
+        IridiumSkyblock.getInstance().entities.put(entity.getUniqueId(), island);
         monitorEntity(entity);
     }
 
@@ -37,7 +38,7 @@ public class EntitySpawnListener implements Listener {
 
         if (!IridiumSkyblock.configuration.blockedEntities.contains(vehicle.getType())) return;
 
-        IridiumSkyblock.instance.entities.put(vehicle.getUniqueId(), island);
+        IridiumSkyblock.getInstance().entities.put(vehicle.getUniqueId(), island);
         monitorEntity(vehicle);
     }
 
@@ -46,14 +47,14 @@ public class EntitySpawnListener implements Listener {
         if (entity.isDead()) return;
 
         final UUID uuid = entity.getUniqueId();
-        final Island startingIsland = IridiumSkyblock.instance.entities.get(uuid);
+        final Island startingIsland = IridiumSkyblock.getInstance().entities.get(uuid);
         if (startingIsland.isInIsland(entity.getLocation())) {
             //The entity is still in the island, so make a scheduler to check again
-            Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.instance, () -> monitorEntity(entity), 20);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> monitorEntity(entity), 20);
         } else {
             //The entity is not in the island, so remove it
             entity.remove();
-            IridiumSkyblock.instance.entities.remove(uuid);
+            IridiumSkyblock.getInstance().entities.remove(uuid);
         }
     }
 }

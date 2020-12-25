@@ -4,15 +4,8 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.Objects;
-import java.util.function.Supplier;
 import org.bukkit.Location;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Egg;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -20,6 +13,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.projectiles.ProjectileSource;
+
+import java.util.Objects;
+import java.util.function.Supplier;
 
 public class EntityDamageByEntityListener implements Listener {
 
@@ -141,7 +137,7 @@ public class EntityDamageByEntityListener implements Listener {
                 return;
             }
         } catch (Exception ex) {
-            IridiumSkyblock.instance.sendErrorMessage(ex);
+            IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 
@@ -162,7 +158,7 @@ public class EntityDamageByEntityListener implements Listener {
             if (!island.getPermissions(attackerUser).killMobs)
                 event.setCancelled(true);
         } catch (Exception ex) {
-            IridiumSkyblock.instance.sendErrorMessage(ex);
+            IridiumSkyblock.getInstance().sendErrorMessage(ex);
         }
     }
 

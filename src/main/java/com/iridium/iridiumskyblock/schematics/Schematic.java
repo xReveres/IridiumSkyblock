@@ -5,12 +5,6 @@ import com.google.gson.JsonParser;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,14 +13,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
-import org.jnbt.ByteTag;
-import org.jnbt.CompoundTag;
-import org.jnbt.IntArrayTag;
-import org.jnbt.IntTag;
-import org.jnbt.ListTag;
-import org.jnbt.ShortTag;
-import org.jnbt.StringTag;
-import org.jnbt.Tag;
+import org.jnbt.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class Schematic implements WorldEdit {
 
@@ -208,11 +202,11 @@ public class Schematic implements WorldEdit {
                         }
                     }
                 } catch (Exception e) {
-                    IridiumSkyblock.instance.sendErrorMessage(e);
+                    IridiumSkyblock.getInstance().sendErrorMessage(e);
                 }
             } else {
                 location.getBlock().setType(Material.STONE);
-                IridiumSkyblock.instance.getLogger().warning("Tried to load a 1.13+ schematic in a native minecraft version");
+                IridiumSkyblock.getInstance().getLogger().warning("Tried to load a 1.13+ schematic in a native minecraft version");
             }
         }
     }
