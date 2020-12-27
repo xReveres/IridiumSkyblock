@@ -730,17 +730,20 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void saveData(boolean async) {
-        if (async) Bukkit.getScheduler().runTaskAsynchronously(this, () -> saveData(false));
+        if (async) {
+            Bukkit.getScheduler().runTaskAsynchronously(this, () -> saveData(false));
+            return;
+        }
+        Connection connection = sqlManager.getConnection();
         for (User user : UserManager.cache.values()) {
-            user.save(false);
+            user.save(connection);
         }
 
         for (Island island : IslandManager.getLoadedIslands()) {
-            island.save(false);
-            IslandDataManager.save(island, false);
+            island.save(connection);
+            IslandDataManager.save(island, connection);
         }
         try {
-            Connection connection = sqlManager.getConnection();
             PreparedStatement insert = connection.prepareStatement("UPDATE islandmanager SET nextID = ?, length=?, current=?, direction=?, x=?,y=?;");
             insert.setInt(1, IslandManager.nextID);
             insert.setInt(2, IslandManager.length);
@@ -750,6 +753,7 @@ public class IridiumSkyblock extends JavaPlugin {
             insert.setDouble(6, IslandManager.nextLocation.getZ());
             insert.executeUpdate();
             insert.close();
+            connection.commit();
             connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

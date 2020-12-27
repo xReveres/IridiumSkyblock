@@ -50,6 +50,7 @@ public class SQLManager {
             connection.createStatement().executeUpdate("DELETE FROM islands;");
             connection.createStatement().executeUpdate("DELETE FROM islandmanager;");
             connection.createStatement().executeUpdate("DELETE FROM islanddata;");
+            connection.commit();
             connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -75,6 +76,8 @@ public class SQLManager {
             connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS islanddata "
                     + "(islandID INTEGER, value DOUBLE, votes INTEGER, private BOOLEAN);");
 
+            connection.commit();
+
             connection.close();
 
         } catch (SQLException ex) {
@@ -84,7 +87,9 @@ public class SQLManager {
 
     public Connection getConnection() {
         try {
-            return hikariDataSource.getConnection();
+            Connection connection = hikariDataSource.getConnection();
+            connection.setAutoCommit(false);
+            return connection;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

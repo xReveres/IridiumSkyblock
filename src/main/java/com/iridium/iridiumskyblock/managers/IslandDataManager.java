@@ -45,25 +45,37 @@ public class IslandDataManager {
         return completableFuture;
     }
 
+    public static void save(Island island, Connection connection) {
+        try {
+            PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;");
+            deleteStatement.setInt(1, island.id);
+            deleteStatement.executeUpdate();
+            deleteStatement.close();
+            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO islanddata (islandID,value,votes,private) VALUES (?,?,?,?);");
+            insertStatement.setInt(1, island.id);
+            insertStatement.setDouble(2, island.value);
+            insertStatement.setInt(3, island.getVotes());
+            insertStatement.setBoolean(4, !island.visit);
+            insertStatement.executeUpdate();
+            insertStatement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public static void save(Island island, boolean async) {
-        if(async) Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> save(island, false));
-            Connection connection = IridiumSkyblock.sqlManager.getConnection();
-            try {
-                PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;");
-                deleteStatement.setInt(1, island.id);
-                deleteStatement.executeUpdate();
-                deleteStatement.close();
-                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO islanddata (islandID,value,votes,private) VALUES (?,?,?,?);");
-                insertStatement.setInt(1, island.id);
-                insertStatement.setDouble(2, island.value);
-                insertStatement.setInt(3, island.getVotes());
-                insertStatement.setBoolean(4, !island.visit);
-                insertStatement.executeUpdate();
-                insertStatement.close();
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+        if (async) {
+            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> save(island, false));
+            return;
+        }
+        Connection connection = IridiumSkyblock.sqlManager.getConnection();
+        save(island, connection);
+        try {
+            connection.commit();
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public enum IslandSortType {

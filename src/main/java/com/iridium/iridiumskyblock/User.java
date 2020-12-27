@@ -2,15 +2,12 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+
+import java.sql.Connection;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class User {
 
@@ -107,7 +104,7 @@ public class User {
         holograms.clear();
     }
 
-    public void save(boolean async) {
-        UserManager.saveUser(this, async);
+    public void save(Connection connection) {
+        UserManager.saveUser(this, connection);
     }
 }

@@ -64,6 +64,7 @@ public class IslandManager {
                 insert.setString(2, IridiumSkyblock.persist.gson.toJson(island));
                 insert.executeUpdate();
                 insert.close();
+                connection.commit();
                 connection.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -246,17 +247,26 @@ public class IslandManager {
         return (name.equals(config.worldName) || name.equals(config.netherWorldName));
     }
 
-    public static void save(Island island, boolean async) {
-        if (async)
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> save(island, false));
+    public static void save(Island island, Connection connection) {
         try {
-            Connection connection = IridiumSkyblock.sqlManager.getConnection();
             PreparedStatement insert = connection.prepareStatement("UPDATE islands SET json = ? WHERE id = ?;");
             insert.setString(1, IridiumSkyblock.persist.gson.toJson(island));
             insert.setInt(2, island.id);
             insert.executeUpdate();
             insert.close();
-            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void removeIsland(Island island, Connection connection) {
+        final int id = island.id;
+        cache.remove(id);
+        try {
+            PreparedStatement insert = connection.prepareStatement("DELETE FROM islands WHERE id=?;");
+            insert.setInt(1, id);
+            insert.executeUpdate();
+            insert.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -268,15 +278,13 @@ public class IslandManager {
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.sqlManager.getConnection();
-                PreparedStatement insert = connection.prepareStatement("DELETE FROM islands WHERE id=?;");
-                insert.setInt(1, id);
-                insert.executeUpdate();
-                insert.close();
+                removeIsland(island, connection);
+                ClaimManager.removeClaims(island.id, connection);
+                connection.commit();
                 connection.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         });
-        ClaimManager.removeClaims(island.id);
     }
 }

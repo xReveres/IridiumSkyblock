@@ -36,37 +36,42 @@ public class ClaimManager {
         return islands;
     }
 
+    public static void addClaim(int x, int z, int island, Connection connection) {
+        try {
+            PreparedStatement insert = connection.prepareStatement("INSERT INTO claims (x,z,island) VALUES (?,?,?);");
+            insert.setInt(1, x);
+            insert.setInt(2, z);
+            insert.setInt(3, island);
+            insert.executeUpdate();
+            insert.close();
+            cache.remove(Collections.unmodifiableList(Arrays.asList(x, z)));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public static void addClaim(int x, int z, int island) {
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.sqlManager.getConnection();
-                PreparedStatement insert = connection.prepareStatement("INSERT INTO claims (x,z,island) VALUES (?,?,?);");
-                insert.setInt(1, x);
-                insert.setInt(2, z);
-                insert.setInt(3, island);
-                insert.executeUpdate();
-                insert.close();
+                addClaim(x, z, island, connection);
+                connection.commit();
                 connection.close();
-                cache.remove(Collections.unmodifiableList(Arrays.asList(x, z)));
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         });
     }
 
-    public static void removeClaims(int island) {
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            try {
-                Connection connection = IridiumSkyblock.sqlManager.getConnection();
-                PreparedStatement insert = connection.prepareStatement("DELETE FROM claims WHERE island=?;");
-                insert.setInt(1, island);
-                insert.executeUpdate();
-                insert.close();
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-        });
+    public static void removeClaims(int island, Connection connection) {
+        try {
+            PreparedStatement insert = connection.prepareStatement("DELETE FROM claims WHERE island=?;");
+            insert.setInt(1, island);
+            insert.executeUpdate();
+            insert.close();
+        } catch (
+                SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

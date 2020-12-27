@@ -31,6 +31,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -265,7 +266,7 @@ public class Island {
                         } else {
                             try {
                                 material = (Material) getMaterial.invoke(null, getBlock.invoke(
-                                    netherSnapshot, x1, y, z1));
+                                        netherSnapshot, x1, y, z1));
                             } catch (IllegalAccessException | InvocationTargetException e) {
                                 e.printStackTrace();
                                 return;
@@ -362,7 +363,7 @@ public class Island {
         if (worldName.equals(IslandManager.getWorld().getName())) {
             IridiumSkyblock.nms.sendWorldBorder(p, borderColor, size, center);
         } else if (IridiumSkyblock.configuration.netherIslands && worldName
-            .equals(IslandManager.getNetherWorld().getName())) {
+                .equals(IslandManager.getNetherWorld().getName())) {
             Location loc = center.clone();
             loc.setWorld(IslandManager.getNetherWorld());
             IridiumSkyblock.nms.sendWorldBorder(p, borderColor, size, loc);
@@ -1192,7 +1193,7 @@ public class Island {
         return Utils.NumberFormatter.format(crystals);
     }
 
-    public void save(boolean async) {
-        IslandManager.save(this, async);
+    public void save(Connection connection) {
+        IslandManager.save(this, connection);
     }
 }
