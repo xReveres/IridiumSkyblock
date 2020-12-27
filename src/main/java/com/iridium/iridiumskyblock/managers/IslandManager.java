@@ -60,7 +60,7 @@ public class IslandManager {
             try {
                 Connection connection = IridiumSkyblock.sqlManager.getConnection();
                 PreparedStatement insert = connection.prepareStatement("INSERT INTO islands (id,json) VALUES (?,?);");
-                insert.setInt(1, nextID);
+                insert.setInt(1, island.id);
                 insert.setString(2, IridiumSkyblock.persist.gson.toJson(island));
                 insert.executeUpdate();
                 insert.close();
