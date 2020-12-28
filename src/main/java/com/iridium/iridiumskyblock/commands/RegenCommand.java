@@ -25,11 +25,13 @@ public class RegenCommand extends Command {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
                     long time = user.getIsland().canGenerate() / 1000;
                     if (time == 0 || user.bypassing) {
-                        if (IridiumSkyblock.getSchematics().schematics.size() == 1) {
+                        if (IridiumSkyblock.getSchematics().schematicList.size() == 1) {
                             p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
-                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
-                                    user.getIsland().schematic = schematic.name;
+                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematicList) {
+                                    user.getIsland().schematic = schematic.overworldData.schematic;
+                                    user.getIsland().netherschematic = schematic.netherData.schematic;
                                     user.getIsland().home = user.getIsland().home.add(schematic.x, schematic.y, schematic.z);
+                                    break;
                                 }
                                 user.getIsland().pasteSchematic(true);
                                 if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
@@ -73,11 +75,13 @@ public class RegenCommand extends Command {
     public void admin(CommandSender sender, String[] args, Island island) {
         Player p = (Player) sender;
         if (island != null) {
-            if (IridiumSkyblock.getSchematics().schematics.size() == 1) {
+            if (IridiumSkyblock.getSchematics().schematicList.size() == 1) {
                 p.openInventory(new ConfirmationGUI(island, () -> {
-                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
-                        island.schematic = schematic.name;
+                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematicList) {
+                        island.schematic = schematic.overworldData.schematic;
+                        island.netherschematic = schematic.netherData.schematic;
                         island.home = island.home.add(schematic.x, schematic.y, schematic.z);
+                        break;
                     }
                     island.pasteSchematic(true);
                     if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {

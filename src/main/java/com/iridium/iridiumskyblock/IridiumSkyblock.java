@@ -494,26 +494,23 @@ public class IridiumSkyblock extends JavaPlugin {
             }
         }
 
-        for (Schematics.FakeSchematic fakeSchematic : schematics.schematics) {
-            if (fakeSchematic.netherisland == null) {
-                fakeSchematic.netherisland = fakeSchematic.name;
-            }
-            File overworld = new File(schematicFolder, fakeSchematic.name);
-            File nether = new File(schematicFolder, fakeSchematic.netherisland);
+        for (Schematics.FakeSchematic fakeSchematic : schematics.schematicList) {
+            File overworld = new File(schematicFolder, fakeSchematic.overworldData.schematic);
+            File nether = new File(schematicFolder, fakeSchematic.netherData.schematic);
             try {
                 if (overworld.exists()) {
                     schematic.getSchematicData(overworld);
                 } else {
-                    getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
+                    getLogger().warning("Failed to load schematic: " + fakeSchematic.overworldData.schematic);
                 }
                 if (nether.exists()) {
                     schematic.getSchematicData(nether);
                 } else {
-                    getLogger().warning("Failed to load schematic: " + fakeSchematic.netherisland);
+                    getLogger().warning("Failed to load schematic: " + fakeSchematic.netherData.schematic);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                getLogger().warning("Failed to load schematic: " + fakeSchematic.name);
+                getLogger().warning("Failed to load schematic: " + fakeSchematic.netherData.schematic);
             }
         }
     }
@@ -584,13 +581,17 @@ public class IridiumSkyblock extends JavaPlugin {
             stackable.blockList = Arrays.asList(XMaterial.NETHERITE_BLOCK, XMaterial.DIAMOND_BLOCK, XMaterial.EMERALD_BLOCK, XMaterial.GOLD_BLOCK, XMaterial.IRON_BLOCK);
         }
 
+        if (schematics.schematics != null) {
+            for (Schematics.LegacyFakeSchematic legacyFakeSchematic : schematics.schematics) {
+                schematics.schematicList.add(legacyFakeSchematic.tonew());
+            }
+            schematics.schematicList.clear();
+        }
+
         if (inventories.red.slot == null) inventories.red.slot = 10;
         if (inventories.green.slot == null) inventories.green.slot = 12;
         if (inventories.blue.slot == null) inventories.blue.slot = 14;
         if (inventories.off.slot == null) inventories.off.slot = 16;
-        for (Schematics.FakeSchematic schematic : schematics.schematics) {
-            if (schematic.biome == null) schematic.biome = XBiome.PLAINS;
-        }
 
         missions.missions.remove(null);
 

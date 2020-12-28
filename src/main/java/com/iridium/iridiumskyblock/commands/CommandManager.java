@@ -27,18 +27,18 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public void registerCommands() {
         List<String> manuallyRegisteredCommands = Arrays.asList("shopCommand");
         Arrays.stream(IridiumSkyblock.getCommands().getClass().getFields())
-            .filter(field -> !manuallyRegisteredCommands.contains(field.getName()))
-            .map(field -> {
-                try {
-                    return (Command) field.get(IridiumSkyblock.getCommands());
-                } catch (IllegalAccessException exception) {
-                    exception.printStackTrace();
-                    return null;
-                }
-            })
-            .filter(Objects::nonNull)
-            .filter(command -> command.getClass().getSuperclass() == Command.class)
-            .forEach(this::registerCommand);
+                .filter(field -> !manuallyRegisteredCommands.contains(field.getName()))
+                .map(field -> {
+                    try {
+                        return (Command) field.get(IridiumSkyblock.getCommands());
+                    } catch (IllegalAccessException exception) {
+                        exception.printStackTrace();
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .filter(command -> command.getClass().getSuperclass() == Command.class)
+                .forEach(this::registerCommand);
 
         if (IridiumSkyblock.getConfiguration().islandShop) {
             registerCommand(IridiumSkyblock.getCommands().shopCommand);
@@ -57,9 +57,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
         try {
             if (!IridiumSkyblock.getConfiguration().mainCommandPerm.equalsIgnoreCase("") && !cs
-                .hasPermission(IridiumSkyblock.getConfiguration().mainCommandPerm)) {
+                    .hasPermission(IridiumSkyblock.getConfiguration().mainCommandPerm)) {
                 cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission
-                    .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 return false;
             }
             if (args.length != 0) {
@@ -68,17 +68,17 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                         if (command.player && !(cs instanceof Player)) {
                             // Must be a player
                             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer
-                                .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             return true;
                         }
                         if ((cs.hasPermission(command.permission) || command.permission
-                            .equalsIgnoreCase("") || command.permission
-                            .equalsIgnoreCase("iridiumskyblock.")) && command.enabled) {
+                                .equalsIgnoreCase("") || command.permission
+                                .equalsIgnoreCase("iridiumskyblock.")) && command.enabled) {
                             command.execute(cs, args);
                         } else {
                             // No permission
                             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission
-                                .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                         return true;
                     }
@@ -89,9 +89,11 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     User u = User.getUser(p);
                     if (u.getIsland() != null) {
                         if (u.getIsland().schematic == null) {
-                            if (IridiumSkyblock.getSchematics().schematics.size() == 1) {
-                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematics) {
-                                    u.getIsland().schematic = schematic.name;
+                            if (IridiumSkyblock.getSchematics().schematicList.size() == 1) {
+                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getSchematics().schematicList) {
+                                    u.getIsland().schematic = schematic.overworldData.schematic;
+                                    u.getIsland().netherschematic = schematic.netherData.schematic;
+                                    break;
                                 }
                             } else {
                                 p.openInventory(u.getIsland().schematicSelectGUI.getInventory());
@@ -110,7 +112,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 }
             }
             cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().unknownCommand
-                .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);
         }
@@ -125,9 +127,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 for (Command command : commands) {
                     for (String alias : command.aliases) {
                         if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && (
-                            command.enabled && (cs.hasPermission(command.permission)
-                                || command.permission.equalsIgnoreCase("") || command.permission
-                                .equalsIgnoreCase("iridiumskyblock.")))) {
+                                command.enabled && (cs.hasPermission(command.permission)
+                                        || command.permission.equalsIgnoreCase("") || command.permission
+                                        .equalsIgnoreCase("iridiumskyblock.")))) {
                             result.add(alias);
                         }
                     }
@@ -136,8 +138,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             }
             for (Command command : commands) {
                 if (command.aliases.contains(args[0]) && (command.enabled && (
-                    cs.hasPermission(command.permission) || command.permission.equalsIgnoreCase("")
-                        || command.permission.equalsIgnoreCase("iridiumskyblock.")))) {
+                        cs.hasPermission(command.permission) || command.permission.equalsIgnoreCase("")
+                                || command.permission.equalsIgnoreCase("iridiumskyblock.")))) {
                     return command.TabComplete(cs, cmd, s, args);
                 }
             }

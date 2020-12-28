@@ -23,9 +23,9 @@ public class SchematicSelectGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
-        if (getIsland()!=null) {
+        if (getIsland() != null) {
             int i = 0;
-            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
+            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematicList) {
                 if (fakeSchematic.slot == null) fakeSchematic.slot = i;
                 try {
                     setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1, fakeSchematic.displayname, fakeSchematic.lore));
@@ -43,7 +43,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
-            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
+            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematicList) {
                 if (e.getSlot() == fakeSchematic.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
                     e.getWhoClicked().closeInventory();
                     if (getIsland().schematic != null) {
@@ -56,12 +56,12 @@ public class SchematicSelectGUI extends GUI implements Listener {
                         }
                     }
                     if (getIsland().schematic == null) {
-                        getIsland().schematic = fakeSchematic.name;
-                        getIsland().netherschematic = fakeSchematic.netherisland;
+                        getIsland().schematic = fakeSchematic.overworldData.schematic;
+                        getIsland().netherschematic = fakeSchematic.netherData.schematic;
                         getIsland().pasteSchematic((Player) e.getWhoClicked(), false);
                     } else {
-                        getIsland().schematic = fakeSchematic.name;
-                        getIsland().netherschematic = fakeSchematic.netherisland;
+                        getIsland().schematic = fakeSchematic.overworldData.schematic;
+                        getIsland().netherschematic = fakeSchematic.netherData.schematic;
                         getIsland().pasteSchematic(true);
                     }
                     getIsland().home = getIsland().home.add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z);
