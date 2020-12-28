@@ -44,13 +44,16 @@ public class ClaimManager {
             insert.setInt(3, island);
             insert.executeUpdate();
             insert.close();
-            cache.remove(Collections.unmodifiableList(Arrays.asList(x, z)));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
     public static void addClaim(int x, int z, int island) {
+        List<Integer> chunkKey = Collections.unmodifiableList(Arrays.asList(x, z));
+        Set<Integer> islandIds = cache.getOrDefault(chunkKey, new HashSet<>());
+        islandIds.add(island);
+        cache.put(chunkKey, islandIds);
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.getSqlManager().getConnection();
