@@ -140,8 +140,8 @@ public class BlockPlaceListener implements Listener {
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), (Runnable) island::sendHolograms);
                 event.getPlayer().setItemInHand(null);
                 island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
-                    if (original == null) return 1;
-                    return original + 1;
+                    if (original == null) return 1 + amount;
+                    return original + amount;
                 });
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
             }
