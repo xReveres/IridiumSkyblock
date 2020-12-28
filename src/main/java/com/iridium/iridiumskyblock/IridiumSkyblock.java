@@ -563,6 +563,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 insert.close();
             }
             statement.close();
+            connection.commit();
             connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
