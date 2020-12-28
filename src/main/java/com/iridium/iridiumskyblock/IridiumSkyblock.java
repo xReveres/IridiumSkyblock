@@ -75,7 +75,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private static SQLManager sqlManager;
     private static CommandManager commandManager;
-    private List<String> languages = new ArrayList<>();
+    private final List<String> languages = new ArrayList<>();
     private LanguagesGUI languagesGUI;
     private String latest;
 
@@ -90,7 +90,7 @@ public class IridiumSkyblock extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            nms = (NMS) Class.forName("com.iridium.IridiumSkyblock.getNms()." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
+            nms = (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
         } catch (ClassNotFoundException e) {
             //Unsupported Version
             getLogger().info("Unsupported Version Detected: " + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
