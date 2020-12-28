@@ -280,6 +280,7 @@ public class IslandManager {
                 Connection connection = IridiumSkyblock.getSqlManager().getConnection();
                 removeIsland(island, connection);
                 ClaimManager.removeClaims(island.id, connection);
+                IslandDataManager.remove(island, connection);
                 connection.commit();
                 connection.close();
             } catch (SQLException throwables) {

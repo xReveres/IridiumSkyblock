@@ -44,6 +44,17 @@ public class IslandDataManager {
         return completableFuture;
     }
 
+    public static void remove(Island island, Connection connection) {
+        try {
+            PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;");
+            deleteStatement.setInt(1, island.id);
+            deleteStatement.executeUpdate();
+            deleteStatement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public static void save(Island island, Connection connection) {
         try {
             PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;");
