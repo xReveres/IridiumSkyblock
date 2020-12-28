@@ -42,6 +42,8 @@ public class RecalculateCommand extends Command {
                     int id = islands.next();
                     Island island = IslandManager.getIslandViaId(id);
                     if (island != null) {
+                        //Force load chunks
+                        island.center.getChunk();
                         island.initBlocks();
                     }
                 } else {
