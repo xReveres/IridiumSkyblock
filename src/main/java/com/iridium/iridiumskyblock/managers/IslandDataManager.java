@@ -25,8 +25,7 @@ public class IslandDataManager {
             Connection connection = IridiumSkyblock.getSqlManager().getConnection();
             try {
                 int index = 0;
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM islanddata ORDER BY ? DESC;");
-                statement.setString(1, sortType.name);
+                PreparedStatement statement = connection.prepareStatement("SELECT * FROM islanddata ORDER BY `" + sortType.name + "` DESC;");
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next() && index < toIndex) {
                     if (resultSet.getBoolean("private") && ignorePrivate) continue;
