@@ -29,6 +29,8 @@ public class IslandDataManager {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next() && index < toIndex) {
                     if (resultSet.getBoolean("private") && ignorePrivate) continue;
+                    int id = resultSet.getInt("islandID");
+                    if (IslandManager.getIslandViaId(id) == null) continue;
                     if (index >= fromIndex) {
                         islands.add(resultSet.getInt("islandID"));
                     }
@@ -44,10 +46,10 @@ public class IslandDataManager {
         return completableFuture;
     }
 
-    public static void remove(Island island, Connection connection) {
+    public static void remove(int island, Connection connection) {
         try {
             PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;");
-            deleteStatement.setInt(1, island.id);
+            deleteStatement.setInt(1, island);
             deleteStatement.executeUpdate();
             deleteStatement.close();
         } catch (SQLException throwables) {
