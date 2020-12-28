@@ -11,8 +11,8 @@ public enum Role {
 
     @Override
     public String toString() {
-        if (IridiumSkyblock.messages.roles.containsKey(this)) {
-            return IridiumSkyblock.messages.roles.get(this);
+        if (IridiumSkyblock.getMessages().roles.containsKey(this)) {
+            return IridiumSkyblock.getMessages().roles.get(this);
         }
         return this.name();
     }

@@ -18,7 +18,7 @@ public class ClaimManager {
         if (cache.containsKey(chunkKey)) return cache.get(chunkKey);
         Set<Integer> islands = new HashSet<>();
         try {
-            Connection connection = IridiumSkyblock.sqlManager.getConnection();
+            Connection connection = IridiumSkyblock.getSqlManager().getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM claims WHERE x =? AND z=?;");
             statement.setInt(1, x);
             statement.setInt(2, z);
@@ -53,7 +53,7 @@ public class ClaimManager {
     public static void addClaim(int x, int z, int island) {
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
-                Connection connection = IridiumSkyblock.sqlManager.getConnection();
+                Connection connection = IridiumSkyblock.getSqlManager().getConnection();
                 addClaim(x, z, island, connection);
                 connection.commit();
                 connection.close();

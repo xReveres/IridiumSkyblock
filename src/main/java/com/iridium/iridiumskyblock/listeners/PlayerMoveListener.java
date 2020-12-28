@@ -29,7 +29,7 @@ public class PlayerMoveListener implements Listener {
             final Location location = player.getLocation();
             if (!IslandManager.isIslandWorld(location)) return;
 
-            final Config config = IridiumSkyblock.configuration;
+            final Config config = IridiumSkyblock.getConfiguration();
 
             if (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ() || event.getFrom().getY() != event.getTo().getY() && event.getTo().getY() < 0) {
                 final Island island = IslandManager.getIslandViaLocation(location);
@@ -44,7 +44,7 @@ public class PlayerMoveListener implements Listener {
                     if (world == null) return;
 
                     if (island != null) {
-                        if (!IridiumSkyblock.configuration.keepInventoryOnVoid) player.getInventory().clear();
+                        if (!IridiumSkyblock.getConfiguration().keepInventoryOnVoid) player.getInventory().clear();
                         if (world.getName().equals(IslandManager.getWorld().getName()))
                             island.teleportHome(player);
                         else
@@ -78,7 +78,7 @@ public class PlayerMoveListener implements Listener {
                 player.setAllowFlight(false);
                 player.setFlying(false);
                 user.flying = false;
-                player.sendMessage(Utils.color(IridiumSkyblock.messages.flightDisabled
+                player.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightDisabled
                         .replace("%prefix%", config.prefix)));
             }
         } catch (Exception e) {

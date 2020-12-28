@@ -41,7 +41,7 @@ public class BlockFromToListener implements Listener {
                     event.setCancelled(true);
             }
 
-            if (!IridiumSkyblock.upgrades.oresUpgrade.enabled) return;
+            if (!IridiumSkyblock.getUpgrades().oresUpgrade.enabled) return;
 
             if (event.getFace() == BlockFace.DOWN) return;
 
@@ -53,7 +53,7 @@ public class BlockFromToListener implements Listener {
             if (world == null) return;
 
             final String worldName = world.getName();
-            final Config config = IridiumSkyblock.configuration;
+            final Config config = IridiumSkyblock.getConfiguration();
             List<String> islandOreUpgrades;
             if (worldName.equals(config.worldName)) islandOreUpgrades = IridiumSkyblock.oreUpgradeCache.get(oreLevel);
             else if (worldName.equals(config.netherWorldName)) islandOreUpgrades = IridiumSkyblock.netherOreUpgradeCache.get(oreLevel);

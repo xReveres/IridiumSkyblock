@@ -12,7 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class BorderColorGUI extends GUI implements Listener {
 
     public BorderColorGUI(Island island) {
-        super(island, IridiumSkyblock.inventories.borderColorGUISize, IridiumSkyblock.inventories.borderColorGUITitle);
+        super(island, IridiumSkyblock.getInventories().borderColorGUISize, IridiumSkyblock.getInventories().borderColorGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -20,16 +20,16 @@ public class BorderColorGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
-        if (IridiumSkyblock.border.RedEnabled)
-            setItem(IridiumSkyblock.inventories.red.slot, Utils.makeItem(IridiumSkyblock.inventories.red));
-        if (IridiumSkyblock.border.BlueEnabled)
-            setItem(IridiumSkyblock.inventories.blue.slot, Utils.makeItem(IridiumSkyblock.inventories.blue));
-        if (IridiumSkyblock.border.GreenEnabled)
-            setItem(IridiumSkyblock.inventories.green.slot, Utils.makeItem(IridiumSkyblock.inventories.green));
-        if (IridiumSkyblock.border.OffEnabled)
-            setItem(IridiumSkyblock.inventories.off.slot, Utils.makeItem(IridiumSkyblock.inventories.off));
-        if (IridiumSkyblock.inventories.backButtons)
-            setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.inventories.back));
+        if (IridiumSkyblock.getBorder().RedEnabled)
+            setItem(IridiumSkyblock.getInventories().red.slot, Utils.makeItem(IridiumSkyblock.getInventories().red));
+        if (IridiumSkyblock.getBorder().BlueEnabled)
+            setItem(IridiumSkyblock.getInventories().blue.slot, Utils.makeItem(IridiumSkyblock.getInventories().blue));
+        if (IridiumSkyblock.getBorder().GreenEnabled)
+            setItem(IridiumSkyblock.getInventories().green.slot, Utils.makeItem(IridiumSkyblock.getInventories().green));
+        if (IridiumSkyblock.getBorder().OffEnabled)
+            setItem(IridiumSkyblock.getInventories().off.slot, Utils.makeItem(IridiumSkyblock.getInventories().off));
+        if (IridiumSkyblock.getInventories().backButtons)
+            setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
     }
 
     @EventHandler
@@ -38,16 +38,16 @@ public class BorderColorGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (e.getCurrentItem() != null) {
-                if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.inventories.backButtons) {
+                if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
                     e.getWhoClicked().openInventory(getIsland().islandMenuGUI.getInventory());
                 }
-                if (IridiumSkyblock.border.BlueEnabled && e.getSlot() == IridiumSkyblock.inventories.blue.slot)
+                if (IridiumSkyblock.getBorder().BlueEnabled && e.getSlot() == IridiumSkyblock.getInventories().blue.slot)
                     IslandManager.getIslandViaId(islandID).setBorderColor(Color.Blue);
-                if (IridiumSkyblock.border.RedEnabled && e.getSlot() == IridiumSkyblock.inventories.red.slot)
+                if (IridiumSkyblock.getBorder().RedEnabled && e.getSlot() == IridiumSkyblock.getInventories().red.slot)
                     IslandManager.getIslandViaId(islandID).setBorderColor(Color.Red);
-                if (IridiumSkyblock.border.GreenEnabled && e.getSlot() == IridiumSkyblock.inventories.green.slot)
+                if (IridiumSkyblock.getBorder().GreenEnabled && e.getSlot() == IridiumSkyblock.getInventories().green.slot)
                     IslandManager.getIslandViaId(islandID).setBorderColor(Color.Green);
-                if (IridiumSkyblock.border.OffEnabled && e.getSlot() == IridiumSkyblock.inventories.off.slot)
+                if (IridiumSkyblock.getBorder().OffEnabled && e.getSlot() == IridiumSkyblock.getInventories().off.slot)
                     IslandManager.getIslandViaId(islandID).setBorderColor(Color.Off);
             }
         }

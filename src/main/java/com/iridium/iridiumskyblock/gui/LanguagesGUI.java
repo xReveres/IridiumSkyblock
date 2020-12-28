@@ -24,11 +24,11 @@ public class LanguagesGUI extends GUI implements Listener {
 
     public LanguagesGUI() {
         pages = new HashMap<>();
-        if (IridiumSkyblock.getInstance().languages.isEmpty()) {
+        if (IridiumSkyblock.getInstance().getLanguages().isEmpty()) {
             pages.put(1, new LanguagesGUI(1, this));
             return;
         }
-        for (int i = 1; i <= Math.ceil(IridiumSkyblock.getInstance().languages.size() / 45.00); i++) {
+        for (int i = 1; i <= Math.ceil(IridiumSkyblock.getInstance().getLanguages().size() / 45.00); i++) {
             pages.put(i, new LanguagesGUI(i, this));
         }
     }
@@ -48,8 +48,8 @@ public class LanguagesGUI extends GUI implements Listener {
         languages.clear();
         int slot = 0;
         int i = 0;
-        java.util.Collections.sort(IridiumSkyblock.getInstance().languages);
-        for (String language : IridiumSkyblock.getInstance().languages) {
+        java.util.Collections.sort(IridiumSkyblock.getInstance().getLanguages());
+        for (String language : IridiumSkyblock.getInstance().getLanguages()) {
             if (i >= (page - 1) * 45 && i < page * 54) {
                 if (slot < 45) {
                     languages.put(slot, language);
@@ -59,8 +59,8 @@ public class LanguagesGUI extends GUI implements Listener {
             }
             i++;
         }
-        setItem(getInventory().getSize() - 3, Utils.makeItem(IridiumSkyblock.inventories.nextPage));
-        setItem(getInventory().getSize() - 7, Utils.makeItem(IridiumSkyblock.inventories.previousPage));
+        setItem(getInventory().getSize() - 3, Utils.makeItem(IridiumSkyblock.getInventories().nextPage));
+        setItem(getInventory().getSize() - 7, Utils.makeItem(IridiumSkyblock.getInventories().previousPage));
     }
 
     @Override

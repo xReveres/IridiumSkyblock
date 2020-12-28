@@ -1,14 +1,11 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
-import java.util.Collections;
-import java.util.List;
+import com.iridium.iridiumskyblock.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
+import java.util.List;
 
 public class LeaveCommand extends Command {
 
@@ -22,13 +19,13 @@ public class LeaveCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
-                sender.sendMessage(Utils.color(IridiumSkyblock.messages.cantLeaveIfOwner.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantLeaveIfOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             } else {
                 user.getIsland().removeUser(user);
-                sender.sendMessage(Utils.color(IridiumSkyblock.messages.leftIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().leftIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.messages.noIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

@@ -4,10 +4,11 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
-import java.util.Arrays;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class FlyCommand extends Command {
 
@@ -25,21 +26,21 @@ public class FlyCommand extends Command {
                     if (p.getAllowFlight()) {
                         p.setAllowFlight(false);
                         p.setFlying(false);
-                        p.sendMessage(Utils.color(IridiumSkyblock.messages.flightDisabled.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     } else {
                         p.setAllowFlight(true);
                         p.setFlying(true);
-                        p.sendMessage(Utils.color(IridiumSkyblock.messages.flightEnabled.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightEnabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                     user.flying = p.isFlying();
                 } else {
-                    p.sendMessage(Utils.color(IridiumSkyblock.messages.flightBoosterNotActive.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightBoosterNotActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else {
-                p.sendMessage(Utils.color(IridiumSkyblock.messages.mustBeInIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeInIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage(Utils.color(IridiumSkyblock.messages.noIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

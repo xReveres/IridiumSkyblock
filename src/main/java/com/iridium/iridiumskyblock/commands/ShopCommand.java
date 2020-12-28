@@ -3,11 +3,12 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.configs.Shop;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class ShopCommand extends Command {
 
@@ -20,14 +21,14 @@ public class ShopCommand extends Command {
         Player p = (Player) sender;
         if (args.length > 1) {
             String shopName = args[1];
-            for (Shop.ShopObject shopObject : IridiumSkyblock.shop.shop) {
+            for (Shop.ShopObject shopObject : IridiumSkyblock.getShop().shop) {
                 if (shopObject.name.equalsIgnoreCase(shopName)) {
-                    p.openInventory(IridiumSkyblock.shopGUI.shops.get(shopObject.slot).shops.get(1).getInventory());
+                    p.openInventory(IridiumSkyblock.getShopGUI().shops.get(shopObject.slot).shops.get(1).getInventory());
                     return;
                 }
             }
         }
-        p.openInventory(IridiumSkyblock.shopGUI.getInventory());
+        p.openInventory(IridiumSkyblock.getShopGUI().getInventory());
     }
 
     @Override
@@ -37,6 +38,6 @@ public class ShopCommand extends Command {
 
     @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
-        return IridiumSkyblock.shop.shop.stream().map(shopObject -> shopObject.name).collect(Collectors.toList());
+        return IridiumSkyblock.getShop().shop.stream().map(shopObject -> shopObject.name).collect(Collectors.toList());
     }
 }

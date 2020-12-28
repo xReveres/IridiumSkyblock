@@ -33,7 +33,7 @@ public class EntityDeathListener implements Listener {
             final Island userIsland = user.getIsland();
             if (userIsland == null) return;
 
-            for (Mission mission : IridiumSkyblock.missions.missions) {
+            for (Mission mission : IridiumSkyblock.getMissions().missions) {
                 final Map<String, Integer> levels = userIsland.getMissionLevels();
                 levels.putIfAbsent(mission.name, 1);
 

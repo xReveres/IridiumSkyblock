@@ -46,54 +46,51 @@ import java.util.stream.Collectors;
 
 public class IridiumSkyblock extends JavaPlugin {
 
-    public static SQL sql;
-    public static Config configuration;
-    public static Messages messages;
-    public static Missions missions;
-    public static Upgrades upgrades;
-    public static Boosters boosters;
-    public static Inventories inventories;
-    public static Schematics schematics;
-    public static Commands commands;
-    public static BlockValues blockValues;
-    public static Stackable stackable;
-    public static Shop shop;
-    public static TopGUI topGUI;
-    public static ShopGUI shopGUI;
-    public static Border border;
+    private static SQL sql;
+    private static Config configuration;
+    private static Messages messages;
+    private static Missions missions;
+    private static Upgrades upgrades;
+    private static Boosters boosters;
+    private static Inventories inventories;
+    private static Schematics schematics;
+    private static Commands commands;
+    private static BlockValues blockValues;
+    private static Stackable stackable;
+    private static Shop shop;
+    private static TopGUI topGUI;
+    private static ShopGUI shopGUI;
+    private static Border border;
     public static Map<Integer, VisitGUI> visitGUI;
     public static Map<Integer, List<String>> oreUpgradeCache = new HashMap<>();
     public static Map<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
-    public static SkyblockGenerator generator;
-    public static WorldEdit worldEdit;
-    public static Schematic schematic;
-    public static Persist persist;
+    private SkyblockGenerator generator;
+    private static WorldEdit worldEdit;
+    private static Schematic schematic;
+    private static Persist persist;
 
-    public SpawnerSupport spawnerSupport;
+    private SpawnerSupport spawnerSupport;
 
-    public Economy economy;
+    private Economy economy;
 
-    public static SQLManager sqlManager;
-    public static CommandManager commandManager;
-    public List<String> languages = new ArrayList<>();
-    public LanguagesGUI languagesGUI;
-    public String latest;
+    private static SQLManager sqlManager;
+    private static CommandManager commandManager;
+    private List<String> languages = new ArrayList<>();
+    private LanguagesGUI languagesGUI;
+    private String latest;
 
     public Map<UUID, Island> entities = new HashMap<>();
 
-    public static NMS nms;
-
-    public static int blocksPerTick;
+    private static NMS nms;
 
     private final HashMap<String, BlockData> legacy = new HashMap<>();
 
-    public static File schematicFolder;
+    private static File schematicFolder;
 
     @Override
     public void onEnable() {
-        blocksPerTick = -1;
         try {
-            nms = (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
+            nms = (NMS) Class.forName("com.iridium.IridiumSkyblock.getNms()." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
         } catch (ClassNotFoundException e) {
             //Unsupported Version
             getLogger().info("Unsupported Version Detected: " + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
@@ -128,7 +125,7 @@ public class IridiumSkyblock extends JavaPlugin {
             saveConfigs();
 
             startCounting();
-            getLanguages();
+            setLanguages();
             moveToSQL();
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
                 IslandManager.makeWorlds();
@@ -264,7 +261,7 @@ public class IridiumSkyblock extends JavaPlugin {
         return getDescription().getVersion();
     }
 
-    public void getLanguages() {
+    public void setLanguages() {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             languages.clear();
             try {
@@ -301,7 +298,7 @@ public class IridiumSkyblock extends JavaPlugin {
             }
             loadConfigs();
             saveConfigs();
-            player.sendMessage(Utils.color(IridiumSkyblock.messages.reloaded.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }, "Change Language");
         player.openInventory(gui.getInventory());
     }
@@ -339,7 +336,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + IslandManager.getWorld().getName() + " normal -g " + getName());
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + IslandManager.getWorld().getName());
 
-        if (IridiumSkyblock.configuration.netherIslands) {
+        if (IridiumSkyblock.getConfiguration().netherIslands) {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + IslandManager.getNetherWorld().getName() + " nether -g " + getName());
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + IslandManager.getNetherWorld().getName());
         }
@@ -356,7 +353,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 p.closeInventory();
                 User user = User.getUser(p);
                 for (Object object : user.getHolograms()) {
-                    IridiumSkyblock.nms.removeHologram(p, object);
+                    IridiumSkyblock.getNms().removeHologram(p, object);
                 }
             }
 
@@ -424,11 +421,11 @@ public class IridiumSkyblock extends JavaPlugin {
                         Player p = Bukkit.getPlayer(User.getUser(member).name);
                         if (p != null) {
                             if (cm != island.money && cc != island.crystals && ce != island.exp)
-                                p.sendMessage(Utils.color(IridiumSkyblock.messages.islandInterest
+                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
                                         .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
                                         .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
                                         .replace("%money%", Utils.NumberFormatter.format(island.interestMoney))
-                                        .replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     }
                 }
@@ -613,12 +610,12 @@ public class IridiumSkyblock extends JavaPlugin {
         if (shop.shop == null) shop = new Shop();
 
         if (commandManager != null) {
-            if (commandManager.commands.contains(IridiumSkyblock.commands.shopCommand)) {
+            if (commandManager.commands.contains(IridiumSkyblock.getCommands().shopCommand)) {
                 if (!configuration.islandShop)
-                    commandManager.unRegisterCommand(IridiumSkyblock.commands.shopCommand);
+                    commandManager.unRegisterCommand(IridiumSkyblock.getCommands().shopCommand);
             } else {
                 if (configuration.islandShop)
-                    commandManager.registerCommand(IridiumSkyblock.commands.shopCommand);
+                    commandManager.registerCommand(IridiumSkyblock.getCommands().shopCommand);
             }
         }
 
@@ -778,13 +775,112 @@ public class IridiumSkyblock extends JavaPlugin {
         });
     }
 
+    public static Persist getPersist() {
+        return persist;
+    }
+
+    public static Schematic getSchematic() {
+        return schematic;
+    }
+
+    public static WorldEdit getWorldEdit() {
+        return worldEdit;
+    }
+
+    public static Border getBorder() {
+        return border;
+    }
+
+    public static ShopGUI getShopGUI() {
+        return shopGUI;
+    }
+
+    public static TopGUI getTopGUI() {
+        return topGUI;
+    }
+
+    public static Shop getShop() {
+        return shop;
+    }
+
+    public static Stackable getStackable() {
+        return stackable;
+    }
+
+    public static BlockValues getBlockValues() {
+        return blockValues;
+    }
+
+    public static Commands getCommands() {
+        return commands;
+    }
+
+    public static Schematics getSchematics() {
+        return schematics;
+    }
+
+    public static Inventories getInventories() {
+        return inventories;
+    }
+
+    public static Boosters getBoosters() {
+        return boosters;
+    }
+
     public static Upgrades getUpgrades() {
-        if (upgrades == null) {
-            upgrades = new Upgrades();
-            IridiumSkyblock.persist.getFile(upgrades).delete();
-            IridiumSkyblock.getInstance().saveConfigs();
-        }
         return upgrades;
+    }
+
+    public static Missions getMissions() {
+        return missions;
+    }
+
+    public static Messages getMessages() {
+        return messages;
+    }
+
+    public static Config getConfiguration() {
+        return configuration;
+    }
+
+    public static SQL getSql() {
+        return sql;
+    }
+
+    public SpawnerSupport getSpawnerSupport() {
+        return spawnerSupport;
+    }
+
+    public Economy getEconomy() {
+        return economy;
+    }
+
+    public List<String> getLanguages() {
+        return languages;
+    }
+
+    public LanguagesGUI getLanguagesGUI() {
+        return languagesGUI;
+    }
+
+    public String getLatest() {
+        return latest;
+    }
+
+    public static NMS getNms() {
+        return nms;
+    }
+
+    public static File getSchematicFolder() {
+        return schematicFolder;
+    }
+
+    public static SQLManager getSqlManager() {
+        return sqlManager;
+    }
+
+    public static CommandManager getCommandManager() {
+        return commandManager;
     }
 
     public static IridiumSkyblock getInstance() {

@@ -22,7 +22,7 @@ public class IslandDataManager {
         CompletableFuture<List<Integer>> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             List<Integer> islands = new ArrayList<>();
-            Connection connection = IridiumSkyblock.sqlManager.getConnection();
+            Connection connection = IridiumSkyblock.getSqlManager().getConnection();
             try {
                 int index = 0;
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM islanddata ORDER BY ? DESC;");
@@ -68,7 +68,7 @@ public class IslandDataManager {
             Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> save(island, false));
             return;
         }
-        Connection connection = IridiumSkyblock.sqlManager.getConnection();
+        Connection connection = IridiumSkyblock.getSqlManager().getConnection();
         save(island, connection);
         try {
             connection.commit();

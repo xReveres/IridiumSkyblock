@@ -33,7 +33,7 @@ public class BlockBreakListener implements Listener {
             final User user = User.getUser(player);
 
             if (user.islandID == island.id) {
-                for (Missions.Mission mission : IridiumSkyblock.missions.missions) {
+                for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
                     final int key = island.getMissionLevels().computeIfAbsent(mission.name, (name) -> 1);
                     final Map<Integer, Missions.MissionData> levels = mission.levels;
                     final Missions.MissionData level = levels.get(key);
@@ -60,9 +60,9 @@ public class BlockBreakListener implements Listener {
 
             if (!island.getPermissions(user).breakBlocks || (!island.getPermissions(user).breakSpawners && XMaterial.matchXMaterial(block.getType()).equals(XMaterial.SPAWNER))) {
                 if (XMaterial.matchXMaterial(block.getType()).equals(XMaterial.SPAWNER)) {
-                    player.sendMessage(Utils.color(IridiumSkyblock.messages.noPermissionBreakSpawners.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermissionBreakSpawners.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
-                    player.sendMessage(Utils.color(IridiumSkyblock.messages.noPermissionBuild.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermissionBuild.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
                 event.setCancelled(true);
             }
@@ -81,7 +81,7 @@ public class BlockBreakListener implements Listener {
             if (island == null) return;
 
             final XMaterial xmaterial = XMaterial.matchXMaterial(block.getType());
-            if (Utils.isBlockValuable(block) || IridiumSkyblock.configuration.limitedBlocks.containsKey(xmaterial)) {
+            if (Utils.isBlockValuable(block) || IridiumSkyblock.getConfiguration().limitedBlocks.containsKey(xmaterial)) {
                 island.valuableBlocks.computeIfPresent(xmaterial.name(), (name, original) -> original - 1);
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
             }

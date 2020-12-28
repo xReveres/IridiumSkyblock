@@ -1,14 +1,15 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.configs.Config;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class SkyblockGenerator extends ChunkGenerator {
 
@@ -19,7 +20,7 @@ public class SkyblockGenerator extends ChunkGenerator {
         final ChunkData chunkData = createChunkData(world);
 
         Biome biome;
-        final Config config = IridiumSkyblock.configuration;
+        final Config config = IridiumSkyblock.getConfiguration();
         final String worldName = world.getName();
         if (worldName.equals(config.worldName))
             biome = config.defaultBiome.getBiome();

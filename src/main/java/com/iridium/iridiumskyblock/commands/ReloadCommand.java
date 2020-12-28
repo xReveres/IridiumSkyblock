@@ -17,7 +17,7 @@ public class ReloadCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         IridiumSkyblock.getInstance().loadConfigs();
-        sender.sendMessage(Utils.color(IridiumSkyblock.messages.reloaded.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
     }
 
     @Override

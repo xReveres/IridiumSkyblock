@@ -17,7 +17,7 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
             object.add("x", new JsonPrimitive(location.getX()));
             object.add("y", new JsonPrimitive(location.getY()));
             object.add("z", new JsonPrimitive(location.getZ()));
-            object.add("world", new JsonPrimitive(location.getWorld() == null ? IridiumSkyblock.configuration.worldName : location.getWorld().getName()));
+            object.add("world", new JsonPrimitive(location.getWorld() == null ? IridiumSkyblock.getConfiguration().worldName : location.getWorld().getName()));
             return object;
         } catch (Exception ex) {
             ex.printStackTrace();

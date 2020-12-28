@@ -14,7 +14,7 @@ public class CreatureSpawnListener implements Listener {
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
         try {
-            final Config config = IridiumSkyblock.configuration;
+            final Config config = IridiumSkyblock.getConfiguration();
             if (config.denyNaturalSpawn.isEmpty() || event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL)
                 return;
 

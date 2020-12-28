@@ -51,7 +51,7 @@ public class Schematic implements WorldEdit {
                     for (int z = 0; z < length; ++z) {
                         int index = y * width * length + z * width + x;
                         Block block = new Location(location.getWorld(), x + location.getX(), y + location.getY(), z + location.getZ()).getBlock();
-                        IridiumSkyblock.nms.setBlockFast(block, blocks[index], blockData[index]);
+                        IridiumSkyblock.getNms().setBlockFast(block, blocks[index], blockData[index]);
                     }
                 }
             }

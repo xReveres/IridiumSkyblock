@@ -5,10 +5,11 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.Collections;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
+import java.util.List;
 
 public class SetHomeCommand extends Command {
 
@@ -23,12 +24,12 @@ public class SetHomeCommand extends Command {
         if (user.getIsland() != null) {
             if (Utils.isSafe(p.getLocation(), user.getIsland()) && p.getLocation().getWorld().equals(IslandManager.getWorld())) {
                 user.getIsland().home = p.getLocation();
-                p.sendMessage(Utils.color(IridiumSkyblock.messages.setHome.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().setHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             } else {
-                p.sendMessage(Utils.color(IridiumSkyblock.messages.isNotSafe.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage(Utils.color(IridiumSkyblock.messages.noIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 
@@ -38,12 +39,12 @@ public class SetHomeCommand extends Command {
         if (island != null) {
             if (Utils.isSafe(p.getLocation(), island) && p.getLocation().getWorld().equals(IslandManager.getWorld())) {
                 island.home = p.getLocation();
-                p.sendMessage(Utils.color(IridiumSkyblock.messages.setHome.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().setHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             } else {
-                p.sendMessage(Utils.color(IridiumSkyblock.messages.isNotSafe.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage(Utils.color(IridiumSkyblock.messages.noIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

@@ -62,21 +62,21 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
 
         switch (placeholder) {
             case "island_value":
-                return user.getIsland() != null ? user.getIsland().getFormattedValue() : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? user.getIsland().getFormattedValue() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_level":
-                return user.getIsland() != null ? Utils.NumberFormatter.format(Math.floor(user.getIsland().value / IridiumSkyblock.configuration.valuePerLevel)) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? Utils.NumberFormatter.format(Math.floor(user.getIsland().value / IridiumSkyblock.getConfiguration().valuePerLevel)) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_rank":
-                return user.getIsland() != null ? NumberFormat.getInstance().format(Utils.getIslandRank(user.getIsland())) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? NumberFormat.getInstance().format(Utils.getIslandRank(user.getIsland())) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_owner":
-                return user.getIsland() != null ? User.getUser(user.getIsland().owner).name : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? User.getUser(user.getIsland().owner).name : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_name":
-                return user.getIsland() != null ? user.getIsland().getName() : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? user.getIsland().getName() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_crystals":
-                return user.getIsland() != null ? user.getIsland().getFormattedCrystals() : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? user.getIsland().getFormattedCrystals() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_members":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().members.size()) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().members.size()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_members_online":
-                if (user.getIsland() == null) return IridiumSkyblock.configuration.placeholderDefaultValue;
+                if (user.getIsland() == null) return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
                 int online = 0;
                 for (String member : user.getIsland().members) {
                     if (Bukkit.getPlayer(User.getUser(member).name) != null) {
@@ -85,31 +85,31 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 }
                 return String.valueOf(online);
             case "island_upgrade_member_level":
-                return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().memberLevel) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().memberLevel) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_member_amount":
-                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.upgrades.memberUpgrade.upgrades.get(user.getIsland().memberLevel).size) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(user.getIsland().memberLevel).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_size_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().sizeLevel) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().sizeLevel) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_size_dimensions":
-                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.upgrades.sizeUpgrade.upgrades.get(user.getIsland().sizeLevel).size) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(user.getIsland().sizeLevel).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_ore_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().oreLevel) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().oreLevel) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_warp_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().warpLevel) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().warpLevel) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_booster_spawner":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().spawnerBooster) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().spawnerBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_booster_exp":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().expBooster) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().expBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_booster_farming":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().farmingBooster) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().farmingBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_booster_flight":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().flightBooster) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().flightBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_bank_vault":
-                return user.getIsland() != null ? user.getIsland().getFormattedMoney() : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? user.getIsland().getFormattedMoney() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_bank_experience":
-                return user.getIsland() != null ? user.getIsland().getFormattedExp() : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? user.getIsland().getFormattedExp() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_biome":
-                return user.getIsland() != null ? user.getIsland().biome.name() : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return user.getIsland() != null ? user.getIsland().biome.name() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "midnight_seconds":
                 return String.valueOf(second);
             case "midnight_minutes":
@@ -121,7 +121,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 int integer = Integer.parseInt(placeholder.replace("island_top_name_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? phCheckIfStripped(Utils.getTopIslands().get(integer - 1).getName()) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return islands.size() > integer - 1 ? phCheckIfStripped(Utils.getTopIslands().get(integer - 1).getName()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -130,7 +130,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 int integer = Integer.parseInt(placeholder.replace("island_top_owner_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? User.getUser(Utils.getTopIslands().get(integer - 1).owner).name : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return islands.size() > integer - 1 ? User.getUser(Utils.getTopIslands().get(integer - 1).owner).name : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -139,7 +139,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 int integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? Utils.NumberFormatter.format(Utils.getTopIslands().get(integer - 1).value) : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return islands.size() > integer - 1 ? Utils.NumberFormatter.format(Utils.getTopIslands().get(integer - 1).value) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException ignored) {
 
             }
@@ -148,7 +148,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? Utils.NumberFormatter.format(Math.floor(Utils.getTopIslands().get(integer - 1).value / IridiumSkyblock.configuration.valuePerLevel)) + "" : IridiumSkyblock.configuration.placeholderDefaultValue;
+                return islands.size() > integer - 1 ? Utils.NumberFormatter.format(Math.floor(Utils.getTopIslands().get(integer - 1).value / IridiumSkyblock.getConfiguration().valuePerLevel)) + "" : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException ignored) {
 
             }
@@ -157,7 +157,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
     }
 
     public String phCheckIfStripped(String ph) {
-        if (IridiumSkyblock.configuration.stripTopIslandPlaceholderColors) {
+        if (IridiumSkyblock.getConfiguration().stripTopIslandPlaceholderColors) {
             return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', ph)).replace("\"","\\\"");
         }
         return ph.replace("\"","\\\"");

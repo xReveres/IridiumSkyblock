@@ -2,10 +2,11 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import java.util.Collections;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
+import java.util.List;
 
 public class TopCommand extends Command {
 
@@ -16,7 +17,7 @@ public class TopCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        p.openInventory(IridiumSkyblock.topGUI.getInventory());
+        p.openInventory(IridiumSkyblock.getTopGUI().getInventory());
     }
 
     @Override

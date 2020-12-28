@@ -17,7 +17,7 @@ public class SQLManager {
     }
 
     private void setupConnection() {
-        final SQL sql = IridiumSkyblock.sql;
+        final SQL sql = IridiumSkyblock.getSql();
         hikariDataSource.setMaximumPoolSize(sql.poolSize);
         hikariDataSource.setLeakDetectionThreshold(3000);
         hikariDataSource.setConnectionTestQuery("SELECT 1;");

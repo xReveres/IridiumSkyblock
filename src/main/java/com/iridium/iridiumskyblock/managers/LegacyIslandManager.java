@@ -32,8 +32,8 @@ public class LegacyIslandManager {
 
     public void moveToSQL() {
         long startTime = System.nanoTime();
-        IridiumSkyblock.sqlManager.deleteAll();
-        Connection connection = IridiumSkyblock.sqlManager.getConnection();
+        IridiumSkyblock.getSqlManager().deleteAll();
+        Connection connection = IridiumSkyblock.getSqlManager().getConnection();
         if (users != null) {
             IridiumSkyblock.getInstance().getLogger().info("Moving " + users.size() + " Users over to SQL");
             for (String uuid : users.keySet()) {
@@ -42,7 +42,7 @@ public class LegacyIslandManager {
                     UserManager.cache.put(UUID.fromString(uuid), user);
                     PreparedStatement insert = connection.prepareStatement("INSERT INTO users (UUID,json) VALUES (?,?);");
                     insert.setString(1, uuid);
-                    insert.setString(2, IridiumSkyblock.persist.gson.toJson(user));
+                    insert.setString(2, IridiumSkyblock.getPersist().gson.toJson(user));
                     insert.executeUpdate();
                     insert.close();
                 } catch (SQLException throwables) {
@@ -66,7 +66,7 @@ public class LegacyIslandManager {
                 try {
                     PreparedStatement insert = connection.prepareStatement("INSERT INTO islands (id,json) VALUES (?,?);");
                     insert.setInt(1, island.id);
-                    insert.setString(2, IridiumSkyblock.persist.gson.toJson(island));
+                    insert.setString(2, IridiumSkyblock.getPersist().gson.toJson(island));
                     insert.executeUpdate();
                     insert.close();
                 } catch (SQLException throwables) {

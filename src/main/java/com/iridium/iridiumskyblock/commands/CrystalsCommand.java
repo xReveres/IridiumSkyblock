@@ -4,10 +4,11 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
-import java.util.Collections;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
+import java.util.List;
 
 public class CrystalsCommand extends Command {
 
@@ -20,9 +21,9 @@ public class CrystalsCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            sender.sendMessage(Utils.color(IridiumSkyblock.messages.crystalAmount.replace("%crystals%", user.getIsland().getFormattedCrystals()).replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().crystalAmount.replace("%crystals%", user.getIsland().getFormattedCrystals()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
-            p.sendMessage(Utils.color(IridiumSkyblock.messages.noIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 
@@ -30,9 +31,9 @@ public class CrystalsCommand extends Command {
     public void admin(CommandSender sender, String[] args, Island island) {
         Player p = (Player) sender;
         if (island != null) {
-            sender.sendMessage(Utils.color(IridiumSkyblock.messages.crystalAmount.replace("%crystals%", island.getFormattedCrystals() + "").replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().crystalAmount.replace("%crystals%", island.getFormattedCrystals() + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
-            p.sendMessage(Utils.color(IridiumSkyblock.messages.noIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

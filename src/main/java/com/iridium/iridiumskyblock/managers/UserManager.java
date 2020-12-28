@@ -23,14 +23,14 @@ public class UserManager {
     public static User getUser(UUID uuid) {
         if (cache.containsKey(uuid)) return cache.get(uuid);
         try {
-            Connection connection = IridiumSkyblock.sqlManager.getConnection();
+            Connection connection = IridiumSkyblock.getSqlManager().getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE UUID =?;");
             statement.setString(1, uuid.toString());
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 //There is a value
-                User user = IridiumSkyblock.persist.gson.fromJson(resultSet.getString("json"), User.class);
+                User user = IridiumSkyblock.getPersist().gson.fromJson(resultSet.getString("json"), User.class);
                 cache.put(uuid, user);
                 connection.close();
                 statement.close();
@@ -40,7 +40,7 @@ public class UserManager {
                 PreparedStatement insert = connection.prepareStatement("INSERT INTO users (UUID,json) VALUES (?,?);");
                 User user = new User(uuid);
                 insert.setString(1, uuid.toString());
-                insert.setString(2, IridiumSkyblock.persist.gson.toJson(user));
+                insert.setString(2, IridiumSkyblock.getPersist().gson.toJson(user));
                 insert.executeUpdate();
 
                 cache.put(uuid, user);
@@ -58,7 +58,7 @@ public class UserManager {
     public static void saveUser(User user, Connection connection) {
         try {
             PreparedStatement insert = connection.prepareStatement("UPDATE users SET json = ? WHERE UUID = ?;");
-            insert.setString(1, IridiumSkyblock.persist.gson.toJson(user));
+            insert.setString(1, IridiumSkyblock.getPersist().gson.toJson(user));
             insert.setString(2, user.player);
             insert.executeUpdate();
             insert.close();

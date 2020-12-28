@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class IslandMenuGUI extends GUI implements Listener {
 
     public IslandMenuGUI(Island island) {
-        super(island, IridiumSkyblock.inventories.islandMenuGUISize, IridiumSkyblock.inventories.islandMenuGUITitle);
+        super(island, IridiumSkyblock.getInventories().islandMenuGUISize, IridiumSkyblock.getInventories().islandMenuGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -22,7 +22,7 @@ public class IslandMenuGUI extends GUI implements Listener {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
         if (getIsland()!=null) {
-            for(Inventories.Item item : IridiumSkyblock.inventories.menu.keySet()){
+            for(Inventories.Item item : IridiumSkyblock.getInventories().menu.keySet()){
                 setItem(item.slot, Utils.makeItemHidden(item, getIsland()));
             }
         }
@@ -35,10 +35,10 @@ public class IslandMenuGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             Player p = (Player) e.getWhoClicked();
-            for(Inventories.Item item : IridiumSkyblock.inventories.menu.keySet()){
+            for(Inventories.Item item : IridiumSkyblock.getInventories().menu.keySet()){
                 if(item.slot==e.getSlot()){
                     p.closeInventory();
-                    Bukkit.getServer().dispatchCommand(e.getWhoClicked(), IridiumSkyblock.inventories.menu.get(item));
+                    Bukkit.getServer().dispatchCommand(e.getWhoClicked(), IridiumSkyblock.getInventories().menu.get(item));
                     return;
                 }
             }

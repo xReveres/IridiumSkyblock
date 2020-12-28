@@ -30,7 +30,7 @@ public class PlayerFishListener implements Listener {
             final Island island = user.getIsland();
             if (island == null) return;
 
-            for (Mission mission : IridiumSkyblock.missions.missions) {
+            for (Mission mission : IridiumSkyblock.getMissions().missions) {
                 final Map<String, Integer> levels = island.getMissionLevels();
                 levels.putIfAbsent(mission.name, 1);
 

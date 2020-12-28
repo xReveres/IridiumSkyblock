@@ -1,17 +1,14 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.api.IslandKickEvent;
-import java.util.Collections;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
+import java.util.List;
 
 public class KickCommand extends Command {
 
@@ -22,7 +19,7 @@ public class KickCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage(Utils.color(IridiumSkyblock.configuration.prefix) + "/is kick <player>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is kick <player>");
             return;
         }
         Player p = (Player) sender;
@@ -33,7 +30,7 @@ public class KickCommand extends Command {
         if (island != null) {
             if (island.id == u.islandID) {
                 if (u.role.equals(Role.Owner)) {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.messages.cantKickOwner.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
                     if (user.bypassing || user.getIsland().getPermissions(u.getRole()).kickMembers) {
                         IslandKickEvent islandKickEvent = new IslandKickEvent(user.getIsland(), user, u);
@@ -41,25 +38,25 @@ public class KickCommand extends Command {
                         if (!islandKickEvent.isCancelled()) {
                             user.getIsland().removeUser(u);
                             if (player.getPlayer() != null) {
-                                player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.messages.youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                                player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }
                     } else {
-                        sender.sendMessage(Utils.color(IridiumSkyblock.messages.noPermission.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.messages.notInYourIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.messages.noIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 
     @Override
     public void admin(CommandSender sender, String[] args, Island island) {
         if (args.length != 4) {
-            sender.sendMessage(Utils.color(IridiumSkyblock.configuration.prefix) + "/is admin <island> kick <player>");
+            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is admin <island> kick <player>");
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
@@ -67,25 +64,25 @@ public class KickCommand extends Command {
         if (island != null) {
             if (island.equals(u.getIsland())) {
                 if (u.role.equals(Role.Owner)) {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.messages.cantKickOwner.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().cantKickOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
                     IslandKickEvent islandKickEvent = new IslandKickEvent(island, null, u);
                     Bukkit.getPluginManager().callEvent(islandKickEvent);
                     if (!islandKickEvent.isCancelled()) {
                         island.removeUser(u);
                         if (player.getPlayer() != null) {
-                            player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.messages.youHaveBeenKicked.replace(
+                            player.getPlayer().sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace(
                                     "%prefix%",
-                                    IridiumSkyblock.configuration.prefix
+                                    IridiumSkyblock.getConfiguration().prefix
                             )));
                         }
                     }
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.messages.notInYourIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.messages.noIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

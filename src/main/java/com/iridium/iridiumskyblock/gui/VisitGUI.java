@@ -29,7 +29,7 @@ public class VisitGUI extends GUI implements Listener {
     private final int page;
 
     public VisitGUI(int page) {
-        super(IridiumSkyblock.inventories.visitGUISize, IridiumSkyblock.inventories.visitGUITitle, 40);
+        super(IridiumSkyblock.getInventories().visitGUISize, IridiumSkyblock.getInventories().visitGUITitle, 40);
         IridiumSkyblock.getInstance().registerListeners(this);
         this.page = page;
     }
@@ -46,7 +46,7 @@ public class VisitGUI extends GUI implements Listener {
                     Island island = IslandManager.getIslandViaId(islandIDS.get(i));
                     if (island == null) continue;
                     User owner = User.getUser(island.owner);
-                    ItemStack head = Utils.makeItem(IridiumSkyblock.inventories.visitisland, Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", Utils.getIslandRank(island) + ""), new Utils.Placeholder("votes", NumberFormat.getInstance().format(island.getVotes())), new Utils.Placeholder("value", island.getFormattedValue())));
+                    ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().visitisland, Arrays.asList(new Utils.Placeholder("player", owner.name), new Utils.Placeholder("name", island.getName()), new Utils.Placeholder("rank", Utils.getIslandRank(island) + ""), new Utils.Placeholder("votes", NumberFormat.getInstance().format(island.getVotes())), new Utils.Placeholder("value", island.getFormattedValue())));
                     islands.put(i, island.id);
                     setItem(i, head);
 
@@ -55,8 +55,8 @@ public class VisitGUI extends GUI implements Listener {
                 e.printStackTrace();
             }
         });
-        setItem(getInventory().getSize() - 3, Utils.makeItem(IridiumSkyblock.inventories.nextPage));
-        setItem(getInventory().getSize() - 7, Utils.makeItem(IridiumSkyblock.inventories.previousPage));
+        setItem(getInventory().getSize() - 3, Utils.makeItem(IridiumSkyblock.getInventories().nextPage));
+        setItem(getInventory().getSize() - 7, Utils.makeItem(IridiumSkyblock.getInventories().previousPage));
     }
 
     @EventHandler
@@ -80,7 +80,7 @@ public class VisitGUI extends GUI implements Listener {
                         island.teleportHome((Player) e.getWhoClicked());
                     }
                 } else {
-                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.messages.playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else if (e.getSlot() == getInventory().getSize() - 7) {
                 if (IridiumSkyblock.visitGUI.containsKey(page - 1))

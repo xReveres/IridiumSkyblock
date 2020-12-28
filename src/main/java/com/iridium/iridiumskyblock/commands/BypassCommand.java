@@ -4,10 +4,11 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
-import java.util.Collections;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
+import java.util.List;
 
 public class BypassCommand extends Command {
 
@@ -21,9 +22,9 @@ public class BypassCommand extends Command {
         User u = User.getUser(p);
         u.bypassing = !u.bypassing;
         if (u.bypassing) {
-            p.sendMessage(Utils.color(IridiumSkyblock.messages.nowBypassing.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().nowBypassing.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
-            p.sendMessage(Utils.color(IridiumSkyblock.messages.noLongerBypassing.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noLongerBypassing.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

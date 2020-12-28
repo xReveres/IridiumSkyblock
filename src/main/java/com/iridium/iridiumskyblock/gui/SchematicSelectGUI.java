@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class SchematicSelectGUI extends GUI implements Listener {
 
     public SchematicSelectGUI(Island island) {
-        super(island, IridiumSkyblock.inventories.schematicselectGUISize, IridiumSkyblock.inventories.schematicselectGUITitle);
+        super(island, IridiumSkyblock.getInventories().schematicselectGUISize, IridiumSkyblock.getInventories().schematicselectGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -25,7 +25,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
         if (getInventory().getViewers().isEmpty()) return;
         if (getIsland()!=null) {
             int i = 0;
-            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.schematics.schematics) {
+            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (fakeSchematic.slot == null) fakeSchematic.slot = i;
                 try {
                     setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1, fakeSchematic.displayname, fakeSchematic.lore));
@@ -43,7 +43,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
-            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.schematics.schematics) {
+            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematics) {
                 if (e.getSlot() == fakeSchematic.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
                     e.getWhoClicked().closeInventory();
                     if (getIsland().schematic != null) {
@@ -51,7 +51,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
                             User user = User.getUser(player);
                             Player p = Bukkit.getPlayer(user.name);
                             if (p != null) {
-                                p.sendMessage(Utils.color(IridiumSkyblock.messages.regenIsland.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }
                     }
@@ -65,7 +65,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
                         getIsland().pasteSchematic(true);
                     }
                     getIsland().home = getIsland().home.add(fakeSchematic.x, fakeSchematic.y, fakeSchematic.z);
-                    if (IridiumSkyblock.configuration.restartUpgradesOnRegen) {
+                    if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
                         getIsland().resetMissions();
                         getIsland().setSizeLevel(1);
                         getIsland().memberLevel = 1;

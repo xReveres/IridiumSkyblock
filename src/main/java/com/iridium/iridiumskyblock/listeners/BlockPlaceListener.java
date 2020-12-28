@@ -46,11 +46,11 @@ public class BlockPlaceListener implements Listener {
 
             final Material material = block.getType();
             final XMaterial xmaterial = XMaterial.matchXMaterial(material);
-            final Config config = IridiumSkyblock.configuration;
+            final Config config = IridiumSkyblock.getConfiguration();
             final Integer max = config.limitedBlocks.get(xmaterial);
             if (max != null) {
                 if (island.valuableBlocks.getOrDefault(xmaterial.name(), 0) >= max) {
-                    player.sendMessage(Utils.color(IridiumSkyblock.messages.blockLimitReached
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().blockLimitReached
                             .replace("%prefix%", config.prefix)));
                     event.setCancelled(true);
                     return;
@@ -58,7 +58,7 @@ public class BlockPlaceListener implements Listener {
             }
 
             if (user.islandID == island.id) {
-                for (Mission mission : IridiumSkyblock.missions.missions) {
+                for (Mission mission : IridiumSkyblock.getMissions().missions) {
                     final Map<String, Integer> levels = island.getMissionLevels();
                     levels.putIfAbsent(mission.name, 1);
 
@@ -123,10 +123,10 @@ public class BlockPlaceListener implements Listener {
         if (island == null) return;
         int amount = event.getPlayer().getItemInHand().getAmount();
 
-        if (IridiumSkyblock.configuration.enableBlockStacking) {
+        if (IridiumSkyblock.getConfiguration().enableBlockStacking) {
             boolean canStack = false;
 
-            if (IridiumSkyblock.stackable.blockList.contains(xmaterial)) {
+            if (IridiumSkyblock.getStackable().blockList.contains(xmaterial)) {
                 if (!(block.getState() instanceof CreatureSpawner))
                     canStack = true;
             }

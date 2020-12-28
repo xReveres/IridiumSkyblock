@@ -23,7 +23,7 @@ public class RecalculateCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (id != 0) {
-            sender.sendMessage(Utils.color(IridiumSkyblock.messages.calculationAlreadyInProcess.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculationAlreadyInProcess.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return;
         }
         int interval = 5;
@@ -32,7 +32,7 @@ public class RecalculateCommand extends Command {
         int minutes = (int) Math.floor(totalSeconds / 60.00);
         double seconds = (int) (totalSeconds - (minutes * 60));
         sender.sendMessage(total + " " + totalSeconds + " " + minutes + " " + seconds);
-        sender.sendMessage(Utils.color(IridiumSkyblock.messages.calculatingIslands.replace("%amount%", total + "").replace("%seconds%", seconds + "").replace("%minutes%", minutes + "").replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculatingIslands.replace("%amount%", total + "").replace("%seconds%", seconds + "").replace("%minutes%", minutes + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
             ListIterator<Integer> islands = IslandManager.getLoadedIslands().stream().map(is -> is.id).collect(Collectors.toList()).listIterator();
 
@@ -45,7 +45,7 @@ public class RecalculateCommand extends Command {
                         island.initBlocks();
                     }
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.messages.calculatingFinished.replace("%prefix%", IridiumSkyblock.configuration.prefix)));
+                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().calculatingFinished.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     Bukkit.getScheduler().cancelTask(id);
                     id = 0;
                 }
