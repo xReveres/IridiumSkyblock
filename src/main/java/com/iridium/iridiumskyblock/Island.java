@@ -886,7 +886,6 @@ public class Island {
         this.center = null;
         this.home = null;
         IslandManager.removeIsland(this);
-        this.id = 0;
         IridiumSkyblock.getInstance().saveConfigs();
         Bukkit.getScheduler().cancelTask(boosterId);
         boosterId = -1;

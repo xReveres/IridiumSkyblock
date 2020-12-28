@@ -273,8 +273,6 @@ public class IslandManager {
     }
 
     public static void removeIsland(Island island) {
-        final int id = island.id;
-        cache.remove(id);
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 Connection connection = IridiumSkyblock.getSqlManager().getConnection();
