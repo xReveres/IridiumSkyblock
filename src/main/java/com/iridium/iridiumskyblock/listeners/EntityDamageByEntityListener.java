@@ -48,7 +48,7 @@ public class EntityDamageByEntityListener implements Listener {
 
             final Entity damager = event.getDamager();
 
-            if (damager instanceof Egg && damagee instanceof ItemFrame) {
+            if (damager instanceof Projectile && damagee instanceof Hanging) {
                 Player player = (Player) ((Egg) damager).getShooter();
                 User user = User.getUser(player);
                 if (player != null && !island.members.contains(player.getUniqueId().toString()) && !island.isCoop(user.getIsland())) {
@@ -164,8 +164,8 @@ public class EntityDamageByEntityListener implements Listener {
 
     @EventHandler
     public void onHangingByEntity(HangingBreakByEntityEvent event) {
-        if (event.getRemover() instanceof Egg && event.getEntity() instanceof ItemFrame) {
-            Entity entity = event.getEntity();
+        Entity entity = event.getEntity();
+        if (event.getRemover() instanceof Projectile) {
             Location location = entity.getLocation();
             if (!IslandManager.isIslandWorld(location)) return;
             Island island = IslandManager.getIslandViaLocation(location);
