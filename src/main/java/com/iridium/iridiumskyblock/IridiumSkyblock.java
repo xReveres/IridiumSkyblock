@@ -582,10 +582,8 @@ public class IridiumSkyblock extends JavaPlugin {
         }
 
         if (schematics.schematics != null) {
-            for (Schematics.LegacyFakeSchematic legacyFakeSchematic : schematics.schematics) {
-                schematics.schematicList.add(legacyFakeSchematic.tonew());
-            }
-            schematics.schematicList.clear();
+            schematics.schematicList = schematics.schematics.stream().map(Schematics.LegacyFakeSchematic::tonew).collect(Collectors.toList());
+            schematics.schematics = null;
         }
 
         if (inventories.red.slot == null) inventories.red.slot = 10;
