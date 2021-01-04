@@ -28,6 +28,14 @@ public class MVDWPlaceholderAPIManager {
             User user = User.getUser(player);
             return user.getIsland() != null ? user.getIsland().getFormattedValue() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
         });
+        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_role", e -> {
+            Player player = e.getPlayer();
+            if (player == null) {
+                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            }
+            User user = User.getUser(player);
+            return user.getIsland() != null ? user.getRole().toString() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+        });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_level", e -> {
             Player player = e.getPlayer();
@@ -213,7 +221,7 @@ public class MVDWPlaceholderAPIManager {
                 return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             }
             User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().biome.name()): IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            return user.getIsland() != null ? String.valueOf(user.getIsland().biome.name()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_midnight_seconds", e -> {
@@ -280,8 +288,8 @@ public class MVDWPlaceholderAPIManager {
 
     public String phCheckIfStripped(String ph) {
         if (IridiumSkyblock.getConfiguration().stripTopIslandPlaceholderColors) {
-            return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', ph)).replace("\"","\\\"");
+            return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', ph)).replace("\"", "\\\"");
         }
-        return ph.replace("\"","\\\"");
+        return ph.replace("\"", "\\\"");
     }
 }

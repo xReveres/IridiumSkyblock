@@ -116,6 +116,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 return String.valueOf(minute);
             case "midnight_hours":
                 return String.valueOf(hours);
+            case "island_role":
+                return user.getIsland() != null ? user.getRole().toString() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
         }
         if (placeholder.startsWith("island_top_name_")) {
             try {
@@ -158,9 +160,9 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
 
     public String phCheckIfStripped(String ph) {
         if (IridiumSkyblock.getConfiguration().stripTopIslandPlaceholderColors) {
-            return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', ph)).replace("\"","\\\"");
+            return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', ph)).replace("\"", "\\\"");
         }
-        return ph.replace("\"","\\\"");
+        return ph.replace("\"", "\\\"");
     }
 
 }
