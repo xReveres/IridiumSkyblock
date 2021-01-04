@@ -4,10 +4,7 @@ import com.cryptomorin.xseries.XBiome;
 import com.cryptomorin.xseries.XMaterial;
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
-import com.iridium.iridiumskyblock.api.IslandCreateEvent;
-import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
-import com.iridium.iridiumskyblock.api.IslandWorthCalculatedEvent;
-import com.iridium.iridiumskyblock.api.MissionCompleteEvent;
+import com.iridium.iridiumskyblock.api.*;
 import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Messages;
@@ -533,7 +530,7 @@ public class Island {
 
         IslandWorthCalculatedEvent islandWorthCalculatedEvent = new IslandWorthCalculatedEvent(this, this.value);
         Bukkit.getPluginManager().callEvent(islandWorthCalculatedEvent);
-        this.value = islandWorthCalculatedEvent.islandWorth;
+        this.value = islandWorthCalculatedEvent.getIslandWorth();
         IslandDataManager.save(this, true);
     }
 
@@ -573,6 +570,9 @@ public class Island {
     }
 
     public void removeUser(User user) {
+        IslandLeaveEvent islandLeaveEvent = new IslandLeaveEvent(this, user);
+        Bukkit.getPluginManager().callEvent(islandLeaveEvent);
+        if (islandLeaveEvent.isCancelled()) return;
         user.islandID = 0;
         Player player = Bukkit.getPlayer(user.name);
         if (player != null) {

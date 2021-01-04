@@ -6,14 +6,14 @@ import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class IslandJoinEvent extends IslandEvent implements Cancellable {
-    @Nullable private final User user;
-    private boolean cancelled = false;
+public class IslandLeaveEvent extends IslandEvent implements Cancellable {
+  @NotNull private final User user;
+  private boolean cancelled = false;
 
-    public IslandJoinEvent(@NotNull Island island, @Nullable User user) {
-        super(island);
-        this.user = user;
-    }
+  public IslandLeaveEvent(@NotNull Island island, @Nullable User user) {
+    super(island);
+    this.user = user;
+  }
 
     @Override
     public boolean isCancelled() {
@@ -25,7 +25,7 @@ public class IslandJoinEvent extends IslandEvent implements Cancellable {
         this.cancelled = b;
     }
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 }
