@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumskyblock.Role;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -141,6 +142,7 @@ public class Messages {
     public String purgingIslands = "%prefix% &7purging islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
     public String purgingFinished = "%prefix% &7Purging islands Finished. Purged %amount% Islands";
     public String purgingAlreadyInProcess = "%prefix% &7Purging islands already in Process";
+    public String dataReset = "%prefix% &7All data has been reset.";
 
     public List<String> stackedBlocksHologram = Arrays.asList("&b&l [{amount}X] &b{block}");
 
