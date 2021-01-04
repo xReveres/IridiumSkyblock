@@ -5,13 +5,10 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.MissionRestart;
 import com.iridium.iridiumskyblock.Permissions;
 import com.iridium.iridiumskyblock.Role;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.bukkit.entity.EntityType;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Config {
     public String prefix = "&b&lIridiumSkyblock &8»";
@@ -26,6 +23,7 @@ public class Config {
     public String millionAbbreviation = "M";
     public String billionAbbreviation = "B";
     public String mainCommandPerm = "";
+    public boolean respawnAtIslandHome = false;
     public boolean createCooldown = true;
     public boolean bankWithdrawing = true;
     public boolean islandShop = true;
