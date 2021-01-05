@@ -553,6 +553,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 insert.executeUpdate();
                 insert.close();
             }
+            IslandDataManager.update(connection);
             statement.close();
             connection.commit();
             connection.close();

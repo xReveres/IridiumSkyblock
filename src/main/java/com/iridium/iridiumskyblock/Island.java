@@ -531,7 +531,7 @@ public class Island {
         IslandWorthCalculatedEvent islandWorthCalculatedEvent = new IslandWorthCalculatedEvent(this, this.value);
         Bukkit.getPluginManager().callEvent(islandWorthCalculatedEvent);
         this.value = islandWorthCalculatedEvent.getIslandWorth();
-        IslandDataManager.save(this, true);
+        updateIslandData();
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
@@ -854,6 +854,10 @@ public class Island {
         }
     }
 
+    public void updateIslandData(){
+        IslandDataManager.cache.put(id, new IslandDataManager.IslandData(value, votes.size(), !visit));
+    }
+
     public void delete() {
         Bukkit.getPluginManager().callEvent(new IslandDeleteEvent(this));
 
@@ -910,13 +914,13 @@ public class Island {
     public void removeVote(User user) {
         if (votes == null) votes = new HashSet<>();
         votes.remove(user.player);
-        IslandDataManager.save(this, true);
+        updateIslandData();
     }
 
     public void addVote(User user) {
         if (votes == null) votes = new HashSet<>();
         votes.add(user.player);
-        IslandDataManager.save(this, true);
+        updateIslandData();
     }
 
     public boolean hasVoted(User user) {
@@ -1200,5 +1204,6 @@ public class Island {
 
     public void save(Connection connection) {
         IslandManager.save(this, connection);
+        IslandDataManager.save(this,  connection);
     }
 }

@@ -56,6 +56,7 @@ public class IslandManager {
         Location center = nextLocation.clone().add(0, 100, 0);
         Location home = nextLocation.clone();
         Island island = new Island(player, pos1, pos2, center, home, nextID);
+        island.updateIslandData();
 
         cache.put(nextID, island);
 
