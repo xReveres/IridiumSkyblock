@@ -1158,7 +1158,7 @@ public class Island {
 
             }
         }
-        User.getUser(owner).role = Role.CoOwner;
+        User.getUser(this.owner).role = Role.CoOwner;
         this.owner = owner.getUniqueId().toString();
         User.getUser(owner).role = Role.Owner;
     }
