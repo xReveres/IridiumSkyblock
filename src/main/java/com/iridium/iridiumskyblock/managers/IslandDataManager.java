@@ -26,10 +26,10 @@ public class IslandDataManager {
         List<Integer> islands;
         switch (sortType) {
             case VALUE:
-                islands = cache.keySet().stream().sorted(Comparator.comparing(integer -> cache.get(integer).value)).collect(Collectors.toList());
+                islands = cache.keySet().stream().sorted(Comparator.comparing(integer -> cache.get(integer).value).reversed()).collect(Collectors.toList());
                 break;
             case VOTES:
-                islands = cache.keySet().stream().sorted(Comparator.comparing(integer -> cache.get(integer).votes)).collect(Collectors.toList());
+                islands = cache.keySet().stream().sorted(Comparator.comparing(integer -> cache.get(integer).votes).reversed()).collect(Collectors.toList());
                 break;
             default:
                 islands = Collections.emptyList();
