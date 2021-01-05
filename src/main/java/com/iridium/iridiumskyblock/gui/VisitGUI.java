@@ -77,13 +77,15 @@ public class VisitGUI extends GUI implements Listener {
                     e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else if (e.getSlot() == getInventory().getSize() - 7) {
-                if (IridiumSkyblock.visitGUI.containsKey(page - 1))
+                if (IridiumSkyblock.visitGUI.containsKey(page - 1)) {
                     IridiumSkyblock.visitGUI.get(page - 1).addContent();
                     e.getWhoClicked().openInventory(IridiumSkyblock.visitGUI.get(page - 1).getInventory());
+                }
             } else if (e.getSlot() == getInventory().getSize() - 3) {
-                if (IridiumSkyblock.visitGUI.containsKey(page + 1))
+                if (IridiumSkyblock.visitGUI.containsKey(page + 1)) {
                     IridiumSkyblock.visitGUI.get(page + 1).addContent();
                     e.getWhoClicked().openInventory(IridiumSkyblock.visitGUI.get(page + 1).getInventory());
+                }
             }
         }
     }

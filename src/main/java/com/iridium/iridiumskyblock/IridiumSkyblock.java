@@ -374,7 +374,7 @@ public class IridiumSkyblock extends JavaPlugin {
         return super.getDefaultWorldGenerator(worldName, id);
     }
 
-    private void addPages() {
+    public void addPages() {
         int size = (int) (Math.floor(Utils.getIslands().size() / 45.00) + 1);
         for (int i = 1; i <= size; i++) {
             if (!visitGUI.containsKey(i)) {
