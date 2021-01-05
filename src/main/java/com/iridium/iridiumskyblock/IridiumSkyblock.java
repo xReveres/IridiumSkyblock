@@ -144,7 +144,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 registerListeners(new PlayerRespawnListener(), new StructureGrowListener(), new EntitySpawnListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener(), new CreatureSpawnListener());
 
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20 * 60);
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> saveData(false), 0, 20 * 60);
+                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveData, 0, 20 * 60);
 
                 setupPlaceholderAPI();
 
@@ -347,7 +347,7 @@ public class IridiumSkyblock extends JavaPlugin {
         try {
             super.onDisable();
 
-            saveData(false);
+            saveData();
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.closeInventory();
@@ -720,11 +720,7 @@ public class IridiumSkyblock extends JavaPlugin {
         return legacy.get(material.name() + data);
     }
 
-    public void saveData(boolean async) {
-        if (async) {
-            Bukkit.getScheduler().runTaskAsynchronously(this, () -> saveData(false));
-            return;
-        }
+    public void saveData() {
         Connection connection = sqlManager.getConnection();
         for (User user : UserManager.cache.values()) {
             user.save(connection);
