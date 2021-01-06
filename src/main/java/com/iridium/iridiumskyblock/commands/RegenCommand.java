@@ -37,9 +37,9 @@ public class RegenCommand extends Command {
                                 if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
                                     user.getIsland().resetMissions();
                                     user.getIsland().setSizeLevel(1);
-                                    user.getIsland().memberLevel = 1;
-                                    user.getIsland().warpLevel = 1;
-                                    user.getIsland().oreLevel = 1;
+                                    user.getIsland().setMemberLevel(1);
+                                    user.getIsland().setWarpLevel(1);
+                                    user.getIsland().setOreLevel(1);
                                     user.getIsland().flightBooster = 0;
                                     user.getIsland().expBooster = 0;
                                     user.getIsland().farmingBooster = 0;
@@ -87,9 +87,9 @@ public class RegenCommand extends Command {
                     if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
                         island.resetMissions();
                         island.setSizeLevel(1);
-                        island.memberLevel = 1;
-                        island.warpLevel = 1;
-                        island.oreLevel = 1;
+                        island.setMemberLevel(1);
+                        island.setWarpLevel(1);
+                        island.setOreLevel(1);
                         island.flightBooster = 0;
                         island.expBooster = 0;
                         island.farmingBooster = 0;

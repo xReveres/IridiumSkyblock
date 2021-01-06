@@ -85,17 +85,17 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 }
                 return String.valueOf(online);
             case "island_upgrade_member_level":
-                return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().memberLevel) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getMemberLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_member_amount":
-                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().memberUpgrade.upgrades.get(user.getIsland().memberLevel).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.get(user.getIsland().getMemberLevel()).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_size_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().sizeLevel) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().getSizeLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_size_dimensions":
-                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(user.getIsland().sizeLevel).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(user.getIsland().getSizeLevel()).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_ore_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().oreLevel) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().getOreLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_upgrade_warp_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().warpLevel) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? String.valueOf(user.getIsland().getWarpLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_booster_spawner":
                 return user.getIsland() != null ? String.valueOf(user.getIsland().spawnerBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_booster_exp":

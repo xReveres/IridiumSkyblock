@@ -87,6 +87,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private static File schematicFolder;
 
+    private List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
+
     @Override
     public void onEnable() {
         try {
@@ -213,6 +215,14 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             sendErrorMessage(e);
         }
+    }
+
+    public void registerUpgrade(Upgrades.Upgrade upgrade) {
+        islandUpgrades.add(upgrade);
+    }
+
+    public List<Upgrades.Upgrade> getIslandUpgrades(){
+        return islandUpgrades;
     }
 
     private void update() {
@@ -578,6 +588,12 @@ public class IridiumSkyblock extends JavaPlugin {
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
         border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
         stackable = persist.getFile(Stackable.class).exists() ? persist.load(Stackable.class) : new Stackable();
+
+        registerUpgrade(getUpgrades().islandSizeUpgrade);
+        registerUpgrade(getUpgrades().islandMemberUpgrade);
+        registerUpgrade(getUpgrades().islandOresUpgrade);
+        registerUpgrade(getUpgrades().islandWarpUpgrade);
+
         if (stackable.blockList.isEmpty()) {
             stackable.blockList = Arrays.asList(XMaterial.NETHERITE_BLOCK, XMaterial.DIAMOND_BLOCK, XMaterial.EMERALD_BLOCK, XMaterial.GOLD_BLOCK, XMaterial.IRON_BLOCK);
         }
@@ -625,32 +641,32 @@ public class IridiumSkyblock extends JavaPlugin {
         }
 
         oreUpgradeCache.clear();
-        for (int i : upgrades.oresUpgrade.upgrades.keySet()) {
+        for (int i : upgrades.islandOresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
-            for (String item : upgrades.oresUpgrade.upgrades.get(i).ores) {
+            for (String item : upgrades.islandOresUpgrade.upgrades.get(i).ores) {
                 if (item != null) {
                     int i1 = Integer.parseInt(item.split(":")[1]);
                     for (int a = 0; a <= i1; a++) {
                         items.add(item.split(":")[0]);
                     }
                 } else {
-                    upgrades.oresUpgrade.upgrades.get(i).ores.remove(null);
+                    upgrades.islandOresUpgrade.upgrades.get(i).ores.remove(null);
                 }
             }
             oreUpgradeCache.put(i, items);
         }
 
         netherOreUpgradeCache.clear();
-        for (int i : upgrades.oresUpgrade.upgrades.keySet()) {
+        for (int i : upgrades.islandOresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
-            for (String item : upgrades.oresUpgrade.upgrades.get(i).netherores) {
+            for (String item : upgrades.islandOresUpgrade.upgrades.get(i).netherores) {
                 if (item != null) {
                     int i1 = Integer.parseInt(item.split(":")[1]);
                     for (int a = 0; a <= i1; a++) {
                         items.add(item.split(":")[0]);
                     }
                 } else {
-                    upgrades.oresUpgrade.upgrades.get(i).netherores.remove(null);
+                    upgrades.islandOresUpgrade.upgrades.get(i).netherores.remove(null);
                 }
             }
             netherOreUpgradeCache.put(i, items);
@@ -679,7 +695,7 @@ public class IridiumSkyblock extends JavaPlugin {
             configuration.spawnervalue = null;
         }
         int max = 0;
-        for (Upgrades.IslandUpgrade size : upgrades.sizeUpgrade.upgrades.values()) {
+        for (Upgrades.IslandUpgrade size : upgrades.islandSizeUpgrade.upgrades.values()) {
             if (max < size.size) {
                 max = size.size;
             }

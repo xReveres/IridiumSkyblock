@@ -41,14 +41,14 @@ public class BlockFromToListener implements Listener {
                     event.setCancelled(true);
             }
 
-            if (!IridiumSkyblock.getUpgrades().oresUpgrade.enabled) return;
+            if (!IridiumSkyblock.getUpgrades().islandOresUpgrade.enabled) return;
 
             if (event.getFace() == BlockFace.DOWN) return;
 
             if (!isSurroundedByWater(toLocation))
                 return;
 
-            final int oreLevel = island.oreLevel;
+            final int oreLevel = island.getOreLevel();
             final World world = location.getWorld();
             if (world == null) return;
 

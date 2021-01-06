@@ -51,8 +51,8 @@ public class IslandManager {
         c.add(Calendar.SECOND, IridiumSkyblock.getConfiguration().regenCooldown);
         user.lastCreate = c.getTime();
 
-        Location pos1 = nextLocation.clone().subtract((IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00), 0, (IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00));
-        Location pos2 = nextLocation.clone().add((IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00), 0, (IridiumSkyblock.getUpgrades().sizeUpgrade.upgrades.get(1).size / 2.00));
+        Location pos1 = nextLocation.clone().subtract((IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(1).size / 2.00), 0, (IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(1).size / 2.00));
+        Location pos2 = nextLocation.clone().add((IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(1).size / 2.00), 0, (IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(1).size / 2.00));
         Location center = nextLocation.clone().add(0, 100, 0);
         Location home = nextLocation.clone();
         Island island = new Island(player, pos1, pos2, center, home, nextID);
