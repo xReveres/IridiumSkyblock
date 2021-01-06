@@ -18,15 +18,15 @@ public class PlayerTalkListener implements Listener {
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
 
-            if (user.warp != null) {
-                if (user.warp.getPassword().equals(event.getMessage())) {
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> { player.teleport(user.warp.getLocation()); user.warp = null; });
+            if (user.islandWarp != null) {
+                if (user.islandWarp.getPassword().equals(event.getMessage())) {
+                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> { player.teleport(user.islandWarp.getLocation()); user.islandWarp = null; });
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleporting
                             .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().wrongPassword
                             .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    user.warp = null;
+                    user.islandWarp = null;
                 }
                 event.setCancelled(true);
             }

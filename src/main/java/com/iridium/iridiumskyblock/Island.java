@@ -32,30 +32,6 @@ import java.util.function.Function;
 
 public class Island {
 
-    public static class Warp {
-        Location location;
-        String name;
-        String password;
-
-        public Warp(Location location, String name, String password) {
-            this.location = location;
-            this.name = name;
-            this.password = password;
-        }
-
-        public Location getLocation() {
-            return location;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-    }
-
     public String owner;
     public Set<String> members;
     public Location pos1;
@@ -104,7 +80,7 @@ public class Island {
     public transient ConcurrentHashMap<String, Integer> spawners;
     public ConcurrentHashMap<Location, Integer> stackedBlocks;
 
-    public final List<Warp> warps;
+    public final List<IslandWarp> islandWarps;
 
     private double startvalue;
 
@@ -180,7 +156,7 @@ public class Island {
         crystals = 0;
         value = 0;
         lastMissionValue = 0;
-        warps = new ArrayList<>();
+        islandWarps = new ArrayList<>();
         startvalue = -1;
         borderColor = IridiumSkyblock.getBorder().startingColor;
         visit = IridiumSkyblock.getConfiguration().defaultIslandPublic;
@@ -521,8 +497,8 @@ public class Island {
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
-        if (warps.size() < IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.get(getWarpLevel()).size) {
-            warps.add(new Warp(location, name, password));
+        if (islandWarps.size() < IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.get(getWarpLevel()).size) {
+            islandWarps.add(new IslandWarp(location, name, password));
             player.sendMessage(Utils.color(IridiumSkyblock.getMessages().warpAdded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
             player.sendMessage(Utils.color(IridiumSkyblock.getMessages().maxWarpsReached.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
@@ -1165,8 +1141,8 @@ public class Island {
         User.getUser(owner).role = Role.Owner;
     }
 
-    public void removeWarp(Warp warp) {
-        warps.remove(warp);
+    public void removeWarp(IslandWarp islandWarp) {
+        islandWarps.remove(islandWarp);
     }
 
     public String getName() {

@@ -16,7 +16,7 @@ public class User {
     public int islandID;
     public Role role;
     public Set<Integer> invites;
-    public Island.Warp warp;
+    public IslandWarp islandWarp;
     public boolean bypassing;
     public boolean islandChat;
     public boolean spyingIslandsChat;

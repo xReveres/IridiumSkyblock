@@ -1,9 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.*;
-import com.iridium.iridiumskyblock.Utils.TransactionLogger;
-import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
-import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
+import com.iridium.iridiumskyblock.TransactionLogger.Transaction;
+import com.iridium.iridiumskyblock.TransactionLogger.TransactionType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
