@@ -3,9 +3,9 @@ package com.iridium.iridiumskyblock;
 import org.bukkit.Location;
 
 public class IslandWarp {
-    Location location;
-    String name;
-    String password;
+    private final Location location;
+    private final String name;
+    private final String password;
 
     public IslandWarp(Location location, String name, String password) {
         this.location = location;
