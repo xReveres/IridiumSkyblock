@@ -88,6 +88,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private static File schematicFolder;
 
     private List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
+    private List<Boosters.Booster> islandBoosters = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -215,6 +216,14 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             sendErrorMessage(e);
         }
+    }
+
+    public void registerBooster(Boosters.Booster booster){
+        islandBoosters.add(booster);
+    }
+
+    public List<Boosters.Booster> getIslandBoosters() {
+        return islandBoosters;
     }
 
     public void registerUpgrade(Upgrades.Upgrade upgrade) {
@@ -594,6 +603,11 @@ public class IridiumSkyblock extends JavaPlugin {
         registerUpgrade(getUpgrades().islandOresUpgrade);
         registerUpgrade(getUpgrades().islandWarpUpgrade);
 
+        registerBooster(getBoosters().islandFlightBooster);
+        registerBooster(getBoosters().islandSpawnerBooster);
+        registerBooster(getBoosters().islandFarmingBooster);
+        registerBooster(getBoosters().islandExperienceBooster);
+
         if (stackable.blockList.isEmpty()) {
             stackable.blockList = Arrays.asList(XMaterial.NETHERITE_BLOCK, XMaterial.DIAMOND_BLOCK, XMaterial.EMERALD_BLOCK, XMaterial.GOLD_BLOCK, XMaterial.IRON_BLOCK);
         }
@@ -672,19 +686,19 @@ public class IridiumSkyblock extends JavaPlugin {
             netherOreUpgradeCache.put(i, items);
         }
 
-        if (boosters.flightBooster.time == 0) boosters.flightBooster.time = 3600;
-        if (boosters.experianceBooster.time == 0) boosters.experianceBooster.time = 3600;
-        if (boosters.farmingBooster.time == 0) boosters.farmingBooster.time = 3600;
-        if (boosters.spawnerBooster.time == 0) boosters.spawnerBooster.time = 3600;
+        if (boosters.islandFlightBooster.time == 0) boosters.islandFlightBooster.time = 3600;
+        if (boosters.islandExperienceBooster.time == 0) boosters.islandExperienceBooster.time = 3600;
+        if (boosters.islandFarmingBooster.time == 0) boosters.islandFarmingBooster.time = 3600;
+        if (boosters.islandSpawnerBooster.time == 0) boosters.islandSpawnerBooster.time = 3600;
 
-        if (boosters.spawnerBooster.crystalsCost == 0 && boosters.spawnerBooster.vaultCost == 0)
-            boosters.spawnerBooster.crystalsCost = 15;
-        if (boosters.farmingBooster.crystalsCost == 0 && boosters.farmingBooster.vaultCost == 0)
-            boosters.farmingBooster.crystalsCost = 15;
-        if (boosters.experianceBooster.crystalsCost == 0 && boosters.experianceBooster.vaultCost == 0)
-            boosters.experianceBooster.crystalsCost = 15;
-        if (boosters.flightBooster.crystalsCost == 0 && boosters.flightBooster.vaultCost == 0)
-            boosters.flightBooster.crystalsCost = 15;
+        if (boosters.islandSpawnerBooster.crystalsCost == 0 && boosters.islandSpawnerBooster.vaultCost == 0)
+            boosters.islandSpawnerBooster.crystalsCost = 15;
+        if (boosters.islandFarmingBooster.crystalsCost == 0 && boosters.islandFarmingBooster.vaultCost == 0)
+            boosters.islandFarmingBooster.crystalsCost = 15;
+        if (boosters.islandExperienceBooster.crystalsCost == 0 && boosters.islandExperienceBooster.vaultCost == 0)
+            boosters.islandExperienceBooster.crystalsCost = 15;
+        if (boosters.islandFlightBooster.crystalsCost == 0 && boosters.islandFlightBooster.vaultCost == 0)
+            boosters.islandFlightBooster.crystalsCost = 15;
 
         if (configuration.blockvalue != null) {
             blockValues.blockvalue = new HashMap<>(configuration.blockvalue);

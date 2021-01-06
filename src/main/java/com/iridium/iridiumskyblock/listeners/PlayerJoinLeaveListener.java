@@ -53,7 +53,7 @@ public class PlayerJoinLeaveListener implements Listener {
 
             if (!IslandManager.isIslandWorld(location)) return;
 
-            if (user.flying && (user.getIsland() == null || user.getIsland().flightBooster == 0)) {
+            if (user.flying && (user.getIsland() == null || user.getIsland().getBoosterTime(IridiumSkyblock.getBoosters().islandFlightBooster.name) == 0)) {
                 player.setAllowFlight(false);
                 player.setFlying(false);
                 user.flying = false;

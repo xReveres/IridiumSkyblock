@@ -71,10 +71,6 @@ public class SchematicSelectGUI extends GUI implements Listener {
                         getIsland().setMemberLevel(1);
                         getIsland().setWarpLevel(1);
                         getIsland().setOreLevel(1);
-                        getIsland().flightBooster = 0;
-                        getIsland().expBooster = 0;
-                        getIsland().farmingBooster = 0;
-                        getIsland().spawnerBooster = 0;
                     }
                     return;
                 }

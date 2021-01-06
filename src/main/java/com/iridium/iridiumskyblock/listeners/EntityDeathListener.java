@@ -45,7 +45,7 @@ public class EntityDeathListener implements Listener {
                     userIsland.addMission(mission.name, 1);
             }
 
-            if (userIsland.expBooster != 0)
+            if (userIsland.getBoosterTime(IridiumSkyblock.getBoosters().islandExperienceBooster.name) != 0)
                 event.setDroppedExp(event.getDroppedExp() * 2);
         } catch (Exception e) {
             IridiumSkyblock.getInstance().sendErrorMessage(e);

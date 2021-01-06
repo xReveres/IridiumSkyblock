@@ -4,7 +4,9 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.Transaction;
 import com.iridium.iridiumskyblock.Utils.TransactionLogger.TransactionType;
+import com.iridium.iridiumskyblock.configs.Boosters;
 import com.iridium.iridiumskyblock.configs.Inventories;
+import com.iridium.iridiumskyblock.configs.Upgrades;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -297,60 +299,28 @@ public class Utils {
 
     public static List<Placeholder> getIslandPlaceholders(Island island) {
         List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
-                // Upgrades
-                new Placeholder("sizevaultcost", IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(island.getSizeLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("membervaultcost", IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.containsKey(island.getMemberLevel() + 1) ? IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.get(island.getMemberLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("warpvaultcost", IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.containsKey(island.getWarpLevel() + 1) ? IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.get(island.getWarpLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("oresvaultcost", IridiumSkyblock.getUpgrades().islandOresUpgrade.upgrades.containsKey(island.getOreLevel() + 1) ? IridiumSkyblock.getUpgrades().islandOresUpgrade.upgrades.get(island.getOreLevel() + 1).vaultCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-
-                new Placeholder("sizecrystalscost", IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(island.getSizeLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("membercrystalscost", IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.containsKey(island.getMemberLevel() + 1) ? IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.get(island.getMemberLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("warpcrystalscost", IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.containsKey(island.getWarpLevel() + 1) ? IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.get(island.getWarpLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("orescrystalscost", IridiumSkyblock.getUpgrades().islandOresUpgrade.upgrades.containsKey(island.getOreLevel() + 1) ? IridiumSkyblock.getUpgrades().islandOresUpgrade.upgrades.get(island.getOreLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-
-                new Placeholder("sizecost", IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.containsKey(island.getSizeLevel() + 1) ? IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(island.getSizeLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("membercost", IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.containsKey(island.getMemberLevel() + 1) ? IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.get(island.getMemberLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("warpcost", IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.containsKey(island.getWarpLevel() + 1) ? IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.get(island.getWarpLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-                new Placeholder("generatorcost", IridiumSkyblock.getUpgrades().islandOresUpgrade.upgrades.containsKey(island.getOreLevel() + 1) ? IridiumSkyblock.getUpgrades().islandOresUpgrade.upgrades.get(island.getOreLevel() + 1).crystalsCost + "" : IridiumSkyblock.getMessages().maxlevelreached),
-
-                new Placeholder("sizeblocks", IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(island.getSizeLevel()).size + ""),
-                new Placeholder("membercount", IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.get(island.getMemberLevel()).size + ""),
-                new Placeholder("warpcount", IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.get(island.getWarpLevel()).size + ""),
-
-                new Placeholder("sizelevel", island.getSizeLevel() + ""),
-                new Placeholder("memberlevel", island.getMemberLevel() + ""),
-                new Placeholder("warplevel", island.getWarpLevel() + ""),
-                new Placeholder("oreslevel", island.getOreLevel() + ""),
-                new Placeholder("generatorlevel", island.getOreLevel() + ""),
-                // Boosters
-                new Placeholder("spawnerbooster", island.spawnerBooster + ""),
-                new Placeholder("farmingbooster", island.farmingBooster + ""),
-                new Placeholder("expbooster", island.expBooster + ""),
-                new Placeholder("flightbooster", island.flightBooster + ""),
-
-                new Placeholder("spawnerbooster_seconds", island.spawnerBooster % 60 + ""),
-                new Placeholder("farmingbooster_seconds", island.farmingBooster % 60 + ""),
-                new Placeholder("expbooster_seconds", island.expBooster % 60 + ""),
-                new Placeholder("flightbooster_seconds", island.flightBooster % 60 + ""),
-                new Placeholder("spawnerbooster_minutes", (int) Math.floor(island.spawnerBooster / 60.00) + ""),
-                new Placeholder("farmingbooster_minutes", (int) Math.floor(island.farmingBooster / 60.00) + ""),
-                new Placeholder("expbooster_minutes", (int) Math.floor(island.expBooster / 60.00) + ""),
-                new Placeholder("flightbooster_minutes", (int) Math.floor(island.flightBooster / 60.00) + ""),
-                new Placeholder("spawnerbooster_crystalcost", IridiumSkyblock.getBoosters().spawnerBooster.crystalsCost + ""),
-                new Placeholder("farmingbooster_crystalcost", IridiumSkyblock.getBoosters().farmingBooster.crystalsCost + ""),
-                new Placeholder("expbooster_crystalcost", IridiumSkyblock.getBoosters().experianceBooster.crystalsCost + ""),
-                new Placeholder("flightbooster_crystalcost", IridiumSkyblock.getBoosters().flightBooster.crystalsCost + ""),
-                new Placeholder("spawnerbooster_vaultcost", IridiumSkyblock.getBoosters().spawnerBooster.vaultCost + ""),
-                new Placeholder("farmingbooster_vaultcost", IridiumSkyblock.getBoosters().farmingBooster.vaultCost + ""),
-                new Placeholder("expbooster_vaultcost", IridiumSkyblock.getBoosters().experianceBooster.vaultCost + ""),
-                new Placeholder("flightbooster_vaultcost", IridiumSkyblock.getBoosters().flightBooster.vaultCost + ""),
-
-                //Bank
                 new Placeholder("experience", island.getFormattedExp()),
                 new Placeholder("crystals", island.getFormattedCrystals()),
                 new Placeholder("money", island.getFormattedMoney()),
                 new Placeholder("value", island.getFormattedValue())
         ));
+        for (Upgrades.Upgrade upgrade : IridiumSkyblock.getInstance().getIslandUpgrades()) {
+            int level = island.getUpgradeLevel(upgrade.name);
+            placeholders.add(new Placeholder(upgrade.name + "vaultcost", upgrade.upgrades.containsKey(level + 1) ? Integer.toString(upgrade.upgrades.get(level + 1).vaultCost) : IridiumSkyblock.getMessages().maxlevelreached));
+            placeholders.add(new Placeholder(upgrade.name + "crystalscost", upgrade.upgrades.containsKey(level + 1) ? Integer.toString(upgrade.upgrades.get(level + 1).crystalsCost) : IridiumSkyblock.getMessages().maxlevelreached));
+            placeholders.add(new Placeholder(upgrade.name + "level", Integer.toString(level)));
+            if (upgrade.upgrades.get(level).size != null) {
+                placeholders.add(new Placeholder(upgrade.name + "blocks", Integer.toString(upgrade.upgrades.get(level).size)));
+                placeholders.add(new Placeholder(upgrade.name + "count", Integer.toString(upgrade.upgrades.get(level).size)));
+            }
+        }
+        for (Boosters.Booster booster : IridiumSkyblock.getInstance().getIslandBoosters()) {
+            placeholders.add(new Placeholder(booster.name + "booster", Integer.toString(island.getBoosterTime(booster.name))));
+            placeholders.add(new Placeholder(booster.name + "booster_seconds", Integer.toString(island.getBoosterTime(booster.name) % 60)));
+            placeholders.add(new Placeholder(booster.name + "booster_minutes", Integer.toString((int) Math.floor(island.getBoosterTime(booster.name) / 60.00))));
+            placeholders.add(new Placeholder(booster.name + "booster_crystalcost", Integer.toString(booster.crystalsCost)));
+            placeholders.add(new Placeholder(booster.name + "booster_vaultcost", Integer.toString(booster.vaultCost)));
+        }
         return placeholders;
     }
 

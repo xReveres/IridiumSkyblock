@@ -71,7 +71,7 @@ public class PlayerMoveListener implements Listener {
             if (userIsland == null) return;
 
             if (user.flying
-                    && (!userIsland.isInIsland(location) || userIsland.flightBooster == 0)
+                    && (!userIsland.isInIsland(location) || userIsland.getBoosterTime(IridiumSkyblock.getBoosters().islandFlightBooster.name) == 0)
                     && !player.getGameMode().equals(GameMode.CREATIVE)
                     && !(player.hasPermission("IridiumSkyblock.Fly")
                     || player.hasPermission("iridiumskyblock.fly"))) {

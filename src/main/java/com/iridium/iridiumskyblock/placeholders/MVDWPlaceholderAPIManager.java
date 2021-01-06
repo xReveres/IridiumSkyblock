@@ -5,6 +5,8 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.configs.Boosters;
+import com.iridium.iridiumskyblock.configs.Upgrades;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -107,96 +109,6 @@ public class MVDWPlaceholderAPIManager {
             return String.valueOf(online);
         });
 
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_upgrade_member_level", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().getMemberLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_upgrade_member_amount", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.get(user.getIsland().getMemberLevel()).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_upgrade_size_level", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().getSizeLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_upgrade_size_dimensions", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(user.getIsland().getSizeLevel()).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_upgrade_ore_level", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().getOreLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_upgrade_warp_level", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().getWarpLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_booster_spawner", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().spawnerBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_booster_exp", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().expBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_booster_farming", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().farmingBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
-        PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_booster_flight", e -> {
-            Player player = e.getPlayer();
-            if (player == null) {
-                return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            }
-            User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().flightBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-        });
-
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_bank_vault", e -> {
             Player player = e.getPlayer();
             if (player == null) {
@@ -264,6 +176,56 @@ public class MVDWPlaceholderAPIManager {
             int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
             return String.valueOf(hours);
         });
+
+        for (Upgrades.Upgrade upgrade : IridiumSkyblock.getInstance().getIslandUpgrades()) {
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_level", e->{
+                Player player = e.getPlayer();
+                if (player == null) {
+                    return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                }
+                User user = User.getUser(player);
+                int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
+                return user.getIsland() != null ? NumberFormat.getInstance().format(level) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            });
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_dimensions", e->{
+                Player player = e.getPlayer();
+                if (player == null) {
+                    return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                }
+                User user = User.getUser(player);
+                int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
+                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            });
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_amount", e->{
+                Player player = e.getPlayer();
+                if (player == null) {
+                    return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                }
+                User user = User.getUser(player);
+                int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
+                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            });
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_count", e->{
+                Player player = e.getPlayer();
+                if (player == null) {
+                    return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                }
+                User user = User.getUser(player);
+                int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
+                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            });
+        }
+
+        for (Boosters.Booster booster : IridiumSkyblock.getInstance().getIslandBoosters()) {
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_booster_"+booster.name, e->{
+                Player player = e.getPlayer();
+                if (player == null) {
+                    return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                }
+                User user = User.getUser(player);
+                return user.getIsland() != null ? Integer.toString(user.getIsland().getBoosterTime(booster.name)) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            });
+        }
 
         for (int i = 0; i < 10; i++) { //TODO there is probably a more efficient way to do this?
             int finalI = i;

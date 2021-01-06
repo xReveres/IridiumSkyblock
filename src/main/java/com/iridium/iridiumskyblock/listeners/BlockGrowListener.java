@@ -25,7 +25,7 @@ public class BlockGrowListener implements Listener {
             final Island island = IslandManager.getIslandViaLocation(location);
             if (island == null) return;
 
-            if (island.farmingBooster == 0) return;
+            if (island.getBoosterTime(IridiumSkyblock.getBoosters().islandFarmingBooster.name) == 0) return;
 
             final Material material = block.getType();
             if (!XBlock.isCrop(XMaterial.matchXMaterial(material))) return;

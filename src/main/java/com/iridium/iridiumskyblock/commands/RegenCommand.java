@@ -40,10 +40,6 @@ public class RegenCommand extends Command {
                                     user.getIsland().setMemberLevel(1);
                                     user.getIsland().setWarpLevel(1);
                                     user.getIsland().setOreLevel(1);
-                                    user.getIsland().flightBooster = 0;
-                                    user.getIsland().expBooster = 0;
-                                    user.getIsland().farmingBooster = 0;
-                                    user.getIsland().spawnerBooster = 0;
                                     user.getIsland().crystals = 0;
                                     user.getIsland().exp = 0;
                                     user.getIsland().money = 0;
@@ -90,10 +86,6 @@ public class RegenCommand extends Command {
                         island.setMemberLevel(1);
                         island.setWarpLevel(1);
                         island.setOreLevel(1);
-                        island.flightBooster = 0;
-                        island.expBooster = 0;
-                        island.farmingBooster = 0;
-                        island.spawnerBooster = 0;
                         island.crystals = 0;
                         island.exp = 0;
                         island.money = 0;

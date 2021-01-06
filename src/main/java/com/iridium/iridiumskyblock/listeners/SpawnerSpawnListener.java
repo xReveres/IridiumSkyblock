@@ -19,7 +19,7 @@ public class SpawnerSpawnListener implements Listener {
             final Island island = IslandManager.getIslandViaLocation(location);
             if (island == null) return;
 
-            if (island.spawnerBooster == 0) return;
+            if (island.getBoosterTime(IridiumSkyblock.getBoosters().islandSpawnerBooster.name) == 0) return;
 
             final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
             final CreatureSpawner spawner = event.getSpawner();

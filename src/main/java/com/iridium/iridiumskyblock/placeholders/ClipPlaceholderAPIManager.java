@@ -5,6 +5,8 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.configs.Boosters;
+import com.iridium.iridiumskyblock.configs.Upgrades;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -84,26 +86,6 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                     }
                 }
                 return String.valueOf(online);
-            case "island_upgrade_member_level":
-                return user.getIsland() != null ? NumberFormat.getInstance().format(user.getIsland().getMemberLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_upgrade_member_amount":
-                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.get(user.getIsland().getMemberLevel()).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_upgrade_size_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().getSizeLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_upgrade_size_dimensions":
-                return user.getIsland() != null ? String.valueOf(IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(user.getIsland().getSizeLevel()).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_upgrade_ore_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().getOreLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_upgrade_warp_level":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().getWarpLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_booster_spawner":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().spawnerBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_booster_exp":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().expBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_booster_farming":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().farmingBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
-            case "island_booster_flight":
-                return user.getIsland() != null ? String.valueOf(user.getIsland().flightBooster) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_bank_vault":
                 return user.getIsland() != null ? user.getIsland().getFormattedMoney() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_bank_experience":
@@ -118,6 +100,26 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
                 return String.valueOf(hours);
             case "island_role":
                 return user.getIsland() != null ? user.getRole().toString() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+        }
+        for (Upgrades.Upgrade upgrade : IridiumSkyblock.getInstance().getIslandUpgrades()) {
+            int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
+            if (placeholder.equals("island_upgrade_" + upgrade.name + "_level")) {
+                return user.getIsland() != null ? NumberFormat.getInstance().format(level) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            }
+            if (placeholder.equals("island_upgrade_" + upgrade.name + "_dimensions") && upgrade.upgrades.get(level).size != null) {
+                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            }
+            if (placeholder.equals("island_upgrade_" + upgrade.name + "_amount") && upgrade.upgrades.get(level).size != null) {
+                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            }
+            if (placeholder.equals("island_upgrade_" + upgrade.name + "_count") && upgrade.upgrades.get(level).size != null) {
+                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            }
+        }
+        for (Boosters.Booster booster : IridiumSkyblock.getInstance().getIslandBoosters()) {
+            if (placeholder.equals("island_booster_" + booster.name)) {
+                return user.getIsland() != null ? Integer.toString(user.getIsland().getBoosterTime(booster.name)) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            }
         }
         if (placeholder.startsWith("island_top_name_")) {
             try {

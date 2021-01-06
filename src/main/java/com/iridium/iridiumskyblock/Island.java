@@ -81,15 +81,11 @@ public class Island {
 
     public int id;
 
-    public int spawnerBooster;
-    public int farmingBooster;
-    public int expBooster;
-    public int flightBooster;
-
     private transient int boosterId;
 
     public int crystals;
 
+    private HashMap<String, Integer> boosterTimes = new HashMap<>();
     private HashMap<String, Integer> upgradeLevels = new HashMap<>();
     private Integer sizeLevel;
     private Integer memberLevel;
@@ -181,10 +177,6 @@ public class Island {
         this.home = home;
         this.members = new HashSet<>(Collections.singletonList(user.player));
         this.id = id;
-        spawnerBooster = 0;
-        farmingBooster = 0;
-        expBooster = 0;
-        flightBooster = 0;
         crystals = 0;
         value = 0;
         lastMissionValue = 0;
@@ -634,8 +626,10 @@ public class Island {
         visitorGUI = new VisitorGUI(this);
 
         if (upgradeLevels == null) upgradeLevels = new HashMap<>();
+        if (boosterTimes == null) boosterTimes = new HashMap<>();
         if (sizeLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandSizeUpgrade, sizeLevel);
         if (memberLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandMemberUpgrade, memberLevel);
+        if (warpLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandWarpUpgrade, warpLevel);
         if (warpLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandWarpUpgrade, warpLevel);
         if (oreLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandOresUpgrade, oreLevel);
         sizeLevel = null;
@@ -646,22 +640,26 @@ public class Island {
         failedGenerators = new HashSet<>();
         coopInvites = new HashSet<>();
         boosterId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
-            if (spawnerBooster > 0) spawnerBooster--;
-            if (farmingBooster > 0) farmingBooster--;
-            if (expBooster > 0) expBooster--;
-            if (flightBooster == 1) {
-                for (String player : members) {
-                    Player p = Bukkit.getPlayer(player);
-                    if (p != null) {
-                        if ((!p.hasPermission("IridiumSkyblock.Fly") && !p.hasPermission("iridiumskyblock.fly")) && p.getGameMode().equals(GameMode.SURVIVAL)) {
-                            p.setAllowFlight(false);
-                            p.setFlying(false);
-                            User.getUser(p).flying = false;
+            for (String booster : new ArrayList<>(boosterTimes.keySet())) {
+                int time = boosterTimes.get(booster);
+                if (time == 1) {
+                    boosterTimes.remove(booster);
+                    if (booster.equals(IridiumSkyblock.getBoosters().islandFlightBooster.name)) {
+                        for (String player : members) {
+                            Player p = Bukkit.getPlayer(player);
+                            if (p != null) {
+                                if ((!p.hasPermission("IridiumSkyblock.Fly") && !p.hasPermission("iridiumskyblock.fly")) && p.getGameMode().equals(GameMode.SURVIVAL)) {
+                                    p.setAllowFlight(false);
+                                    p.setFlying(false);
+                                    User.getUser(p).flying = false;
+                                }
+                            }
                         }
                     }
+                } else {
+                    boosterTimes.put(booster, time - 1);
                 }
             }
-            if (flightBooster > 0) flightBooster--;
         }, 0, 20);
         if (permissions == null) {
             permissions = new HashMap<Role, Permissions>() {{
@@ -1174,6 +1172,14 @@ public class Island {
     public String getName() {
         if (name == null) name = User.getUser(owner).name;
         return name;
+    }
+
+    public void addBoosterTime(String booster, int time) {
+        boosterTimes.put(booster, getBoosterTime(booster) + time);
+    }
+
+    public int getBoosterTime(String booster) {
+        return boosterTimes.getOrDefault(booster, 0);
     }
 
     public void setUpgradeLevel(Upgrades.Upgrade upgrade, int level) {

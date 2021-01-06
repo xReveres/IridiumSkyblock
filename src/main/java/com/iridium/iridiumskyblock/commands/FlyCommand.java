@@ -22,7 +22,7 @@ public class FlyCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.getIsland().isInIsland(p.getLocation())) {
-                if (user.getIsland().flightBooster != 0 || p.hasPermission("iridiumskyblock.Fly")) {
+                if (user.getIsland().getBoosterTime(IridiumSkyblock.getBoosters().islandFlightBooster.name) != 0 || p.hasPermission("iridiumskyblock.Fly")) {
                     if (args.length == 2) {
                         switch (args[1].toLowerCase()) {
                             case "on":
