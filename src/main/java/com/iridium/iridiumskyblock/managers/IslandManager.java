@@ -236,10 +236,9 @@ public class IslandManager {
     public static void save(Island island, Connection connection) {
         try {
             String json = IridiumSkyblock.getPersist().gson.toJson(island);
-            PreparedStatement insert = connection.prepareStatement("INSERT INTO islands (id,json) VALUES (?,?) ON CONFLICT(id) DO UPDATE SET json = ?;");
+            PreparedStatement insert = connection.prepareStatement("REPLACE INTO islands (id,json) VALUES (?,?);");
             insert.setInt(1, island.id);
             insert.setString(2, json);
-            insert.setString(3, json);
             insert.executeUpdate();
             insert.close();
         } catch (SQLException throwables) {

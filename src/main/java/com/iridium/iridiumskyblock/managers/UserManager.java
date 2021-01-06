@@ -53,10 +53,9 @@ public class UserManager {
     public static void saveUser(User user, Connection connection) {
         try {
             String json = IridiumSkyblock.getPersist().gson.toJson(user);
-            PreparedStatement insert = connection.prepareStatement("INSERT INTO users (UUID,json) VALUES (?,?) ON CONFLICT(UUID) DO UPDATE SET json = ?;");
+            PreparedStatement insert = connection.prepareStatement("REPLACE INTO users (UUID,json) VALUES (?,?);");
             insert.setString(1, user.player);
             insert.setString(2, json);
-            insert.setString(3, json);
             insert.executeUpdate();
             insert.close();
         } catch (SQLException throwables) {
