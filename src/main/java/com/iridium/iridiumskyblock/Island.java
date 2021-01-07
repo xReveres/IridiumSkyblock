@@ -80,7 +80,7 @@ public class Island {
     public transient ConcurrentHashMap<String, Integer> spawners;
     public ConcurrentHashMap<Location, Integer> stackedBlocks;
 
-    public final List<IslandWarp> islandWarps;
+    public List<IslandWarp> islandWarps;
 
     private double startvalue;
 
@@ -568,6 +568,7 @@ public class Island {
     }
 
     public void init() {
+        if(islandWarps==null)islandWarps = new ArrayList<>();
         this.playersOnIsland = new HashSet<>();
         this.lastPlayerCaching = 0L;
         if (netherschematic == null) {
