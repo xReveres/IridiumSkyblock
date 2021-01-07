@@ -602,6 +602,7 @@ public class IridiumSkyblock extends JavaPlugin {
         registerUpgrade(getUpgrades().islandMemberUpgrade);
         registerUpgrade(getUpgrades().islandOresUpgrade);
         registerUpgrade(getUpgrades().islandWarpUpgrade);
+        registerUpgrade(getUpgrades().islandBlockLimitUpgrade);
 
         registerBooster(getBoosters().islandFlightBooster);
         registerBooster(getBoosters().islandSpawnerBooster);

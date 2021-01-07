@@ -47,7 +47,7 @@ public class BlockPlaceListener implements Listener {
             final Material material = block.getType();
             final XMaterial xmaterial = XMaterial.matchXMaterial(material);
             final Config config = IridiumSkyblock.getConfiguration();
-            final Integer max = config.limitedBlocks.get(xmaterial);
+            final Integer max = IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.upgrades.get(island.getBlockLimitLevel()).limitedBlocks.get(xmaterial);
             if (max != null) {
                 if (island.valuableBlocks.getOrDefault(xmaterial.name(), 0) >= max) {
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().blockLimitReached

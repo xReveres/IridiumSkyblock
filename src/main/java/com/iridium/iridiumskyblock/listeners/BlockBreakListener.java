@@ -81,7 +81,7 @@ public class BlockBreakListener implements Listener {
             if (island == null) return;
 
             final XMaterial xmaterial = XMaterial.matchXMaterial(block.getType());
-            if (Utils.isBlockValuable(block) || IridiumSkyblock.getConfiguration().limitedBlocks.containsKey(xmaterial)) {
+            if (Utils.isBlockValuable(block)) {
                 island.valuableBlocks.computeIfPresent(xmaterial.name(), (name, original) -> original - 1);
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
             }

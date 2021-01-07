@@ -223,11 +223,17 @@ public class Utils {
     }
 
     public static boolean isBlockValuable(Block b) {
-        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(b.getType())) || b.getState() instanceof CreatureSpawner || IridiumSkyblock.getConfiguration().limitedBlocks.containsKey(XMaterial.matchXMaterial(b.getType()));
+        for (Upgrades.IslandBlockLimitUpgrade islandBlockLimitUpgrade : IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.upgrades.values()) {
+            if (islandBlockLimitUpgrade.limitedBlocks.containsKey(XMaterial.matchXMaterial(b.getType()))) return true;
+        }
+        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(b.getType())) || b.getState() instanceof CreatureSpawner;
     }
 
     public static boolean isBlockValuable(XMaterial material) {
-        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(material) || IridiumSkyblock.getConfiguration().limitedBlocks.containsKey(material);
+        for (Upgrades.IslandBlockLimitUpgrade islandBlockLimitUpgrade : IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.upgrades.values()) {
+            if (islandBlockLimitUpgrade.limitedBlocks.containsKey(material)) return true;
+        }
+        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(material);
     }
 
     public static List<Island> getTopIslands() {

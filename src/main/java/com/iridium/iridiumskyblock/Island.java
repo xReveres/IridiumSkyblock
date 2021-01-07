@@ -1177,6 +1177,10 @@ public class Island {
         return getUpgradeLevel(IridiumSkyblock.getUpgrades().islandSizeUpgrade.name);
     }
 
+    public int getBlockLimitLevel() {
+        return getUpgradeLevel(IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.name);
+    }
+
     public int getMemberLevel() {
         return getUpgradeLevel(IridiumSkyblock.getUpgrades().islandMemberUpgrade.name);
     }
@@ -1191,6 +1195,10 @@ public class Island {
 
     public void setSizeLevel(int level) {
         setUpgradeLevel(IridiumSkyblock.getUpgrades().islandSizeUpgrade, level);
+    }
+
+    public void setBlockLimitLevel(int level) {
+        setUpgradeLevel(IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade, level);
     }
 
     public void setMemberLevel(int level) {

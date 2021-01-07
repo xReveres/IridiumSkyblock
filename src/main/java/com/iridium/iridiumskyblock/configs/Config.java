@@ -96,11 +96,6 @@ public class Config {
         put(10, 25);
     }};
 
-    public Map<XMaterial, Integer> limitedBlocks = new HashMap<XMaterial, Integer>() {{
-        put(XMaterial.HOPPER, 50);
-        put(XMaterial.SPAWNER, 10);
-    }};
-
     public Map<XMaterial, Double> blockvalue = null;
     public Map<String, Double> spawnervalue = null;
     public List<XBiome> biomes = null;
