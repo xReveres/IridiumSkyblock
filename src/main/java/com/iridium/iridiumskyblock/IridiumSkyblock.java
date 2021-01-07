@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock;
 
-import com.cryptomorin.xseries.XBiome;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -124,7 +123,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
             new Metrics(this, 5825);
 
-            if (!loadConfigs()) return;
+            loadConfigs();
             saveConfigs();
 
             startCounting();
@@ -218,20 +217,29 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
-    public void registerBooster(Boosters.Booster booster){
-        islandBoosters.add(booster);
-    }
+    @Override
+    public void onDisable() {
+        try {
+            super.onDisable();
 
-    public List<Boosters.Booster> getIslandBoosters() {
-        return islandBoosters;
-    }
+            saveData();
 
-    public void registerUpgrade(Upgrades.Upgrade upgrade) {
-        islandUpgrades.add(upgrade);
-    }
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.closeInventory();
+                User user = User.getUser(p);
+                for (Object object : user.getHolograms()) {
+                    IridiumSkyblock.getNms().removeHologram(p, object);
+                }
+            }
 
-    public List<Upgrades.Upgrade> getIslandUpgrades(){
-        return islandUpgrades;
+            getLogger().info("-------------------------------");
+            getLogger().info("");
+            getLogger().info(getDescription().getName() + " Disabled!");
+            getLogger().info("");
+            getLogger().info("-------------------------------");
+        } catch (Exception e) {
+            sendErrorMessage(e);
+        }
     }
 
     private void update() {
@@ -358,31 +366,6 @@ public class IridiumSkyblock extends JavaPlugin {
         if (IridiumSkyblock.getConfiguration().netherIslands) {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + IslandManager.getNetherWorld().getName() + " nether -g " + getName());
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + IslandManager.getNetherWorld().getName());
-        }
-    }
-
-    @Override
-    public void onDisable() {
-        try {
-            super.onDisable();
-
-            saveData();
-
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.closeInventory();
-                User user = User.getUser(p);
-                for (Object object : user.getHolograms()) {
-                    IridiumSkyblock.getNms().removeHologram(p, object);
-                }
-            }
-
-            getLogger().info("-------------------------------");
-            getLogger().info("");
-            getLogger().info(getDescription().getName() + " Disabled!");
-            getLogger().info("");
-            getLogger().info("-------------------------------");
-        } catch (Exception e) {
-            sendErrorMessage(e);
         }
     }
 
@@ -583,7 +566,7 @@ public class IridiumSkyblock extends JavaPlugin {
         if (configuration.netherIslands) IslandManager.getNetherWorld().getWorldBorder().setSize(Double.MAX_VALUE);
     }
 
-    public boolean loadConfigs() {
+    public void loadConfigs() {
         configuration = persist.getFile(Config.class).exists() ? persist.load(Config.class) : new Config();
         sql = persist.getFile(SQL.class).exists() ? persist.load(SQL.class) : new SQL();
         missions = persist.getFile(Missions.class).exists() ? persist.load(Missions.class) : new Missions();
@@ -609,29 +592,13 @@ public class IridiumSkyblock extends JavaPlugin {
         registerBooster(getBoosters().islandFarmingBooster);
         registerBooster(getBoosters().islandExperienceBooster);
 
-        if (stackable.blockList.isEmpty()) {
-            stackable.blockList = Arrays.asList(XMaterial.NETHERITE_BLOCK, XMaterial.DIAMOND_BLOCK, XMaterial.EMERALD_BLOCK, XMaterial.GOLD_BLOCK, XMaterial.IRON_BLOCK);
-        }
-
         if (schematics.schematics != null) {
             schematics.schematicList = schematics.schematics.stream().map(Schematics.LegacyFakeSchematic::tonew).collect(Collectors.toList());
             schematics.schematics = null;
         }
 
-        if (inventories.red.slot == null) inventories.red.slot = 10;
-        if (inventories.green.slot == null) inventories.green.slot = 12;
-        if (inventories.blue.slot == null) inventories.blue.slot = 14;
-        if (inventories.off.slot == null) inventories.off.slot = 16;
-
-        missions.missions.remove(null);
-
-
         commandManager = new CommandManager("island");
         commandManager.registerCommands();
-
-        if (configuration == null || missions == null || messages == null || upgrades == null || boosters == null || inventories == null || schematics == null || commands == null || blockValues == null || shop == null || stackable == null) {
-            return false;
-        }
 
         if (shop.shop == null) shop = new Shop();
 
@@ -647,25 +614,17 @@ public class IridiumSkyblock extends JavaPlugin {
 
         blockValues.blockvalue.remove(XMaterial.AIR);
 
-        if (configuration.biomes != null) {
-            configuration.islandBiomes.clear();
-            for (XBiome biome : configuration.biomes) {
-                configuration.islandBiomes.put(biome, new Config.BiomeConfig());
-            }
-            configuration.biomes = null;
-        }
-
         oreUpgradeCache.clear();
         for (int i : upgrades.islandOresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
-            for (String item : ((Upgrades.IslandOreUpgrade)upgrades.islandOresUpgrade.getIslandUpgrade(i)).ores) {
+            for (String item : ((Upgrades.IslandOreUpgrade) upgrades.islandOresUpgrade.getIslandUpgrade(i)).ores) {
                 if (item != null) {
                     int i1 = Integer.parseInt(item.split(":")[1]);
                     for (int a = 0; a <= i1; a++) {
                         items.add(item.split(":")[0]);
                     }
                 } else {
-                    ((Upgrades.IslandOreUpgrade)upgrades.islandOresUpgrade.getIslandUpgrade(i)).ores.remove(null);
+                    ((Upgrades.IslandOreUpgrade) upgrades.islandOresUpgrade.getIslandUpgrade(i)).ores.remove(null);
                 }
             }
             oreUpgradeCache.put(i, items);
@@ -674,63 +633,26 @@ public class IridiumSkyblock extends JavaPlugin {
         netherOreUpgradeCache.clear();
         for (int i : upgrades.islandOresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
-            for (String item : ((Upgrades.IslandOreUpgrade)upgrades.islandOresUpgrade.getIslandUpgrade(i)).netherores) {
+            for (String item : ((Upgrades.IslandOreUpgrade) upgrades.islandOresUpgrade.getIslandUpgrade(i)).netherores) {
                 if (item != null) {
                     int i1 = Integer.parseInt(item.split(":")[1]);
                     for (int a = 0; a <= i1; a++) {
                         items.add(item.split(":")[0]);
                     }
                 } else {
-                    ((Upgrades.IslandOreUpgrade)upgrades.islandOresUpgrade.getIslandUpgrade(i)).netherores.remove(null);
+                    ((Upgrades.IslandOreUpgrade) upgrades.islandOresUpgrade.getIslandUpgrade(i)).netherores.remove(null);
                 }
             }
             netherOreUpgradeCache.put(i, items);
         }
 
-        if (boosters.islandFlightBooster.time == 0) boosters.islandFlightBooster.time = 3600;
-        if (boosters.islandExperienceBooster.time == 0) boosters.islandExperienceBooster.time = 3600;
-        if (boosters.islandFarmingBooster.time == 0) boosters.islandFarmingBooster.time = 3600;
-        if (boosters.islandSpawnerBooster.time == 0) boosters.islandSpawnerBooster.time = 3600;
-
-        if (boosters.islandSpawnerBooster.crystalsCost == 0 && boosters.islandSpawnerBooster.vaultCost == 0)
-            boosters.islandSpawnerBooster.crystalsCost = 15;
-        if (boosters.islandFarmingBooster.crystalsCost == 0 && boosters.islandFarmingBooster.vaultCost == 0)
-            boosters.islandFarmingBooster.crystalsCost = 15;
-        if (boosters.islandExperienceBooster.crystalsCost == 0 && boosters.islandExperienceBooster.vaultCost == 0)
-            boosters.islandExperienceBooster.crystalsCost = 15;
-        if (boosters.islandFlightBooster.crystalsCost == 0 && boosters.islandFlightBooster.vaultCost == 0)
-            boosters.islandFlightBooster.crystalsCost = 15;
-
-        if (configuration.blockvalue != null) {
-            blockValues.blockvalue = new HashMap<>(configuration.blockvalue);
-            configuration.blockvalue = null;
-        }
-        if (configuration.spawnervalue != null) {
-            blockValues.spawnervalue = new HashMap<>(configuration.spawnervalue);
-            configuration.spawnervalue = null;
-        }
-        int max = 0;
-        for (Upgrades.IslandUpgrade size : upgrades.islandSizeUpgrade.upgrades.values()) {
-            if (max < size.size) {
-                max = size.size;
-            }
-        }
+        int max = upgrades.islandSizeUpgrade.upgrades.values().stream().map(islandUpgrade -> islandUpgrade.size).sorted((a, b) -> b - a).collect(Collectors.toList()).get(0);
         if (configuration.distance <= max) {
             configuration.distance = max + 1;
         }
-        for (Island island : IslandManager.getLoadedIslands()) {
-            if (island.islandMenuGUI != null) island.islandMenuGUI.getInventory().clear();
-            if (island.schematicSelectGUI != null) island.schematicSelectGUI.getInventory().clear();
-            if (island.bankGUI != null) island.bankGUI.getInventory().clear();
-            if (island.boosterGUI != null) island.boosterGUI.getInventory().clear();
-            if (island.coopGUI != null) island.coopGUI.getInventory().clear();
-            if (island.membersGUI != null) island.membersGUI.getInventory().clear();
-            if (island.missionsGUI != null) island.missionsGUI.getInventory().clear();
-            if (island.permissionsGUI != null) island.permissionsGUI.getInventory().clear();
-            if (island.upgradeGUI != null) island.upgradeGUI.getInventory().clear();
-            if (island.warpGUI != null) island.warpGUI.getInventory().clear();
-            if (island.borderColorGUI != null) island.borderColorGUI.getInventory().clear();
-            if (configuration.missionRestart == MissionRestart.Instantly) {
+
+        if (configuration.missionRestart == MissionRestart.Instantly) {
+            for (Island island : IslandManager.getLoadedIslands()) {
                 island.resetMissions();
             }
         }
@@ -743,7 +665,6 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     public BlockData fromLegacy(Material material, byte data) {
@@ -795,6 +716,22 @@ public class IridiumSkyblock extends JavaPlugin {
             if (border != null) persist.save(border);
             if (stackable != null) persist.save(stackable);
         });
+    }
+
+    public void registerBooster(Boosters.Booster booster) {
+        islandBoosters.add(booster);
+    }
+
+    public List<Boosters.Booster> getIslandBoosters() {
+        return islandBoosters;
+    }
+
+    public void registerUpgrade(Upgrades.Upgrade upgrade) {
+        islandUpgrades.add(upgrade);
+    }
+
+    public List<Upgrades.Upgrade> getIslandUpgrades() {
+        return islandUpgrades;
     }
 
     public static Persist getPersist() {

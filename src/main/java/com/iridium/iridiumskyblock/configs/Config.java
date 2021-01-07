@@ -74,6 +74,7 @@ public class Config {
     public XBiome defaultNetherBiome = XBiome.NETHER_WASTES;
     public MissionRestart missionRestart = MissionRestart.Daily;
     public String worldSpawn = "world";
+
     public Map<Role, Permissions> defaultPermissions = new HashMap<Role, Permissions>() {{
         for (Role role : Role.values()) {
             if (role == Role.Visitor) {
@@ -96,9 +97,6 @@ public class Config {
         put(10, 25);
     }};
 
-    public Map<XMaterial, Double> blockvalue = null;
-    public Map<String, Double> spawnervalue = null;
-    public List<XBiome> biomes = null;
     public Map<XBiome, BiomeConfig> islandBiomes = new HashMap<XBiome, BiomeConfig>() {{
         for (XBiome biome : XBiome.VALUES.stream().filter(biome -> !biome.equals(XBiome.THE_VOID)).collect(Collectors.toList())) {
             put(biome, new BiomeConfig());
