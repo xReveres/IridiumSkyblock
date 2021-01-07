@@ -689,6 +689,7 @@ public class Island {
     }
 
     private void pasteSchematic() {
+        Bukkit.getPluginManager().callEvent(new IslandRegenEvent(this));
         stackedBlocks.clear();
         for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematicList) {
             if (!fakeSchematic.overworldData.schematic.equals(this.schematic) && !fakeSchematic.netherData.schematic.equals(this.netherschematic))
