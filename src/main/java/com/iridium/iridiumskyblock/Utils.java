@@ -517,7 +517,7 @@ public class Utils {
         }
     }
 
-    public static enum BuyResponce {
+    public enum BuyResponce {
         SUCCESS,
         NOT_ENOUGH_CRYSTALS,
         NOT_ENOUGH_VAULT

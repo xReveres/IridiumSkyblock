@@ -133,7 +133,7 @@ public class MVDWPlaceholderAPIManager {
                 return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             }
             User user = User.getUser(player);
-            return user.getIsland() != null ? String.valueOf(user.getIsland().biome.name()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            return user.getIsland() != null ? user.getIsland().biome.name() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_midnight_seconds", e -> {
@@ -145,7 +145,7 @@ public class MVDWPlaceholderAPIManager {
             c.set(Calendar.MILLISECOND, 0);
             long time = (c.getTimeInMillis() - System.currentTimeMillis()) / 1000;
             int day = (int) TimeUnit.SECONDS.toDays(time);
-            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400L));
             int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
             return String.valueOf(second);
         });
@@ -159,7 +159,7 @@ public class MVDWPlaceholderAPIManager {
             c.set(Calendar.MILLISECOND, 0);
             long time = (c.getTimeInMillis() - System.currentTimeMillis()) / 1000;
             int day = (int) TimeUnit.SECONDS.toDays(time);
-            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400L));
             int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
             return String.valueOf(minute);
         });
@@ -173,7 +173,7 @@ public class MVDWPlaceholderAPIManager {
             c.set(Calendar.MILLISECOND, 0);
             long time = (c.getTimeInMillis() - System.currentTimeMillis()) / 1000;
             int day = (int) TimeUnit.SECONDS.toDays(time);
-            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400L));
             return String.valueOf(hours);
         });
 

@@ -51,7 +51,7 @@ public class RegenCommand extends Command {
                         }
                     } else {
                         int day = (int) TimeUnit.SECONDS.toDays(time);
-                        int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+                        int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400L));
                         int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
                         int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
                         p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

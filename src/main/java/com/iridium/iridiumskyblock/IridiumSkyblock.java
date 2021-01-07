@@ -87,8 +87,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private static File schematicFolder;
 
-    private List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
-    private List<Boosters.Booster> islandBoosters = new ArrayList<>();
+    private final List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
+    private final List<Boosters.Booster> islandBoosters = new ArrayList<>();
 
     @Override
     public void onEnable() {
