@@ -66,7 +66,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             case "island_value":
                 return user.getIsland() != null ? user.getIsland().getFormattedValue() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_level":
-                return user.getIsland() != null ? Utils.NumberFormatter.format(Math.floor(user.getIsland().value / IridiumSkyblock.getConfiguration().valuePerLevel)) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? user.getIsland().getFormattedLevel() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_rank":
                 return user.getIsland() != null ? NumberFormat.getInstance().format(Utils.getIslandRank(user.getIsland())) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_owner":
@@ -153,7 +153,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             try {
                 int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? Utils.NumberFormatter.format(Math.floor(Utils.getTopIslands().get(integer - 1).value / IridiumSkyblock.getConfiguration().valuePerLevel)) + "" : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return islands.size() > integer - 1 ? Utils.getTopIslands().get(integer - 1).getFormattedLevel() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException ignored) {
 
             }

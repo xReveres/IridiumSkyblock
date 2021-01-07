@@ -1223,6 +1223,10 @@ public class Island {
         return Utils.NumberFormatter.format(value);
     }
 
+    public String getFormattedLevel() {
+        return Utils.NumberFormatter.format(value / IridiumSkyblock.getConfiguration().valuePerLevel);
+    }
+
     public String getFormattedMoney() {
         return Utils.NumberFormatter.format(money);
     }
