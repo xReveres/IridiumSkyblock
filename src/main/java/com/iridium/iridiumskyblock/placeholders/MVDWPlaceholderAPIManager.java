@@ -194,7 +194,7 @@ public class MVDWPlaceholderAPIManager {
                 }
                 User user = User.getUser(player);
                 int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
-                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? Integer.toString(upgrade.getIslandUpgrade(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_amount", e->{
                 Player player = e.getPlayer();
@@ -203,7 +203,7 @@ public class MVDWPlaceholderAPIManager {
                 }
                 User user = User.getUser(player);
                 int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
-                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? Integer.toString(upgrade.getIslandUpgrade(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_count", e->{
                 Player player = e.getPlayer();
@@ -212,7 +212,7 @@ public class MVDWPlaceholderAPIManager {
                 }
                 User user = User.getUser(player);
                 int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
-                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? Integer.toString(upgrade.getIslandUpgrade(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
         }
 

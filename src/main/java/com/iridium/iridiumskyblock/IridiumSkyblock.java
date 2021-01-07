@@ -657,14 +657,14 @@ public class IridiumSkyblock extends JavaPlugin {
         oreUpgradeCache.clear();
         for (int i : upgrades.islandOresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
-            for (String item : upgrades.islandOresUpgrade.upgrades.get(i).ores) {
+            for (String item : ((Upgrades.IslandOreUpgrade)upgrades.islandOresUpgrade.getIslandUpgrade(i)).ores) {
                 if (item != null) {
                     int i1 = Integer.parseInt(item.split(":")[1]);
                     for (int a = 0; a <= i1; a++) {
                         items.add(item.split(":")[0]);
                     }
                 } else {
-                    upgrades.islandOresUpgrade.upgrades.get(i).ores.remove(null);
+                    ((Upgrades.IslandOreUpgrade)upgrades.islandOresUpgrade.getIslandUpgrade(i)).ores.remove(null);
                 }
             }
             oreUpgradeCache.put(i, items);
@@ -673,14 +673,14 @@ public class IridiumSkyblock extends JavaPlugin {
         netherOreUpgradeCache.clear();
         for (int i : upgrades.islandOresUpgrade.upgrades.keySet()) {
             ArrayList<String> items = new ArrayList<>();
-            for (String item : upgrades.islandOresUpgrade.upgrades.get(i).netherores) {
+            for (String item : ((Upgrades.IslandOreUpgrade)upgrades.islandOresUpgrade.getIslandUpgrade(i)).netherores) {
                 if (item != null) {
                     int i1 = Integer.parseInt(item.split(":")[1]);
                     for (int a = 0; a <= i1; a++) {
                         items.add(item.split(":")[0]);
                     }
                 } else {
-                    upgrades.islandOresUpgrade.upgrades.get(i).netherores.remove(null);
+                    ((Upgrades.IslandOreUpgrade)upgrades.islandOresUpgrade.getIslandUpgrade(i)).netherores.remove(null);
                 }
             }
             netherOreUpgradeCache.put(i, items);

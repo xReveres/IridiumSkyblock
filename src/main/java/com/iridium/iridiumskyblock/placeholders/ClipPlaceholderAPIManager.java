@@ -103,17 +103,18 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         }
         for (Upgrades.Upgrade upgrade : IridiumSkyblock.getInstance().getIslandUpgrades()) {
             int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
+            Upgrades.IslandUpgrade islandUpgrade = upgrade.getIslandUpgrade(level);
             if (placeholder.equals("island_upgrade_" + upgrade.name + "_level")) {
                 return user.getIsland() != null ? NumberFormat.getInstance().format(level) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             }
-            if (placeholder.equals("island_upgrade_" + upgrade.name + "_dimensions") && upgrade.upgrades.get(level).size != null) {
-                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            if (placeholder.equals("island_upgrade_" + upgrade.name + "_dimensions") && islandUpgrade.size != null) {
+                return user.getIsland() != null ? Integer.toString(islandUpgrade.size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             }
-            if (placeholder.equals("island_upgrade_" + upgrade.name + "_amount") && upgrade.upgrades.get(level).size != null) {
-                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            if (placeholder.equals("island_upgrade_" + upgrade.name + "_amount") && islandUpgrade.size != null) {
+                return user.getIsland() != null ? Integer.toString(islandUpgrade.size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             }
-            if (placeholder.equals("island_upgrade_" + upgrade.name + "_count") && upgrade.upgrades.get(level).size != null) {
-                return user.getIsland() != null ? Integer.toString(upgrade.upgrades.get(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            if (placeholder.equals("island_upgrade_" + upgrade.name + "_count") && islandUpgrade.size != null) {
+                return user.getIsland() != null ? Integer.toString(islandUpgrade.size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             }
         }
         for (Boosters.Booster booster : IridiumSkyblock.getInstance().getIslandBoosters()) {

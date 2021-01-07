@@ -300,12 +300,12 @@ public class Utils {
         ));
         for (Upgrades.Upgrade upgrade : IridiumSkyblock.getInstance().getIslandUpgrades()) {
             int level = island.getUpgradeLevel(upgrade.name);
-            placeholders.add(new Placeholder(upgrade.name + "vaultcost", upgrade.upgrades.containsKey(level + 1) ? Integer.toString(upgrade.upgrades.get(level + 1).vaultCost) : IridiumSkyblock.getMessages().maxlevelreached));
-            placeholders.add(new Placeholder(upgrade.name + "crystalscost", upgrade.upgrades.containsKey(level + 1) ? Integer.toString(upgrade.upgrades.get(level + 1).crystalsCost) : IridiumSkyblock.getMessages().maxlevelreached));
+            placeholders.add(new Placeholder(upgrade.name + "vaultcost", upgrade.getIslandUpgrade(level + 1) != null ? Integer.toString(upgrade.getIslandUpgrade(level + 1).vaultCost) : IridiumSkyblock.getMessages().maxlevelreached));
+            placeholders.add(new Placeholder(upgrade.name + "crystalscost", upgrade.getIslandUpgrade(level + 1) != null ? Integer.toString(upgrade.getIslandUpgrade(level + 1).crystalsCost) : IridiumSkyblock.getMessages().maxlevelreached));
             placeholders.add(new Placeholder(upgrade.name + "level", Integer.toString(level)));
-            if (upgrade.upgrades.get(level).size != null) {
-                placeholders.add(new Placeholder(upgrade.name + "blocks", Integer.toString(upgrade.upgrades.get(level).size)));
-                placeholders.add(new Placeholder(upgrade.name + "count", Integer.toString(upgrade.upgrades.get(level).size)));
+            if (upgrade.getIslandUpgrade(level).size != null) {
+                placeholders.add(new Placeholder(upgrade.name + "blocks", Integer.toString(upgrade.getIslandUpgrade(level).size)));
+                placeholders.add(new Placeholder(upgrade.name + "count", Integer.toString(upgrade.getIslandUpgrade(level).size)));
             }
         }
         for (Boosters.Booster booster : IridiumSkyblock.getInstance().getIslandBoosters()) {

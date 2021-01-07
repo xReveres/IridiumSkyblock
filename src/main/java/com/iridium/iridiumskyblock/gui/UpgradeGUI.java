@@ -56,8 +56,8 @@ public class UpgradeGUI extends GUI implements Listener {
             for (Upgrades.Upgrade upgrade : IridiumSkyblock.getInstance().getIslandUpgrades()) {
                 int level = getIsland().getUpgradeLevel(upgrade.name);
                 if (e.getSlot() == upgrade.item.slot && upgrade.enabled) {
-                    if (upgrade.upgrades.containsKey(level + 1)) {
-                        Upgrades.IslandUpgrade islandUpgrade = upgrade.upgrades.get(level + 1);
+                    Upgrades.IslandUpgrade islandUpgrade = upgrade.getIslandUpgrade(level + 1);
+                    if (islandUpgrade != null) {
                         Utils.BuyResponce responce = Utils.canBuy(p, islandUpgrade.vaultCost, islandUpgrade.crystalsCost);
                         if (responce == Utils.BuyResponce.SUCCESS) {
                             sendMessage(p, upgrade.name, level, level + 1);

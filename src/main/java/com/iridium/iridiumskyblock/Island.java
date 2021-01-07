@@ -316,7 +316,7 @@ public class Island {
     }
 
     public void sendBorder(Player p) {
-        double size = IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size;
+        double size = IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size;
         if (size % 2 == 0) size++;
         String worldName = p.getLocation().getWorld().getName();
         if (worldName.equals(IslandManager.getWorld().getName())) {
@@ -497,7 +497,7 @@ public class Island {
     }
 
     public void addWarp(Player player, Location location, String name, String password) {
-        if (islandWarps.size() < IridiumSkyblock.getUpgrades().islandWarpUpgrade.upgrades.get(getWarpLevel()).size) {
+        if (islandWarps.size() < IridiumSkyblock.getUpgrades().islandWarpUpgrade.getIslandUpgrade(getWarpLevel()).size) {
             islandWarps.add(new IslandWarp(location, name, password));
             player.sendMessage(Utils.color(IridiumSkyblock.getMessages().warpAdded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
@@ -506,7 +506,7 @@ public class Island {
     }
 
     public void addUser(User user) {
-        if (members.size() < IridiumSkyblock.getUpgrades().islandMemberUpgrade.upgrades.get(getMemberLevel()).size) {
+        if (members.size() < IridiumSkyblock.getUpgrades().islandMemberUpgrade.getIslandUpgrade(getMemberLevel()).size) {
 
             for (String player : members) {
                 User u = User.getUser(player);
@@ -568,7 +568,7 @@ public class Island {
     }
 
     public void init() {
-        if(islandWarps==null)islandWarps = new ArrayList<>();
+        if (islandWarps == null) islandWarps = new ArrayList<>();
         this.playersOnIsland = new HashSet<>();
         this.lastPlayerCaching = 0L;
         if (netherschematic == null) {
@@ -1096,7 +1096,7 @@ public class Island {
     }
 
     public void killEntities() {
-        for (Entity entity : IslandManager.getWorld().getNearbyEntities(center, IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size / 2.00, 255, IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size / 2.00)) {
+        for (Entity entity : IslandManager.getWorld().getNearbyEntities(center, IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size / 2.00, 255, IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size / 2.00)) {
             if (!entity.getType().equals(EntityType.PLAYER)) {
                 entity.remove();
             }
@@ -1105,7 +1105,7 @@ public class Island {
             Location netherCenter = center.clone();
             netherCenter.setWorld(IslandManager.getNetherWorld());
 
-            for (Entity entity : IslandManager.getNetherWorld().getNearbyEntities(netherCenter, IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size / 2.00, 255, IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size / 2.00)) {
+            for (Entity entity : IslandManager.getNetherWorld().getNearbyEntities(netherCenter, IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size / 2.00, 255, IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size / 2.00)) {
                 if (!entity.getType().equals(EntityType.PLAYER)) {
                     entity.remove();
                 }
@@ -1160,11 +1160,11 @@ public class Island {
     }
 
     public void setUpgradeLevel(Upgrades.Upgrade upgrade, int level) {
-        if (!upgrade.upgrades.containsKey(level)) return;
+        if (upgrade.getIslandUpgrade(level) == null) return;
         upgradeLevels.put(upgrade.name, level);
 
-        pos1 = center.clone().subtract(IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size / 2.00, 0, IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size / 2.00);
-        pos2 = center.clone().add(IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size / 2.00, 0, IridiumSkyblock.getUpgrades().islandSizeUpgrade.upgrades.get(getSizeLevel()).size / 2.00);
+        pos1 = center.clone().subtract(IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size / 2.00, 0, IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size / 2.00);
+        pos2 = center.clone().add(IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size / 2.00, 0, IridiumSkyblock.getUpgrades().islandSizeUpgrade.getIslandUpgrade(getSizeLevel()).size / 2.00);
         sendBorder();
         setBiome(biome);
     }
