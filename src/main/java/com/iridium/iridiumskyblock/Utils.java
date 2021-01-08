@@ -374,6 +374,8 @@ public class Utils {
                     island.crystals -= crystals;
                     TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
                     return BuyResponce.SUCCESS;
+                }else{
+                    return BuyResponce.NOT_ENOUGH_VAULT;
                 }
             }
             if (island.money >= vault) {
@@ -381,6 +383,8 @@ public class Utils {
                 island.crystals -= crystals;
                 TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
                 return BuyResponce.SUCCESS;
+            }else{
+                return BuyResponce.NOT_ENOUGH_VAULT;
             }
         }
         if (IridiumSkyblock.getInstance().getEconomy() != null) {
