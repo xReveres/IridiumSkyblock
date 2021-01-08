@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Shop;
@@ -10,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -89,14 +87,14 @@ public class ShopGUI extends GUI implements Listener {
     }
 
     private void sellItem(Player player, Shop.ShopItem item, int amount) {
-        int itemsInInventory = getAmount(player.getInventory(), item.material);
+        int itemsInInventory = Utils.getAmount(player.getInventory(), item.material);
         IridiumSkyblock.getInstance().getLogger().info(amount + " " + itemsInInventory);
         if (itemsInInventory < amount) amount = itemsInInventory;
         if ((item.sellVault > 0 || item.sellCrystals > 0) && itemsInInventory > 0 && item.commands == null) {
             double sellVault = item.sellVault / item.amount * amount;
             int sellCrystals = (int) Math.floor((item.sellCrystals / (double) item.amount) * amount);
 
-            removeAmount(player.getInventory(), item.material, amount);
+            Utils.removeAmount(player.getInventory(), item.material, amount);
 
             Utils.pay(player, sellVault, sellCrystals);
             player.sendMessage(Utils.color(IridiumSkyblock.getMessages().shopSoldMessage
@@ -141,41 +139,6 @@ public class ShopGUI extends GUI implements Listener {
             }
         } else {
             player.sendMessage(Utils.color(IridiumSkyblock.getMessages().cannotBuyItem.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-        }
-    }
-
-    public int getAmount(Inventory inventory, XMaterial materials) {
-        int total = 0;
-        for (ItemStack item : inventory.getContents()) {
-            if (item == null) continue;
-            if (materials.isSimilar(item)) {
-                total += item.getAmount();
-            }
-        }
-        return total;
-    }
-
-    public void removeAmount(Inventory inventory, XMaterial material, int amount) {
-        int removed = 0;
-        int index = 0;
-        for (ItemStack itemStack : inventory.getContents()) {
-            if (itemStack == null) {
-                index++;
-                continue;
-            }
-            if (removed >= amount) break;
-            if (itemStack != null) {
-                if (material.isSimilar(itemStack)) {
-                    if (removed + itemStack.getAmount() <= amount) {
-                        removed += itemStack.getAmount();
-                        inventory.setItem(index, null);
-                    } else {
-                        itemStack.setAmount(itemStack.getAmount() - (amount - removed));
-                        removed += amount;
-                    }
-                }
-            }
-            index++;
         }
     }
 }
