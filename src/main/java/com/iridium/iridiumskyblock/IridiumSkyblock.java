@@ -7,7 +7,10 @@ import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.listeners.*;
-import com.iridium.iridiumskyblock.managers.*;
+import com.iridium.iridiumskyblock.managers.IslandDataManager;
+import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.managers.SQLManager;
+import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPIManager;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPIManager;
@@ -121,7 +124,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
             startCounting();
             setLanguages();
-            moveToSQL();
             Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
                 IslandManager.makeWorlds();
                 IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
@@ -510,18 +512,10 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
-    public void moveToSQL() {
-        sqlManager = new SQLManager();
-        sqlManager.createTables();
-        if (persist.getFile("islandmanager").exists()) {
-            LegacyIslandManager legacyIslandManager = persist.load(LegacyIslandManager.class, persist.getFile("islandmanager"));
-            legacyIslandManager.moveToSQL();
-            persist.getFile("islandmanager").renameTo(persist.getFile("islandmanager_old"));
-        }
-    }
-
     public void loadManagers() {
         try {
+            sqlManager = new SQLManager();
+            sqlManager.createTables();
             Connection connection = sqlManager.getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM islandmanager;");
 
@@ -585,15 +579,8 @@ public class IridiumSkyblock extends JavaPlugin {
         registerBooster(getBoosters().islandFarmingBooster);
         registerBooster(getBoosters().islandExperienceBooster);
 
-        if (schematics.schematics != null) {
-            schematics.schematicList = schematics.schematics.stream().map(Schematics.LegacyFakeSchematic::tonew).collect(Collectors.toList());
-            schematics.schematics = null;
-        }
-
         commandManager = new CommandManager("island");
         commandManager.registerCommands();
-
-        if (shop.shop == null) shop = new Shop();
 
         if (commandManager != null) {
             if (commandManager.commands.contains(IridiumSkyblock.getCommands().shopCommand)) {

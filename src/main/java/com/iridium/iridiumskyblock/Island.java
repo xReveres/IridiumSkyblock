@@ -63,10 +63,6 @@ public class Island {
 
     private HashMap<String, Integer> boosterTimes = new HashMap<>();
     private HashMap<String, Integer> upgradeLevels = new HashMap<>();
-    private Integer sizeLevel;
-    private Integer memberLevel;
-    private Integer warpLevel;
-    private Integer oreLevel;
 
     public transient int generateID;
 
@@ -604,15 +600,6 @@ public class Island {
 
         if (upgradeLevels == null) upgradeLevels = new HashMap<>();
         if (boosterTimes == null) boosterTimes = new HashMap<>();
-        if (sizeLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandSizeUpgrade, sizeLevel);
-        if (memberLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandMemberUpgrade, memberLevel);
-        if (warpLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandWarpUpgrade, warpLevel);
-        if (warpLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandWarpUpgrade, warpLevel);
-        if (oreLevel != null) setUpgradeLevel(IridiumSkyblock.getUpgrades().islandOresUpgrade, oreLevel);
-        sizeLevel = null;
-        memberLevel = null;
-        warpLevel = null;
-        oreLevel = null;
 
         failedGenerators = new HashSet<>();
         coopInvites = new HashSet<>();
