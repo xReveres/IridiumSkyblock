@@ -45,7 +45,7 @@ public class MVDWPlaceholderAPIManager {
                 return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             }
             User user = User.getUser(player);
-            return user.getIsland() != null ? Utils.NumberFormatter.format(Math.floor(user.getIsland().value / IridiumSkyblock.getConfiguration().valuePerLevel)) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            return user.getIsland() != null ? user.getIsland().getFormattedLevel() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_rank", e -> {
@@ -243,7 +243,7 @@ public class MVDWPlaceholderAPIManager {
             });
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_level_" + (i + 1), e -> {
                 List<Island> islands = Utils.getTopIslands();
-                return islands.size() > finalI ? Utils.NumberFormatter.format(Math.floor(Utils.getTopIslands().get(finalI).value / IridiumSkyblock.getConfiguration().valuePerLevel)) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return islands.size() > finalI ? Utils.getTopIslands().get(finalI).getFormattedLevel() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
         }
     }

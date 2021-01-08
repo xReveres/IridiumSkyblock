@@ -59,7 +59,7 @@ public class PlayerTalkListener implements Listener {
                 if (island == null) {
                     format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, "");
                 } else {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedValue());
+                    format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedLevel());
                 }
             }
 
@@ -70,23 +70,20 @@ public class PlayerTalkListener implements Listener {
                     islandPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat)
                             .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue())
                             .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
-                            .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedValue())
+                            .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedLevel())
                             .replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "")
                             .replace("%player%", player.getName())
                             .replace("%message%", event.getMessage()));
                 }
                 Bukkit.getServer().getOnlinePlayers().stream()
-                  .filter(onlinePlayer -> User.getUser(onlinePlayer).spyingIslandsChat)
-                  .forEach((spyingPlayer) -> {
-                        spyingPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().spyChatFormat)
-                            .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue())
-                            .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
-                            .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedValue())
-                            .replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "")
-                            .replace("%player%", player.getName())
-                            .replace("%message%", event.getMessage()));
-
-                  });
+                        .filter(onlinePlayer -> User.getUser(onlinePlayer).spyingIslandsChat)
+                        .forEach((spyingPlayer) -> spyingPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().spyChatFormat)
+                                .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue())
+                                .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
+                                .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedLevel())
+                                .replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "")
+                                .replace("%player%", player.getName())
+                                .replace("%message%", event.getMessage())));
                 event.setCancelled(true);
             }
 
