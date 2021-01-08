@@ -76,8 +76,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public Map<UUID, Island> entities = new HashMap<>();
     private Map<Integer, VisitGUI> visitGUI;
-    private final Map<Integer, List<String>> oreUpgradeCache = new HashMap<>();
-    private final Map<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
+    private final Map<Integer, List<XMaterial>> oreUpgradeCache = new HashMap<>();
+    private final Map<Integer, List<XMaterial>> netherOreUpgradeCache = new HashMap<>();
     private final HashMap<String, BlockData> legacy = new HashMap<>();
     private final List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
     private final List<Boosters.Booster> islandBoosters = new ArrayList<>();
@@ -609,12 +609,13 @@ public class IridiumSkyblock extends JavaPlugin {
 
         oreUpgradeCache.clear();
         for (int i : upgrades.islandOresUpgrade.upgrades.keySet()) {
-            ArrayList<String> items = new ArrayList<>();
+            ArrayList<XMaterial> items = new ArrayList<>();
             for (String item : ((Upgrades.IslandOreUpgrade) upgrades.islandOresUpgrade.getIslandUpgrade(i)).ores) {
                 if (item != null) {
-                    int i1 = Integer.parseInt(item.split(":")[1]);
-                    for (int a = 0; a <= i1; a++) {
-                        items.add(item.split(":")[0]);
+                    String[] itemData = item.split(":");
+                    int amount = Integer.parseInt(itemData[1]);
+                    for (int a = 0; a <= amount; a++) {
+                        items.add(XMaterial.valueOf(itemData[0]));
                     }
                 } else {
                     ((Upgrades.IslandOreUpgrade) upgrades.islandOresUpgrade.getIslandUpgrade(i)).ores.remove(null);
@@ -625,12 +626,13 @@ public class IridiumSkyblock extends JavaPlugin {
 
         netherOreUpgradeCache.clear();
         for (int i : upgrades.islandOresUpgrade.upgrades.keySet()) {
-            ArrayList<String> items = new ArrayList<>();
+            ArrayList<XMaterial> items = new ArrayList<>();
             for (String item : ((Upgrades.IslandOreUpgrade) upgrades.islandOresUpgrade.getIslandUpgrade(i)).netherores) {
                 if (item != null) {
-                    int i1 = Integer.parseInt(item.split(":")[1]);
-                    for (int a = 0; a <= i1; a++) {
-                        items.add(item.split(":")[0]);
+                    String[] itemData = item.split(":");
+                    int amount = Integer.parseInt(itemData[1]);
+                    for (int a = 0; a <= amount; a++) {
+                        items.add(XMaterial.valueOf(itemData[0]));
                     }
                 } else {
                     ((Upgrades.IslandOreUpgrade) upgrades.islandOresUpgrade.getIslandUpgrade(i)).netherores.remove(null);
@@ -711,15 +713,15 @@ public class IridiumSkyblock extends JavaPlugin {
         });
     }
 
-    public List<String> getOreCache(int i){
-        return oreUpgradeCache.getOrDefault(i, Collections.singletonList("COBBLESTONE"));
+    public List<XMaterial> getOreCache(int i) {
+        return oreUpgradeCache.getOrDefault(i, Collections.singletonList(XMaterial.COBBLESTONE));
     }
 
-    public List<String> getNetherOreCache(int i){
-        return netherOreUpgradeCache.getOrDefault(i, Collections.singletonList("COBBLESTONE"));
+    public List<XMaterial> getNetherOreCache(int i) {
+        return netherOreUpgradeCache.getOrDefault(i, Collections.singletonList(XMaterial.COBBLESTONE));
     }
 
-    public VisitGUI getVisitPage(int i){
+    public VisitGUI getVisitPage(int i) {
         return visitGUI.getOrDefault(i, null);
     }
 

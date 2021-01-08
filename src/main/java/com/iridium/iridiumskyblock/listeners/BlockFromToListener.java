@@ -54,7 +54,7 @@ public class BlockFromToListener implements Listener {
 
             final String worldName = world.getName();
             final Config config = IridiumSkyblock.getConfiguration();
-            List<String> islandOreUpgrades = worldName.equals(config.netherWorldName) ? IridiumSkyblock.getInstance().getNetherOreCache(oreLevel) : IridiumSkyblock.getInstance().getOreCache(oreLevel);
+            List<XMaterial> islandOreUpgrades = worldName.equals(config.netherWorldName) ? IridiumSkyblock.getInstance().getNetherOreCache(oreLevel) : IridiumSkyblock.getInstance().getOreCache(oreLevel);
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 final Material toMaterial = toBlock.getType();
@@ -62,13 +62,11 @@ public class BlockFromToListener implements Listener {
                     return;
 
                 final Random random = new Random();
-                final String oreUpgrade = islandOreUpgrades.get(random.nextInt(islandOreUpgrades.size()));
+                final Material oreUpgrade = islandOreUpgrades.get(random.nextInt(islandOreUpgrades.size())).parseMaterial();
 
-                final XMaterial oreUpgradeXmaterial = XMaterial.valueOf(oreUpgrade);
-                final Material oreUpgradeMaterial = oreUpgradeXmaterial.parseMaterial();
-                if (oreUpgradeMaterial == null) return;
+                if (oreUpgrade == null) return;
 
-                toBlock.setType(oreUpgradeMaterial);
+                toBlock.setType(oreUpgrade);
 
                 final BlockState blockState = toBlock.getState();
                 blockState.update(true);
