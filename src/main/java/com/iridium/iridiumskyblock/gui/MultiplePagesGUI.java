@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import org.bukkit.Bukkit;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,5 +24,9 @@ public class MultiplePagesGUI<T> {
 
     public void addPage(int i, T gui) {
         pages.put(i, gui);
+    }
+
+    public Collection<T> getAllPages() {
+        return pages.values();
     }
 }

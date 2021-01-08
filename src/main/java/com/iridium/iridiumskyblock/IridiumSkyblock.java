@@ -61,7 +61,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private Stackable stackable;
     private Shop shop;
     private TopGUI topGUI;
-    private ShopGUI shopGUI;
+    private ShopMenuGUI shopMenuGUI;
     private Border border;
     private SkyblockGenerator generator;
     private WorldEdit worldEdit;
@@ -134,7 +134,7 @@ public class IridiumSkyblock extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
 
             topGUI = new TopGUI();
-            shopGUI = new ShopGUI();
+            shopMenuGUI = new ShopMenuGUI();
             visitGUI = new MultiplePagesGUI<>(() -> {
                 int size = (int) (Math.floor(Utils.getIslands().size() / 45.00) + 1);
                 for (int i = 1; i <= size; i++) {
@@ -736,8 +736,8 @@ public class IridiumSkyblock extends JavaPlugin {
         return getInstance().border;
     }
 
-    public static ShopGUI getShopGUI() {
-        return getInstance().shopGUI;
+    public static ShopMenuGUI getShopGUI() {
+        return getInstance().shopMenuGUI;
     }
 
     public static TopGUI getTopGUI() {

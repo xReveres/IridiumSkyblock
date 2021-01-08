@@ -18,50 +18,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShopGUI extends GUI implements Listener {
+    private final int page;
+    private final Shop.ShopObject shop;
+    private final Map<Integer, Shop.ShopItem> items = new HashMap<>();
 
-    public ShopGUI root;
-
-    public Shop.ShopObject shop;
-
-    public int page;
-
-    public Map<Integer, ShopGUI> shops = new HashMap<>();
-
-    public Map<Integer, Shop.ShopItem> items = new HashMap<>();
-
-    public ShopGUI() {
+    public ShopGUI(Shop.ShopObject shop, int page) {
         super(IridiumSkyblock.getInventories().shopGUISize, IridiumSkyblock.getInventories().shopGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
-
-        for (Shop.ShopObject shop : IridiumSkyblock.getShop().shop) {
-            setItem(shop.slot, Utils.makeItem(shop.display, 1, shop.displayName));
-            if (!shops.containsKey(shop.slot)) {
-                shops.put(shop.slot, new ShopGUI(shop, this));
-            }
-        }
-    }
-
-    public ShopGUI(Shop.ShopObject shop, int page, ShopGUI root) {
-        super(IridiumSkyblock.getInventories().shopGUISize, IridiumSkyblock.getInventories().shopGUITitle);
         this.shop = shop;
         this.page = page;
-        this.root = root;
-    }
-
-    public ShopGUI(Shop.ShopObject shop, ShopGUI root) {
-        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 5);
-        this.shop = shop;
-        this.root = root;
-
-    }
-
-    public void addPages() {
-        for (Shop.ShopItem item : shop.items) {
-            if (item == null) continue;
-            if (!shops.containsKey(item.page)) {
-                shops.put(item.page, new ShopGUI(shop, item.page, this));
-            }
-        }
     }
 
     @Override
@@ -87,83 +52,39 @@ public class ShopGUI extends GUI implements Listener {
         }
     }
 
-    public int getAmount(Inventory inventory, XMaterial materials) {
-        int total = 0;
-        for (ItemStack item : inventory.getContents()) {
-            if (item == null) continue;
-            if (materials.isSimilar(item)) {
-                total += item.getAmount();
-            }
-        }
-        return total;
-    }
-
-    public void removeAmount(Inventory inventory, XMaterial material, int amount) {
-        int removed = 0;
-        int index = 0;
-        for (ItemStack itemStack : inventory.getContents()) {
-            if (itemStack == null) {
-                index++;
-                continue;
-            }
-            if (removed >= amount) break;
-            if (itemStack != null) {
-                if (material.isSimilar(itemStack)) {
-                    if (removed + itemStack.getAmount() <= amount) {
-                        removed += itemStack.getAmount();
-                        inventory.setItem(index, null);
-                    } else {
-                        itemStack.setAmount(itemStack.getAmount() - (amount - removed));
-                        removed += amount;
-                    }
-                }
-            }
-            index++;
-        }
-    }
-
     @EventHandler
     @Override
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
-            if (shop == null) {
-                if (shops.containsKey(e.getSlot())) {
-                    if (shops.get(e.getSlot()).shops.containsKey(1)) { // This should always be called, but just incase the user configured the plugin incorrectly
-                        e.getWhoClicked().openInventory(shops.get(e.getSlot()).shops.get(1).getInventory());
-                    }
-                }
-            } else {
-                if (items.containsKey(e.getSlot())) {
-                    Shop.ShopItem item = items.get(e.getSlot());
-                    if (e.getClick().equals(ClickType.RIGHT)) {
-                        sellItem((Player) e.getWhoClicked(), item, item.amount);
-                    } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
-                        sellItem((Player) e.getWhoClicked(), item, item.material.parseMaterial().getMaxStackSize());
-                    } else if (e.getClick().equals(ClickType.LEFT)) {
-                        buyItem((Player) e.getWhoClicked(), item, item.amount);
-                    } else if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
-                        buyItem((Player) e.getWhoClicked(), item, item.material.parseMaterial().getMaxStackSize());
-                    }
-                }
-                if (e.getSlot() == getInventory().getSize() - 3) {
-                    if (root.shops.containsKey(page + 1)) {
-                        e.getWhoClicked().openInventory(root.shops.get(page + 1).getInventory());
-                    }
-                }
-                if (e.getSlot() == getInventory().getSize() - 5) {
-                    e.getWhoClicked().openInventory(root.root.getInventory());
-                }
-                if (e.getSlot() == getInventory().getSize() - 7) {
-                    if (root.shops.containsKey(page - 1)) {
-                        e.getWhoClicked().openInventory(root.shops.get(page - 1).getInventory());
-                    }
+            if (items.containsKey(e.getSlot())) {
+                Shop.ShopItem item = items.get(e.getSlot());
+                if (e.getClick().equals(ClickType.RIGHT)) {
+                    sellItem((Player) e.getWhoClicked(), item, item.amount);
+                } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
+                    sellItem((Player) e.getWhoClicked(), item, item.material.parseMaterial().getMaxStackSize());
+                } else if (e.getClick().equals(ClickType.LEFT)) {
+                    buyItem((Player) e.getWhoClicked(), item, item.amount);
+                } else if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
+                    buyItem((Player) e.getWhoClicked(), item, item.material.parseMaterial().getMaxStackSize());
                 }
             }
-        }
-        for (ShopGUI gui : shops.values()) {
-            gui.onInventoryClick(e);
+            if (e.getSlot() == getInventory().getSize() - 3) {
+                ShopGUI shopGUI = IridiumSkyblock.getShopGUI().pages.getPage(shop.slot).getPage(page + 1);
+                if (shopGUI != null) {
+                    e.getWhoClicked().openInventory(shopGUI.getInventory());
+                }
+            }
+            if (e.getSlot() == getInventory().getSize() - 5) {
+                e.getWhoClicked().openInventory(IridiumSkyblock.getShopGUI().getInventory());
+            }
+            if (e.getSlot() == getInventory().getSize() - 7) {
+                ShopGUI shopGUI = IridiumSkyblock.getShopGUI().pages.getPage(shop.slot).getPage(page - 1);
+                if (shopGUI != null) {
+                    e.getWhoClicked().openInventory(shopGUI.getInventory());
+                }
+            }
         }
     }
 
@@ -220,6 +141,41 @@ public class ShopGUI extends GUI implements Listener {
             }
         } else {
             player.sendMessage(Utils.color(IridiumSkyblock.getMessages().cannotBuyItem.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        }
+    }
+
+    public int getAmount(Inventory inventory, XMaterial materials) {
+        int total = 0;
+        for (ItemStack item : inventory.getContents()) {
+            if (item == null) continue;
+            if (materials.isSimilar(item)) {
+                total += item.getAmount();
+            }
+        }
+        return total;
+    }
+
+    public void removeAmount(Inventory inventory, XMaterial material, int amount) {
+        int removed = 0;
+        int index = 0;
+        for (ItemStack itemStack : inventory.getContents()) {
+            if (itemStack == null) {
+                index++;
+                continue;
+            }
+            if (removed >= amount) break;
+            if (itemStack != null) {
+                if (material.isSimilar(itemStack)) {
+                    if (removed + itemStack.getAmount() <= amount) {
+                        removed += itemStack.getAmount();
+                        inventory.setItem(index, null);
+                    } else {
+                        itemStack.setAmount(itemStack.getAmount() - (amount - removed));
+                        removed += amount;
+                    }
+                }
+            }
+            index++;
         }
     }
 }
