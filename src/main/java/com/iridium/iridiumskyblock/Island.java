@@ -1035,6 +1035,10 @@ public class Island {
     public void setBiome(XBiome biome) {
         this.biome = biome;
         final World world = IslandManager.getWorld();
+        Location pos1 = this.pos1.clone();
+        Location pos2 = this.pos2.clone();
+        pos1.setWorld(world);
+        pos2.setWorld(world);
         final List<Chunk> chunks = new ArrayList<Chunk>() {{
             for (int X = pos1.getChunk().getX(); X <= pos2.getChunk().getX(); X++) {
                 for (int Z = pos1.getChunk().getZ(); Z <= pos2.getChunk().getZ(); Z++) {
@@ -1057,8 +1061,8 @@ public class Island {
         if (!IridiumSkyblock.getConfiguration().netherIslands) return;
         this.netherBiome = biome;
         final World world = IslandManager.getNetherWorld();
-        Location pos1 = this.pos1;
-        Location pos2 = this.pos2;
+        Location pos1 = this.pos1.clone();
+        Location pos2 = this.pos2.clone();
         pos1.setWorld(world);
         pos2.setWorld(world);
         biome.setBiome(pos1, pos2).thenRunAsync(() -> {

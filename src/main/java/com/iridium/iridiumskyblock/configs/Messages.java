@@ -143,6 +143,7 @@ public class Messages {
     public String purgingFinished = "%prefix% &7Purging islands Finished. Purged %amount% Islands";
     public String purgingAlreadyInProcess = "%prefix% &7Purging islands already in Process";
     public String dataReset = "%prefix% &7All data has been reset.";
+    public String unknownBiome = "%prefix% &7Unknown biome.";
 
     public List<String> stackedBlocksHologram = Arrays.asList("&b&l [{amount}X] &b{block}");
 
