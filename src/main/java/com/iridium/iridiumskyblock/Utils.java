@@ -374,7 +374,7 @@ public class Utils {
                     island.crystals -= crystals;
                     TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
                     return BuyResponce.SUCCESS;
-                }else{
+                } else {
                     return BuyResponce.NOT_ENOUGH_VAULT;
                 }
             }
@@ -383,7 +383,7 @@ public class Utils {
                 island.crystals -= crystals;
                 TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
                 return BuyResponce.SUCCESS;
-            }else{
+            } else {
                 return BuyResponce.NOT_ENOUGH_VAULT;
             }
         }
@@ -476,14 +476,7 @@ public class Utils {
     }
 
     public static boolean hasOpenSlot(Inventory inv) {
-        for (ItemStack item : inv.getContents()) {
-            if (item == null) {
-                return true;
-            } else if (item.getType() == Material.AIR) {
-                return true;
-            }
-        }
-        return false;
+        return inv.firstEmpty() == -1;
     }
 
     public static XMaterial getXMaterialFromId(int id, byte data) {
