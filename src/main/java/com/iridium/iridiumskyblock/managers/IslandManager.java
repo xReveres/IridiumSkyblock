@@ -99,7 +99,6 @@ public class IslandManager {
                 length++;
             }
         }
-        IridiumSkyblock.getInstance().addPages();
         nextID++;
     }
 

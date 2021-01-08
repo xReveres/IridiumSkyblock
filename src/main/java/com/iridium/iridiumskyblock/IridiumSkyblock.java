@@ -71,14 +71,14 @@ public class IridiumSkyblock extends JavaPlugin {
     private Economy economy;
     private SQLManager sqlManager;
     private CommandManager commandManager;
-    private final List<String> languages = new ArrayList<>();
-    private LanguagesGUI languagesGUI;
+    private MultiplePagesGUI<LanguagesGUI> languagesGUI;
     private String latest;
     private NMS nms;
     private File schematicFolder;
 
     public Map<UUID, Island> entities = new HashMap<>();
-    private Map<Integer, VisitGUI> visitGUI;
+    private MultiplePagesGUI<VisitGUI> visitGUI;
+
     private final Map<Integer, List<XMaterial>> oreUpgradeCache = new HashMap<>();
     private final Map<Integer, List<XMaterial>> netherOreUpgradeCache = new HashMap<>();
     private final HashMap<String, BlockData> legacy = new HashMap<>();
@@ -136,11 +136,18 @@ public class IridiumSkyblock extends JavaPlugin {
 
                 topGUI = new TopGUI();
                 shopGUI = new ShopGUI();
-                visitGUI = new HashMap<>();
+                visitGUI = new MultiplePagesGUI<>(() -> {
+                    int size = (int) (Math.floor(Utils.getIslands().size() / 45.00) + 1);
+                    for (int i = 1; i <= size; i++) {
+                        VisitGUI visitGUI = getVisitGUI().getPage(i);
+                        if (visitGUI == null) {
+                            getVisitGUI().addPage(i, new VisitGUI(i));
+                        }
+                    }
+                }, true);
 
                 registerListeners(new PlayerRespawnListener(), new StructureGrowListener(), new EntitySpawnListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener(), new CreatureSpawnListener());
 
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addPages, 0, 20 * 60);
                 Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveData, 0, 20 * 30);
 
                 setupPlaceholderAPI();
@@ -285,7 +292,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public void setLanguages() {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-            languages.clear();
+            List<String> languages = new ArrayList<>();
             try {
                 URLConnection connection = new URL("https://raw.githubusercontent.com/IridiumLLC/IridiumSkyblockLanguages/main/Languages").openConnection();
                 connection.setConnectTimeout(5000);
@@ -301,7 +308,13 @@ public class IridiumSkyblock extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            languagesGUI = new LanguagesGUI();
+            java.util.Collections.sort(languages);
+            languagesGUI = new MultiplePagesGUI<>(() -> {
+                int size = (int) (Math.floor(languages.size() / 45.00) + 1);
+                for (int i = 1; i <= size; i++) {
+                    languagesGUI.addPage(i, new LanguagesGUI(i,languages));
+                }
+            }, false);
         });
     }
 
@@ -369,15 +382,6 @@ public class IridiumSkyblock extends JavaPlugin {
         if (worldName.equals(configuration.worldName) || worldName.equals(configuration.netherWorldName))
             return generator;
         return super.getDefaultWorldGenerator(worldName, id);
-    }
-
-    public void addPages() {
-        int size = (int) (Math.floor(Utils.getIslands().size() / 45.00) + 1);
-        for (int i = 1; i <= size; i++) {
-            if (!visitGUI.containsKey(i)) {
-                visitGUI.put(i, new VisitGUI(i));
-            }
-        }
     }
 
     public void startCounting() {
@@ -708,8 +712,8 @@ public class IridiumSkyblock extends JavaPlugin {
         return netherOreUpgradeCache.getOrDefault(i, Collections.singletonList(XMaterial.COBBLESTONE));
     }
 
-    public VisitGUI getVisitPage(int i) {
-        return visitGUI.getOrDefault(i, null);
+    public MultiplePagesGUI<VisitGUI> getVisitGUI() {
+        return visitGUI;
     }
 
     public void registerBooster(Boosters.Booster booster) {
@@ -808,11 +812,7 @@ public class IridiumSkyblock extends JavaPlugin {
         return economy;
     }
 
-    public List<String> getLanguages() {
-        return languages;
-    }
-
-    public LanguagesGUI getLanguagesGUI() {
+    public MultiplePagesGUI<LanguagesGUI> getLanguagesGUI() {
         return languagesGUI;
     }
 

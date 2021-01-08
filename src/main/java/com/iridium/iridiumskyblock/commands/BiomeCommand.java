@@ -68,10 +68,10 @@ public class BiomeCommand extends Command {
             } else {
                 switch (environment) {
                     case NORMAL:
-                        p.openInventory(island.biomeGUI.pages.get(1).getInventory());
+                        p.openInventory(island.biomeGUI.getPage(1).getInventory());
                         break;
                     case NETHER:
-                        p.openInventory(island.netherBiomeGUI.pages.get(1).getInventory());
+                        p.openInventory(island.netherBiomeGUI.getPage(1).getInventory());
                 }
             }
         } else {
@@ -83,7 +83,7 @@ public class BiomeCommand extends Command {
     public void admin(CommandSender sender, String[] args, Island island) {
         Player p = (Player) sender;
         if (island != null) {
-            p.openInventory(island.biomeGUI.pages.get(1).getInventory());
+            p.openInventory(island.biomeGUI.getPage(1).getInventory());
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }

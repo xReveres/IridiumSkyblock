@@ -22,10 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 public class VisitGUI extends GUI implements Listener {
-
-    public Map<Integer, Integer> islands = new HashMap<>();
-
+    
     private final int page;
+    public Map<Integer, Integer> islands = new HashMap<>();
 
     public VisitGUI(int page) {
         super(IridiumSkyblock.getInventories().visitGUISize, IridiumSkyblock.getInventories().visitGUITitle, 40);
@@ -77,14 +76,14 @@ public class VisitGUI extends GUI implements Listener {
                     e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             } else if (e.getSlot() == getInventory().getSize() - 7) {
-                VisitGUI visitGUI = IridiumSkyblock.getInstance().getVisitPage(page-1);
-                if (visitGUI!=null) {
+                VisitGUI visitGUI = IridiumSkyblock.getInstance().getVisitGUI().getPage(page - 1);
+                if (visitGUI != null) {
                     visitGUI.addContent();
                     e.getWhoClicked().openInventory(visitGUI.getInventory());
                 }
             } else if (e.getSlot() == getInventory().getSize() - 3) {
-                VisitGUI visitGUI = IridiumSkyblock.getInstance().getVisitPage(page+1);
-                if (visitGUI!=null) {
+                VisitGUI visitGUI = IridiumSkyblock.getInstance().getVisitGUI().getPage(page + 1);
+                if (visitGUI != null) {
                     visitGUI.addContent();
                     e.getWhoClicked().openInventory(visitGUI.getInventory());
                 }

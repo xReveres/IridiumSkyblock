@@ -23,7 +23,7 @@ public class VisitCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length != 2) {
-            VisitGUI visitGUI = IridiumSkyblock.getInstance().getVisitPage(1);
+            VisitGUI visitGUI = IridiumSkyblock.getInstance().getVisitGUI().getPage(1);
             visitGUI.addContent();
             p.openInventory(visitGUI.getInventory());
             return;

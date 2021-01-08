@@ -29,6 +29,7 @@ import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Island {
 
@@ -51,8 +52,8 @@ public class Island {
     public transient IslandAdminGUI islandAdminGUI;
     public transient CoopGUI coopGUI;
     public transient BankGUI bankGUI;
-    public transient BiomeGUI biomeGUI;
-    public transient BiomeGUI netherBiomeGUI;
+    public transient MultiplePagesGUI<BiomeGUI> biomeGUI;
+    public transient MultiplePagesGUI<BiomeGUI> netherBiomeGUI;
     public transient VisitorGUI visitorGUI;
 
     public int id;
@@ -594,8 +595,20 @@ public class Island {
         islandAdminGUI = new IslandAdminGUI(this);
         coopGUI = new CoopGUI(this);
         bankGUI = new BankGUI(this);
-        biomeGUI = new BiomeGUI(this, World.Environment.NORMAL);
-        netherBiomeGUI = new BiomeGUI(this, World.Environment.NETHER);
+        biomeGUI = new MultiplePagesGUI<>(() -> {
+            List<XBiome> biomes = IridiumSkyblock.getConfiguration().islandBiomes.keySet().stream().filter(xBiome -> xBiome.getEnvironment() == World.Environment.NORMAL).collect(Collectors.toList());
+            int size = (int) (Math.floor(biomes.size() / ((double) IridiumSkyblock.getInventories().biomeGUISize - 9)) + 1);
+            for (int i = 1; i <= size; i++) {
+                biomeGUI.addPage(i, new BiomeGUI(this, i, World.Environment.NORMAL));
+            }
+        }, false);
+        netherBiomeGUI = new MultiplePagesGUI<>(() -> {
+            List<XBiome> biomes = IridiumSkyblock.getConfiguration().islandBiomes.keySet().stream().filter(xBiome -> xBiome.getEnvironment() == World.Environment.NETHER).collect(Collectors.toList());
+            int size = (int) (Math.floor(biomes.size()/ ((double) IridiumSkyblock.getInventories().biomeGUISize - 9)) + 1);
+            for (int i = 1; i <= size; i++) {
+                netherBiomeGUI.addPage(i, new BiomeGUI(this, i, World.Environment.NETHER));
+            }
+        }, false);
         visitorGUI = new VisitorGUI(this);
 
         if (upgradeLevels == null) upgradeLevels = new HashMap<>();
