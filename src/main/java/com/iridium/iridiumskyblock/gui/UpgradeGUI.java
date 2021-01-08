@@ -58,12 +58,12 @@ public class UpgradeGUI extends GUI implements Listener {
                 if (e.getSlot() == upgrade.item.slot && upgrade.enabled) {
                     Upgrades.IslandUpgrade islandUpgrade = upgrade.getIslandUpgrade(level + 1);
                     if (islandUpgrade != null) {
-                        Utils.BuyResponce responce = Utils.canBuy(p, islandUpgrade.vaultCost, islandUpgrade.crystalsCost);
-                        if (responce == Utils.BuyResponce.SUCCESS) {
+                        Utils.BuyResponse response = Utils.canBuy(p, islandUpgrade.vaultCost, islandUpgrade.crystalsCost);
+                        if (response == Utils.BuyResponse.SUCCESS) {
                             sendMessage(p, upgrade.name, level, level + 1);
                             getIsland().setUpgradeLevel(upgrade, level + 1);
                         } else {
-                            p.sendMessage(Utils.color(responce == Utils.BuyResponce.NOT_ENOUGH_VAULT ? IridiumSkyblock.getMessages().cantBuy : IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            p.sendMessage(Utils.color(response == Utils.BuyResponse.NOT_ENOUGH_VAULT ? IridiumSkyblock.getMessages().cantBuy : IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     } else {
                         e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().maxLevelReached.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

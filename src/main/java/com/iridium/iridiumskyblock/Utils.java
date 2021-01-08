@@ -363,38 +363,38 @@ public class Utils {
         TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, vault).add(TransactionType.CRYSTALS, crystals));
     }
 
-    public static BuyResponce canBuy(Player p, double vault, int crystals) {
+    public static BuyResponse canBuy(Player p, double vault, int crystals) {
         User u = User.getUser(p);
         Island island = u.getIsland();
         if (island != null) {
-            if (island.crystals < crystals) return BuyResponce.NOT_ENOUGH_CRYSTALS;
+            if (island.crystals < crystals) return BuyResponse.NOT_ENOUGH_CRYSTALS;
             if (IridiumSkyblock.getInstance().getEconomy() != null) {
                 if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) >= vault) {
                     IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, vault);
                     island.crystals -= crystals;
                     TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
-                    return BuyResponce.SUCCESS;
+                    return BuyResponse.SUCCESS;
                 } else {
-                    return BuyResponce.NOT_ENOUGH_VAULT;
+                    return BuyResponse.NOT_ENOUGH_VAULT;
                 }
             }
             if (island.money >= vault) {
                 island.money -= vault;
                 island.crystals -= crystals;
                 TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
-                return BuyResponce.SUCCESS;
+                return BuyResponse.SUCCESS;
             } else {
-                return BuyResponce.NOT_ENOUGH_VAULT;
+                return BuyResponse.NOT_ENOUGH_VAULT;
             }
         }
         if (IridiumSkyblock.getInstance().getEconomy() != null) {
             if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) >= vault && crystals == 0) {
                 IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, vault);
                 TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault));
-                return BuyResponce.SUCCESS;
+                return BuyResponse.SUCCESS;
             }
         }
-        return crystals == 0 ? BuyResponce.NOT_ENOUGH_VAULT : BuyResponce.NOT_ENOUGH_CRYSTALS;
+        return crystals == 0 ? BuyResponse.NOT_ENOUGH_VAULT : BuyResponse.NOT_ENOUGH_CRYSTALS;
     }
 
     public static int getExpAtLevel(final int level) {
@@ -514,7 +514,7 @@ public class Utils {
         }
     }
 
-    public enum BuyResponce {
+    public enum BuyResponse {
         SUCCESS,
         NOT_ENOUGH_CRYSTALS,
         NOT_ENOUGH_VAULT

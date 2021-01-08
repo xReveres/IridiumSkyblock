@@ -55,8 +55,8 @@ public class BoosterGUI extends GUI implements Listener {
                 if (booster.enabled && e.getSlot() == booster.item.slot) {
                     int time = getIsland().getBoosterTime(booster.name);
                     if (time == 0 || IridiumSkyblock.getConfiguration().stackableBoosters) {
-                        Utils.BuyResponce responce = Utils.canBuy(p, booster.vaultCost, booster.crystalsCost);
-                        if (responce == Utils.BuyResponce.SUCCESS) {
+                        Utils.BuyResponse response = Utils.canBuy(p, booster.vaultCost, booster.crystalsCost);
+                        if (response == Utils.BuyResponse.SUCCESS) {
                             sendMessage(p, booster.name);
                             getIsland().addBoosterTime(booster.name, booster.time);
                         }
