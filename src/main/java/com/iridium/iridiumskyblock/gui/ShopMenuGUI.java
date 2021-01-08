@@ -25,7 +25,7 @@ public class ShopMenuGUI extends GUI implements Listener {
         }, false);
     }
 
-    MultiplePagesGUI<ShopGUI> getMultiplePagesGUI(Shop.ShopObject shopObject) {
+    private MultiplePagesGUI<ShopGUI> getMultiplePagesGUI(Shop.ShopObject shopObject) {
         return new MultiplePagesGUI<>(() -> {
             for (int page : shopObject.items.stream().map(item -> item.page).collect(Collectors.toCollection(HashSet::new))) {
                 pages.getPage(shopObject.slot).addPage(page, new ShopGUI(shopObject, page));
