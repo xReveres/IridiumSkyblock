@@ -25,7 +25,6 @@ public class BlockFromToListener implements Listener {
 
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent event) {
-        try {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final Island island = IslandManager.getIslandViaLocation(location);
@@ -80,14 +79,10 @@ public class BlockFromToListener implements Listener {
                     island.calculateIslandValue();
                 }
             });
-        } catch (Exception ex) {
-            IridiumSkyblock.getInstance().sendErrorMessage(ex);
-        }
     }
 
     @EventHandler
     public void onBlockFrom(BlockFormEvent event) {
-        try {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final Island island = IslandManager.getIslandViaLocation(location);
@@ -96,9 +91,6 @@ public class BlockFromToListener implements Listener {
             if (!event.getNewState().getType().equals(Material.OBSIDIAN)) return;
 
             island.failedGenerators.add(location);
-        } catch (Exception ex) {
-            IridiumSkyblock.getInstance().sendErrorMessage(ex);
-        }
     }
 
     public boolean isSurroundedByWater(Location location) {

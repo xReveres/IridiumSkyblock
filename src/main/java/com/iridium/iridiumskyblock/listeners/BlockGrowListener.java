@@ -19,7 +19,6 @@ public class BlockGrowListener implements Listener {
 
     @EventHandler
     public void onBlockGrow(BlockGrowEvent event) {
-        try {
             final Block block = event.getBlock();
             final Location location = block.getLocation();
             final Island island = IslandManager.getIslandViaLocation(location);
@@ -36,8 +35,5 @@ public class BlockGrowListener implements Listener {
             final BlockState blockState = block.getState();
             blockState.setData(crops);
             blockState.update();
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
     }
 }

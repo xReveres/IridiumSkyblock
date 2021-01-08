@@ -14,7 +14,6 @@ public class PlayerTalkListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerTalk(AsyncPlayerChatEvent event) {
-        try {
             final Player player = event.getPlayer();
             final User user = User.getUser(player);
 
@@ -88,8 +87,5 @@ public class PlayerTalkListener implements Listener {
             }
 
             event.setFormat(Utils.color(format));
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
-        }
     }
 }

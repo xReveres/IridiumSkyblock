@@ -74,7 +74,7 @@ public class Persist {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                IridiumSkyblock.getInstance().sendErrorMessage(e);
+                e.printStackTrace();
             }
         }
         DiscUtil.writeCatch(file, gson.toJson(instance));

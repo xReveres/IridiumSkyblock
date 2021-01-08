@@ -108,120 +108,115 @@ public class IridiumSkyblock extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        try {
-            generator = new SkyblockGenerator();
+        generator = new SkyblockGenerator();
 
-            super.onEnable();
-            Bukkit.getUpdateFolderFile().mkdir();
-            getDataFolder().mkdir();
+        super.onEnable();
+        Bukkit.getUpdateFolderFile().mkdir();
+        getDataFolder().mkdir();
 
-            persist = new Persist();
+        persist = new Persist();
 
-            new Metrics(this, 5825);
+        new Metrics(this, 5825);
 
-            loadConfigs();
-            saveConfigs();
+        loadConfigs();
+        saveConfigs();
 
-            startCounting();
-            setLanguages();
-            Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
-                IslandManager.makeWorlds();
-                IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
-                loadManagers();
+        startCounting();
+        setLanguages();
+        Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
+            IslandManager.makeWorlds();
+            IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
+            loadManagers();
 
-                if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
+            if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
 
-                // Call it as a delayed task to wait for the server to properly load first
-                Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
+            // Call it as a delayed task to wait for the server to properly load first
+            Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
 
-                topGUI = new TopGUI();
-                shopGUI = new ShopGUI();
-                visitGUI = new MultiplePagesGUI<>(() -> {
-                    int size = (int) (Math.floor(Utils.getIslands().size() / 45.00) + 1);
-                    for (int i = 1; i <= size; i++) {
-                        VisitGUI visitGUI = getVisitGUI().getPage(i);
-                        if (visitGUI == null) {
-                            getVisitGUI().addPage(i, new VisitGUI(i));
-                        }
+            topGUI = new TopGUI();
+            shopGUI = new ShopGUI();
+            visitGUI = new MultiplePagesGUI<>(() -> {
+                int size = (int) (Math.floor(Utils.getIslands().size() / 45.00) + 1);
+                for (int i = 1; i <= size; i++) {
+                    VisitGUI visitGUI = getVisitGUI().getPage(i);
+                    if (visitGUI == null) {
+                        getVisitGUI().addPage(i, new VisitGUI(i));
                     }
-                }, true);
+                }
+            }, true);
 
-                registerListeners(new PlayerRespawnListener(), new StructureGrowListener(), new EntitySpawnListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener(), new CreatureSpawnListener());
+            registerListeners(new PlayerRespawnListener(), new StructureGrowListener(), new EntitySpawnListener(), new BlockPistonListener(), new EntityPickupItemListener(), new PlayerTalkListener(), new ItemCraftListener(), new PlayerTeleportListener(), new PlayerPortalListener(), new BlockBreakListener(), new BlockPlaceListener(), new PlayerInteractListener(), new BlockFromToListener(), new SpawnerSpawnListener(), new EntityDeathListener(), new PlayerJoinLeaveListener(), new BlockGrowListener(), new PlayerTalkListener(), new PlayerMoveListener(), new EntityDamageByEntityListener(), new PlayerExpChangeListener(), new PlayerFishListener(), new EntityExplodeListener(), new PlayerBucketEmptyListener(), new EntityTargetLivingEntityListener(), new CreatureSpawnListener());
 
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveData, 0, 20 * 30);
+            Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::saveData, 0, 20 * 30);
 
-                setupPlaceholderAPI();
+            setupPlaceholderAPI();
 
-                schematic = new Schematic();
+            schematic = new Schematic();
 
-                Plugin worldEdit = Bukkit.getPluginManager().getPlugin("WorldEdit");
-                Plugin asyncWorldEdit = Bukkit.getPluginManager().getPlugin("AsyncWorldEdit");
+            Plugin worldEdit = Bukkit.getPluginManager().getPlugin("WorldEdit");
+            Plugin asyncWorldEdit = Bukkit.getPluginManager().getPlugin("AsyncWorldEdit");
                 /*
                 If AsyncWorldEdit is loaded, then the schematic wont get pasted instantly.
                 This will cause the plugin to try to teleport to the island, however as the schematic hasn't been pasted yet
                 it will keep retrying to paste the schematic and get caught into a constant loop of pasting the island until the server crashes
                  */
-                if (worldEdit != null && asyncWorldEdit == null) {
-                    String worldEditVersion = worldEdit.getDescription().getVersion();
-                    // See https://regex101.com/r/j4CEMo/1.
-                    // This regex may be updated to support future releases of WorldEdit (version 10+).
-                    if (XMaterial.supports(13) && !worldEditVersion.matches("(7\\.[2-9]+.*|[^0-7]\\.[2-9]+.*)")) {
-                        getLogger().warning("Your current WorldEdit version has problems with the island schematics!");
-                        getLogger().warning("Please update to the newest version immediately!");
-                        getLogger().warning("A fallback system is now used");
-                        IridiumSkyblock.getInstance().worldEdit = schematic;
-                    } else if (worldEditVersion.startsWith("6")) {
-                        IridiumSkyblock.getInstance().worldEdit = new WorldEdit6();
-                    } else if (worldEditVersion.startsWith("7")) {
-                        IridiumSkyblock.getInstance().worldEdit = new WorldEdit7();
-                    } else {
-                        IridiumSkyblock.getInstance().worldEdit = schematic;
-                    }
+            if (worldEdit != null && asyncWorldEdit == null) {
+                String worldEditVersion = worldEdit.getDescription().getVersion();
+                // See https://regex101.com/r/j4CEMo/1.
+                // This regex may be updated to support future releases of WorldEdit (version 10+).
+                if (XMaterial.supports(13) && !worldEditVersion.matches("(7\\.[2-9]+.*|[^0-7]\\.[2-9]+.*)")) {
+                    getLogger().warning("Your current WorldEdit version has problems with the island schematics!");
+                    getLogger().warning("Please update to the newest version immediately!");
+                    getLogger().warning("A fallback system is now used");
+                    IridiumSkyblock.getInstance().worldEdit = schematic;
+                } else if (worldEditVersion.startsWith("6")) {
+                    IridiumSkyblock.getInstance().worldEdit = new WorldEdit6();
+                } else if (worldEditVersion.startsWith("7")) {
+                    IridiumSkyblock.getInstance().worldEdit = new WorldEdit7();
                 } else {
                     IridiumSkyblock.getInstance().worldEdit = schematic;
                 }
+            } else {
+                IridiumSkyblock.getInstance().worldEdit = schematic;
+            }
 
-                try {
-                    loadSchematics();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                loadSchematics();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-                if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) spawnerSupport = new Wildstacker();
-                if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) spawnerSupport = new MergedSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker"))
-                    spawnerSupport = new UltimateStacker();
-                if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) spawnerSupport = new EpicSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners"))
-                    spawnerSupport = new AdvancedSpawners();
-                if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) spawnerSupport = new RoseStacker();
-                if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
-                    registerListeners(new ExpansionUnregisterListener());
+            if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) spawnerSupport = new Wildstacker();
+            if (Bukkit.getPluginManager().isPluginEnabled("MergedSpawner")) spawnerSupport = new MergedSpawners();
+            if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker"))
+                spawnerSupport = new UltimateStacker();
+            if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) spawnerSupport = new EpicSpawners();
+            if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners"))
+                spawnerSupport = new AdvancedSpawners();
+            if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) spawnerSupport = new RoseStacker();
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+                registerListeners(new ExpansionUnregisterListener());
 
-                //Register Vault
-                RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
-                if (rsp != null) {
-                    economy = rsp.getProvider();
-                }
+            //Register Vault
+            RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+            if (rsp != null) {
+                economy = rsp.getProvider();
+            }
 
-                getLogger().info("----------------------------------------");
-                getLogger().info("");
-                getLogger().info(getDescription().getName() + " Enabled!");
-                getLogger().info("Version: " + getDescription().getVersion());
-                getLogger().info("Patreon: www.patreon.com/Peaches_MLG");
-                getLogger().info("");
-                getLogger().info("----------------------------------------");
+            getLogger().info("----------------------------------------");
+            getLogger().info("");
+            getLogger().info(getDescription().getName() + " Enabled!");
+            getLogger().info("Version: " + getDescription().getVersion());
+            getLogger().info("Patreon: www.patreon.com/Peaches_MLG");
+            getLogger().info("");
+            getLogger().info("----------------------------------------");
 
-                update();
-            });
-        } catch (Exception e) {
-            sendErrorMessage(e);
-        }
+            update();
+        });
     }
 
     @Override
     public void onDisable() {
-        try {
             super.onDisable();
 
             saveData();
@@ -239,9 +234,6 @@ public class IridiumSkyblock extends JavaPlugin {
             getLogger().info(getDescription().getName() + " Disabled!");
             getLogger().info("");
             getLogger().info("-------------------------------");
-        } catch (Exception e) {
-            sendErrorMessage(e);
-        }
     }
 
     private void update() {
@@ -312,7 +304,7 @@ public class IridiumSkyblock extends JavaPlugin {
             languagesGUI = new MultiplePagesGUI<>(() -> {
                 int size = (int) (Math.floor(languages.size() / 45.00) + 1);
                 for (int i = 1; i <= size; i++) {
-                    languagesGUI.addPage(i, new LanguagesGUI(i,languages));
+                    languagesGUI.addPage(i, new LanguagesGUI(i, languages));
                 }
             }, false);
         });
@@ -449,10 +441,6 @@ public class IridiumSkyblock extends JavaPlugin {
                 }
             }
         }, 0, configuration.valueUpdateInterval);
-    }
-
-    public void sendErrorMessage(Exception e) {
-        e.printStackTrace();
     }
 
     public void registerListeners(Listener... listener) {
