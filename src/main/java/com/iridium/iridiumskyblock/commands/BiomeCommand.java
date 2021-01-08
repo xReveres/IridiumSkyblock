@@ -83,7 +83,13 @@ public class BiomeCommand extends Command {
     public void admin(CommandSender sender, String[] args, Island island) {
         Player p = (Player) sender;
         if (island != null) {
-            p.openInventory(island.biomeGUI.getPage(1).getInventory());
+            switch (p.getWorld().getEnvironment()) {
+                case NORMAL:
+                    p.openInventory(island.biomeGUI.getPage(1).getInventory());
+                    break;
+                case NETHER:
+                    p.openInventory(island.netherBiomeGUI.getPage(1).getInventory());
+            }
         } else {
             sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
