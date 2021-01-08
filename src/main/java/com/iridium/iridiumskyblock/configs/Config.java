@@ -31,7 +31,7 @@ public class Config {
     public boolean defaultIslandPublic = true;
     public boolean netherIslands = true;
     public boolean publicNetherPortals = true;
-    public boolean forceShortPortalRadius = true;
+    public boolean netherPortalCreation = true;
     public boolean islandMenu = true;
     public boolean voidTeleport = true;
     public boolean notifyAvailableUpdate = true;

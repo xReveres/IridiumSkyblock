@@ -782,8 +782,8 @@ public class Island {
     }
 
     public void teleportNetherHome(Player p) {
-        Location netherHome = center.clone();
-        netherHome.setWorld(IslandManager.getNetherWorld());
+        Location netherHome = getNetherHome();
+
         if (User.getUser(p).teleportingHome) {
             return;
         }

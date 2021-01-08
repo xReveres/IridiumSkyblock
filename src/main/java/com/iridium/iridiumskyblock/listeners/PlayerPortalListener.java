@@ -40,29 +40,21 @@ public class PlayerPortalListener implements Listener {
             return;
         }
 
-        if (supports) {
-            event.setCanCreatePortal(true);
-
-            // This setting forces portal search radius to 16, avoiding conflicts with bordering portals
-            // (May have unintended consequences...?)
-            if (IridiumSkyblock.getConfiguration().forceShortPortalRadius)
-                event.setSearchRadius(16);
-        } else {
-            try {
-                PlayerPortalEvent.class.getMethod("useTravelAgent", boolean.class).invoke(event, true);
-                Class.forName("org.bukkit.TravelAgent")
-                        .getMethod("setCanCreatePortal", boolean.class)
-                        .invoke(PlayerPortalEvent.class.getMethod("getPortalTravelAgent").invoke(event), true);
-
-                // This setting forces portal search radius to 16, avoiding conflicts with bordering portals
-                // (May have unintended consequences...?)
-                if (IridiumSkyblock.getConfiguration().forceShortPortalRadius) {
+        if(!IridiumSkyblock.getConfiguration().netherPortalCreation){
+            event.setCancelled(true);
+            island.teleportNetherHome(player);
+        }else {
+            if (supports) {
+                event.setCanCreatePortal(true);
+            } else {
+                try {
+                    PlayerPortalEvent.class.getMethod("useTravelAgent", boolean.class).invoke(event, true);
                     Class.forName("org.bukkit.TravelAgent")
-                            .getMethod("setSearchRadius", int.class)
-                            .invoke(PlayerPortalEvent.class.getMethod("getPortalTravelAgent").invoke(event), 16);
+                            .getMethod("setCanCreatePortal", boolean.class)
+                            .invoke(PlayerPortalEvent.class.getMethod("getPortalTravelAgent").invoke(event), true);
+                } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
 
