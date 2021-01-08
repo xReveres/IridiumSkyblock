@@ -54,10 +54,7 @@ public class BlockFromToListener implements Listener {
 
             final String worldName = world.getName();
             final Config config = IridiumSkyblock.getConfiguration();
-            List<String> islandOreUpgrades;
-            if (worldName.equals(config.worldName)) islandOreUpgrades = IridiumSkyblock.oreUpgradeCache.get(oreLevel);
-            else if (worldName.equals(config.netherWorldName)) islandOreUpgrades = IridiumSkyblock.netherOreUpgradeCache.get(oreLevel);
-            else return;
+            List<String> islandOreUpgrades = worldName.equals(config.netherWorldName) ? IridiumSkyblock.getInstance().getNetherOreCache(oreLevel) : IridiumSkyblock.getInstance().getOreCache(oreLevel);
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 final Material toMaterial = toBlock.getType();

@@ -45,47 +45,40 @@ import java.util.stream.Collectors;
 
 public class IridiumSkyblock extends JavaPlugin {
 
-    private static SQL sql;
-    private static Config configuration;
-    private static Messages messages;
-    private static Missions missions;
-    private static Upgrades upgrades;
-    private static Boosters boosters;
-    private static Inventories inventories;
-    private static Schematics schematics;
-    private static Commands commands;
-    private static BlockValues blockValues;
-    private static Stackable stackable;
-    private static Shop shop;
-    private static TopGUI topGUI;
-    private static ShopGUI shopGUI;
-    private static Border border;
-    public static Map<Integer, VisitGUI> visitGUI;
-    public static Map<Integer, List<String>> oreUpgradeCache = new HashMap<>();
-    public static Map<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
+    private SQL sql;
+    private Config configuration;
+    private Messages messages;
+    private Missions missions;
+    private Upgrades upgrades;
+    private Boosters boosters;
+    private Inventories inventories;
+    private Schematics schematics;
+    private Commands commands;
+    private BlockValues blockValues;
+    private Stackable stackable;
+    private Shop shop;
+    private TopGUI topGUI;
+    private ShopGUI shopGUI;
+    private Border border;
     private SkyblockGenerator generator;
-    private static WorldEdit worldEdit;
-    private static Schematic schematic;
-    private static Persist persist;
-
+    private WorldEdit worldEdit;
+    private Schematic schematic;
+    private Persist persist;
     private SpawnerSupport spawnerSupport;
-
     private Economy economy;
-
-    private static SQLManager sqlManager;
-    private static CommandManager commandManager;
+    private SQLManager sqlManager;
+    private CommandManager commandManager;
     private final List<String> languages = new ArrayList<>();
     private LanguagesGUI languagesGUI;
     private String latest;
+    private NMS nms;
+    private File schematicFolder;
 
     public Map<UUID, Island> entities = new HashMap<>();
-
-    private static NMS nms;
-
+    private Map<Integer, VisitGUI> visitGUI;
+    private final Map<Integer, List<String>> oreUpgradeCache = new HashMap<>();
+    private final Map<Integer, List<String>> netherOreUpgradeCache = new HashMap<>();
     private final HashMap<String, BlockData> legacy = new HashMap<>();
-
-    private static File schematicFolder;
-
     private final List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
     private final List<Boosters.Booster> islandBoosters = new ArrayList<>();
 
@@ -167,16 +160,16 @@ public class IridiumSkyblock extends JavaPlugin {
                         getLogger().warning("Your current WorldEdit version has problems with the island schematics!");
                         getLogger().warning("Please update to the newest version immediately!");
                         getLogger().warning("A fallback system is now used");
-                        IridiumSkyblock.worldEdit = schematic;
+                        IridiumSkyblock.getInstance().worldEdit = schematic;
                     } else if (worldEditVersion.startsWith("6")) {
-                        IridiumSkyblock.worldEdit = new WorldEdit6();
+                        IridiumSkyblock.getInstance().worldEdit = new WorldEdit6();
                     } else if (worldEditVersion.startsWith("7")) {
-                        IridiumSkyblock.worldEdit = new WorldEdit7();
+                        IridiumSkyblock.getInstance().worldEdit = new WorldEdit7();
                     } else {
-                        IridiumSkyblock.worldEdit = schematic;
+                        IridiumSkyblock.getInstance().worldEdit = schematic;
                     }
                 } else {
-                    IridiumSkyblock.worldEdit = schematic;
+                    IridiumSkyblock.getInstance().worldEdit = schematic;
                 }
 
                 try {
@@ -718,6 +711,18 @@ public class IridiumSkyblock extends JavaPlugin {
         });
     }
 
+    public List<String> getOreCache(int i){
+        return oreUpgradeCache.getOrDefault(i, Collections.singletonList("COBBLESTONE"));
+    }
+
+    public List<String> getNetherOreCache(int i){
+        return netherOreUpgradeCache.getOrDefault(i, Collections.singletonList("COBBLESTONE"));
+    }
+
+    public VisitGUI getVisitPage(int i){
+        return visitGUI.getOrDefault(i, null);
+    }
+
     public void registerBooster(Boosters.Booster booster) {
         islandBoosters.add(booster);
     }
@@ -735,75 +740,75 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public static Persist getPersist() {
-        return persist;
+        return getInstance().persist;
     }
 
     public static Schematic getSchematic() {
-        return schematic;
+        return getInstance().schematic;
     }
 
     public static WorldEdit getWorldEdit() {
-        return worldEdit;
+        return getInstance().worldEdit;
     }
 
     public static Border getBorder() {
-        return border;
+        return getInstance().border;
     }
 
     public static ShopGUI getShopGUI() {
-        return shopGUI;
+        return getInstance().shopGUI;
     }
 
     public static TopGUI getTopGUI() {
-        return topGUI;
+        return getInstance().topGUI;
     }
 
     public static Shop getShop() {
-        return shop;
+        return getInstance().shop;
     }
 
     public static Stackable getStackable() {
-        return stackable;
+        return getInstance().stackable;
     }
 
     public static BlockValues getBlockValues() {
-        return blockValues;
+        return getInstance().blockValues;
     }
 
     public static Commands getCommands() {
-        return commands;
+        return getInstance().commands;
     }
 
     public static Schematics getSchematics() {
-        return schematics;
+        return getInstance().schematics;
     }
 
     public static Inventories getInventories() {
-        return inventories;
+        return getInstance().inventories;
     }
 
     public static Boosters getBoosters() {
-        return boosters;
+        return getInstance().boosters;
     }
 
     public static Upgrades getUpgrades() {
-        return upgrades;
+        return getInstance().upgrades;
     }
 
     public static Missions getMissions() {
-        return missions;
+        return getInstance().missions;
     }
 
     public static Messages getMessages() {
-        return messages;
+        return getInstance().messages;
     }
 
     public static Config getConfiguration() {
-        return configuration;
+        return getInstance().configuration;
     }
 
     public static SQL getSql() {
-        return sql;
+        return getInstance().sql;
     }
 
     public SpawnerSupport getSpawnerSupport() {
@@ -827,19 +832,19 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public static NMS getNms() {
-        return nms;
+        return getInstance().nms;
     }
 
     public static File getSchematicFolder() {
-        return schematicFolder;
+        return getInstance().schematicFolder;
     }
 
     public static SQLManager getSqlManager() {
-        return sqlManager;
+        return getInstance().sqlManager;
     }
 
     public static CommandManager getCommandManager() {
-        return commandManager;
+        return getInstance().commandManager;
     }
 
     public static IridiumSkyblock getInstance() {
