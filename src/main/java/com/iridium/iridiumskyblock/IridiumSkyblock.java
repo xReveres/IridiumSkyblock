@@ -48,6 +48,8 @@ import java.util.stream.Collectors;
 
 public class IridiumSkyblock extends JavaPlugin {
 
+    private static IridiumSkyblock instance;
+
     private SQL sql;
     private Config configuration;
     private Messages messages;
@@ -87,6 +89,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         try {
             nms = (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
         } catch (ClassNotFoundException e) {
@@ -217,23 +220,23 @@ public class IridiumSkyblock extends JavaPlugin {
 
     @Override
     public void onDisable() {
-            super.onDisable();
+        super.onDisable();
 
-            saveData();
+        saveData();
 
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.closeInventory();
-                User user = User.getUser(p);
-                for (Object object : user.getHolograms()) {
-                    IridiumSkyblock.getNms().removeHologram(p, object);
-                }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.closeInventory();
+            User user = User.getUser(p);
+            for (Object object : user.getHolograms()) {
+                IridiumSkyblock.getNms().removeHologram(p, object);
             }
+        }
 
-            getLogger().info("-------------------------------");
-            getLogger().info("");
-            getLogger().info(getDescription().getName() + " Disabled!");
-            getLogger().info("");
-            getLogger().info("-------------------------------");
+        getLogger().info("-------------------------------");
+        getLogger().info("");
+        getLogger().info(getDescription().getName() + " Disabled!");
+        getLogger().info("");
+        getLogger().info("-------------------------------");
     }
 
     private void update() {
@@ -825,6 +828,6 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public static IridiumSkyblock getInstance() {
-        return (IridiumSkyblock) Bukkit.getPluginManager().getPlugin("IridiumSkyblock");
+        return instance;
     }
 }
