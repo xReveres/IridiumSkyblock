@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 public class Island {
 
+    public int id;
     public String owner;
     public Set<String> members;
     public Location pos1;
@@ -56,14 +57,11 @@ public class Island {
     public transient MultiplePagesGUI<BiomeGUI> netherBiomeGUI;
     public transient VisitorGUI visitorGUI;
 
-    public int id;
-
     private transient int boosterId;
-
-    public int crystals;
 
     private HashMap<String, Integer> boosterTimes = new HashMap<>();
     private HashMap<String, Integer> upgradeLevels = new HashMap<>();
+    private HashMap<String, Double> bankItems = new HashMap<>();
 
     public transient int generateID;
 
@@ -103,9 +101,6 @@ public class Island {
     public transient Set<Integer> coopInvites;
 
     public String name;
-
-    public double money;
-    public int exp;
 
     public XBiome biome;
 
@@ -150,7 +145,6 @@ public class Island {
         this.home = home;
         this.members = new HashSet<>(Collections.singletonList(user.player));
         this.id = id;
-        crystals = 0;
         value = 0;
         lastMissionValue = 0;
         islandWarps = new ArrayList<>();
@@ -356,8 +350,8 @@ public class Island {
         final MissionData level = levels.get(levelProgress);
         final int crystalReward = level.crystalReward;
         final int vaultReward = level.vaultReward;
-        this.crystals += crystalReward;
-        this.money += vaultReward;
+        setCrystals(getCrystals() + crystalReward);
+        setMoney(getMoney() + vaultReward);
         Bukkit.getPluginManager().callEvent(new MissionCompleteEvent(this, missionName, level.type, levelProgress));
         final Messages messages = IridiumSkyblock.getMessages();
         final String titleMessage = messages.missionComplete
@@ -485,7 +479,7 @@ public class Island {
         }
         this.value += this.extravalue;
         if (IridiumSkyblock.getConfiguration().islandMoneyPerValue != 0)
-            this.value += this.money / IridiumSkyblock.getConfiguration().islandMoneyPerValue;
+            this.value += this.getMoney() / IridiumSkyblock.getConfiguration().islandMoneyPerValue;
 
         IslandWorthCalculatedEvent islandWorthCalculatedEvent = new IslandWorthCalculatedEvent(this, this.value);
         Bukkit.getPluginManager().callEvent(islandWorthCalculatedEvent);
@@ -604,7 +598,7 @@ public class Island {
         }, false);
         netherBiomeGUI = new MultiplePagesGUI<>(() -> {
             List<XBiome> biomes = IridiumSkyblock.getConfiguration().islandBiomes.keySet().stream().filter(xBiome -> xBiome.getEnvironment() == World.Environment.NETHER).collect(Collectors.toList());
-            int size = (int) (Math.floor(biomes.size()/ ((double) IridiumSkyblock.getInventories().biomeGUISize - 9)) + 1);
+            int size = (int) (Math.floor(biomes.size() / ((double) IridiumSkyblock.getInventories().biomeGUISize - 9)) + 1);
             for (int i = 1; i <= size; i++) {
                 netherBiomeGUI.addPage(i, new BiomeGUI(this, i, World.Environment.NETHER));
             }
@@ -613,6 +607,7 @@ public class Island {
 
         if (upgradeLevels == null) upgradeLevels = new HashMap<>();
         if (boosterTimes == null) boosterTimes = new HashMap<>();
+        if (bankItems == null) bankItems = new HashMap<>();
 
         failedGenerators = new HashSet<>();
         coopInvites = new HashSet<>();
@@ -1156,6 +1151,14 @@ public class Island {
         return name;
     }
 
+    public double getBankItem(String name) {
+        return bankItems.getOrDefault(name, 0.00);
+    }
+
+    public void setBankItem(String name, double amount) {
+        bankItems.put(name, amount);
+    }
+
     public void addBoosterTime(String booster, int time) {
         boosterTimes.put(booster, getBoosterTime(booster) + time);
     }
@@ -1231,16 +1234,40 @@ public class Island {
         return Utils.NumberFormatter.format(value / IridiumSkyblock.getConfiguration().valuePerLevel);
     }
 
+    public int getCrystals() {
+        return (int) getBankItem("crystals");
+    }
+
+    public double getMoney() {
+        return getBankItem("vault");
+    }
+
+    public int getExperience() {
+        return (int) getBankItem("experience");
+    }
+
+    public void setCrystals(int amount) {
+        setBankItem("crystals", amount);
+    }
+
+    public void setMoney(double amount) {
+        setBankItem("vault", amount);
+    }
+
+    public void setExperience(int amount) {
+        setBankItem("experience", amount);
+    }
+
     public String getFormattedMoney() {
-        return Utils.NumberFormatter.format(money);
+        return Utils.NumberFormatter.format(getMoney());
     }
 
     public String getFormattedExp() {
-        return Utils.NumberFormatter.format(exp);
+        return Utils.NumberFormatter.format(getExperience());
     }
 
     public String getFormattedCrystals() {
-        return Utils.NumberFormatter.format(crystals);
+        return Utils.NumberFormatter.format(getCrystals());
     }
 
     public void save(Connection connection) {

@@ -34,7 +34,7 @@ public class PlayerInteractListener implements Listener {
                 int crystals = Utils.getCrystals(player.getItemInHand()) * player.getItemInHand().getAmount();
                 if (crystals != 0) {
                     player.setItemInHand(null);
-                    user.getIsland().crystals += crystals;
+                    user.getIsland().setCrystals(user.getIsland().getCrystals() + crystals);
                     player.sendMessage(Utils.color(IridiumSkyblock.getMessages().depositedCrystals.replace("%amount%", crystals + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             }

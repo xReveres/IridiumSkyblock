@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.gui.*;
@@ -65,6 +66,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private TopGUI topGUI;
     private ShopMenuGUI shopMenuGUI;
     private Border border;
+    private Bank bank;
     private SkyblockGenerator generator;
     private WorldEdit worldEdit;
     private Schematic schematic;
@@ -84,8 +86,10 @@ public class IridiumSkyblock extends JavaPlugin {
     private final Map<Integer, List<XMaterial>> oreUpgradeCache = new HashMap<>();
     private final Map<Integer, List<XMaterial>> netherOreUpgradeCache = new HashMap<>();
     private final HashMap<String, BlockData> legacy = new HashMap<>();
+
     private final List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
     private final List<Boosters.Booster> islandBoosters = new ArrayList<>();
+    private final List<BankItem> bankItems = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -398,19 +402,19 @@ public class IridiumSkyblock extends JavaPlugin {
                     user.tookInterestMessage = false;
                 }
                 for (Island island : IslandManager.getLoadedIslands()) {
-                    double cm = island.money;
-                    int cc = island.crystals;
-                    int ce = island.exp;
-                    island.money = Math.floor(island.money * (1 + (configuration.dailyMoneyInterest / 100.00)));
-                    island.crystals = (int) Math.floor(island.crystals * (1 + (configuration.dailyCrystalsInterest / 100.00)));
-                    island.exp = (int) Math.floor(island.exp * (1 + (configuration.dailyExpInterest / 100.00)));
-                    island.interestCrystal = island.crystals - cc;
-                    island.interestMoney = island.money - cm;
-                    island.interestExp = island.exp - ce;
+                    double cm = island.getMoney();
+                    int cc = island.getCrystals();
+                    int ce = island.getExperience();
+                    island.setMoney(Math.floor(cm * (1 + (configuration.dailyMoneyInterest / 100.00))));
+                    island.setCrystals((int) Math.floor(cc * (1 + (configuration.dailyCrystalsInterest / 100.00))));
+                    island.setExperience((int) Math.floor(ce * (1 + (configuration.dailyExpInterest / 100.00))));
+                    island.interestCrystal = island.getCrystals() - cc;
+                    island.interestMoney = island.getMoney() - cm;
+                    island.interestExp = island.getExperience() - ce;
                     for (String member : island.members) {
                         Player p = Bukkit.getPlayer(User.getUser(member).name);
                         if (p != null) {
-                            if (cm != island.money && cc != island.crystals && ce != island.exp)
+                            if (cm != island.getMoney() && cc != island.getCrystals() && ce != island.getExperience())
                                 p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
                                         .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
                                         .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
@@ -562,6 +566,7 @@ public class IridiumSkyblock extends JavaPlugin {
         shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
         border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
         stackable = persist.getFile(Stackable.class).exists() ? persist.load(Stackable.class) : new Stackable();
+        bank = persist.getFile(Bank.class).exists() ? persist.load(Bank.class) : new Bank();
 
         registerUpgrade(getUpgrades().islandSizeUpgrade);
         registerUpgrade(getUpgrades().islandMemberUpgrade);
@@ -573,6 +578,10 @@ public class IridiumSkyblock extends JavaPlugin {
         registerBooster(getBoosters().islandSpawnerBooster);
         registerBooster(getBoosters().islandFarmingBooster);
         registerBooster(getBoosters().islandExperienceBooster);
+
+        registerBankItem(bank.crystalsBankItem);
+        registerBankItem(bank.experienceBankItem);
+        registerBankItem(bank.vaultBankItem);
 
         commandManager = new CommandManager("island");
         commandManager.registerCommands();
@@ -692,6 +701,7 @@ public class IridiumSkyblock extends JavaPlugin {
             if (shop != null) persist.save(shop);
             if (border != null) persist.save(border);
             if (stackable != null) persist.save(stackable);
+            if (bank != null) persist.save(bank);
         });
     }
 
@@ -705,6 +715,14 @@ public class IridiumSkyblock extends JavaPlugin {
 
     public MultiplePagesGUI<VisitGUI> getVisitGUI() {
         return visitGUI;
+    }
+
+    public void registerBankItem(BankItem bankItem) {
+        bankItems.add(bankItem);
+    }
+
+    public List<BankItem> getBankItems() {
+        return bankItems;
     }
 
     public void registerBooster(Boosters.Booster booster) {

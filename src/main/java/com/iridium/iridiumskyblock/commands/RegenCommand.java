@@ -40,9 +40,6 @@ public class RegenCommand extends Command {
                                     user.getIsland().setMemberLevel(1);
                                     user.getIsland().setWarpLevel(1);
                                     user.getIsland().setOreLevel(1);
-                                    user.getIsland().crystals = 0;
-                                    user.getIsland().exp = 0;
-                                    user.getIsland().money = 0;
                                 }
                                 user.getIsland().teleportPlayersHome();
                             }, IridiumSkyblock.getMessages().resetAction).getInventory());
@@ -86,9 +83,6 @@ public class RegenCommand extends Command {
                         island.setMemberLevel(1);
                         island.setWarpLevel(1);
                         island.setOreLevel(1);
-                        island.crystals = 0;
-                        island.exp = 0;
-                        island.money = 0;
                     }
                     island.teleportPlayersHome();
                 }, IridiumSkyblock.getMessages().resetAction).getInventory());

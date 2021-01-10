@@ -2,8 +2,6 @@ package com.iridium.iridiumskyblock;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
-import com.iridium.iridiumskyblock.TransactionLogger.Transaction;
-import com.iridium.iridiumskyblock.TransactionLogger.TransactionType;
 import com.iridium.iridiumskyblock.configs.Boosters;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.configs.Upgrades;
@@ -347,9 +345,9 @@ public class Utils {
         User u = User.getUser(p);
         Island island = u.getIsland();
         if (island != null) {
-            island.crystals += crystals;
+            island.setCrystals(island.getCrystals() + crystals);
             if (IridiumSkyblock.getInstance().getEconomy() == null) {
-                island.money += vault;
+                island.setMoney(island.getMoney() + vault);
             } else {
                 IridiumSkyblock.getInstance().getEconomy().depositPlayer(p, vault);
             }
@@ -360,37 +358,30 @@ public class Utils {
             }
             IridiumSkyblock.getInstance().getEconomy().depositPlayer(p, vault);
         }
-        TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, vault).add(TransactionType.CRYSTALS, crystals));
     }
 
     public static BuyResponse canBuy(Player p, double vault, int crystals) {
         User u = User.getUser(p);
         Island island = u.getIsland();
         if (island != null) {
-            if (island.crystals < crystals) return BuyResponse.NOT_ENOUGH_CRYSTALS;
+            if (island.getCrystals() < crystals) return BuyResponse.NOT_ENOUGH_CRYSTALS;
             if (IridiumSkyblock.getInstance().getEconomy() != null) {
                 if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) >= vault) {
                     IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, vault);
-                    island.crystals -= crystals;
-                    TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
+                    island.setCrystals(island.getCrystals() - crystals);
                     return BuyResponse.SUCCESS;
-                } else {
-                    return BuyResponse.NOT_ENOUGH_VAULT;
                 }
             }
-            if (island.money >= vault) {
-                island.money -= vault;
-                island.crystals -= crystals;
-                TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault).add(TransactionType.CRYSTALS, -crystals));
+            if (island.getMoney() >= vault) {
+                island.setMoney(island.getMoney() - vault);
+                island.setCrystals(island.getCrystals() - crystals);
                 return BuyResponse.SUCCESS;
-            } else {
-                return BuyResponse.NOT_ENOUGH_VAULT;
             }
+            return BuyResponse.NOT_ENOUGH_VAULT;
         }
         if (IridiumSkyblock.getInstance().getEconomy() != null) {
             if (IridiumSkyblock.getInstance().getEconomy().getBalance(p) >= vault && crystals == 0) {
                 IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(p, vault);
-                TransactionLogger.saveTransaction(p, new Transaction().add(TransactionType.MONEY, -vault));
                 return BuyResponse.SUCCESS;
             }
         }
