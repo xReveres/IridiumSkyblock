@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
@@ -651,6 +652,7 @@ public class IridiumSkyblock extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Bukkit.getPluginManager().callEvent(new IridiumSkyblockReloadEvent());
     }
 
     public BlockData fromLegacy(Material material, byte data) {
