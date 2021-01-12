@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
@@ -210,6 +211,8 @@ public class IridiumSkyblock extends JavaPlugin {
             if (rsp != null) {
                 economy = rsp.getProvider();
             }
+
+            new IridiumSkyblockAPI(this);
 
             getLogger().info("----------------------------------------");
             getLogger().info("");
