@@ -18,7 +18,7 @@ import java.util.UUID;
 public class IridiumSkyblockAPI {
 
     private static IridiumSkyblockAPI instance;
-    private IridiumSkyblock iridiumSkyblock;
+    private final IridiumSkyblock iridiumSkyblock;
 
     public IridiumSkyblockAPI(IridiumSkyblock iridiumSkyblock) {
         instance = this;
