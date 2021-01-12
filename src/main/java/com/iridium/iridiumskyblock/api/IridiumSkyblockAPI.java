@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.configs.Upgrades;
 import com.iridium.iridiumskyblock.managers.IslandDataManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class IridiumSkyblockAPI {
      * @param location The location for the island
      * @since 3.0.0
      */
-    public @Nullable Island getIslandViaLocation(Location location) {
+    public @Nullable Island getIslandViaLocation(@NotNull Location location) {
         return IslandManager.getIslandViaLocation(location);
     }
 
@@ -53,7 +54,7 @@ public class IridiumSkyblockAPI {
      * @param ignorePrivate if private  islands should be ignored from the list
      * @since 3.0.0
      */
-    public List<Integer> getIslands(IslandDataManager.IslandSortType sortType, int fromIndex, int toIndex, boolean ignorePrivate) {
+    public @NotNull List<Integer> getIslands(@NotNull IslandDataManager.IslandSortType sortType, int fromIndex, int toIndex, boolean ignorePrivate) {
         return IslandDataManager.getIslands(sortType, fromIndex, toIndex, ignorePrivate);
     }
 
@@ -63,7 +64,8 @@ public class IridiumSkyblockAPI {
      * @param uuid The uuid of the player
      * @since 3.0.0
      */
-    public User getUser(UUID uuid) {
+    @NotNull
+    public User getUser(@NotNull UUID uuid) {
         return User.getUser(uuid);
     }
 
@@ -73,7 +75,7 @@ public class IridiumSkyblockAPI {
      * @param booster The booster we want to register
      * @since 3.0.0
      */
-    public void registerBooster(Boosters.Booster booster) {
+    public void registerBooster(@NotNull Boosters.Booster booster) {
         iridiumSkyblock.registerBooster(booster);
     }
 
@@ -83,7 +85,7 @@ public class IridiumSkyblockAPI {
      * @param upgrade The upgrade we want to register
      * @since 3.0.0
      */
-    public void registerUpgrade(Upgrades.Upgrade upgrade) {
+    public void registerUpgrade(@NotNull Upgrades.Upgrade upgrade) {
         iridiumSkyblock.registerUpgrade(upgrade);
     }
 
@@ -93,7 +95,7 @@ public class IridiumSkyblockAPI {
      * @param bankItem The bankItem we want to register
      * @since 3.0.0
      */
-    public void registerBankItem(BankItem bankItem) {
+    public void registerBankItem(@NotNull BankItem bankItem) {
         iridiumSkyblock.registerBankItem(bankItem);
     }
 
