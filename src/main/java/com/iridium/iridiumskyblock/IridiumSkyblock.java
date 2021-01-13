@@ -406,26 +406,22 @@ public class IridiumSkyblock extends JavaPlugin {
                     user.tookInterestMessage = false;
                 }
                 for (Island island : IslandManager.getLoadedIslands()) {
-                    double cm = island.getMoney();
-                    int cc = island.getCrystals();
-                    int ce = island.getExperience();
-                    island.setMoney(Math.floor(cm * (1 + (configuration.dailyMoneyInterest / 100.00))));
-                    island.setCrystals((int) Math.floor(cc * (1 + (configuration.dailyCrystalsInterest / 100.00))));
-                    island.setExperience((int) Math.floor(ce * (1 + (configuration.dailyExpInterest / 100.00))));
-                    island.interestCrystal = island.getCrystals() - cc;
-                    island.interestMoney = island.getMoney() - cm;
-                    island.interestExp = island.getExperience() - ce;
-                    for (String member : island.members) {
-                        Player p = Bukkit.getPlayer(User.getUser(member).name);
-                        if (p != null) {
-                            if (cm != island.getMoney() && cc != island.getCrystals() && ce != island.getExperience())
-                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
-                                        .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
-                                        .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
-                                        .replace("%money%", Utils.NumberFormatter.format(island.interestMoney))
-                                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    island.interestMoney = island.getMoney() * configuration.dailyMoneyInterest / 100.00;
+                    island.interestCrystal = (int) (island.getCrystals() * configuration.dailyCrystalsInterest / 100.00);
+                    island.interestExp = (int) (island.getExperience() * configuration.dailyExpInterest / 100.00);
+
+                    island.setMoney(island.getMoney() + island.interestMoney);
+                    island.setCrystals(island.getCrystals() + island.interestCrystal);
+                    island.setExperience(island.getExperience() + island.interestExp);
+                    island.members.stream().map(member -> Bukkit.getPlayer(UUID.fromString(member))).filter(Objects::nonNull).forEach(player -> {
+                        if (island.interestMoney != 0 || island.interestExp != 0 || island.interestCrystal != 0) {
+                            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
+                                    .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
+                                    .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
+                                    .replace("%money%", Utils.NumberFormatter.format(island.interestMoney))
+                                    .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
-                    }
+                    });
                 }
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> startCounting());
             }

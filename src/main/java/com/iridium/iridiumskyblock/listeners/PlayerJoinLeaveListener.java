@@ -33,12 +33,14 @@ public class PlayerJoinLeaveListener implements Listener {
         user.name = player.getName();
         Island island = user.getIsland();
         if (island != null) {
-            if (!user.tookInterestMessage && (island.interestCrystal != 0 || island.interestExp != 0 || island.interestMoney != 0)) {
-                player.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
-                        .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
-                        .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
-                        .replace("%money%", Utils.NumberFormatter.format(island.interestMoney))
-                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            if (!user.tookInterestMessage) {
+                if (island.interestMoney != 0 && island.interestExp != 0 && island.interestCrystal != 0) {
+                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
+                            .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
+                            .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
+                            .replace("%money%", Utils.NumberFormatter.format(island.interestMoney))
+                            .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                }
                 user.tookInterestMessage = true;
             }
         }
