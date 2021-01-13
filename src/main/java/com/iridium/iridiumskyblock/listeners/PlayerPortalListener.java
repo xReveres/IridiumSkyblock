@@ -40,10 +40,10 @@ public class PlayerPortalListener implements Listener {
             return;
         }
 
-        if(!IridiumSkyblock.getConfiguration().netherPortalCreation){
+        if (!IridiumSkyblock.getConfiguration().netherPortalCreation) {
             event.setCancelled(true);
             island.teleportNetherHome(player);
-        }else {
+        } else {
             if (supports) {
                 event.setCanCreatePortal(true);
             } else {
@@ -53,7 +53,6 @@ public class PlayerPortalListener implements Listener {
                             .getMethod("setCanCreatePortal", boolean.class)
                             .invoke(PlayerPortalEvent.class.getMethod("getPortalTravelAgent").invoke(event), true);
                 } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-                    e.printStackTrace();
                 }
             }
         }
