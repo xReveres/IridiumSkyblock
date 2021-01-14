@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.managers;
 import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.*;
 import org.bukkit.World.Environment;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -101,6 +103,69 @@ public class IslandManager {
             }
         }
         nextID++;
+    }
+
+    public static void startCounting() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                LocalDateTime ldt = LocalDateTime.now();
+                if (ldt.getDayOfWeek().equals(DayOfWeek.MONDAY) && IridiumSkyblock.getConfiguration().missionRestart.equals(MissionRestart.Weekly) || IridiumSkyblock.getConfiguration().missionRestart.equals(MissionRestart.Daily)) {
+                    for (Island island : IslandManager.getLoadedIslands()) {
+                        island.resetMissions();
+                    }
+                }
+                for (User user : UserManager.cache.values()) {
+                    user.tookInterestMessage = false;
+                }
+                for (Island island : IslandManager.getLoadedIslands()) {
+                    island.interestMoney = island.getMoney() * IridiumSkyblock.getConfiguration().dailyMoneyInterest / 100.00;
+                    island.interestCrystal = (int) (island.getCrystals() * IridiumSkyblock.getConfiguration().dailyCrystalsInterest / 100.00);
+                    island.interestExp = (int) (island.getExperience() * IridiumSkyblock.getConfiguration().dailyExpInterest / 100.00);
+
+                    island.setMoney(island.getMoney() + island.interestMoney);
+                    island.setCrystals(island.getCrystals() + island.interestCrystal);
+                    island.setExperience(island.getExperience() + island.interestExp);
+                    island.members.stream().map(member -> Bukkit.getPlayer(UUID.fromString(member))).filter(Objects::nonNull).forEach(player -> {
+                        if (island.interestMoney != 0 || island.interestExp != 0 || island.interestCrystal != 0) {
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().islandInterest
+                                    .replace("%exp%", NumberFormatter.format(island.interestExp))
+                                    .replace("%crystals%", NumberFormatter.format(island.interestCrystal))
+                                    .replace("%money%", NumberFormatter.format(island.interestMoney))
+                                    .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        }
+                    });
+                }
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> startCounting());
+            }
+
+        }, c.getTime());
+    }
+
+    public static void islandValueManager() {
+        //Loop through all online islands and make sure Island#valuableBlocks is accurate
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(IridiumSkyblock.getInstance(), new Runnable() {
+            ListIterator<Integer> islands = IslandManager.getLoadedIslands().stream().map(is -> is.id).collect(Collectors.toList()).listIterator();
+
+            @Override
+            public void run() {
+                if (!islands.hasNext()) {
+                    islands = IslandManager.getLoadedIslands().stream().map(is -> is.id).collect(Collectors.toList()).listIterator();
+                }
+                if (islands.hasNext()) {
+                    int id = islands.next();
+                    Island island = IslandManager.getIslandViaId(id);
+                    if (island != null) {
+                        island.initBlocks();
+                    }
+                }
+            }
+        }, 0, IridiumSkyblock.getConfiguration().valueUpdateInterval);
     }
 
     public static int purgeIslands(int days, CommandSender sender) {

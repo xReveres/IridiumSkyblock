@@ -23,7 +23,6 @@ import com.iridium.iridiumskyblock.schematics.WorldEdit6;
 import com.iridium.iridiumskyblock.schematics.WorldEdit7;
 import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
-import com.iridium.iridiumskyblock.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
@@ -46,8 +45,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -132,7 +129,7 @@ public class IridiumSkyblock extends JavaPlugin {
         loadConfigs();
         saveConfigs();
 
-        startCounting();
+        IslandManager.startCounting();
         setLanguages();
         Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
             IslandManager.makeWorlds();
@@ -142,7 +139,7 @@ public class IridiumSkyblock extends JavaPlugin {
             if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
 
             // Call it as a delayed task to wait for the server to properly load first
-            Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IridiumSkyblock.getInstance()::islandValueManager);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), IslandManager::islandValueManager);
 
             topGUI = new TopGUI();
             shopMenuGUI = new ShopMenuGUI();
@@ -387,69 +384,6 @@ public class IridiumSkyblock extends JavaPlugin {
         if (worldName.equals(configuration.worldName) || worldName.equals(configuration.netherWorldName))
             return generator;
         return super.getDefaultWorldGenerator(worldName, id);
-    }
-
-    public void startCounting() {
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                LocalDateTime ldt = LocalDateTime.now();
-                if (ldt.getDayOfWeek().equals(DayOfWeek.MONDAY) && configuration.missionRestart.equals(MissionRestart.Weekly) || configuration.missionRestart.equals(MissionRestart.Daily)) {
-                    for (Island island : IslandManager.getLoadedIslands()) {
-                        island.resetMissions();
-                    }
-                }
-                for (User user : UserManager.cache.values()) {
-                    user.tookInterestMessage = false;
-                }
-                for (Island island : IslandManager.getLoadedIslands()) {
-                    island.interestMoney = island.getMoney() * configuration.dailyMoneyInterest / 100.00;
-                    island.interestCrystal = (int) (island.getCrystals() * configuration.dailyCrystalsInterest / 100.00);
-                    island.interestExp = (int) (island.getExperience() * configuration.dailyExpInterest / 100.00);
-
-                    island.setMoney(island.getMoney() + island.interestMoney);
-                    island.setCrystals(island.getCrystals() + island.interestCrystal);
-                    island.setExperience(island.getExperience() + island.interestExp);
-                    island.members.stream().map(member -> Bukkit.getPlayer(UUID.fromString(member))).filter(Objects::nonNull).forEach(player -> {
-                        if (island.interestMoney != 0 || island.interestExp != 0 || island.interestCrystal != 0) {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().islandInterest
-                                    .replace("%exp%", NumberFormatter.format(island.interestExp))
-                                    .replace("%crystals%", NumberFormatter.format(island.interestCrystal))
-                                    .replace("%money%", NumberFormatter.format(island.interestMoney))
-                                    .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                        }
-                    });
-                }
-                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> startCounting());
-            }
-
-        }, c.getTime());
-    }
-
-    public void islandValueManager() {
-        //Loop through all online islands and make sure Island#valuableBlocks is accurate
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            ListIterator<Integer> islands = IslandManager.getLoadedIslands().stream().map(is -> is.id).collect(Collectors.toList()).listIterator();
-
-            @Override
-            public void run() {
-                if (!islands.hasNext()) {
-                    islands = IslandManager.getLoadedIslands().stream().map(is -> is.id).collect(Collectors.toList()).listIterator();
-                }
-                if (islands.hasNext()) {
-                    int id = islands.next();
-                    Island island = IslandManager.getIslandViaId(id);
-                    if (island != null) {
-                        island.initBlocks();
-                    }
-                }
-            }
-        }, 0, configuration.valueUpdateInterval);
     }
 
     public void registerListeners(Listener... listener) {
