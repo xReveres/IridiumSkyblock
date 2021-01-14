@@ -29,7 +29,7 @@ public class WarpGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
-        if (getIsland()!=null) {
+        if (getIsland() != null) {
             Island island = getIsland();
             int i = 9;
             warps.clear();
@@ -38,7 +38,8 @@ public class WarpGUI extends GUI implements Listener {
                 setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandWarp, Collections.singletonList(new Placeholder("warp", islandWarp.getName()))));
                 i++;
             }
-            if (IridiumSkyblock.getInstance().getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
+            if (IridiumSkyblock.getInstance().getInventories().backButtons)
+                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
         }
     }
 

@@ -101,7 +101,8 @@ public class MVDWPlaceholderAPIManager {
                 return IridiumSkyblock.getInstance().getConfiguration().placeholderDefaultValue;
             }
             User user = User.getUser(player);
-            if (user.getIsland() == null) return IridiumSkyblock.getInstance().getConfiguration().placeholderDefaultValue;
+            if (user.getIsland() == null)
+                return IridiumSkyblock.getInstance().getConfiguration().placeholderDefaultValue;
             int online = 0;
             for (String member : user.getIsland().members) {
                 if (Bukkit.getPlayer(User.getUser(member).name) != null) {

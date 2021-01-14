@@ -16,9 +16,8 @@ import java.util.Map;
 
 public class PermissionsGUI extends GUI implements Listener {
 
-    private Role role;
-
     private final Map<Role, PermissionsGUI> permissions = new HashMap<>();
+    private Role role;
 
     public PermissionsGUI(Island island) {
         super(island, IridiumSkyblock.getInstance().getInventories().permissionsGUISize, IridiumSkyblock.getInstance().getInventories().permissionsGUITitle);
@@ -60,7 +59,8 @@ public class PermissionsGUI extends GUI implements Listener {
                     i++;
                 }
             }
-            if (IridiumSkyblock.getInstance().getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
+            if (IridiumSkyblock.getInstance().getInventories().backButtons)
+                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
         }
     }
 

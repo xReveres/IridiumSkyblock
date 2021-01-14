@@ -37,6 +37,20 @@ import java.util.stream.Collectors;
 
 public class Island {
 
+    private static final transient boolean IS_FLAT = XMaterial.supports(13);
+    private static transient Method getMaterial;
+    private static transient Method getBlock;
+
+    static {
+        try {
+            getMaterial = Material.class.getMethod("getMaterial", int.class);
+            getBlock = ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class);
+        } catch (NoSuchMethodException e) {
+            getMaterial = null;
+            getBlock = null;
+        }
+    }
+
     public int id;
     public String owner;
     public Set<String> members;
@@ -44,7 +58,6 @@ public class Island {
     public Location pos2;
     public Location center;
     public Location home;
-
     public transient UpgradeGUI upgradeGUI;
     public transient BoosterGUI boosterGUI;
     public transient MissionsGUI missionsGUI;
@@ -60,79 +73,41 @@ public class Island {
     public transient MultiplePagesGUI<BiomeGUI> biomeGUI;
     public transient MultiplePagesGUI<BiomeGUI> netherBiomeGUI;
     public transient VisitorGUI visitorGUI;
-
-    private transient int boosterId;
-
-    private HashMap<String, Integer> boosterTimes = new HashMap<>();
-    private HashMap<String, Integer> upgradeLevels = new HashMap<>();
-    private HashMap<String, Double> bankItems = new HashMap<>();
-
     public transient int generateID;
 
     public double value;
-
-    private double lastMissionValue;
-
     public double extravalue;
-
     public transient ConcurrentHashMap<String, Integer> valuableBlocks;
     public transient ConcurrentHashMap<String, Integer> spawners;
     public ConcurrentHashMap<Location, Integer> stackedBlocks;
-
     public List<IslandWarp> islandWarps;
-
-    private double startvalue;
-
-    private Map<String, Integer> missions = new HashMap<>();
-
-    private Map<String, Integer> missionLevels = new HashMap<>();
-
     public boolean visit;
-
     public Color borderColor;
-
-    private Map<Role, Permissions> permissions;
-
     public String schematic;
     public String netherschematic;
-
-    private Set<String> bans;
-
-    private Set<String> votes;
-
-    private Set<Integer> coop;
-
     public transient Set<Integer> coopInvites;
-
     public String name;
-
     public XBiome biome;
-
     public XBiome netherBiome;
-
     public transient Set<Location> failedGenerators;
     public transient int interestCrystal;
     public transient int interestExp;
     public transient double interestMoney;
-
+    private transient int boosterId;
+    private HashMap<String, Integer> boosterTimes = new HashMap<>();
+    private HashMap<String, Integer> upgradeLevels = new HashMap<>();
+    private HashMap<String, Double> bankItems = new HashMap<>();
+    private double lastMissionValue;
+    private double startvalue;
+    private Map<String, Integer> missions = new HashMap<>();
+    private Map<String, Integer> missionLevels = new HashMap<>();
+    private Map<Role, Permissions> permissions;
+    private Set<String> bans;
+    private Set<String> votes;
+    private Set<Integer> coop;
     private Date lastRegen;
-
     private transient Set<Player> playersOnIsland;
     private long lastPlayerCaching;
-
-    private static final transient boolean IS_FLAT = XMaterial.supports(13);
-    private static transient Method getMaterial;
-    private static transient Method getBlock;
-
-    static {
-        try {
-            getMaterial = Material.class.getMethod("getMaterial", int.class);
-            getBlock = ChunkSnapshot.class.getMethod("getBlockTypeId", int.class, int.class, int.class);
-        } catch (NoSuchMethodException e) {
-            getMaterial = null;
-            getBlock = null;
-        }
-    }
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, int id) {
         User user = User.getUser(owner);
@@ -1188,36 +1163,36 @@ public class Island {
         return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandSizeUpgrade.name);
     }
 
-    public int getBlockLimitLevel() {
-        return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandBlockLimitUpgrade.name);
-    }
-
-    public int getMemberLevel() {
-        return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandMemberUpgrade.name);
-    }
-
-    public int getWarpLevel() {
-        return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandWarpUpgrade.name);
-    }
-
-    public int getOreLevel() {
-        return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandOresUpgrade.name);
-    }
-
     public void setSizeLevel(int level) {
         setUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandSizeUpgrade, level);
+    }
+
+    public int getBlockLimitLevel() {
+        return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandBlockLimitUpgrade.name);
     }
 
     public void setBlockLimitLevel(int level) {
         setUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandBlockLimitUpgrade, level);
     }
 
+    public int getMemberLevel() {
+        return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandMemberUpgrade.name);
+    }
+
     public void setMemberLevel(int level) {
         setUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandMemberUpgrade, level);
     }
 
+    public int getWarpLevel() {
+        return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandWarpUpgrade.name);
+    }
+
     public void setWarpLevel(int level) {
         setUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandWarpUpgrade, level);
+    }
+
+    public int getOreLevel() {
+        return getUpgradeLevel(IridiumSkyblock.getInstance().getUpgrades().islandOresUpgrade.name);
     }
 
     public void setOreLevel(int level) {
@@ -1241,20 +1216,20 @@ public class Island {
         return (int) getBankItem("crystals");
     }
 
-    public double getMoney() {
-        return getBankItem("vault");
-    }
-
-    public int getExperience() {
-        return (int) getBankItem("experience");
-    }
-
     public void setCrystals(int amount) {
         setBankItem("crystals", amount);
     }
 
+    public double getMoney() {
+        return getBankItem("vault");
+    }
+
     public void setMoney(double amount) {
         setBankItem("vault", amount);
+    }
+
+    public int getExperience() {
+        return (int) getBankItem("experience");
     }
 
     public void setExperience(int amount) {
@@ -1273,8 +1248,8 @@ public class Island {
         return NumberFormatter.format(getCrystals());
     }
 
-    public int getRank(){
-        return IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, 0, Integer.MAX_VALUE, false).indexOf(id)+1;
+    public int getRank() {
+        return IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, 0, Integer.MAX_VALUE, false).indexOf(id) + 1;
     }
 
     public void save(Connection connection) {

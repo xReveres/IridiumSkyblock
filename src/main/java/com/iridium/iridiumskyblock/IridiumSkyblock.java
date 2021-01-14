@@ -51,7 +51,13 @@ import java.util.stream.Collectors;
 public class IridiumSkyblock extends JavaPlugin {
 
     private static IridiumSkyblock instance;
-
+    private final Map<Integer, List<XMaterial>> oreUpgradeCache = new HashMap<>();
+    private final Map<Integer, List<XMaterial>> netherOreUpgradeCache = new HashMap<>();
+    private final HashMap<String, BlockData> legacy = new HashMap<>();
+    private final List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
+    private final List<Boosters.Booster> islandBoosters = new ArrayList<>();
+    private final List<BankItem> bankItems = new ArrayList<>();
+    public Map<UUID, Island> entities = new HashMap<>();
     private SQL sql;
     private Config configuration;
     private Messages messages;
@@ -80,17 +86,11 @@ public class IridiumSkyblock extends JavaPlugin {
     private String latest;
     private NMS nms;
     private File schematicFolder;
-
-    public Map<UUID, Island> entities = new HashMap<>();
     private MultiplePagesGUI<VisitGUI> visitGUI;
 
-    private final Map<Integer, List<XMaterial>> oreUpgradeCache = new HashMap<>();
-    private final Map<Integer, List<XMaterial>> netherOreUpgradeCache = new HashMap<>();
-    private final HashMap<String, BlockData> legacy = new HashMap<>();
-
-    private final List<Upgrades.Upgrade> islandUpgrades = new ArrayList<>();
-    private final List<Boosters.Booster> islandBoosters = new ArrayList<>();
-    private final List<BankItem> bankItems = new ArrayList<>();
+    public static IridiumSkyblock getInstance() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {
@@ -678,75 +678,75 @@ public class IridiumSkyblock extends JavaPlugin {
         return islandUpgrades;
     }
 
-    public  Persist getPersist() {
+    public Persist getPersist() {
         return persist;
     }
 
-    public  Schematic getSchematic() {
+    public Schematic getSchematic() {
         return schematic;
     }
 
-    public  WorldEdit getWorldEdit() {
+    public WorldEdit getWorldEdit() {
         return worldEdit;
     }
 
-    public  Border getBorder() {
+    public Border getBorder() {
         return border;
     }
 
-    public  ShopMenuGUI getShopGUI() {
+    public ShopMenuGUI getShopGUI() {
         return shopMenuGUI;
     }
 
-    public  TopGUI getTopGUI() {
+    public TopGUI getTopGUI() {
         return topGUI;
     }
 
-    public  Shop getShop() {
+    public Shop getShop() {
         return shop;
     }
 
-    public  Stackable getStackable() {
+    public Stackable getStackable() {
         return stackable;
     }
 
-    public  BlockValues getBlockValues() {
+    public BlockValues getBlockValues() {
         return blockValues;
     }
 
-    public  Commands getCommands() {
+    public Commands getCommands() {
         return commands;
     }
 
-    public  Schematics getSchematics() {
+    public Schematics getSchematics() {
         return schematics;
     }
 
-    public  Inventories getInventories() {
+    public Inventories getInventories() {
         return inventories;
     }
 
-    public  Boosters getBoosters() {
+    public Boosters getBoosters() {
         return boosters;
     }
 
-    public  Upgrades getUpgrades() {
+    public Upgrades getUpgrades() {
         return upgrades;
     }
 
-    public  Missions getMissions() {
+    public Missions getMissions() {
         return missions;
     }
 
-    public  Messages getMessages() {
+    public Messages getMessages() {
         return messages;
     }
 
-    public  Config getConfiguration() {
+    public Config getConfiguration() {
         return configuration;
     }
 
-    public  SQL getSql() {
+    public SQL getSql() {
         return sql;
     }
 
@@ -766,23 +766,19 @@ public class IridiumSkyblock extends JavaPlugin {
         return latest;
     }
 
-    public  NMS getNms() {
+    public NMS getNms() {
         return nms;
     }
 
-    public  File getSchematicFolder() {
+    public File getSchematicFolder() {
         return schematicFolder;
     }
 
-    public  SQLManager getSqlManager() {
+    public SQLManager getSqlManager() {
         return sqlManager;
     }
 
-    public  CommandManager getCommandManager() {
+    public CommandManager getCommandManager() {
         return commandManager;
-    }
-
-    public static IridiumSkyblock getInstance() {
-        return instance;
     }
 }

@@ -13,9 +13,9 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class GUI {
 
-    private Inventory inventory;
     public int islandID;
     public int scheduler;
+    private Inventory inventory;
 
     public GUI() {
 

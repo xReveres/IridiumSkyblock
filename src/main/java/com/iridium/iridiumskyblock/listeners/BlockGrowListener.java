@@ -19,21 +19,21 @@ public class BlockGrowListener implements Listener {
 
     @EventHandler
     public void onBlockGrow(BlockGrowEvent event) {
-            final Block block = event.getBlock();
-            final Location location = block.getLocation();
-            final Island island = IslandManager.getIslandViaLocation(location);
-            if (island == null) return;
+        final Block block = event.getBlock();
+        final Location location = block.getLocation();
+        final Island island = IslandManager.getIslandViaLocation(location);
+        if (island == null) return;
 
-            if (island.getBoosterTime(IridiumSkyblock.getInstance().getBoosters().islandFarmingBooster.name) == 0) return;
+        if (island.getBoosterTime(IridiumSkyblock.getInstance().getBoosters().islandFarmingBooster.name) == 0) return;
 
-            final Material material = block.getType();
-            if (!XBlock.isCrop(XMaterial.matchXMaterial(material))) return;
+        final Material material = block.getType();
+        if (!XBlock.isCrop(XMaterial.matchXMaterial(material))) return;
 
-            event.setCancelled(true);
+        event.setCancelled(true);
 
-            final Crops crops = new Crops(CropState.RIPE);
-            final BlockState blockState = block.getState();
-            blockState.setData(crops);
-            blockState.update();
+        final Crops crops = new Crops(CropState.RIPE);
+        final BlockState blockState = block.getState();
+        blockState.setData(crops);
+        blockState.update();
     }
 }

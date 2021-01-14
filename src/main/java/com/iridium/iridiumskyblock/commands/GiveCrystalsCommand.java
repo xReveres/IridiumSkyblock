@@ -32,7 +32,7 @@ public class GiveCrystalsCommand extends Command {
                 if (island != null) {
                     if (NumberUtils.isNumber(args[2])) {
                         int amount = Integer.parseInt(args[2]);
-                        island.setCrystals(island.getCrystals()+amount);
+                        island.setCrystals(island.getCrystals() + amount);
                         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().giveCrystals.replace("%crystals%", args[2]).replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         if (player.getPlayer() != null)
                             player.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().givenCrystals.replace("%crystals%", args[2]).replace("%player%", sender.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

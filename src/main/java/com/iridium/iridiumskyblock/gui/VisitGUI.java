@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class VisitGUI extends GUI implements Listener {
-    
+
     private final int page;
     public Map<Integer, Integer> islands = new HashMap<>();
 

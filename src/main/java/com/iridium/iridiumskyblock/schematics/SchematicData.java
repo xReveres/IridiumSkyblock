@@ -1,24 +1,14 @@
 package com.iridium.iridiumskyblock.schematics;
 
+import org.jnbt.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import org.jnbt.ByteArrayTag;
-import org.jnbt.CompoundTag;
-import org.jnbt.IntTag;
-import org.jnbt.ListTag;
-import org.jnbt.NBTInputStream;
-import org.jnbt.ShortTag;
-import org.jnbt.StringTag;
-import org.jnbt.Tag;
 
 public class SchematicData {
-
-    public enum SchematicVersion {
-        v1_13, v_1_8
-    }
 
     public final short width;
     public final short length;
@@ -31,7 +21,6 @@ public class SchematicData {
     public byte[] blockdata;
     public Map<String, Tag> palette;
     public Integer version;
-
     public SchematicData(File file, short width, short length, short height, List<Tag> tileEntities, byte[] blocks, byte[] data, List<Tag> entities) {
         this.blocks = blocks;
         this.data = data;
@@ -117,5 +106,9 @@ public class SchematicData {
             throw new IllegalArgumentException(key + " tag is not of tag type " + expected.getName());
         }
         return expected.cast(tag);
+    }
+
+    public enum SchematicVersion {
+        v1_13, v_1_8
     }
 }

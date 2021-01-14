@@ -25,7 +25,7 @@ public class ExpelCommand extends Command {
         Player p = (Player) sender;
         Island island = User.getUser(p).getIsland();
         if (island != null) {
-            if (args.length == 1){
+            if (args.length == 1) {
                 p.openInventory(User.getUser(p).getIsland().visitorGUI.getInventory());
                 return;
             }
@@ -44,7 +44,7 @@ public class ExpelCommand extends Command {
                         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cantExpelMember.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%",visitor.getName())));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cantExpelMember.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%", visitor.getName())));
                 }
             } else {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -53,6 +53,7 @@ public class ExpelCommand extends Command {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
+
     @Override
     public void admin(CommandSender sender, String[] args, Island island) {
         if (args.length == 3) {
@@ -69,22 +70,22 @@ public class ExpelCommand extends Command {
             if (visitor != null) {
                 if (!island.equals(User.getUser(visitor).getIsland())) {
                     if (island.isInIsland(visitor.getLocation())) {
-                            if (!(User.getUser(visitor).bypassing)) {
-                                island.spawnPlayer(visitor);
-                                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledVisitor.replace("%player%", visitor.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                                visitor.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenExpelled.replace("%kicker%", sender.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            } else {
-                                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cantExpelPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%", visitor.getName())));
-                            }
+                        if (!(User.getUser(visitor).bypassing)) {
+                            island.spawnPlayer(visitor);
+                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledVisitor.replace("%player%", visitor.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                            visitor.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenExpelled.replace("%kicker%", sender.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         } else {
-                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cantExpelPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%", visitor.getName())));
                         }
                     } else {
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cantExpelMember.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%",visitor.getName())));
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cantExpelMember.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%", visitor.getName())));
                 }
+            } else {
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
         } else {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }

@@ -23,14 +23,14 @@ public class MissionsGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
-        if (getIsland()!=null) {
+        if (getIsland() != null) {
             Island island = getIsland();
             for (Missions.Mission mission : IridiumSkyblock.getInstance().getMissions().missions) {
                 List<Placeholder> placeholderList = StringUtils.getIslandPlaceholders(island);
 
                 if (!island.getMissionLevels().containsKey(mission.name))
                     island.getMissionLevels().put(mission.name, 1);
-                
+
                 Missions.MissionData data = mission.levels.get(island.getMissionLevels().get(mission.name));
 
                 placeholderList.add(new Placeholder("level", island.getMissionLevels().get(mission.name) + ""));
@@ -40,7 +40,8 @@ public class MissionsGUI extends GUI implements Listener {
                 placeholderList.add(new Placeholder("status", island.getMission(mission.name) == Integer.MIN_VALUE ? IridiumSkyblock.getInstance().getMessages().completed : island.getMission(mission.name) + "/" + data.amount + ""));
                 setItem(mission.item.slot, ItemStackUtils.makeItemHidden(mission.item, placeholderList));
             }
-            if (IridiumSkyblock.getInstance().getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
+            if (IridiumSkyblock.getInstance().getInventories().backButtons)
+                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
         }
     }
 

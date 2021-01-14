@@ -1,16 +1,6 @@
 package com.iridium.iridiumskyblock.serializer.typeadapter;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Type;
+import com.google.gson.*;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -18,23 +8,12 @@ import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Type;
+
 public class InventoryTypeAdapter implements JsonSerializer<Inventory>, JsonDeserializer<Inventory> {
-
-
-    @Override
-    public JsonElement serialize(Inventory inventory, Type type, JsonSerializationContext jsonSerializationContext) {
-
-        JsonObject object = new JsonObject();
-        object.add("contents", new JsonPrimitive(toBase64(inventory)));
-        return object;
-    }
-
-
-    @Override
-    public Inventory deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
-        JsonObject object = jsonElement.getAsJsonObject();
-        return fromBase64(object.get("contents").getAsString());
-    }
 
 
     public static String InventoryToString(ItemStack[] items) throws IllegalStateException {
@@ -109,6 +88,20 @@ public class InventoryTypeAdapter implements JsonSerializer<Inventory>, JsonDese
         } catch (Exception e) {
         }
         return null;
+    }
+
+    @Override
+    public JsonElement serialize(Inventory inventory, Type type, JsonSerializationContext jsonSerializationContext) {
+
+        JsonObject object = new JsonObject();
+        object.add("contents", new JsonPrimitive(toBase64(inventory)));
+        return object;
+    }
+
+    @Override
+    public Inventory deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
+        JsonObject object = jsonElement.getAsJsonObject();
+        return fromBase64(object.get("contents").getAsString());
     }
 
 }

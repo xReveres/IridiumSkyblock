@@ -39,6 +39,19 @@ public class User {
         flying = false;
     }
 
+    public static User getUser(UUID uuid) {
+        return UserManager.getUser(uuid);
+    }
+
+    public static User getUser(String uuid) {
+        return getUser(UUID.fromString(uuid));
+    }
+
+    public static User getUser(OfflinePlayer p) {
+        if (p == null) return null;
+        return UserManager.getUser(p.getUniqueId());
+    }
+
     public Island getIsland() {
         return IslandManager.getIslandViaId(islandID);
     }
@@ -69,19 +82,6 @@ public class User {
         int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
         int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
         return IridiumSkyblock.getInstance().getMessages().createCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix);
-    }
-
-    public static User getUser(UUID uuid) {
-        return UserManager.getUser(uuid);
-    }
-
-    public static User getUser(String uuid) {
-        return getUser(UUID.fromString(uuid));
-    }
-
-    public static User getUser(OfflinePlayer p) {
-        if (p == null) return null;
-        return UserManager.getUser(p.getUniqueId());
     }
 
     public List<Object> getHolograms() {

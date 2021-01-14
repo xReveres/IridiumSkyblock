@@ -98,6 +98,15 @@ public class IslandDataManager {
         }
     }
 
+    public enum IslandSortType {
+        VALUE("value"), VOTES("votes");
+        public String name;
+
+        IslandSortType(String name) {
+            this.name = name;
+        }
+    }
+
     public static class IslandData {
         public double value;
         public int votes;
@@ -107,15 +116,6 @@ public class IslandDataManager {
             this.value = value;
             this.votes = votes;
             this.isPrivate = isPrivate;
-        }
-    }
-
-    public enum IslandSortType {
-        VALUE("value"), VOTES("votes");
-        public String name;
-
-        IslandSortType(String name) {
-            this.name = name;
         }
     }
 }

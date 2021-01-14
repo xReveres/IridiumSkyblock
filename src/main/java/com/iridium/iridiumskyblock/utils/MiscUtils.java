@@ -176,6 +176,12 @@ public class MiscUtils {
         return null;
     }
 
+    public enum BuyResponse {
+        SUCCESS,
+        NOT_ENOUGH_CRYSTALS,
+        NOT_ENOUGH_VAULT
+    }
+
     public static class XMaterialItemId {
         List<MaterialItemId> items;
     }
@@ -184,12 +190,6 @@ public class MiscUtils {
         int type;
         byte meta;
         String name;
-    }
-
-    public enum BuyResponse {
-        SUCCESS,
-        NOT_ENOUGH_CRYSTALS,
-        NOT_ENOUGH_VAULT
     }
 
 }

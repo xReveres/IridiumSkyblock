@@ -43,7 +43,8 @@ public class PlayerMoveListener implements Listener {
                 if (world == null) return;
 
                 if (island != null) {
-                    if (!IridiumSkyblock.getInstance().getConfiguration().keepInventoryOnVoid) player.getInventory().clear();
+                    if (!IridiumSkyblock.getInstance().getConfiguration().keepInventoryOnVoid)
+                        player.getInventory().clear();
                     if (world.getName().equals(IslandManager.getWorld().getName()))
                         island.teleportHome(player);
                     else

@@ -42,7 +42,8 @@ public class VisitorGUI extends GUI implements Listener {
                 i++;
             }
         }
-        if (IridiumSkyblock.getInstance().getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
+        if (IridiumSkyblock.getInstance().getInventories().backButtons)
+            setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
     }
 
     @Override

@@ -36,7 +36,7 @@ public class WorldBorderCommand extends Command {
                 } else {
                     p.openInventory(island.borderColorGUI.getInventory());
                 }
-            }else {
+            } else {
                 p.openInventory(island.borderColorGUI.getInventory());
             }
         } else {
@@ -56,7 +56,7 @@ public class WorldBorderCommand extends Command {
 
     @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
-        if (args.length == 2){
+        if (args.length == 2) {
             ArrayList<String> result = new ArrayList<>();
             if (IridiumSkyblock.getInstance().getBorder().BlueEnabled) result.add("blue");
             if (IridiumSkyblock.getInstance().getBorder().OffEnabled) result.add("off");

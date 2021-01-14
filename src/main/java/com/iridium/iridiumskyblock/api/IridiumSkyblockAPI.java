@@ -25,6 +25,10 @@ public class IridiumSkyblockAPI {
         this.iridiumSkyblock = iridiumSkyblock;
     }
 
+    public static IridiumSkyblockAPI getInstance() {
+        return instance;
+    }
+
     /**
      * Gets an island from location
      *
@@ -97,9 +101,5 @@ public class IridiumSkyblockAPI {
      */
     public void registerBankItem(@NotNull BankItem bankItem) {
         iridiumSkyblock.registerBankItem(bankItem);
-    }
-
-    public static IridiumSkyblockAPI getInstance() {
-        return instance;
     }
 }
