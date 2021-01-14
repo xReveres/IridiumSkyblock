@@ -3,8 +3,8 @@ package com.iridium.iridiumskyblock.listeners;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.MiscUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,7 +44,7 @@ public class EntityExplodeListener implements Listener {
                 IridiumSkyblock.getNms().setBlockFast(block, 0, (byte) 0);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> state.update(true, true));
             } else {
-                if (!Utils.isBlockValuable(block)) continue;
+                if (!MiscUtils.isBlockValuable(block)) continue;
 
                 if (!(block.getState() instanceof CreatureSpawner)) {
                     final Material material = block.getType();

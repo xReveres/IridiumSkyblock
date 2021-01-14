@@ -3,8 +3,9 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.NumberFormatter;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -24,8 +25,8 @@ public class PlayerJoinLeaveListener implements Listener {
                     && IridiumSkyblock.getConfiguration().notifyAvailableUpdate
                     && !latest.equals(plugin.getDescription().getVersion())) {
                 final String prefix = IridiumSkyblock.getConfiguration().prefix;
-                player.sendMessage(Utils.color(prefix + " &7This message is only seen by opped players."));
-                player.sendMessage(Utils.color(prefix + " &7Newer version available: " + latest));
+                player.sendMessage(StringUtils.color(prefix + " &7This message is only seen by opped players."));
+                player.sendMessage(StringUtils.color(prefix + " &7Newer version available: " + latest));
             }
         }
         final Location location = player.getLocation();
@@ -35,10 +36,10 @@ public class PlayerJoinLeaveListener implements Listener {
         if (island != null) {
             if (!user.tookInterestMessage) {
                 if (island.interestMoney != 0 && island.interestExp != 0 && island.interestCrystal != 0) {
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandInterest
-                            .replace("%exp%", Utils.NumberFormatter.format(island.interestExp))
-                            .replace("%crystals%", Utils.NumberFormatter.format(island.interestCrystal))
-                            .replace("%money%", Utils.NumberFormatter.format(island.interestMoney))
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().islandInterest
+                            .replace("%exp%", NumberFormatter.format(island.interestExp))
+                            .replace("%crystals%", NumberFormatter.format(island.interestCrystal))
+                            .replace("%money%", NumberFormatter.format(island.interestMoney))
                             .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
                 user.tookInterestMessage = true;
@@ -49,7 +50,7 @@ public class PlayerJoinLeaveListener implements Listener {
             if (!user.isOnCooldown() || IridiumSkyblock.getConfiguration().ignoreCooldownOnJoinCreation) {
                 IslandManager.createIsland(player);
             } else {
-                player.sendMessage(Utils.color(user.getCooldownTimeMessage()));
+                player.sendMessage(StringUtils.color(user.getCooldownTimeMessage()));
             }
         }
 

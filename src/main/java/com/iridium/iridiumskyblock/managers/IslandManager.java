@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.managers;
 import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.*;
 import org.bukkit.World.Environment;
 import org.bukkit.command.CommandSender;
@@ -44,7 +45,7 @@ public class IslandManager {
         User user = User.getUser(player);
         if (user.isOnCooldown()) {
             //The user cannot create an island
-            player.sendMessage(Utils.color(user.getCooldownTimeMessage()));
+            player.sendMessage(StringUtils.color(user.getCooldownTimeMessage()));
             return;
         }
         Calendar c = Calendar.getInstance();
@@ -116,7 +117,7 @@ public class IslandManager {
                     island.delete();
                     amount++;
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().purgingFinished.replace("%amount%", String.valueOf(amount)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().purgingFinished.replace("%amount%", String.valueOf(amount)).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     Bukkit.getScheduler().cancelTask(id);
                     id = 0;
                 }

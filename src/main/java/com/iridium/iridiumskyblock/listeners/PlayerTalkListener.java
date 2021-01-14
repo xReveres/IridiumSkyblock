@@ -3,7 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,10 +20,10 @@ public class PlayerTalkListener implements Listener {
             if (user.islandWarp != null) {
                 if (user.islandWarp.getPassword().equals(event.getMessage())) {
                     Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> { player.teleport(user.islandWarp.getLocation()); user.islandWarp = null; });
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleporting
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().teleporting
                             .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 } else {
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().wrongPassword
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().wrongPassword
                             .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     user.islandWarp = null;
                 }
@@ -66,7 +66,7 @@ public class PlayerTalkListener implements Listener {
                 for (String member : island.members) {
                     final Player islandPlayer = Bukkit.getPlayer(User.getUser(member).name);
                     if (islandPlayer == null) continue;
-                    islandPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat)
+                    islandPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().chatFormat)
                             .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue())
                             .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
                             .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedLevel())
@@ -76,7 +76,7 @@ public class PlayerTalkListener implements Listener {
                 }
                 Bukkit.getServer().getOnlinePlayers().stream()
                         .filter(onlinePlayer -> User.getUser(onlinePlayer).spyingIslandsChat)
-                        .forEach((spyingPlayer) -> spyingPlayer.sendMessage(Utils.color(IridiumSkyblock.getMessages().spyChatFormat)
+                        .forEach((spyingPlayer) -> spyingPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().spyChatFormat)
                                 .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getFormattedValue())
                                 .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
                                 .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, island.getFormattedLevel())
@@ -86,6 +86,6 @@ public class PlayerTalkListener implements Listener {
                 event.setCancelled(true);
             }
 
-            event.setFormat(Utils.color(format));
+            event.setFormat(StringUtils.color(format));
     }
 }

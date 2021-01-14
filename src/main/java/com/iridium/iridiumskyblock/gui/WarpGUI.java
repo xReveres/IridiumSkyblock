@@ -1,6 +1,12 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.IslandWarp;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.Placeholder;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,10 +35,10 @@ public class WarpGUI extends GUI implements Listener {
             warps.clear();
             for (IslandWarp islandWarp : island.islandWarps) {
                 warps.put(i, islandWarp);
-                setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandWarp, Collections.singletonList(new Utils.Placeholder("warp", islandWarp.getName()))));
+                setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandWarp, Collections.singletonList(new Placeholder("warp", islandWarp.getName()))));
                 i++;
             }
-            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
         }
     }
 
@@ -60,9 +66,9 @@ public class WarpGUI extends GUI implements Listener {
                 } else {
                     if (islandWarp.getPassword().isEmpty()) {
                         p.teleport(islandWarp.getLocation());
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleporting.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().teleporting.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     } else {
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().enterPassword.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().enterPassword.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         u.islandWarp = islandWarp;
                     }
                 }

@@ -3,8 +3,8 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,15 +21,15 @@ public class BorderColorGUI extends GUI implements Listener {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
         if (IridiumSkyblock.getBorder().RedEnabled)
-            setItem(IridiumSkyblock.getInventories().red.slot, Utils.makeItem(IridiumSkyblock.getInventories().red));
+            setItem(IridiumSkyblock.getInventories().red.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().red));
         if (IridiumSkyblock.getBorder().BlueEnabled)
-            setItem(IridiumSkyblock.getInventories().blue.slot, Utils.makeItem(IridiumSkyblock.getInventories().blue));
+            setItem(IridiumSkyblock.getInventories().blue.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().blue));
         if (IridiumSkyblock.getBorder().GreenEnabled)
-            setItem(IridiumSkyblock.getInventories().green.slot, Utils.makeItem(IridiumSkyblock.getInventories().green));
+            setItem(IridiumSkyblock.getInventories().green.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().green));
         if (IridiumSkyblock.getBorder().OffEnabled)
-            setItem(IridiumSkyblock.getInventories().off.slot, Utils.makeItem(IridiumSkyblock.getInventories().off));
+            setItem(IridiumSkyblock.getInventories().off.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().off));
         if (IridiumSkyblock.getInventories().backButtons)
-            setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+            setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
     }
 
     @EventHandler

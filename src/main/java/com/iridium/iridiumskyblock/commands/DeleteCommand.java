@@ -1,7 +1,11 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.Role;
+import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,10 +26,10 @@ public class DeleteCommand extends Command {
             if (user.role.equals(Role.Owner)) {
                 p.openInventory(new ConfirmationGUI(user.getIsland(), () -> user.getIsland().delete(), IridiumSkyblock.getMessages().deleteAction).getInventory());
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 
@@ -35,7 +39,7 @@ public class DeleteCommand extends Command {
         if (island != null) {
             p.openInventory(new ConfirmationGUI(island, island::delete, IridiumSkyblock.getMessages().deleteAction).getInventory());
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 

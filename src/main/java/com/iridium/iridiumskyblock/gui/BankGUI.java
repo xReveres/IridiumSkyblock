@@ -2,8 +2,10 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.bank.BankItem;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.Placeholder;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,11 +26,11 @@ public class BankGUI extends GUI implements Listener {
         if (getIsland() != null) {
             for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItems()) {
                 if (!bankItem.isEnabled()) continue;
-                setItem(bankItem.getItem().slot, Utils.makeItem(bankItem.getItem(), Collections.singletonList(new Utils.Placeholder("amount", bankItem.getValue(getIsland()).toString()))));
+                setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", bankItem.getValue(getIsland()).toString()))));
             }
 
             if (IridiumSkyblock.getInventories().backButtons) {
-                setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
             }
         }
     }
@@ -46,7 +48,7 @@ public class BankGUI extends GUI implements Listener {
                 return;
             }
             if (!IridiumSkyblock.getConfiguration().bankWithdrawing) {
-                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().withdrawDisabled
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().withdrawDisabled
                         .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 return;
             }

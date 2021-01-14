@@ -2,9 +2,9 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -57,7 +57,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
         if (!IridiumSkyblock.getConfiguration().mainCommandPerm.equalsIgnoreCase("") && !cs
                 .hasPermission(IridiumSkyblock.getConfiguration().mainCommandPerm)) {
-            cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission
+            cs.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission
                     .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return false;
         }
@@ -66,7 +66,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 if (command.aliases.contains(args[0]) && command.enabled) {
                     if (command.player && !(cs instanceof Player)) {
                         // Must be a player
-                        cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeAPlayer
+                        cs.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().mustBeAPlayer
                                 .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         return true;
                     }
@@ -76,7 +76,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                         command.execute(cs, args);
                     } else {
                         // No permission
-                        cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission
+                        cs.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission
                                 .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                     return true;
@@ -110,7 +110,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 return true;
             }
         }
-        cs.sendMessage(Utils.color(IridiumSkyblock.getMessages().unknownCommand
+        cs.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().unknownCommand
                 .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         return true;
     }

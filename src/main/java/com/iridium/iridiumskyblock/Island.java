@@ -12,6 +12,10 @@ import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.managers.IslandDataManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.support.SpawnerSupport;
+import com.iridium.iridiumskyblock.utils.MiscUtils;
+import com.iridium.iridiumskyblock.utils.NumberFormatter;
+import com.iridium.iridiumskyblock.utils.Placeholder;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -223,7 +227,7 @@ public class Island {
                             }
                         }
                         final XMaterial xMaterial = XMaterial.matchXMaterial(material);
-                        if (Utils.isBlockValuable(xMaterial)) {
+                        if (MiscUtils.isBlockValuable(xMaterial)) {
                             valuableBlocks.compute(xMaterial.name(), (xmaterialName, original) -> {
                                 if (original == null) return 1;
                                 return original + 1;
@@ -490,9 +494,9 @@ public class Island {
     public void addWarp(Player player, Location location, String name, String password) {
         if (islandWarps.size() < IridiumSkyblock.getUpgrades().islandWarpUpgrade.getIslandUpgrade(getWarpLevel()).size) {
             islandWarps.add(new IslandWarp(location, name, password));
-            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().warpAdded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().warpAdded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
-            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().maxWarpsReached.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().maxWarpsReached.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
     }
 
@@ -503,7 +507,7 @@ public class Island {
                 User u = User.getUser(player);
                 Player p = Bukkit.getPlayer(u.name);
                 if (p != null) {
-                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerJoinedYourIsland.replace("%player%", user.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerJoinedYourIsland.replace("%player%", user.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             }
             bans.remove(user.player);
@@ -515,7 +519,7 @@ public class Island {
         } else {
             Player player = Bukkit.getPlayer(user.name);
             if (player != null) {
-                player.sendMessage(Utils.color(IridiumSkyblock.getMessages().maxMemberCount.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().maxMemberCount.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
         membersGUI.getInventory().clear();
@@ -539,7 +543,7 @@ public class Island {
             User u = User.getUser(member);
             Player p = Bukkit.getPlayer(u.name);
             if (p != null) {
-                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().kickedMember.replace("%member%", user.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().kickedMember.replace("%member%", user.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
         membersGUI.getInventory().clear();
@@ -722,7 +726,7 @@ public class Island {
             if (location.getWorld() != world) continue;
             Block block = location.getBlock();
             int amount = stackedBlocks.get(location);
-            IridiumSkyblock.getNms().sendHologram(player, block.getLocation().add(0.5, -0.5, 0.5), Utils.processMultiplePlaceholders(IridiumSkyblock.getMessages().stackedBlocksHologram, Arrays.asList(new Utils.Placeholder("amount", amount + ""), new Utils.Placeholder("block", XMaterial.matchXMaterial(block.getType()).toString()))));
+            IridiumSkyblock.getNms().sendHologram(player, block.getLocation().add(0.5, -0.5, 0.5), StringUtils.processMultiplePlaceholders(IridiumSkyblock.getMessages().stackedBlocksHologram, Arrays.asList(new Placeholder("amount", amount + ""), new Placeholder("block", XMaterial.matchXMaterial(block.getType()).toString()))));
         }
     }
 
@@ -738,7 +742,7 @@ public class Island {
             return;
         }
         if (isBanned(User.getUser(p)) && !members.contains(p.getUniqueId().toString()) && !p.hasPermission("iridiumskyblock.visitbypass")) {
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return;
         }
         if (schematic == null) {
@@ -758,13 +762,13 @@ public class Island {
         }
         p.setFallDistance(0);
         if (members.contains(p.getUniqueId().toString())) {
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         }
-        if (Utils.isSafe(home, this)) {
+        if (MiscUtils.isSafe(home, this)) {
             p.teleport(home);
             sendBorder(p);
         } else {
-            Location loc = Utils.getNewHome(this, this.home);
+            Location loc = MiscUtils.getNewHome(this, this.home);
             if (loc != null) {
                 this.home = loc;
                 p.teleport(this.home);
@@ -783,7 +787,7 @@ public class Island {
             return;
         }
         if (isBanned(User.getUser(p)) && !members.contains(p.getUniqueId().toString())) {
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().bannedFromIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             return;
         }
         if (schematic == null) {
@@ -803,22 +807,22 @@ public class Island {
         }
         p.setFallDistance(0);
         if (members.contains(p.getUniqueId().toString())) {
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             for (String pl : members) {
                 Player player = Bukkit.getPlayer(User.getUser(pl).name);
                 if (player != null) {
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().visitedYourIsland.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().visitedYourIsland.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             }
         }
-        if (Utils.isSafe(getNetherHome(), this)) {
+        if (MiscUtils.isSafe(getNetherHome(), this)) {
             p.teleport(getNetherHome());
             sendBorder(p);
         } else {
 
-            Location loc = Utils.getNewHome(this, netherHome);
+            Location loc = MiscUtils.getNewHome(this, netherHome);
             if (loc != null) {
                 p.teleport(netherHome);
                 sendBorder(p);
@@ -854,7 +858,7 @@ public class Island {
             Player p = Bukkit.getPlayer(User.getUser(player).name);
             if (p != null) {
                 p.closeInventory();
-                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
         killEntities();
@@ -918,13 +922,13 @@ public class Island {
         for (String member : island.members) {
             Player pl = Bukkit.getPlayer(User.getUser(member).name);
             if (pl != null) {
-                pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopGiven.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                pl.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().coopGiven.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
         for (String member : members) {
             Player pl = Bukkit.getPlayer(User.getUser(member).name);
             if (pl != null) {
-                pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopAdded.replace("%player%", User.getUser(island.owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                pl.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().coopAdded.replace("%player%", User.getUser(island.owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
         coop.add(island.id);
@@ -938,7 +942,7 @@ public class Island {
         for (String member : members) {
             Player pl = Bukkit.getPlayer(User.getUser(member).name);
             if (pl != null) {
-                BaseComponent[] components = TextComponent.fromLegacyText(Utils.color(IridiumSkyblock.getMessages().coopInvite.replace("%player%", User.getUser(island.owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                BaseComponent[] components = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getMessages().coopInvite.replace("%player%", User.getUser(island.owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
 
                 ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is coop " + User.getUser(island.owner).name);
                 HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(IridiumSkyblock.getMessages().coopHoverMessage).create());
@@ -959,13 +963,13 @@ public class Island {
         for (String member : island.members) {
             Player pl = Bukkit.getPlayer(User.getUser(member).name);
             if (pl != null) {
-                pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopTaken.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                pl.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().coopTaken.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
         for (String member : members) {
             Player pl = Bukkit.getPlayer(User.getUser(member).name);
             if (pl != null) {
-                pl.sendMessage(Utils.color(IridiumSkyblock.getMessages().coopTaken.replace("%player%", User.getUser(island.owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                pl.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().coopTaken.replace("%player%", User.getUser(island.owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
             }
         }
         coopGUI.getInventory().clear();
@@ -1133,7 +1137,7 @@ public class Island {
             User user = User.getUser(player);
             Player p = Bukkit.getPlayer(user.name);
             if (p != null) {
-                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().transferdOwnership.replace("%player%", owner.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().transferdOwnership.replace("%player%", owner.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
 
             }
         }
@@ -1227,11 +1231,11 @@ public class Island {
     }
 
     public String getFormattedValue() {
-        return Utils.NumberFormatter.format(value);
+        return NumberFormatter.format(value);
     }
 
     public String getFormattedLevel() {
-        return Utils.NumberFormatter.format(value / IridiumSkyblock.getConfiguration().valuePerLevel);
+        return NumberFormatter.format(value / IridiumSkyblock.getConfiguration().valuePerLevel);
     }
 
     public int getCrystals() {
@@ -1259,15 +1263,15 @@ public class Island {
     }
 
     public String getFormattedMoney() {
-        return Utils.NumberFormatter.format(getMoney());
+        return NumberFormatter.format(getMoney());
     }
 
     public String getFormattedExp() {
-        return Utils.NumberFormatter.format(getExperience());
+        return NumberFormatter.format(getExperience());
     }
 
     public String getFormattedCrystals() {
-        return Utils.NumberFormatter.format(getCrystals());
+        return NumberFormatter.format(getCrystals());
     }
 
     public int getRank(){

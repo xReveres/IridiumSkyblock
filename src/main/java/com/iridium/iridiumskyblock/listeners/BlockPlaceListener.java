@@ -1,12 +1,17 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.MissionType;
+import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Missions.Mission;
 import com.iridium.iridiumskyblock.configs.Missions.MissionData;
 import com.iridium.iridiumskyblock.configs.Upgrades;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.MiscUtils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,7 +55,7 @@ public class BlockPlaceListener implements Listener {
         final Integer max = ((Upgrades.IslandBlockLimitUpgrade) IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.upgrades.get(island.getBlockLimitLevel())).limitedBlocks.get(xmaterial);
         if (max != null) {
             if (island.valuableBlocks.getOrDefault(xmaterial.name(), 0) >= max) {
-                player.sendMessage(Utils.color(IridiumSkyblock.getMessages().blockLimitReached
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().blockLimitReached
                         .replace("%prefix%", config.prefix)));
                 event.setCancelled(true);
                 return;
@@ -94,7 +99,7 @@ public class BlockPlaceListener implements Listener {
         final XMaterial xmaterial = XMaterial.matchXMaterial(material);
         if (island == null) return;
 
-        if (!Utils.isBlockValuable(block)) return;
+        if (!MiscUtils.isBlockValuable(block)) return;
         island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
             if (original == null) return 1;
             return original + 1;

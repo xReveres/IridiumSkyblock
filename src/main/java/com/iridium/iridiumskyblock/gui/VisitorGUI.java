@@ -3,7 +3,9 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.Placeholder;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,13 +36,13 @@ public class VisitorGUI extends GUI implements Listener {
             User visitorUser = User.getUser(p);
             if (!island.members.contains(p.getUniqueId().toString()) && !island.isCoop(visitorUser.getIsland()) && !(visitorUser.bypassing || p.hasPermission("iridiumskyblock.silentvisit"))) {
                 if (i >= getInventory().getSize()) return;
-                ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandVisitors, Collections.singletonList(new Utils.Placeholder("player", p.getName())));
+                ItemStack head = ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandVisitors, Collections.singletonList(new Placeholder("player", p.getName())));
                 setItem(i, head);
                 visitors.put(i, p);
                 i++;
             }
         }
-        if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+        if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
     }
 
     @Override
@@ -59,12 +61,12 @@ public class VisitorGUI extends GUI implements Listener {
                 Player visitor = visitors.get(i);
                 if (island.isInIsland(visitor.getLocation())) {
                     if (User.getUser(visitor).bypassing || visitor.hasPermission("iridiumskyblock.visitbypass")) {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantExpelPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
+                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().cantExpelPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
                     } else {
                         island.spawnPlayer(visitor);
                         visitors.clear();
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().expelledVisitor.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
-                        visitor.sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenExpelled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%kicker%", p.getName() + "")));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().expelledVisitor.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
+                        visitor.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().youHaveBeenExpelled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%kicker%", p.getName() + "")));
                         getInventory().clear();
                         addContent();
                     }

@@ -3,8 +3,10 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.Placeholder;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,14 +41,14 @@ public class CoopGUI extends GUI implements Listener {
                 if (is != null) {
                     islands.put(i, id);
                     User user = User.getUser(is.owner);
-                    ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandcoop, Arrays.asList(new Utils.Placeholder("player", user.name), new Utils.Placeholder("name", is.getName()), new Utils.Placeholder("rank", Integer.toString(island.getRank())), new Utils.Placeholder("value", is.getFormattedValue())));
+                    ItemStack head = ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandcoop, Arrays.asList(new Placeholder("player", user.name), new Placeholder("name", is.getName()), new Placeholder("rank", Integer.toString(island.getRank())), new Placeholder("value", is.getFormattedValue())));
                     setItem(i, head);
                     i++;
                 } else {
                     island.removeCoop(id);
                 }
             }
-            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
         }
     }
 
@@ -66,13 +68,13 @@ public class CoopGUI extends GUI implements Listener {
                     if (u.bypassing || u.getIsland().getPermissions(u.getRole()).coop) {
                         getIsland().removeCoop(island);
                     } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 } else {
                     if (island.visit || u.bypassing) {
                         island.teleportHome((Player) e.getWhoClicked());
                     } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 }
             }

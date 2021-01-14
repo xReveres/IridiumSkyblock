@@ -5,9 +5,9 @@ import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -77,7 +77,7 @@ public class PlayerMoveListener implements Listener {
             player.setAllowFlight(false);
             player.setFlying(false);
             user.flying = false;
-            player.sendMessage(Utils.color(IridiumSkyblock.getMessages().flightDisabled
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().flightDisabled
                     .replace("%prefix%", config.prefix)));
         }
     }

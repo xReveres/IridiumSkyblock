@@ -2,8 +2,8 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Inventories;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,7 +23,7 @@ public class IslandAdminGUI extends GUI implements Listener {
         if (getInventory().getViewers().isEmpty()) return;
         if (getIsland()!=null) {
             for (Inventories.Item item : IridiumSkyblock.getInventories().menu.keySet()) {
-                setItem(item.slot, Utils.makeItemHidden(item, getIsland()));
+                setItem(item.slot, ItemStackUtils.makeItemHidden(item, getIsland()));
             }
         }
     }

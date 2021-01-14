@@ -2,9 +2,8 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import net.md_5.bungee.api.chat.*;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,7 +22,7 @@ public class HelpCommand extends Command {
         Player p = (Player) cs;
         int page = 1;
         if (args.length == 2) {
-            if (!StringUtils.isNumeric(args[1])) {
+            if (!org.apache.commons.lang.StringUtils.isNumeric(args[1])) {
                 return;
             }
             page = Integer.parseInt(args[1]);
@@ -32,12 +31,12 @@ public class HelpCommand extends Command {
         int maxpage = (int) Math.ceil(IridiumSkyblock.getCommandManager().commands.size() / 18.00);
         int current = 0;
 
-        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().helpHeader));
+        p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().helpHeader));
         for (com.iridium.iridiumskyblock.commands.Command command : IridiumSkyblock.getCommandManager().commands) {
 
             if ((p.hasPermission(command.permission) || command.permission.equalsIgnoreCase("") || command.permission.equalsIgnoreCase("iridiumskyblock.")) && command.enabled) {
                 if (current >= (page - 1) * 18 && current < page * 18) {
-                    TextComponent cmdComponent = new TextComponent(Utils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", command.aliases.get(0)).replace("%description%", command.description)));
+                    TextComponent cmdComponent = new TextComponent(StringUtils.color(IridiumSkyblock.getMessages().helpMessage.replace("%command%", command.aliases.get(0)).replace("%description%", command.description)));
                     cmdComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/is " + command.aliases.get(0)));
                     p.getPlayer().spigot().sendMessage(cmdComponent);
                 }
@@ -46,7 +45,7 @@ public class HelpCommand extends Command {
             }
         }
 
-        BaseComponent[] components = TextComponent.fromLegacyText(Utils.color(IridiumSkyblock.getMessages().helpfooter.replace("%maxpage%", maxpage + "").replace("%page%", page + "")));
+        BaseComponent[] components = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getMessages().helpfooter.replace("%maxpage%", maxpage + "").replace("%page%", page + "")));
 
         for (BaseComponent component : components) {
             if (ChatColor.stripColor(component.toLegacyText()).contains(IridiumSkyblock.getMessages().nextPage)) {

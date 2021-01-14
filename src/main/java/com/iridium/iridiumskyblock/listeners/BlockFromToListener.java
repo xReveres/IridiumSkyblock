@@ -3,9 +3,9 @@ package com.iridium.iridiumskyblock.listeners;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.MiscUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -70,7 +70,7 @@ public class BlockFromToListener implements Listener {
                 final BlockState blockState = toBlock.getState();
                 blockState.update(true);
 
-                if (Utils.isBlockValuable(toBlock)) {
+                if (MiscUtils.isBlockValuable(toBlock)) {
                     final XMaterial xmaterial = XMaterial.matchXMaterial(material);
                     island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
                         if (original == null) return 1;

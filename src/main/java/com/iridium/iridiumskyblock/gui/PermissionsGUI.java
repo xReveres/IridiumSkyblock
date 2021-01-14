@@ -1,6 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.Placeholder;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,9 +42,9 @@ public class PermissionsGUI extends GUI implements Listener {
                         Object object = field.get(getIsland().getPermissions(role));
                         if (object instanceof Boolean) {
                             if ((Boolean) object) {
-                                setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandPermissionAllow, Collections.singletonList(new Utils.Placeholder("permission", IridiumSkyblock.getMessages().permissions.getOrDefault(field.getName(), field.getName())))));
+                                setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandPermissionAllow, Collections.singletonList(new Placeholder("permission", IridiumSkyblock.getMessages().permissions.getOrDefault(field.getName(), field.getName())))));
                             } else {
-                                setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandPermissionDeny, Collections.singletonList(new Utils.Placeholder("permission", IridiumSkyblock.getMessages().permissions.getOrDefault(field.getName(), field.getName())))));
+                                setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandPermissionDeny, Collections.singletonList(new Placeholder("permission", IridiumSkyblock.getMessages().permissions.getOrDefault(field.getName(), field.getName())))));
                             }
                         }
                         i++;
@@ -53,11 +56,11 @@ public class PermissionsGUI extends GUI implements Listener {
                 int i = 11;
                 for (Role role : Role.values()) {
                     permissions.put(role, new PermissionsGUI(getIsland(), role));
-                    setItem(i, Utils.makeItem(IridiumSkyblock.getInventories().islandRoles, Collections.singletonList(new Utils.Placeholder("role", role.toString()))));
+                    setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandRoles, Collections.singletonList(new Placeholder("role", role.toString()))));
                     i++;
                 }
             }
-            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
         }
     }
 
@@ -105,7 +108,7 @@ public class PermissionsGUI extends GUI implements Listener {
                             ex.printStackTrace();
                         }
                     } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                     }
                 }
             }

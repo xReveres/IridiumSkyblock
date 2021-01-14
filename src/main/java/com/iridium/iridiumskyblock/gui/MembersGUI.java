@@ -1,9 +1,15 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.Role;
+import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.api.IslandDemoteEvent;
 import com.iridium.iridiumskyblock.api.IslandKickEvent;
 import com.iridium.iridiumskyblock.api.IslandPromoteEvent;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.Placeholder;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -37,12 +43,12 @@ public class MembersGUI extends GUI implements Listener {
             for (String member : island.members) {
                 User u = User.getUser(member);
                 users.put(i, u);
-                ItemStack head = Utils.makeItem(IridiumSkyblock.getInventories().islandmember, Arrays.asList(new Utils.Placeholder("demote", u.getRole().equals(Role.Visitor) ? IridiumSkyblock.getMessages().Kick : IridiumSkyblock.getMessages().Demote), new Utils.Placeholder("player", User.getUser(member).name), new Utils.Placeholder("role", u.getRole().toString())));
+                ItemStack head = ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandmember, Arrays.asList(new Placeholder("demote", u.getRole().equals(Role.Visitor) ? IridiumSkyblock.getMessages().Kick : IridiumSkyblock.getMessages().Demote), new Placeholder("player", User.getUser(member).name), new Placeholder("role", u.getRole().toString())));
                 setItem(i, head);
                 i++;
             }
             if (IridiumSkyblock.getInventories().backButtons)
-                setItem(getInventory().getSize() - 5, Utils.makeItem(IridiumSkyblock.getInventories().back));
+                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
         }
     }
 
@@ -73,10 +79,10 @@ public class MembersGUI extends GUI implements Listener {
                                             getInventory().clear();
                                             Player player = Bukkit.getPlayer(u.name);
                                             if (player != null)
-                                                player.sendMessage(Utils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                                player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().youHaveBeenKicked.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                         }
                                     } else {
-                                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                     }
                                 } else {
                                     IslandDemoteEvent event = new IslandDemoteEvent(island, u, user, Role.getViaRank(u.getRole().rank + 1));
@@ -86,16 +92,16 @@ public class MembersGUI extends GUI implements Listener {
                                         for (String member : island.members) {
                                             Player p = Bukkit.getPlayer(User.getUser(member).name);
                                             if (p != null) {
-                                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerDemoted.replace("%rank%", u.getRole().toString()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerDemoted.replace("%rank%", u.getRole().toString()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                             }
                                         }
                                     }
                                 }
                             } else {
-                                e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantDemoteUser.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().cantDemoteUser.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         } else {
-                            e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     } else {
                         if (island.getPermissions(user.role).promote) {
@@ -116,19 +122,19 @@ public class MembersGUI extends GUI implements Listener {
                                             for (String member : island.members) {
                                                 Player p = Bukkit.getPlayer(User.getUser(member).name);
                                                 if (p != null) {
-                                                    p.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerPromoted.replace("%rank%", u.getRole().toString()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                                    p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerPromoted.replace("%rank%", u.getRole().toString()).replace("%player%", u.name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                                 }
                                             }
                                         }
                                     }
                                 } else {
-                                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantPromoteUser.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                    e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().cantPromoteUser.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                                 }
                             } else {
-                                e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         } else {
-                            e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().cantDemoteOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().cantDemoteOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                         }
                     }
                 }

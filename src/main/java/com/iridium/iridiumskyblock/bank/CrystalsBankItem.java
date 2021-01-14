@@ -1,8 +1,9 @@
 package com.iridium.iridiumskyblock.bank;
 
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Inventories;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
+import com.iridium.iridiumskyblock.utils.MiscUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -39,7 +40,7 @@ public class CrystalsBankItem implements BankItem<Integer> {
         int i = 0;
         for (ItemStack itemStack : player.getInventory().getContents()) {
             if (itemStack == null) continue;
-            int crystals = Utils.getCrystals(itemStack) * itemStack.getAmount();
+            int crystals = MiscUtils.getCrystals(itemStack) * itemStack.getAmount();
             if (crystals != 0) {
                 double current = getValue(island);
                 island.setCrystals((int) (current + crystals));
@@ -51,8 +52,8 @@ public class CrystalsBankItem implements BankItem<Integer> {
     }
 
     private void addCrystals(Player player, double amount) {
-        ItemStack itemStack = Utils.getCrystals((int) amount);
-        if (Utils.hasOpenSlot(player.getInventory())) {
+        ItemStack itemStack = MiscUtils.getCrystals((int) amount);
+        if (InventoryUtils.hasOpenSlot(player.getInventory())) {
             player.getInventory().addItem(itemStack);
         } else {
             player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);

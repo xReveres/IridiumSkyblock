@@ -4,8 +4,9 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,9 +29,9 @@ public class SchematicSelectGUI extends GUI implements Listener {
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getSchematics().schematicList) {
                 if (fakeSchematic.slot == null) fakeSchematic.slot = i;
                 try {
-                    setItem(fakeSchematic.slot, Utils.makeItem(fakeSchematic.item, 1, fakeSchematic.displayname, fakeSchematic.lore));
+                    setItem(fakeSchematic.slot, ItemStackUtils.makeItem(fakeSchematic.item, 1, fakeSchematic.displayname, fakeSchematic.lore));
                 } catch (Exception e) {
-                    setItem(fakeSchematic.slot, Utils.makeItem(XMaterial.STONE, 1, fakeSchematic.displayname, fakeSchematic.lore));
+                    setItem(fakeSchematic.slot, ItemStackUtils.makeItem(XMaterial.STONE, 1, fakeSchematic.displayname, fakeSchematic.lore));
                 }
                 i++;
             }
@@ -51,7 +52,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
                             User user = User.getUser(player);
                             Player p = Bukkit.getPlayer(user.name);
                             if (p != null) {
-                                p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().regenIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                             }
                         }
                     }
