@@ -126,7 +126,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         }
         if (placeholder.startsWith("island_top_name_")) {
             try {
-                int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
+                int integer = Integer.parseInt(placeholder.replace("island_top_name_", ""));
                 List<Integer> islandID = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, integer - 1, integer, false);
                 if(islandID.isEmpty())return IridiumSkyblock.getInstance().getConfiguration().placeholderDefaultValue;
                 Island island = IslandManager.getIslandViaId(islandID.get(0));
@@ -137,7 +137,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         }
         if (placeholder.startsWith("island_top_owner_")) {
             try {
-                int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
+                int integer = Integer.parseInt(placeholder.replace("island_top_owner_", ""));
                 List<Integer> islandID = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, integer - 1, integer, false);
                 if(islandID.isEmpty())return IridiumSkyblock.getInstance().getConfiguration().placeholderDefaultValue;
                 Island island = IslandManager.getIslandViaId(islandID.get(0));
@@ -148,7 +148,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         }
         if (placeholder.startsWith("island_top_value_")) {
             try {
-                int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
+                int integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
                 List<Integer> islandID = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, integer - 1, integer, false);
                 if(islandID.isEmpty())return IridiumSkyblock.getInstance().getConfiguration().placeholderDefaultValue;
                 Island island = IslandManager.getIslandViaId(islandID.get(0));
