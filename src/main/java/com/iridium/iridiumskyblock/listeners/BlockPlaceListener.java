@@ -28,79 +28,79 @@ public class BlockPlaceListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-            final Block block = event.getBlock();
-            final Location location = block.getLocation();
-            final Island island = IslandManager.getIslandViaLocation(location);
-            if (island == null) {
-                User user = User.getUser(event.getPlayer());
-                if (IslandManager.isIslandWorld(event.getBlock().getWorld())) {
-                    if (!user.bypassing) {
-                        event.setCancelled(true);
-                    }
+        final Block block = event.getBlock();
+        final Location location = block.getLocation();
+        final Island island = IslandManager.getIslandViaLocation(location);
+        if (island == null) {
+            User user = User.getUser(event.getPlayer());
+            if (IslandManager.isIslandWorld(event.getBlock().getWorld())) {
+                if (!user.bypassing) {
+                    event.setCancelled(true);
                 }
+            }
+            return;
+        }
+
+        final Player player = event.getPlayer();
+        final User user = User.getUser(player);
+
+        final Material material = block.getType();
+        final XMaterial xmaterial = XMaterial.matchXMaterial(material);
+        final Config config = IridiumSkyblock.getConfiguration();
+        final Integer max = ((Upgrades.IslandBlockLimitUpgrade) IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.upgrades.get(island.getBlockLimitLevel())).limitedBlocks.get(xmaterial);
+        if (max != null) {
+            if (island.valuableBlocks.getOrDefault(xmaterial.name(), 0) >= max) {
+                player.sendMessage(Utils.color(IridiumSkyblock.getMessages().blockLimitReached
+                        .replace("%prefix%", config.prefix)));
+                event.setCancelled(true);
                 return;
             }
+        }
 
-            final Player player = event.getPlayer();
-            final User user = User.getUser(player);
+        if (user.islandID == island.id) {
+            for (Mission mission : IridiumSkyblock.getMissions().missions) {
+                final Map<String, Integer> levels = island.getMissionLevels();
+                levels.putIfAbsent(mission.name, 1);
 
-            final Material material = block.getType();
-            final XMaterial xmaterial = XMaterial.matchXMaterial(material);
-            final Config config = IridiumSkyblock.getConfiguration();
-            final Integer max = ((Upgrades.IslandBlockLimitUpgrade)IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.upgrades.get(island.getBlockLimitLevel())).limitedBlocks.get(xmaterial);
-            if (max != null) {
-                if (island.valuableBlocks.getOrDefault(xmaterial.name(), 0) >= max) {
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().blockLimitReached
-                            .replace("%prefix%", config.prefix)));
-                    event.setCancelled(true);
-                    return;
-                }
+                final MissionData level = mission.levels.get(levels.get(mission.name));
+                if (level == null) continue;
+                if (level.type != MissionType.BLOCK_PLACE) continue;
+
+                final List<String> conditions = level.conditions;
+
+                if (
+                        conditions.isEmpty()
+                                ||
+                                conditions.contains(xmaterial.name())
+                                ||
+                                (block.getState().getData() instanceof Crops && conditions.contains(((Crops) block.getState().getData()).getState().toString()))
+                )
+                    island.addMission(mission.name, 1);
             }
+        }
 
-            if (user.islandID == island.id) {
-                for (Mission mission : IridiumSkyblock.getMissions().missions) {
-                    final Map<String, Integer> levels = island.getMissionLevels();
-                    levels.putIfAbsent(mission.name, 1);
-
-                    final MissionData level = mission.levels.get(levels.get(mission.name));
-                    if (level == null) continue;
-                    if (level.type != MissionType.BLOCK_PLACE) continue;
-
-                    final List<String> conditions = level.conditions;
-
-                    if (
-                            conditions.isEmpty()
-                                    ||
-                                    conditions.contains(xmaterial.name())
-                                    ||
-                                    (block.getState().getData() instanceof Crops && conditions.contains(((Crops) block.getState().getData()).getState().toString()))
-                    )
-                        island.addMission(mission.name, 1);
-                }
-            }
-
-            if (!island.getPermissions(user).placeBlocks) {
-                event.setCancelled(true);
-            }
+        if (!island.getPermissions(user).placeBlocks) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMonitorBlockPlace(BlockPlaceEvent event) {
-            final Block block = event.getBlock();
-            final Location location = block.getLocation();
-            final Island island = IslandManager.getIslandViaLocation(location);
+        final Block block = event.getBlock();
+        final Location location = block.getLocation();
+        final Island island = IslandManager.getIslandViaLocation(location);
 
-            final Material material = block.getType();
-            final XMaterial xmaterial = XMaterial.matchXMaterial(material);
-            if (island == null) return;
+        final Material material = block.getType();
+        final XMaterial xmaterial = XMaterial.matchXMaterial(material);
+        if (island == null) return;
 
-            if (!Utils.isBlockValuable(block)) return;
-            island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
-                if (original == null) return 1;
-                return original + 1;
-            });
+        if (!Utils.isBlockValuable(block)) return;
+        island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
+            if (original == null) return 1;
+            return original + 1;
+        });
 
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), island::calculateIslandValue);
     }
 
     @EventHandler
@@ -110,10 +110,10 @@ public class BlockPlaceListener implements Listener {
         if (block == null || block.getType() == Material.AIR) return;
         final Location location = block.getLocation();
         final Island island = IslandManager.getIslandViaLocation(location);
-
         final Material material = block.getType();
         final XMaterial xmaterial = XMaterial.matchXMaterial(material);
         if (island == null) return;
+        if (island.getPermissions(User.getUser(event.getPlayer())).placeBlocks) return;
         int amount = event.getPlayer().getItemInHand().getAmount();
 
         if (IridiumSkyblock.getConfiguration().enableBlockStacking) {
