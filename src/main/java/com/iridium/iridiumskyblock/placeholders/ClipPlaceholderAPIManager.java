@@ -4,9 +4,11 @@ package com.iridium.iridiumskyblock.placeholders;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Boosters;
 import com.iridium.iridiumskyblock.configs.Upgrades;
+import com.iridium.iridiumskyblock.managers.IslandDataManager;
+import com.iridium.iridiumskyblock.managers.IslandManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -68,7 +70,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
             case "island_level":
                 return user.getIsland() != null ? user.getIsland().getFormattedLevel() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_rank":
-                return user.getIsland() != null ? NumberFormat.getInstance().format(Utils.getIslandRank(user.getIsland())) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                return user.getIsland() != null ? NumberFormat.getInstance().format(Integer.toString(user.getIsland().getRank())) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_owner":
                 return user.getIsland() != null ? User.getUser(user.getIsland().owner).name : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             case "island_name":
@@ -124,27 +126,33 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         }
         if (placeholder.startsWith("island_top_name_")) {
             try {
-                int integer = Integer.parseInt(placeholder.replace("island_top_name_", ""));
-                List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? phCheckIfStripped(Utils.getTopIslands().get(integer - 1).getName()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
+                List<Integer> islandID = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, integer - 1, integer, false);
+                if(islandID.isEmpty())return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                Island island = IslandManager.getIslandViaId(islandID.get(0));
+                return island != null ? phCheckIfStripped(island.getName()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
         if (placeholder.startsWith("island_top_owner_")) {
             try {
-                int integer = Integer.parseInt(placeholder.replace("island_top_owner_", ""));
-                List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? User.getUser(Utils.getTopIslands().get(integer - 1).owner).name : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
+                List<Integer> islandID = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, integer - 1, integer, false);
+                if(islandID.isEmpty())return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                Island island = IslandManager.getIslandViaId(islandID.get(0));
+                return island != null ? phCheckIfStripped(User.getUser(island.owner).name) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
         if (placeholder.startsWith("island_top_value_")) {
             try {
-                int integer = Integer.parseInt(placeholder.replace("island_top_value_", ""));
-                List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? Utils.NumberFormatter.format(Utils.getTopIslands().get(integer - 1).value) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
+                List<Integer> islandID = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, integer - 1, integer, false);
+                if(islandID.isEmpty())return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                Island island = IslandManager.getIslandViaId(islandID.get(0));
+                return island != null ? phCheckIfStripped(island.getFormattedValue()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException ignored) {
 
             }
@@ -152,8 +160,10 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion {
         if (placeholder.startsWith("island_top_level_")) {
             try {
                 int integer = Integer.parseInt(placeholder.replace("island_top_level_", ""));
-                List<Island> islands = Utils.getTopIslands();
-                return islands.size() > integer - 1 ? Utils.getTopIslands().get(integer - 1).getFormattedLevel() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                List<Integer> islandID = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, integer - 1, integer, false);
+                if(islandID.isEmpty())return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                Island island = IslandManager.getIslandViaId(islandID.get(0));
+                return island != null ? phCheckIfStripped(island.getFormattedLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             } catch (NumberFormatException ignored) {
 
             }

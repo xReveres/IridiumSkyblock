@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.managers.IslandDataManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.bukkit.Bukkit;
@@ -32,7 +33,7 @@ public class TopGUI extends GUI implements Listener {
         if (getInventory().getViewers().isEmpty()) return;
         ItemStack filler = Utils.makeItem(IridiumSkyblock.getInventories().topfiller);
         for (int i : IridiumSkyblock.getConfiguration().islandTopSlots.keySet()) {
-            List<Integer> islandid = IslandDataManager.getIslands(IslandDataManager.IslandSortType.VALUE, i - 1, i, false);
+            List<Integer> islandid = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, i - 1, i, false);
             if (islandid.size() > 0) {
                 Island island = IslandManager.getIslandViaId(islandid.get(0));
                 if (island == null) break;

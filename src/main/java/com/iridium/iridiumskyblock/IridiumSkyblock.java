@@ -145,7 +145,7 @@ public class IridiumSkyblock extends JavaPlugin {
             topGUI = new TopGUI();
             shopMenuGUI = new ShopMenuGUI();
             visitGUI = new MultiplePagesGUI<>(() -> {
-                int size = (int) (Math.floor(Utils.getIslands().size() / 45.00) + 1);
+                int size = (int) (Math.floor(IslandManager.getLoadedIslands().size() / 45.00) + 1);
                 for (int i = 1; i <= size; i++) {
                     VisitGUI visitGUI = getVisitGUI().getPage(i);
                     if (visitGUI == null) {

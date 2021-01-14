@@ -4,9 +4,11 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Boosters;
 import com.iridium.iridiumskyblock.configs.Upgrades;
+import com.iridium.iridiumskyblock.managers.IslandDataManager;
+import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -54,7 +56,7 @@ public class MVDWPlaceholderAPIManager {
                 return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             }
             User user = User.getUser(player);
-            return user.getIsland() != null ? NumberFormat.getInstance().format(Utils.getIslandRank(user.getIsland())) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+            return user.getIsland() != null ? NumberFormat.getInstance().format(Integer.toString(user.getIsland().getRank())) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
         });
 
         PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_owner", e -> {
@@ -178,7 +180,7 @@ public class MVDWPlaceholderAPIManager {
         });
 
         for (Upgrades.Upgrade upgrade : IridiumSkyblock.getInstance().getIslandUpgrades()) {
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_level", e->{
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_level", e -> {
                 Player player = e.getPlayer();
                 if (player == null) {
                     return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
@@ -187,7 +189,7 @@ public class MVDWPlaceholderAPIManager {
                 int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
                 return user.getIsland() != null ? NumberFormat.getInstance().format(level) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_dimensions", e->{
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_dimensions", e -> {
                 Player player = e.getPlayer();
                 if (player == null) {
                     return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
@@ -196,7 +198,7 @@ public class MVDWPlaceholderAPIManager {
                 int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
                 return user.getIsland() != null ? Integer.toString(upgrade.getIslandUpgrade(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_amount", e->{
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_amount", e -> {
                 Player player = e.getPlayer();
                 if (player == null) {
                     return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
@@ -205,7 +207,7 @@ public class MVDWPlaceholderAPIManager {
                 int level = user.getIsland() != null ? user.getIsland().getUpgradeLevel(upgrade.name) : 1;
                 return user.getIsland() != null ? Integer.toString(upgrade.getIslandUpgrade(level).size) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_count", e->{
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "island_upgrade_" + upgrade.name + "_count", e -> {
                 Player player = e.getPlayer();
                 if (player == null) {
                     return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
@@ -217,7 +219,7 @@ public class MVDWPlaceholderAPIManager {
         }
 
         for (Boosters.Booster booster : IridiumSkyblock.getInstance().getIslandBoosters()) {
-            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_booster_"+booster.name, e->{
+            PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_booster_" + booster.name, e -> {
                 Player player = e.getPlayer();
                 if (player == null) {
                     return IridiumSkyblock.getConfiguration().placeholderDefaultValue;
@@ -230,22 +232,28 @@ public class MVDWPlaceholderAPIManager {
         for (int i = 0; i < 10; i++) { //TODO there is probably a more efficient way to do this?
             int finalI = i;
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_owner_" + (i + 1), e -> {
-                List<Island> islands = Utils.getTopIslands();
-                return islands.size() > finalI ? User.getUser(Utils.getTopIslands().get(finalI).owner).name : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                Island island = getIsland(finalI);
+                return island != null ? phCheckIfStripped(User.getUser(island.owner).name) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_name_" + (i + 1), e -> {
-                List<Island> islands = Utils.getTopIslands();
-                return islands.size() > finalI ? phCheckIfStripped(Utils.getTopIslands().get(finalI).getName()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                Island island = getIsland(finalI);
+                return island != null ? phCheckIfStripped(island.getName()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_value_" + (i + 1), e -> {
-                List<Island> islands = Utils.getTopIslands();
-                return islands.size() > finalI ? Utils.getTopIslands().get(finalI).getFormattedValue() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                Island island = getIsland(finalI);
+                return island != null ? phCheckIfStripped(island.getFormattedValue()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
             PlaceholderAPI.registerPlaceholder(IridiumSkyblock.getInstance(), "iridiumskyblock_island_top_level_" + (i + 1), e -> {
-                List<Island> islands = Utils.getTopIslands();
-                return islands.size() > finalI ? Utils.getTopIslands().get(finalI).getFormattedLevel() : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
+                Island island = getIsland(finalI);
+                return island != null ? phCheckIfStripped(island.getFormattedLevel()) : IridiumSkyblock.getConfiguration().placeholderDefaultValue;
             });
         }
+    }
+
+    private Island getIsland(int rank) {
+        List<Integer> islandID = IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, rank - 1, rank, false);
+        if (islandID.isEmpty()) return null;
+        return IslandManager.getIslandViaId(islandID.get(0));
     }
 
     public String phCheckIfStripped(String ph) {

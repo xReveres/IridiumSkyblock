@@ -1270,6 +1270,10 @@ public class Island {
         return Utils.NumberFormatter.format(getCrystals());
     }
 
+    public int getRank(){
+        return IridiumSkyblockAPI.getInstance().getIslands(IslandDataManager.IslandSortType.VALUE, 0, Integer.MAX_VALUE, false).indexOf(id)+1;
+    }
+
     public void save(Connection connection) {
         IslandManager.save(this, connection);
         IslandDataManager.save(this, connection);

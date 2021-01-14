@@ -33,7 +33,7 @@ public class ValueCommand extends Command {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().islandValue
                     .replace("%value%", island.getFormattedValue())
                     .replace("%level%", island.getFormattedLevel())
-                    .replace("%rank%", Utils.getIslandRank(island) + "")
+                    .replace("%rank%", Integer.toString(island.getRank()))
                     .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
         } else {
             p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));

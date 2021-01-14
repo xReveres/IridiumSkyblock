@@ -5,7 +5,6 @@ import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import com.iridium.iridiumskyblock.configs.Boosters;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.configs.Upgrades;
-import com.iridium.iridiumskyblock.managers.IslandManager;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NBTListCompound;
@@ -235,20 +234,6 @@ public class Utils {
         return IridiumSkyblock.getBlockValues().blockvalue.containsKey(material);
     }
 
-    public static List<Island> getTopIslands() {
-        List<Island> islands = IslandManager.getLoadedIslands();
-        islands.sort(Comparator.comparingDouble(is -> is.value));
-        Collections.reverse(islands);
-        return islands;
-    }
-
-    public static List<Island> getIslands() {
-        List<Island> islands = IslandManager.getLoadedIslands();
-        islands.sort(Comparator.comparingInt(Island::getVotes));
-        Collections.reverse(islands);
-        return islands;
-    }
-
     public static boolean isSafe(Location loc, Island island) {
         if (loc == null) return false;
         if (loc.getY() < 1) return false;
@@ -257,17 +242,6 @@ public class Utils {
         if (loc.clone().add(0, -1, 0).getBlock().getType().name().endsWith("AIR"))
             return false;
         return !loc.clone().add(0, -1, 0).getBlock().isLiquid();
-    }
-
-    public static int getIslandRank(Island island) {
-        int i = 1;
-        for (Island is : getTopIslands()) {
-            if (is.equals(island)) {
-                return i;
-            }
-            i++;
-        }
-        return 0;
     }
 
     public static Location getNewHome(Island island, Location loc) {
