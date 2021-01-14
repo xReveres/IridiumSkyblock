@@ -36,16 +36,16 @@ public class CoopCommand extends Command {
                         user.getIsland().addCoop(u.getIsland());
                     } else {
                         u.getIsland().inviteCoop(user.getIsland());
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().coopInviteSent.replace("%player%", User.getUser(u.getIsland().owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().coopInviteSent.replace("%player%", User.getUser(u.getIsland().owner).name).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
@@ -65,13 +65,13 @@ public class CoopCommand extends Command {
                     island.addCoop(u.getIsland());
                 } else {
                     u.getIsland().inviteCoop(island);
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().coopInviteSent.replace("%player%", User.getUser(u.getIsland().owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().coopInviteSent.replace("%player%", User.getUser(u.getIsland().owner).name).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

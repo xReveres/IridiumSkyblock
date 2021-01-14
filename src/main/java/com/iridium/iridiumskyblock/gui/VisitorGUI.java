@@ -20,7 +20,7 @@ public class VisitorGUI extends GUI implements Listener {
     public Map<Integer, Player> visitors = new HashMap<>();
 
     public VisitorGUI(Island island) {
-        super(island, IridiumSkyblock.getInventories().visitorGUISize, IridiumSkyblock.getInventories().visitorGUITitle);
+        super(island, IridiumSkyblock.getInstance().getInventories().visitorGUISize, IridiumSkyblock.getInstance().getInventories().visitorGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -36,13 +36,13 @@ public class VisitorGUI extends GUI implements Listener {
             User visitorUser = User.getUser(p);
             if (!island.members.contains(p.getUniqueId().toString()) && !island.isCoop(visitorUser.getIsland()) && !(visitorUser.bypassing || p.hasPermission("iridiumskyblock.silentvisit"))) {
                 if (i >= getInventory().getSize()) return;
-                ItemStack head = ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandVisitors, Collections.singletonList(new Placeholder("player", p.getName())));
+                ItemStack head = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandVisitors, Collections.singletonList(new Placeholder("player", p.getName())));
                 setItem(i, head);
                 visitors.put(i, p);
                 i++;
             }
         }
-        if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
+        if (IridiumSkyblock.getInstance().getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class VisitorGUI extends GUI implements Listener {
             Island island = getIsland();
             e.setCancelled(true);
             int i = e.getSlot();
-            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInstance().getInventories().backButtons) {
                 e.getWhoClicked().openInventory(getIsland().islandMenuGUI.getInventory());
             }
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
@@ -61,12 +61,12 @@ public class VisitorGUI extends GUI implements Listener {
                 Player visitor = visitors.get(i);
                 if (island.isInIsland(visitor.getLocation())) {
                     if (User.getUser(visitor).bypassing || visitor.hasPermission("iridiumskyblock.visitbypass")) {
-                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().cantExpelPlayer.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
+                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cantExpelPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
                     } else {
                         island.spawnPlayer(visitor);
                         visitors.clear();
-                        p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().expelledVisitor.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
-                        visitor.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().youHaveBeenExpelled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%kicker%", p.getName() + "")));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledVisitor.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%", visitor.getName() + "")));
+                        visitor.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenExpelled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%kicker%", p.getName() + "")));
                         getInventory().clear();
                         addContent();
                     }

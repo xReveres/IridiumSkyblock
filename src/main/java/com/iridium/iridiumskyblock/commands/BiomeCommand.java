@@ -35,9 +35,9 @@ public class BiomeCommand extends Command {
         if (island != null) {
             if (args.length == 2) {
                 Optional<XBiome> optionalXBiome = XBiome.matchXBiome(args[1]);
-                if (optionalXBiome.isPresent() && IridiumSkyblock.getConfiguration().islandBiomes.containsKey(optionalXBiome.get())) {
+                if (optionalXBiome.isPresent() && IridiumSkyblock.getInstance().getConfiguration().islandBiomes.containsKey(optionalXBiome.get())) {
                     XBiome xBiome = optionalXBiome.get();
-                    Config.BiomeConfig biomeConfig = IridiumSkyblock.getConfiguration().islandBiomes.get(xBiome);
+                    Config.BiomeConfig biomeConfig = IridiumSkyblock.getInstance().getConfiguration().islandBiomes.get(xBiome);
                     MiscUtils.BuyResponse response = MiscUtils.canBuy(p, biomeConfig.price, biomeConfig.crystals);
                     if (response == MiscUtils.BuyResponse.SUCCESS) {
                         switch (xBiome.getEnvironment()) {
@@ -47,8 +47,8 @@ public class BiomeCommand extends Command {
                             case NETHER:
                                 island.setNetherBiome(xBiome);
                         }
-                        p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().biomePurchased
-                                .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().biomePurchased
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                                 .replace("%biome%", WordUtils.capitalize(xBiome.name().toLowerCase().replace("_", " ")))
                                 .replace("%crystals%", biomeConfig.crystals + "")
                                 .replace("%money", NumberFormatter.format(biomeConfig.price))));
@@ -56,16 +56,16 @@ public class BiomeCommand extends Command {
                         for (String member : island.members) {
                             Player pl = Bukkit.getPlayer(User.getUser(member).name);
                             if (pl != null) {
-                                pl.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().biomeChanged
-                                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
+                                pl.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().biomeChanged
+                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                                         .replace("%biome%", xBiome.name()).replace("%player%", p.getName())));
                             }
                         }
                     } else {
-                        p.sendMessage(StringUtils.color((response == MiscUtils.BuyResponse.NOT_ENOUGH_VAULT ? IridiumSkyblock.getMessages().cantBuy : IridiumSkyblock.getMessages().notEnoughCrystals).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(StringUtils.color((response == MiscUtils.BuyResponse.NOT_ENOUGH_VAULT ? IridiumSkyblock.getInstance().getMessages().cantBuy : IridiumSkyblock.getInstance().getMessages().notEnoughCrystals).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().unknownBiome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownBiome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
                 switch (environment) {
@@ -77,7 +77,7 @@ public class BiomeCommand extends Command {
                 }
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
@@ -93,7 +93,7 @@ public class BiomeCommand extends Command {
                     p.openInventory(island.netherBiomeGUI.getPage(1).getInventory());
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

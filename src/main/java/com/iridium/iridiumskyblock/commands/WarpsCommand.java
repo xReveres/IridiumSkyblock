@@ -32,13 +32,13 @@ public class WarpsCommand extends Command {
             if (island.getPermissions(user.islandID == island.id ? user.role : Role.Visitor).useWarps || user.bypassing) {
                 p.openInventory(island.warpGUI.getInventory());
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             if (user.getIsland() != null) {
                 p.openInventory(user.getIsland().warpGUI.getInventory());
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
     }

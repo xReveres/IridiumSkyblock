@@ -22,9 +22,9 @@ public class BypassCommand extends Command {
         User u = User.getUser(p);
         u.bypassing = !u.bypassing;
         if (u.bypassing) {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().nowBypassing.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().nowBypassing.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noLongerBypassing.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noLongerBypassing.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

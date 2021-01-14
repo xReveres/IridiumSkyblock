@@ -24,7 +24,7 @@ public class CoopGUI extends GUI implements Listener {
     public Map<Integer, Integer> islands = new HashMap<>();
 
     public CoopGUI(Island island) {
-        super(island, IridiumSkyblock.getInventories().coopGUISize, IridiumSkyblock.getInventories().coopGUITitle);
+        super(island, IridiumSkyblock.getInstance().getInventories().coopGUISize, IridiumSkyblock.getInstance().getInventories().coopGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -41,14 +41,14 @@ public class CoopGUI extends GUI implements Listener {
                 if (is != null) {
                     islands.put(i, id);
                     User user = User.getUser(is.owner);
-                    ItemStack head = ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandcoop, Arrays.asList(new Placeholder("player", user.name), new Placeholder("name", is.getName()), new Placeholder("rank", Integer.toString(island.getRank())), new Placeholder("value", is.getFormattedValue())));
+                    ItemStack head = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandcoop, Arrays.asList(new Placeholder("player", user.name), new Placeholder("name", is.getName()), new Placeholder("rank", Integer.toString(island.getRank())), new Placeholder("value", is.getFormattedValue())));
                     setItem(i, head);
                     i++;
                 } else {
                     island.removeCoop(id);
                 }
             }
-            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInstance().getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
         }
     }
 
@@ -58,7 +58,7 @@ public class CoopGUI extends GUI implements Listener {
         if (e.getInventory().equals(getInventory())) {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
-            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInstance().getInventories().backButtons) {
                 e.getWhoClicked().openInventory(getIsland().islandMenuGUI.getInventory());
             }
             if (islands.containsKey(e.getSlot())) {
@@ -68,13 +68,13 @@ public class CoopGUI extends GUI implements Listener {
                     if (u.bypassing || u.getIsland().getPermissions(u.getRole()).coop) {
                         getIsland().removeCoop(island);
                     } else {
-                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
                     if (island.visit || u.bypassing) {
                         island.teleportHome((Player) e.getWhoClicked());
                     } else {
-                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 }
             }

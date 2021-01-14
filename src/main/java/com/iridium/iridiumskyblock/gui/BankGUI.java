@@ -15,7 +15,7 @@ import java.util.Collections;
 
 public class BankGUI extends GUI implements Listener {
     public BankGUI(Island island) {
-        super(island, IridiumSkyblock.getInventories().bankGUISize, IridiumSkyblock.getInventories().bankGUITitle);
+        super(island, IridiumSkyblock.getInstance().getInventories().bankGUISize, IridiumSkyblock.getInstance().getInventories().bankGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -29,8 +29,8 @@ public class BankGUI extends GUI implements Listener {
                 setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", bankItem.getValue(getIsland()).toString()))));
             }
 
-            if (IridiumSkyblock.getInventories().backButtons) {
-                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInstance().getInventories().backButtons) {
+                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
             }
         }
     }
@@ -43,13 +43,13 @@ public class BankGUI extends GUI implements Listener {
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             Player p = (Player) e.getWhoClicked();
             Island island = getIsland();
-            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInstance().getInventories().backButtons) {
                 e.getWhoClicked().openInventory(getIsland().islandMenuGUI.getInventory());
                 return;
             }
-            if (!IridiumSkyblock.getConfiguration().bankWithdrawing) {
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().withdrawDisabled
-                        .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            if (!IridiumSkyblock.getInstance().getConfiguration().bankWithdrawing) {
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().withdrawDisabled
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return;
             }
             for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItems()) {

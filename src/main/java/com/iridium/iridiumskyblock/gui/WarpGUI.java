@@ -21,7 +21,7 @@ public class WarpGUI extends GUI implements Listener {
     public Map<Integer, IslandWarp> warps = new HashMap<>();
 
     public WarpGUI(Island island) {
-        super(island, IridiumSkyblock.getInventories().warpGUISize, IridiumSkyblock.getInventories().warpGUITitle);
+        super(island, IridiumSkyblock.getInstance().getInventories().warpGUISize, IridiumSkyblock.getInstance().getInventories().warpGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -35,10 +35,10 @@ public class WarpGUI extends GUI implements Listener {
             warps.clear();
             for (IslandWarp islandWarp : island.islandWarps) {
                 warps.put(i, islandWarp);
-                setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().islandWarp, Collections.singletonList(new Placeholder("warp", islandWarp.getName()))));
+                setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandWarp, Collections.singletonList(new Placeholder("warp", islandWarp.getName()))));
                 i++;
             }
-            if (IridiumSkyblock.getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInstance().getInventories().backButtons) setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
         }
     }
 
@@ -50,7 +50,7 @@ public class WarpGUI extends GUI implements Listener {
             User u = User.getUser(p);
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
-            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInstance().getInventories().backButtons) {
                 if (User.getUser((Player) e.getWhoClicked()).getIsland() != null) {
                     e.getWhoClicked().openInventory(User.getUser((Player) e.getWhoClicked()).getIsland().islandMenuGUI.getInventory());
                 } else {
@@ -66,9 +66,9 @@ public class WarpGUI extends GUI implements Listener {
                 } else {
                     if (islandWarp.getPassword().isEmpty()) {
                         p.teleport(islandWarp.getLocation());
-                        p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().teleporting.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleporting.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     } else {
-                        p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().enterPassword.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().enterPassword.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         u.islandWarp = islandWarp;
                     }
                 }

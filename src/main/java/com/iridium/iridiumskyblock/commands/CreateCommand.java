@@ -22,7 +22,7 @@ public class CreateCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
             IslandManager.createIsland(p);
         }

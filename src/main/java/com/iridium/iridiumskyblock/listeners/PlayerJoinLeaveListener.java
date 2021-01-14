@@ -22,9 +22,9 @@ public class PlayerJoinLeaveListener implements Listener {
         if (player.isOp()) {
             final String latest = plugin.getLatest();
             if (latest != null
-                    && IridiumSkyblock.getConfiguration().notifyAvailableUpdate
+                    && IridiumSkyblock.getInstance().getConfiguration().notifyAvailableUpdate
                     && !latest.equals(plugin.getDescription().getVersion())) {
-                final String prefix = IridiumSkyblock.getConfiguration().prefix;
+                final String prefix = IridiumSkyblock.getInstance().getConfiguration().prefix;
                 player.sendMessage(StringUtils.color(prefix + " &7This message is only seen by opped players."));
                 player.sendMessage(StringUtils.color(prefix + " &7Newer version available: " + latest));
             }
@@ -36,30 +36,30 @@ public class PlayerJoinLeaveListener implements Listener {
         if (island != null) {
             if (!user.tookInterestMessage) {
                 if (island.interestMoney != 0 && island.interestExp != 0 && island.interestCrystal != 0) {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().islandInterest
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandInterest
                             .replace("%exp%", NumberFormatter.format(island.interestExp))
                             .replace("%crystals%", NumberFormatter.format(island.interestCrystal))
                             .replace("%money%", NumberFormatter.format(island.interestMoney))
-                            .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
                 user.tookInterestMessage = true;
             }
         }
 
-        if (island == null && IridiumSkyblock.getConfiguration().createIslandOnJoin) {
-            if (!user.isOnCooldown() || IridiumSkyblock.getConfiguration().ignoreCooldownOnJoinCreation) {
+        if (island == null && IridiumSkyblock.getInstance().getConfiguration().createIslandOnJoin) {
+            if (!user.isOnCooldown() || IridiumSkyblock.getInstance().getConfiguration().ignoreCooldownOnJoinCreation) {
                 IslandManager.createIsland(player);
             } else {
                 player.sendMessage(StringUtils.color(user.getCooldownTimeMessage()));
             }
         }
 
-        if (user.flying && (island == null || island.isInIsland(location) || island.getBoosterTime(IridiumSkyblock.getBoosters().islandFlightBooster.name) == 0)) {
+        if (user.flying && (island == null || island.isInIsland(location) || island.getBoosterTime(IridiumSkyblock.getInstance().getBoosters().islandFlightBooster.name) == 0)) {
             player.setAllowFlight(false);
             player.setFlying(false);
             user.flying = false;
         }
-        if (IridiumSkyblock.getConfiguration().disableBypassOnJoin || !player.hasPermission(IridiumSkyblock.getCommands().bypassCommand.permission))
+        if (IridiumSkyblock.getInstance().getConfiguration().disableBypassOnJoin || !player.hasPermission(IridiumSkyblock.getInstance().getCommands().bypassCommand.permission))
             user.bypassing = false;
 
         final Island visitingIsland = IslandManager.getIslandViaLocation(location);

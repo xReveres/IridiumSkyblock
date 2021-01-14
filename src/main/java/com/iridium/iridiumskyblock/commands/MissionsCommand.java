@@ -23,7 +23,7 @@ public class MissionsCommand extends Command {
         if (user.getIsland() != null) {
             p.openInventory(user.getIsland().missionsGUI.getInventory());
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
@@ -33,7 +33,7 @@ public class MissionsCommand extends Command {
         if (island != null) {
             p.openInventory(island.missionsGUI.getInventory());
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

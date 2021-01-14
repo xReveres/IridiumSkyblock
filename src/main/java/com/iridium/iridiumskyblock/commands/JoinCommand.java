@@ -22,7 +22,7 @@ public class JoinCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getConfiguration().prefix) + "/is join <player>");
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is join <player>");
             return;
         }
         Player p = (Player) sender;
@@ -37,16 +37,16 @@ public class JoinCommand extends Command {
                     Bukkit.getPluginManager().callEvent(joinEvent);
                     if (!joinEvent.isCancelled()) {
                         island.addUser(user);
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().joinedIsland.replace("%player%", User.getUser(island.owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().joinedIsland.replace("%player%", User.getUser(island.owner).name).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noActiveInvites.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noActiveInvites.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

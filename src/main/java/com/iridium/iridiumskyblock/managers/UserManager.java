@@ -23,14 +23,14 @@ public class UserManager {
     public static User getUser(UUID uuid) {
         if (cache.containsKey(uuid)) return cache.get(uuid);
         try {
-            Connection connection = IridiumSkyblock.getSqlManager().getConnection();
+            Connection connection = IridiumSkyblock.getInstance().getSqlManager().getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE UUID =?;");
             statement.setString(1, uuid.toString());
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 //There is a value
-                User user = IridiumSkyblock.getPersist().gson.fromJson(resultSet.getString("json"), User.class);
+                User user = IridiumSkyblock.getInstance().getPersist().gson.fromJson(resultSet.getString("json"), User.class);
                 cache.put(uuid, user);
                 connection.close();
                 statement.close();
@@ -52,7 +52,7 @@ public class UserManager {
 
     public static void saveUser(User user, Connection connection) {
         try {
-            String json = IridiumSkyblock.getPersist().gson.toJson(user);
+            String json = IridiumSkyblock.getInstance().getPersist().gson.toJson(user);
             PreparedStatement insert = connection.prepareStatement("REPLACE INTO users (UUID,json) VALUES (?,?);");
             insert.setString(1, user.player);
             insert.setString(2, json);

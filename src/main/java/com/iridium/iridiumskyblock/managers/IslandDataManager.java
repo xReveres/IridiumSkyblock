@@ -88,7 +88,7 @@ public class IslandDataManager {
             Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> save(island, false));
             return;
         }
-        Connection connection = IridiumSkyblock.getSqlManager().getConnection();
+        Connection connection = IridiumSkyblock.getInstance().getSqlManager().getConnection();
         save(island, connection);
         try {
             connection.commit();

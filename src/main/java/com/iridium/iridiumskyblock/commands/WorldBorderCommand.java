@@ -25,13 +25,13 @@ public class WorldBorderCommand extends Command {
         Island island = user.getIsland();
         if (island != null) {
             if (args.length == 2) {
-                if (args[1].equalsIgnoreCase("red") && IridiumSkyblock.getBorder().RedEnabled) {
+                if (args[1].equalsIgnoreCase("red") && IridiumSkyblock.getInstance().getBorder().RedEnabled) {
                     island.setBorderColor(Color.Red);
-                } else if (args[1].equalsIgnoreCase("blue") && IridiumSkyblock.getBorder().BlueEnabled) {
+                } else if (args[1].equalsIgnoreCase("blue") && IridiumSkyblock.getInstance().getBorder().BlueEnabled) {
                     island.setBorderColor(Color.Blue);
-                } else if (args[1].equalsIgnoreCase("green") && IridiumSkyblock.getBorder().GreenEnabled) {
+                } else if (args[1].equalsIgnoreCase("green") && IridiumSkyblock.getInstance().getBorder().GreenEnabled) {
                     island.setBorderColor(Color.Green);
-                } else if (args[1].equalsIgnoreCase("off") && IridiumSkyblock.getBorder().OffEnabled) {
+                } else if (args[1].equalsIgnoreCase("off") && IridiumSkyblock.getInstance().getBorder().OffEnabled) {
                     island.setBorderColor(Color.Off);
                 } else {
                     p.openInventory(island.borderColorGUI.getInventory());
@@ -40,7 +40,7 @@ public class WorldBorderCommand extends Command {
                 p.openInventory(island.borderColorGUI.getInventory());
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
@@ -50,7 +50,7 @@ public class WorldBorderCommand extends Command {
         if (island != null) {
             p.openInventory(island.borderColorGUI.getInventory());
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
@@ -58,10 +58,10 @@ public class WorldBorderCommand extends Command {
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
         if (args.length == 2){
             ArrayList<String> result = new ArrayList<>();
-            if (IridiumSkyblock.getBorder().BlueEnabled) result.add("blue");
-            if (IridiumSkyblock.getBorder().OffEnabled) result.add("off");
-            if (IridiumSkyblock.getBorder().GreenEnabled) result.add("green");
-            if (IridiumSkyblock.getBorder().RedEnabled) result.add("red");
+            if (IridiumSkyblock.getInstance().getBorder().BlueEnabled) result.add("blue");
+            if (IridiumSkyblock.getInstance().getBorder().OffEnabled) result.add("off");
+            if (IridiumSkyblock.getInstance().getBorder().GreenEnabled) result.add("green");
+            if (IridiumSkyblock.getInstance().getBorder().RedEnabled) result.add("red");
             return result;
 
         }

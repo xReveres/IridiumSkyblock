@@ -22,7 +22,7 @@ public class InviteCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getConfiguration().prefix) + "/is invite player");
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is invite player");
             return;
         }
         Player p = (Player) sender;
@@ -35,20 +35,20 @@ public class InviteCommand extends Command {
                     u.invites.add(user.getIsland().id);
                     runCommand(p, player);
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
     @Override
     public void admin(CommandSender sender, String[] args, Island island) {
         if (args.length != 4) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getConfiguration().prefix) + "/is admin <island> invite player");
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is admin <island> invite player");
             return;
         }
         Player p = (Player) sender;
@@ -59,22 +59,22 @@ public class InviteCommand extends Command {
                 u.invites.add(island.id);
                 runCommand(p, player);
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerAlreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
     private void runCommand(Player player, OfflinePlayer invitedPlayer) {
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerInvited.replace("%player%", invitedPlayer.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerInvited.replace("%player%", invitedPlayer.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         if (invitedPlayer.getPlayer() != null) {
-            BaseComponent[] components = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getMessages().invitedByPlayer.replace("%player%", player
-                    .getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            BaseComponent[] components = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invitedByPlayer.replace("%player%", player
+                    .getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 
             ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is join " + player
                     .getName());
-            HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(IridiumSkyblock.getMessages().inviteHoverMessage).create());
+            HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(IridiumSkyblock.getInstance().getMessages().inviteHoverMessage).create());
             for (BaseComponent component : components) {
                 component.setClickEvent(clickEvent);
                 component.setHoverEvent(hoverEvent);

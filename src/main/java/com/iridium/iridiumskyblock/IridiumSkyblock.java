@@ -235,7 +235,7 @@ public class IridiumSkyblock extends JavaPlugin {
             p.closeInventory();
             User user = User.getUser(p);
             for (Object object : user.getHolograms()) {
-                IridiumSkyblock.getNms().removeHologram(p, object);
+                getNms().removeHologram(p, object);
             }
         }
 
@@ -335,7 +335,7 @@ public class IridiumSkyblock extends JavaPlugin {
             }
             loadConfigs();
             saveConfigs();
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(getMessages().reloaded.replace("%prefix%", getConfiguration().prefix)));
         }, "Change Language");
         player.openInventory(gui.getInventory());
     }
@@ -373,7 +373,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + IslandManager.getWorld().getName() + " normal -g " + getName());
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + IslandManager.getWorld().getName());
 
-        if (IridiumSkyblock.getConfiguration().netherIslands) {
+        if (getConfiguration().netherIslands) {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + IslandManager.getNetherWorld().getName() + " nether -g " + getName());
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + IslandManager.getNetherWorld().getName());
         }
@@ -523,12 +523,12 @@ public class IridiumSkyblock extends JavaPlugin {
         commandManager.registerCommands();
 
         if (commandManager != null) {
-            if (commandManager.commands.contains(IridiumSkyblock.getCommands().shopCommand)) {
+            if (commandManager.commands.contains(getCommands().shopCommand)) {
                 if (!configuration.islandShop)
-                    commandManager.unRegisterCommand(IridiumSkyblock.getCommands().shopCommand);
+                    commandManager.unRegisterCommand(getCommands().shopCommand);
             } else {
                 if (configuration.islandShop)
-                    commandManager.registerCommand(IridiumSkyblock.getCommands().shopCommand);
+                    commandManager.registerCommand(getCommands().shopCommand);
             }
         }
 
@@ -678,76 +678,76 @@ public class IridiumSkyblock extends JavaPlugin {
         return islandUpgrades;
     }
 
-    public static Persist getPersist() {
-        return getInstance().persist;
+    public  Persist getPersist() {
+        return persist;
     }
 
-    public static Schematic getSchematic() {
-        return getInstance().schematic;
+    public  Schematic getSchematic() {
+        return schematic;
     }
 
-    public static WorldEdit getWorldEdit() {
-        return getInstance().worldEdit;
+    public  WorldEdit getWorldEdit() {
+        return worldEdit;
     }
 
-    public static Border getBorder() {
-        return getInstance().border;
+    public  Border getBorder() {
+        return border;
     }
 
-    public static ShopMenuGUI getShopGUI() {
-        return getInstance().shopMenuGUI;
+    public  ShopMenuGUI getShopGUI() {
+        return shopMenuGUI;
     }
 
-    public static TopGUI getTopGUI() {
-        return getInstance().topGUI;
+    public  TopGUI getTopGUI() {
+        return topGUI;
     }
 
-    public static Shop getShop() {
-        return getInstance().shop;
+    public  Shop getShop() {
+        return shop;
     }
 
-    public static Stackable getStackable() {
-        return getInstance().stackable;
+    public  Stackable getStackable() {
+        return stackable;
     }
 
-    public static BlockValues getBlockValues() {
-        return getInstance().blockValues;
+    public  BlockValues getBlockValues() {
+        return blockValues;
     }
 
-    public static Commands getCommands() {
-        return getInstance().commands;
+    public  Commands getCommands() {
+        return commands;
     }
 
-    public static Schematics getSchematics() {
-        return getInstance().schematics;
+    public  Schematics getSchematics() {
+        return schematics;
     }
 
-    public static Inventories getInventories() {
-        return getInstance().inventories;
+    public  Inventories getInventories() {
+        return inventories;
     }
 
-    public static Boosters getBoosters() {
-        return getInstance().boosters;
+    public  Boosters getBoosters() {
+        return boosters;
     }
 
-    public static Upgrades getUpgrades() {
-        return getInstance().upgrades;
+    public  Upgrades getUpgrades() {
+        return upgrades;
     }
 
-    public static Missions getMissions() {
-        return getInstance().missions;
+    public  Missions getMissions() {
+        return missions;
     }
 
-    public static Messages getMessages() {
-        return getInstance().messages;
+    public  Messages getMessages() {
+        return messages;
     }
 
-    public static Config getConfiguration() {
-        return getInstance().configuration;
+    public  Config getConfiguration() {
+        return configuration;
     }
 
-    public static SQL getSql() {
-        return getInstance().sql;
+    public  SQL getSql() {
+        return sql;
     }
 
     public SpawnerSupport getSpawnerSupport() {
@@ -766,20 +766,20 @@ public class IridiumSkyblock extends JavaPlugin {
         return latest;
     }
 
-    public static NMS getNms() {
-        return getInstance().nms;
+    public  NMS getNms() {
+        return nms;
     }
 
-    public static File getSchematicFolder() {
-        return getInstance().schematicFolder;
+    public  File getSchematicFolder() {
+        return schematicFolder;
     }
 
-    public static SQLManager getSqlManager() {
-        return getInstance().sqlManager;
+    public  SQLManager getSqlManager() {
+        return sqlManager;
     }
 
-    public static CommandManager getCommandManager() {
-        return getInstance().commandManager;
+    public  CommandManager getCommandManager() {
+        return commandManager;
     }
 
     public static IridiumSkyblock getInstance() {

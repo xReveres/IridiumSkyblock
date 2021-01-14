@@ -47,7 +47,7 @@ public abstract class GUI {
         if (inventory.getViewers().isEmpty()) return;
         for (int i = 0; i < inventory.getSize(); i++) {
             if (inventory.getItem(i) == null || inventory.getItem(i).getType() == Material.AIR) {
-                setItem(i, ItemStackUtils.makeItemHidden(IridiumSkyblock.getInventories().background));
+                setItem(i, ItemStackUtils.makeItemHidden(IridiumSkyblock.getInstance().getInventories().background));
             }
         }
     }

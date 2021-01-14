@@ -25,10 +25,10 @@ public class HomeCommand extends Command {
         if (island != null) {
             island.teleportHome(p);
         } else {
-            if (IridiumSkyblock.getConfiguration().createIslandonHome) {
+            if (IridiumSkyblock.getInstance().getConfiguration().createIslandonHome) {
                 IslandManager.createIsland(p);
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
     }

@@ -23,13 +23,13 @@ public class LeaveCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().cantLeaveIfOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cantLeaveIfOwner.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
                 user.getIsland().removeUser(user);
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().leftIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().leftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

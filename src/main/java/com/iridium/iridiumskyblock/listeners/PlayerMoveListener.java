@@ -28,7 +28,7 @@ public class PlayerMoveListener implements Listener {
         final Location location = player.getLocation();
         if (!IslandManager.isIslandWorld(location)) return;
 
-        final Config config = IridiumSkyblock.getConfiguration();
+        final Config config = IridiumSkyblock.getInstance().getConfiguration();
 
         if (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getZ() != event.getTo().getZ() || event.getFrom().getY() != event.getTo().getY() && event.getTo().getY() < 0) {
             final Island island = IslandManager.getIslandViaLocation(location);
@@ -43,7 +43,7 @@ public class PlayerMoveListener implements Listener {
                 if (world == null) return;
 
                 if (island != null) {
-                    if (!IridiumSkyblock.getConfiguration().keepInventoryOnVoid) player.getInventory().clear();
+                    if (!IridiumSkyblock.getInstance().getConfiguration().keepInventoryOnVoid) player.getInventory().clear();
                     if (world.getName().equals(IslandManager.getWorld().getName()))
                         island.teleportHome(player);
                     else
@@ -70,14 +70,14 @@ public class PlayerMoveListener implements Listener {
         if (userIsland == null) return;
 
         if (user.flying
-                && (!userIsland.isInIsland(location) || userIsland.getBoosterTime(IridiumSkyblock.getBoosters().islandFlightBooster.name) == 0)
+                && (!userIsland.isInIsland(location) || userIsland.getBoosterTime(IridiumSkyblock.getInstance().getBoosters().islandFlightBooster.name) == 0)
                 && !player.getGameMode().equals(GameMode.CREATIVE)
                 && !(player.hasPermission("IridiumSkyblock.Fly")
                 || player.hasPermission("iridiumskyblock.fly"))) {
             player.setAllowFlight(false);
             player.setFlying(false);
             user.flying = false;
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().flightDisabled
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
                     .replace("%prefix%", config.prefix)));
         }
     }

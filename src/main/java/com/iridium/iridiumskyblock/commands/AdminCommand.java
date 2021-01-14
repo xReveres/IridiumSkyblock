@@ -34,13 +34,13 @@ public class AdminCommand extends Command {
             int id = Integer.parseInt(args[1]);
             island = IslandManager.getIslandViaId(id);
             if (island != null) {
-                for (Command command : IridiumSkyblock.getCommandManager().commands) {
+                for (Command command : IridiumSkyblock.getInstance().getCommandManager().commands) {
                     if (command.aliases.contains(args[2]) && command.enabled) {
                         if ((sender.hasPermission(command.permission) || command.permission.equalsIgnoreCase("") || command.permission.equalsIgnoreCase("iridiumskyblock.")) && command.enabled) {
                             command.admin(sender, args, island);
                         } else {
                             // No permission
-                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                         return;
                     }
@@ -59,7 +59,7 @@ public class AdminCommand extends Command {
         if (island != null) {
             p.openInventory(island.islandAdminGUI.getInventory());
         } else {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

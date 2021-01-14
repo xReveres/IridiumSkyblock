@@ -42,19 +42,19 @@ public class PlayerTeleportListener implements Listener {
                 if (!toIsland.isInIsland(fromLocation)) {
                     Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendBorder(player), 1);
                     if (user.islandID != toIsland.id) {
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().visitingIsland.replace("%player%", User.getUser(toIsland.owner).name).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().visitingIsland.replace("%player%", User.getUser(toIsland.owner).name).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         if (player.hasPermission("iridiumskyblock.silentvisit")) return;
                         for (String pl : toIsland.members) {
                             Player p = Bukkit.getPlayer(UUID.fromString(pl));
                             if (p != null && p.canSee(player)) {
-                                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().visitedYourIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().visitedYourIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                             }
                         }
                     }
                 }
             } else {
                 event.setCancelled(true);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
     }
 }

@@ -16,7 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class UpgradeGUI extends GUI implements Listener {
 
     public UpgradeGUI(Island island) {
-        super(island, IridiumSkyblock.getInventories().upgradeGUISize, IridiumSkyblock.getInventories().upgradeGUITitle);
+        super(island, IridiumSkyblock.getInstance().getInventories().upgradeGUISize, IridiumSkyblock.getInstance().getInventories().upgradeGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -31,8 +31,8 @@ public class UpgradeGUI extends GUI implements Listener {
                     setItem(upgrade.item.slot, ItemStackUtils.makeItemHidden(upgrade.item, getIsland()));
                 }
             }
-            if (IridiumSkyblock.getInventories().backButtons)
-                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().back));
+            if (IridiumSkyblock.getInstance().getInventories().backButtons)
+                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
         }
     }
 
@@ -40,7 +40,7 @@ public class UpgradeGUI extends GUI implements Listener {
         for (String m : getIsland().members) {
             Player pl = Bukkit.getPlayer(User.getUser(m).name);
             if (pl != null) {
-                pl.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().islandUpgraded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix).replace("%player%", p.getName()).replace("%upgradename%", upgrade).replace("%oldlvl%", oldlvl + "").replace("%newlvl%", newlvl + "")));
+                pl.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandUpgraded.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%", p.getName()).replace("%upgradename%", upgrade).replace("%oldlvl%", oldlvl + "").replace("%newlvl%", newlvl + "")));
             }
         }
     }
@@ -52,7 +52,7 @@ public class UpgradeGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             Player p = (Player) e.getWhoClicked();
-            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInventories().backButtons) {
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInstance().getInventories().backButtons) {
                 e.getWhoClicked().openInventory(getIsland().islandMenuGUI.getInventory());
             }
             for (Upgrades.Upgrade upgrade : IridiumSkyblock.getInstance().getIslandUpgrades()) {
@@ -65,10 +65,10 @@ public class UpgradeGUI extends GUI implements Listener {
                             sendMessage(p, upgrade.name, level, level + 1);
                             getIsland().setUpgradeLevel(upgrade, level + 1);
                         } else {
-                            p.sendMessage(StringUtils.color(response == MiscUtils.BuyResponse.NOT_ENOUGH_VAULT ? IridiumSkyblock.getMessages().cantBuy : IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            p.sendMessage(StringUtils.color(response == MiscUtils.BuyResponse.NOT_ENOUGH_VAULT ? IridiumSkyblock.getInstance().getMessages().cantBuy : IridiumSkyblock.getInstance().getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                     } else {
-                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getMessages().maxLevelReached.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().maxLevelReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                     return;
                 }

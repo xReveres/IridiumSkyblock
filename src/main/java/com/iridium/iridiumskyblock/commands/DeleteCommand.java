@@ -24,12 +24,12 @@ public class DeleteCommand extends Command {
         User user = User.getUser(p);
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
-                p.openInventory(new ConfirmationGUI(user.getIsland(), () -> user.getIsland().delete(), IridiumSkyblock.getMessages().deleteAction).getInventory());
+                p.openInventory(new ConfirmationGUI(user.getIsland(), () -> user.getIsland().delete(), IridiumSkyblock.getInstance().getMessages().deleteAction).getInventory());
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
@@ -37,9 +37,9 @@ public class DeleteCommand extends Command {
     public void admin(CommandSender sender, String[] args, Island island) {
         Player p = (Player) sender;
         if (island != null) {
-            p.openInventory(new ConfirmationGUI(island, island::delete, IridiumSkyblock.getMessages().deleteAction).getInventory());
+            p.openInventory(new ConfirmationGUI(island, island::delete, IridiumSkyblock.getInstance().getMessages().deleteAction).getInventory());
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

@@ -22,9 +22,9 @@ public class ChatSpyCommand extends Command {
         User u = User.getUser(p);
         u.spyingIslandsChat = !u.spyingIslandsChat;
         if (u.spyingIslandsChat) {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().chatSpyEnabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().chatSpyEnabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().chatSpyDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().chatSpyDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

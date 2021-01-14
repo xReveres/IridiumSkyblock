@@ -22,11 +22,11 @@ public class ResetAllDataCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Runnable runnable = () -> {
-            IridiumSkyblock.getSqlManager().deleteAll();
+            IridiumSkyblock.getInstance().getSqlManager().deleteAll();
             UserManager.cache.clear();
             IslandManager.cache.clear();
             ClaimManager.cache.clear();
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().dataReset.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dataReset.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         };
 
         if (sender instanceof Player) {

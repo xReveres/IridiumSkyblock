@@ -25,12 +25,12 @@ public class SetHomeCommand extends Command {
         if (user.getIsland() != null) {
             if (MiscUtils.isSafe(p.getLocation(), user.getIsland()) && p.getLocation().getWorld().equals(IslandManager.getWorld())) {
                 user.getIsland().home = p.getLocation();
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().setHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
@@ -40,12 +40,12 @@ public class SetHomeCommand extends Command {
         if (island != null) {
             if (MiscUtils.isSafe(p.getLocation(), island) && p.getLocation().getWorld().equals(IslandManager.getWorld())) {
                 island.home = p.getLocation();
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().setHome.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

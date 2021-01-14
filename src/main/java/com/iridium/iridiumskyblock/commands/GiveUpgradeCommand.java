@@ -22,7 +22,7 @@ public class GiveUpgradeCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 4 && args.length != 3) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getConfiguration().prefix) + "/is giveupgrade <player> <upgrade> <level>");
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is giveupgrade <player> <upgrade> <level>");
             return;
         }
         OfflinePlayer player = Bukkit.getPlayer(args[1]);
@@ -39,10 +39,10 @@ public class GiveUpgradeCommand extends Command {
                     sender.sendMessage(args[2] + " is not a number");
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

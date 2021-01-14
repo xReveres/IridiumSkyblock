@@ -14,11 +14,11 @@ public class ShopMenuGUI extends GUI implements Listener {
     public MultiplePagesGUI<MultiplePagesGUI<ShopGUI>> pages;
 
     public ShopMenuGUI() {
-        super(IridiumSkyblock.getInventories().shopGUISize, IridiumSkyblock.getInventories().shopGUITitle);
+        super(IridiumSkyblock.getInstance().getInventories().shopGUISize, IridiumSkyblock.getInstance().getInventories().shopGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
 
         pages = new MultiplePagesGUI<>(() -> {
-            for (Shop.ShopObject shopObject : IridiumSkyblock.getShop().shop) {
+            for (Shop.ShopObject shopObject : IridiumSkyblock.getInstance().getShop().shop) {
                 setItem(shopObject.slot, ItemStackUtils.makeItem(shopObject.display, 1, shopObject.displayName));
                 pages.addPage(shopObject.slot, getMultiplePagesGUI(shopObject));
             }

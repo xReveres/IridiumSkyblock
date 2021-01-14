@@ -34,23 +34,23 @@ public class MiscUtils {
             while (sc.hasNext()) {
                 content.append(sc.nextLine());
             }
-            xMaterialItemId = IridiumSkyblock.getPersist().load(XMaterialItemId.class, content.toString());
+            xMaterialItemId = IridiumSkyblock.getInstance().getPersist().load(XMaterialItemId.class, content.toString());
         }
     }
 
     public static boolean isBlockValuable(Block b) {
-        for (Upgrades.IslandUpgrade islandUpgrade : IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.upgrades.values()) {
+        for (Upgrades.IslandUpgrade islandUpgrade : IridiumSkyblock.getInstance().getUpgrades().islandBlockLimitUpgrade.upgrades.values()) {
             if (((Upgrades.IslandBlockLimitUpgrade) islandUpgrade).limitedBlocks.containsKey(XMaterial.matchXMaterial(b.getType())))
                 return true;
         }
-        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(b.getType())) || b.getState() instanceof CreatureSpawner;
+        return IridiumSkyblock.getInstance().getBlockValues().blockvalue.containsKey(XMaterial.matchXMaterial(b.getType())) || b.getState() instanceof CreatureSpawner;
     }
 
     public static boolean isBlockValuable(XMaterial material) {
-        for (Upgrades.IslandUpgrade islandUpgrade : IridiumSkyblock.getUpgrades().islandBlockLimitUpgrade.upgrades.values()) {
+        for (Upgrades.IslandUpgrade islandUpgrade : IridiumSkyblock.getInstance().getUpgrades().islandBlockLimitUpgrade.upgrades.values()) {
             if (((Upgrades.IslandBlockLimitUpgrade) islandUpgrade).limitedBlocks.containsKey(material)) return true;
         }
-        return IridiumSkyblock.getBlockValues().blockvalue.containsKey(material);
+        return IridiumSkyblock.getInstance().getBlockValues().blockvalue.containsKey(material);
     }
 
     public static boolean isSafe(Location loc, Island island) {
@@ -137,7 +137,7 @@ public class MiscUtils {
     }
 
     public static ItemStack getCrystals(int amount) {
-        ItemStack itemStack = ItemStackUtils.makeItemHidden(IridiumSkyblock.getInventories().crystal, Collections.singletonList(new Placeholder("amount", amount + "")));
+        ItemStack itemStack = ItemStackUtils.makeItemHidden(IridiumSkyblock.getInstance().getInventories().crystal, Collections.singletonList(new Placeholder("amount", amount + "")));
         NBTItem nbtItem = new NBTItem(itemStack);
         nbtItem.setInteger("crystals", amount);
         return nbtItem.getItem();

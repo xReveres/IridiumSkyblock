@@ -38,8 +38,8 @@ public class LanguagesGUI extends GUI implements Listener {
         for (int slot : languages.keySet()) {
             setItem(slot, ItemStackUtils.makeItem(XMaterial.PAPER, 1, "&b&l" + languages.get(slot)));
         }
-        setItem(getInventory().getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().nextPage));
-        setItem(getInventory().getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInventories().previousPage));
+        setItem(getInventory().getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        setItem(getInventory().getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
     }
 
     @Override

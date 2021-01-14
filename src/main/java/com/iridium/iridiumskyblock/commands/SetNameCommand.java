@@ -23,36 +23,36 @@ public class SetNameCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (args.length != 2) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getConfiguration().prefix) + "/is setname <Island Name>");
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is setname <Island Name>");
             return;
         }
         if (user.getIsland() != null) {
             if (user.role.equals(Role.Owner)) {
-                if (args[1].length() > IridiumSkyblock.getConfiguration().maxIslandName) {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().islandNameTooLong
-                            .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
+                if (args[1].length() > IridiumSkyblock.getInstance().getConfiguration().maxIslandName) {
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNameTooLong
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                             .replace("%name%", args[1])
-                            .replace("%max_length%", IridiumSkyblock.getConfiguration().maxIslandName + "")));
+                            .replace("%max_length%", IridiumSkyblock.getInstance().getConfiguration().maxIslandName + "")));
 
-                } else if (args[1].length() < IridiumSkyblock.getConfiguration().minIslandName) {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().islandNameTooShort
-                            .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)
+                } else if (args[1].length() < IridiumSkyblock.getInstance().getConfiguration().minIslandName) {
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNameTooShort
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                             .replace("%name%", args[1])
-                            .replace("%min_length%", IridiumSkyblock.getConfiguration().minIslandName + "")));
+                            .replace("%min_length%", IridiumSkyblock.getInstance().getConfiguration().minIslandName + "")));
                 } else {
                     user.getIsland().name = args[1];
                     for (String member : user.getIsland().members) {
                         Player player = Bukkit.getPlayer(User.getUser(member).name);
                         if (player != null) {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().changesIslandName.replace("%player%", p.getName()).replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changesIslandName.replace("%player%", p.getName()).replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                     }
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
@@ -60,7 +60,7 @@ public class SetNameCommand extends Command {
     public void admin(CommandSender sender, String[] args, Island island) {
         Player p = (Player) sender;
         if (args.length != 2) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getConfiguration().prefix) + "/is admin <island> setname <Island Name>");
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is admin <island> setname <Island Name>");
             return;
         }
         if (island != null) {
@@ -68,11 +68,11 @@ public class SetNameCommand extends Command {
             for (String member : island.members) {
                 Player player = Bukkit.getPlayer(User.getUser(member).name);
                 if (player != null) {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().changesIslandName.replace("%player%", p.getName()).replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changesIslandName.replace("%player%", p.getName()).replace("%name%", args[1]).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

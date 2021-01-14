@@ -59,7 +59,7 @@ public class User {
     }
 
     public boolean isOnCooldown() {
-        return IridiumSkyblock.getConfiguration().createCooldown && this.lastCreate != null && !this.bypassing && new Date().before(this.lastCreate);
+        return IridiumSkyblock.getInstance().getConfiguration().createCooldown && this.lastCreate != null && !this.bypassing && new Date().before(this.lastCreate);
     }
 
     public String getCooldownTimeMessage() {
@@ -68,7 +68,7 @@ public class User {
         int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400L));
         int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
         int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
-        return IridiumSkyblock.getMessages().createCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix);
+        return IridiumSkyblock.getInstance().getMessages().createCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix);
     }
 
     public static User getUser(UUID uuid) {

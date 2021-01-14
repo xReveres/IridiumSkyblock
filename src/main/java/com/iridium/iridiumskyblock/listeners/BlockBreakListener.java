@@ -37,7 +37,7 @@ public class BlockBreakListener implements Listener {
         final User user = User.getUser(player);
 
         if (user.islandID == island.id) {
-            for (Missions.Mission mission : IridiumSkyblock.getMissions().missions) {
+            for (Missions.Mission mission : IridiumSkyblock.getInstance().getMissions().missions) {
                 final int key = island.getMissionLevels().computeIfAbsent(mission.name, (name) -> 1);
                 final Map<Integer, Missions.MissionData> levels = mission.levels;
                 final Missions.MissionData level = levels.get(key);
@@ -64,9 +64,9 @@ public class BlockBreakListener implements Listener {
 
         if (!island.getPermissions(user).breakBlocks || (!island.getPermissions(user).breakSpawners && XMaterial.matchXMaterial(block.getType()).equals(XMaterial.SPAWNER))) {
             if (XMaterial.matchXMaterial(block.getType()).equals(XMaterial.SPAWNER)) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermissionBreakSpawners.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermissionBreakSpawners.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noPermissionBuild.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermissionBuild.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
             event.setCancelled(true);
         }

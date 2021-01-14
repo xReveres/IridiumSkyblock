@@ -23,12 +23,12 @@ public class ChatCommand extends Command {
         if (user.getIsland() != null) {
             user.islandChat = !user.islandChat;
             if (user.islandChat) {
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().chatEnabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().chatEnabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().chatDisabled.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().chatDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

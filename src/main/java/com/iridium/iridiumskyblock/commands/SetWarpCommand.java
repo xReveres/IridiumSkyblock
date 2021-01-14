@@ -27,13 +27,13 @@ public class SetWarpCommand extends Command {
                 if (MiscUtils.isSafe(p.getLocation(), user.getIsland())) {
                     user.getIsland().addWarp(p, p.getLocation(), args[1], password);
                 } else {
-                    p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getConfiguration().prefix) + "/is setwarp <name> (password)");
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is setwarp <name> (password)");
         }
     }
 
@@ -46,13 +46,13 @@ public class SetWarpCommand extends Command {
                 if (MiscUtils.isSafe(p.getLocation(), island)) {
                     island.addWarp(p, p.getLocation(), args[1], password);
                 } else {
-                    p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            p.sendMessage(StringUtils.color(IridiumSkyblock.getConfiguration().prefix) + "/is setwarp <name> (password)");
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is setwarp <name> (password)");
         }
     }
 

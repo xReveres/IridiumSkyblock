@@ -27,7 +27,7 @@ public class EntityExplodeListener implements Listener {
         if (island == null) return;
 
 
-        if (!IridiumSkyblock.getConfiguration().allowExplosions) {
+        if (!IridiumSkyblock.getInstance().getConfiguration().allowExplosions) {
             event.setCancelled(true);
             return;
         }
@@ -41,7 +41,7 @@ public class EntityExplodeListener implements Listener {
         for (Block block : event.blockList()) {
             if (!fromIsland.isInIsland(location) || island.stackedBlocks.containsKey(block.getLocation())) {
                 final BlockState state = block.getState();
-                IridiumSkyblock.getNms().setBlockFast(block, 0, (byte) 0);
+                IridiumSkyblock.getInstance().getNms().setBlockFast(block, 0, (byte) 0);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> state.update(true, true));
             } else {
                 if (!MiscUtils.isBlockValuable(block)) continue;
@@ -64,7 +64,7 @@ public class EntityExplodeListener implements Listener {
             if (!island.isInIsland(location)) continue;
             if (island.stackedBlocks.containsKey(location)) {
                 BlockState state = block.getState();
-                IridiumSkyblock.getNms().setBlockFast(block, 0, (byte) 0);
+                IridiumSkyblock.getInstance().getNms().setBlockFast(block, 0, (byte) 0);
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> state.update(true, false));
             }
         }
