@@ -978,7 +978,7 @@ public class Island {
         if (System.currentTimeMillis() >= lastPlayerCaching + (IridiumSkyblock.getInstance().getConfiguration().playersOnIslandRefreshTime * 1000L)) {
             reloadPlayersOnIsland();
         }
-        return playersOnIsland;
+        return new HashSet<>(playersOnIsland);
     }
 
     public void reloadPlayersOnIsland() {
