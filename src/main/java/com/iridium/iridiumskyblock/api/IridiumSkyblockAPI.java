@@ -46,7 +46,7 @@ public class IridiumSkyblockAPI {
      * @param id The id of the island
      * @since 3.0.0
      */
-    public Island getIslandViaID(int id) {
+    public @Nullable Island getIslandViaID(int id) {
         return IslandManager.getIslandViaId(id);
     }
 
@@ -103,13 +103,14 @@ public class IridiumSkyblockAPI {
     public void registerBankItem(@NotNull BankItem bankItem) {
         iridiumSkyblock.registerBankItem(bankItem);
     }
+
     /**
      * Registers a Command
      *
      * @param command The command we want to register
      * @since 3.0.0
      */
-    public void registerCommand(Command command) {
+    public void registerCommand(@NotNull Command command) {
         iridiumSkyblock.getCommandManager().registerCommand(command);
     }
 }
