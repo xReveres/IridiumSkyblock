@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.bank.BankItem;
+import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.configs.Boosters;
 import com.iridium.iridiumskyblock.configs.Upgrades;
 import com.iridium.iridiumskyblock.managers.IslandDataManager;
@@ -101,5 +102,14 @@ public class IridiumSkyblockAPI {
      */
     public void registerBankItem(@NotNull BankItem bankItem) {
         iridiumSkyblock.registerBankItem(bankItem);
+    }
+    /**
+     * Registers a Command
+     *
+     * @param command The command we want to register
+     * @since 3.0.0
+     */
+    public void registerCommand(Command command) {
+        iridiumSkyblock.getCommandManager().registerCommand(command);
     }
 }
