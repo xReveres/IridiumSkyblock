@@ -1,15 +1,59 @@
 package com.iridium.iridiumskyblock;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
-import com.iridium.iridiumskyblock.configs.*;
-import com.iridium.iridiumskyblock.gui.*;
-import com.iridium.iridiumskyblock.listeners.*;
+import com.iridium.iridiumskyblock.configs.Bank;
+import com.iridium.iridiumskyblock.configs.BlockValues;
+import com.iridium.iridiumskyblock.configs.Boosters;
+import com.iridium.iridiumskyblock.configs.Border;
+import com.iridium.iridiumskyblock.configs.Commands;
+import com.iridium.iridiumskyblock.configs.Config;
+import com.iridium.iridiumskyblock.configs.Inventories;
+import com.iridium.iridiumskyblock.configs.Messages;
+import com.iridium.iridiumskyblock.configs.Missions;
+import com.iridium.iridiumskyblock.configs.SQL;
+import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.configs.Shop;
+import com.iridium.iridiumskyblock.configs.Stackable;
+import com.iridium.iridiumskyblock.configs.Upgrades;
+import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
+import com.iridium.iridiumskyblock.gui.LanguagesGUI;
+import com.iridium.iridiumskyblock.gui.MultiplePagesGUI;
+import com.iridium.iridiumskyblock.gui.ShopMenuGUI;
+import com.iridium.iridiumskyblock.gui.TopGUI;
+import com.iridium.iridiumskyblock.gui.VisitGUI;
+import com.iridium.iridiumskyblock.listeners.BlockBreakListener;
+import com.iridium.iridiumskyblock.listeners.BlockFromToListener;
+import com.iridium.iridiumskyblock.listeners.BlockGrowListener;
+import com.iridium.iridiumskyblock.listeners.BlockPistonListener;
+import com.iridium.iridiumskyblock.listeners.BlockPlaceListener;
+import com.iridium.iridiumskyblock.listeners.CreatureSpawnListener;
+import com.iridium.iridiumskyblock.listeners.EntityDamageByEntityListener;
+import com.iridium.iridiumskyblock.listeners.EntityDeathListener;
+import com.iridium.iridiumskyblock.listeners.EntityExplodeListener;
+import com.iridium.iridiumskyblock.listeners.EntityPickupItemListener;
+import com.iridium.iridiumskyblock.listeners.EntitySpawnListener;
+import com.iridium.iridiumskyblock.listeners.EntityTargetLivingEntityListener;
+import com.iridium.iridiumskyblock.listeners.ExpansionUnregisterListener;
+import com.iridium.iridiumskyblock.listeners.ItemCraftListener;
+import com.iridium.iridiumskyblock.listeners.PlayerBucketEmptyListener;
+import com.iridium.iridiumskyblock.listeners.PlayerExpChangeListener;
+import com.iridium.iridiumskyblock.listeners.PlayerFishListener;
+import com.iridium.iridiumskyblock.listeners.PlayerInteractListener;
+import com.iridium.iridiumskyblock.listeners.PlayerJoinLeaveListener;
+import com.iridium.iridiumskyblock.listeners.PlayerMoveListener;
+import com.iridium.iridiumskyblock.listeners.PlayerPortalListener;
+import com.iridium.iridiumskyblock.listeners.PlayerRespawnListener;
+import com.iridium.iridiumskyblock.listeners.PlayerTalkListener;
+import com.iridium.iridiumskyblock.listeners.PlayerTeleportListener;
+import com.iridium.iridiumskyblock.listeners.SpawnerSpawnListener;
+import com.iridium.iridiumskyblock.listeners.StructureGrowListener;
 import com.iridium.iridiumskyblock.managers.IslandDataManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SQLManager;
@@ -22,7 +66,13 @@ import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.schematics.WorldEdit6;
 import com.iridium.iridiumskyblock.schematics.WorldEdit7;
 import com.iridium.iridiumskyblock.serializer.Persist;
-import com.iridium.iridiumskyblock.support.*;
+import com.iridium.iridiumskyblock.support.AdvancedSpawners;
+import com.iridium.iridiumskyblock.support.EpicSpawners;
+import com.iridium.iridiumskyblock.support.MergedSpawners;
+import com.iridium.iridiumskyblock.support.RoseStacker;
+import com.iridium.iridiumskyblock.support.SpawnerSupport;
+import com.iridium.iridiumskyblock.support.UltimateStacker;
+import com.iridium.iridiumskyblock.support.Wildstacker;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
@@ -37,7 +87,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
@@ -45,7 +100,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class IridiumSkyblock extends JavaPlugin {
@@ -358,15 +419,16 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     private void writeToFile(File file, InputStream in) throws IOException {
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-        byte[] buffer = new byte[1024];
+        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
+            byte[] buffer = new byte[1024];
 
-        int numRead;
-        while ((numRead = in.read(buffer)) != -1) {
-            out.write(buffer, 0, numRead);
+            int numRead;
+            while ((numRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, numRead);
+            }
         }
+
         in.close();
-        out.close();
     }
 
     private void registerMultiverse() {
@@ -448,42 +510,42 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void loadManagers() {
-        try {
-            sqlManager = new SQLManager();
-            sqlManager.createTables();
-            Connection connection = sqlManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM islandmanager;");
 
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                IslandManager.nextID = resultSet.getInt("nextID");
-                IslandManager.length = resultSet.getInt("length");
-                IslandManager.current = resultSet.getInt("current");
-                IslandManager.direction = Direction.valueOf(resultSet.getString("direction"));
-                IslandManager.nextLocation = new Location(IslandManager.getWorld(), resultSet.getDouble("x"), 0, resultSet.getDouble("y"));
-            } else {
-                IslandManager.nextID = 1;
-                IslandManager.length = 1;
-                IslandManager.current = 0;
-                IslandManager.direction = Direction.NORTH;
-                IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
-                PreparedStatement insert = connection.prepareStatement("INSERT INTO islandmanager (nextID,length,current,direction,x,y)VALUES (?,?,?,?,?,?);");
-                insert.setInt(1, IslandManager.nextID);
-                insert.setInt(2, IslandManager.length);
-                insert.setInt(3, IslandManager.current);
-                insert.setString(4, IslandManager.direction.name());
-                insert.setDouble(5, IslandManager.nextLocation.getX());
-                insert.setDouble(6, IslandManager.nextLocation.getZ());
-                insert.executeUpdate();
-                insert.close();
+        sqlManager = new SQLManager();
+        sqlManager.createTables();
+        try (Connection connection = sqlManager.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM islandmanager;")) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        IslandManager.nextID = resultSet.getInt("nextID");
+                        IslandManager.length = resultSet.getInt("length");
+                        IslandManager.current = resultSet.getInt("current");
+                        IslandManager.direction = Direction.valueOf(resultSet.getString("direction"));
+                        IslandManager.nextLocation = new Location(IslandManager.getWorld(), resultSet.getDouble("x"), 0, resultSet.getDouble("y"));
+                    } else {
+                        IslandManager.nextID = 1;
+                        IslandManager.length = 1;
+                        IslandManager.current = 0;
+                        IslandManager.direction = Direction.NORTH;
+                        IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
+                        try (PreparedStatement insert = connection.prepareStatement("INSERT INTO islandmanager (nextID,length,current,direction,x,y)VALUES (?,?,?,?,?,?);")) {
+                            insert.setInt(1, IslandManager.nextID);
+                            insert.setInt(2, IslandManager.length);
+                            insert.setInt(3, IslandManager.current);
+                            insert.setString(4, IslandManager.direction.name());
+                            insert.setDouble(5, IslandManager.nextLocation.getX());
+                            insert.setDouble(6, IslandManager.nextLocation.getZ());
+                            insert.executeUpdate();
+                        }
+                    }
+                    IslandDataManager.update(connection);
+                }
+                connection.commit();
             }
-            IslandDataManager.update(connection);
-            statement.close();
-            connection.commit();
-            connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
         IslandManager.getWorld().getWorldBorder().setSize(Double.MAX_VALUE);
         if (configuration.netherIslands) IslandManager.getNetherWorld().getWorldBorder().setSize(Double.MAX_VALUE);
     }
@@ -597,27 +659,27 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void saveData() {
-        Connection connection = sqlManager.getConnection();
-        for (User user : UserManager.cache.values()) {
-            user.save(connection);
-        }
+        try (Connection connection = sqlManager.getConnection()) {
+            for (User user : ImmutableList.copyOf(UserManager.cache.values())) {
+                user.save(connection);
+            }
 
-        for (Island island : IslandManager.getLoadedIslands()) {
-            island.save(connection);
-            IslandDataManager.save(island, connection);
-        }
-        try {
-            PreparedStatement insert = connection.prepareStatement("UPDATE islandmanager SET nextID = ?, length=?, current=?, direction=?, x=?,y=?;");
-            insert.setInt(1, IslandManager.nextID);
-            insert.setInt(2, IslandManager.length);
-            insert.setInt(3, IslandManager.current);
-            insert.setString(4, IslandManager.direction.name());
-            insert.setDouble(5, IslandManager.nextLocation.getX());
-            insert.setDouble(6, IslandManager.nextLocation.getZ());
-            insert.executeUpdate();
-            insert.close();
+            for (Island island : IslandManager.getLoadedIslands()) {
+                island.save(connection);
+                IslandDataManager.save(island, connection);
+            }
+
+            try (PreparedStatement insert = connection.prepareStatement("UPDATE islandmanager SET nextID = ?, length=?, current=?, direction=?, x=?,y=?;")) {
+                insert.setInt(1, IslandManager.nextID);
+                insert.setInt(2, IslandManager.length);
+                insert.setInt(3, IslandManager.current);
+                insert.setString(4, IslandManager.direction.name());
+                insert.setDouble(5, IslandManager.nextLocation.getX());
+                insert.setDouble(6, IslandManager.nextLocation.getZ());
+                insert.executeUpdate();
+            }
+
             connection.commit();
-            connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

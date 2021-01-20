@@ -23,12 +23,12 @@ public class DiscUtil {
     public static byte[] readBytes(File file) throws IOException {
         int length = (int) file.length();
         byte[] output = new byte[length];
-        InputStream in = new FileInputStream(file);
-        int offset = 0;
-        while (offset < length) {
-            offset += in.read(output, offset, (length - offset));
+        try (InputStream in = new FileInputStream(file)) {
+            int offset = 0;
+            while (offset < length) {
+                offset += in.read(output, offset, (length - offset));
+            }
         }
-        in.close();
 
         return output;
     }

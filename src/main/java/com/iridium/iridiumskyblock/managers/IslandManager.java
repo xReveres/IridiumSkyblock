@@ -1,12 +1,24 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.Direction;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.MissionRestart;
+import com.iridium.iridiumskyblock.Role;
+import com.iridium.iridiumskyblock.SkyblockGenerator;
+import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.utils.StringUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,7 +30,17 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class IslandManager {
@@ -251,30 +273,30 @@ public class IslandManager {
     public static Island getIslandViaId(int id) {
 
         if (cache.containsKey(id)) return cache.get(id);
-        try {
-            Connection connection = IridiumSkyblock.getInstance().getSqlManager().getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM islands WHERE id =?;");
+        try (Connection connection = IridiumSkyblock.getInstance().getSqlManager().getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM islands WHERE id =?;")) {
+
             statement.setInt(1, id);
 
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                //There is a value
-                Island island = IridiumSkyblock.getInstance().getPersist().gson.fromJson(resultSet.getString("json"), Island.class);
-                cache.put(id, island);
-                connection.close();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    //There is a value
+                    Island island = IridiumSkyblock.getInstance().getPersist().gson.fromJson(resultSet.getString("json"), Island.class);
+                    cache.put(id, island);
 
-                island.init();
-                if (island.getName().length() > IridiumSkyblock.getInstance().getConfiguration().maxIslandName) {
-                    island.name = island.getName().substring(0, IridiumSkyblock.getInstance().getConfiguration().maxIslandName);
-                }
-                if (island.getName().length() < IridiumSkyblock.getInstance().getConfiguration().minIslandName) {
-                    OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(island.owner));
-                    island.name = owner.getName();
-                }
+                    island.init();
+                    if (island.getName().length() > IridiumSkyblock.getInstance().getConfiguration().maxIslandName) {
+                        island.name = island.getName().substring(0, IridiumSkyblock.getInstance().getConfiguration().maxIslandName);
+                    }
+                    if (island.getName().length() < IridiumSkyblock.getInstance().getConfiguration().minIslandName) {
+                        OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(island.owner));
+                        island.name = owner.getName();
+                    }
 
-                return island;
+                    return island;
+                }
             }
-            connection.close();
+
             cache.put(id, null);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -299,13 +321,13 @@ public class IslandManager {
     }
 
     public static void save(Island island, Connection connection) {
-        try {
+
             String json = IridiumSkyblock.getInstance().getPersist().gson.toJson(island);
-            PreparedStatement insert = connection.prepareStatement("REPLACE INTO islands (id,json) VALUES (?,?);");
+        try (PreparedStatement insert = connection.prepareStatement("REPLACE INTO islands (id,json) VALUES (?,?);")){
             insert.setInt(1, island.id);
             insert.setString(2, json);
             insert.executeUpdate();
-            insert.close();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -314,11 +336,9 @@ public class IslandManager {
     public static void removeIsland(Island island, Connection connection) {
         final int id = island.id;
         cache.remove(id);
-        try {
-            PreparedStatement insert = connection.prepareStatement("DELETE FROM islands WHERE id=?;");
+        try (PreparedStatement insert = connection.prepareStatement("DELETE FROM islands WHERE id=?;")){
             insert.setInt(1, id);
             insert.executeUpdate();
-            insert.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -326,13 +346,13 @@ public class IslandManager {
 
     public static void removeIsland(Island island) {
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            try {
-                Connection connection = IridiumSkyblock.getInstance().getSqlManager().getConnection();
+            try (Connection connection = IridiumSkyblock.getInstance().getSqlManager().getConnection()) {
+
                 removeIsland(island, connection);
                 ClaimManager.removeClaims(island.id, connection);
                 IslandDataManager.remove(island.id, connection);
                 connection.commit();
-                connection.close();
+
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

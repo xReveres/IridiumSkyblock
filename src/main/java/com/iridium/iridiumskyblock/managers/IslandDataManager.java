@@ -42,11 +42,11 @@ public class IslandDataManager {
     }
 
     public static void update(Connection connection) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM islanddata;");
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                cache.put(resultSet.getInt(1), new IslandData(resultSet.getDouble(2), resultSet.getInt(3), resultSet.getBoolean(4)));
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM islanddata;")) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    cache.put(resultSet.getInt(1), new IslandData(resultSet.getDouble(2), resultSet.getInt(3), resultSet.getBoolean(4)));
+                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -55,32 +55,33 @@ public class IslandDataManager {
 
     public static void remove(int island, Connection connection) {
         cache.remove(island);
-        try {
-            PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;");
+        try (PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;")) {
             deleteStatement.setInt(1, island);
             deleteStatement.executeUpdate();
-            deleteStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
     public static void save(Island island, Connection connection) {
-        try {
-            PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;");
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM islanddata where islandID=?;")) {
             deleteStatement.setInt(1, island.id);
             deleteStatement.executeUpdate();
-            deleteStatement.close();
-            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO islanddata (islandID,value,votes,private) VALUES (?,?,?,?);");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        try (PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO islanddata (islandID,value,votes,private) VALUES (?,?,?,?);")) {
             insertStatement.setInt(1, island.id);
             insertStatement.setDouble(2, island.value);
             insertStatement.setInt(3, island.getVotes());
             insertStatement.setBoolean(4, !island.visit);
             insertStatement.executeUpdate();
-            insertStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
     }
 
     public static void save(Island island, boolean async) {
@@ -88,11 +89,11 @@ public class IslandDataManager {
             Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> save(island, false));
             return;
         }
-        Connection connection = IridiumSkyblock.getInstance().getSqlManager().getConnection();
-        save(island, connection);
-        try {
+
+        try (Connection connection = IridiumSkyblock.getInstance().getSqlManager().getConnection()) {
+            save(island, connection);
+
             connection.commit();
-            connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
