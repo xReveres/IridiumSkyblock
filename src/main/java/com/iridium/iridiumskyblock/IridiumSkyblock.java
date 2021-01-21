@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
+import com.iridium.iridiumskyblock.database.DatabaseWrapper;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.IslandDataManager;
@@ -23,6 +24,7 @@ import com.iridium.iridiumskyblock.schematics.WorldEdit6;
 import com.iridium.iridiumskyblock.schematics.WorldEdit7;
 import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
+import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -93,9 +95,18 @@ public class IridiumSkyblock extends JavaPlugin {
     private final List<Boosters.Booster> islandBoosters = new ArrayList<>();
     private final List<BankItem> bankItems = new ArrayList<>();
 
+    private @Getter DatabaseWrapper database;
+
     @Override
     public void onEnable() {
         instance = this;
+
+        try {
+            database = new DatabaseWrapper();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
         try {
             nms = (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
         } catch (ClassNotFoundException e) {
