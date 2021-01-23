@@ -2,9 +2,8 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.api.IslandLeaderChangeEvent;
+import com.iridium.iridiumskyblock.api.PreLeaderChangeEvent;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -35,7 +34,7 @@ public class TransferCommand extends Command {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
                 User toUser = User.getUser(player);
                 if (island.equals(toUser.getIsland())) {
-                    IslandLeaderChangeEvent event = new IslandLeaderChangeEvent(island, user, toUser);
+                    PreLeaderChangeEvent event = new PreLeaderChangeEvent(island, user, toUser);
                     Bukkit.getPluginManager().callEvent(event);
                     if (!event.isCancelled()) {
                         p.openInventory(new ConfirmationGUI(user.getIsland(), () -> island.setOwner(player), IridiumSkyblock.getInstance().getMessages().transferAction.replace("%player%", toUser.name)).getInventory());
