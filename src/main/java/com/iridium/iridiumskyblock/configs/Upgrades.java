@@ -45,6 +45,9 @@ public class Upgrades {
         public Map<Integer, IslandUpgrade> upgrades;
         public Inventories.Item item;
 
+        public Upgrade() {
+        }
+
         public Upgrade(String name, boolean enabled, Map<Integer, IslandUpgrade> upgrades, Inventories.Item item) {
             this.name = name;
             this.enabled = enabled;
@@ -57,10 +60,15 @@ public class Upgrades {
         }
     }
 
+    //TODO Fix polymorphism with jackson
+
     public static class IslandUpgrade {
         public int crystalsCost;
         public int vaultCost;
         public Integer size;
+
+        public IslandUpgrade() {
+        }
 
         public IslandUpgrade(int crystalsCost, int vaultCost, Integer size) {
             this.crystalsCost = crystalsCost;
@@ -73,6 +81,9 @@ public class Upgrades {
         public List<String> ores;
         public List<String> netherores;
 
+        public IslandOreUpgrade() {
+        }
+
         public IslandOreUpgrade(int crystalsCost, int vaultCost, List<String> ores, List<String> netherores) {
             super(crystalsCost, vaultCost, null);
             this.ores = ores;
@@ -82,6 +93,9 @@ public class Upgrades {
 
     public static class IslandBlockLimitUpgrade extends IslandUpgrade {
         public Map<XMaterial, Integer> limitedBlocks;
+
+        public IslandBlockLimitUpgrade() {
+        }
 
         public IslandBlockLimitUpgrade(int crystalsCost, int vaultCost, Map<XMaterial, Integer> limitedBlocks) {
             super(crystalsCost, vaultCost, null);

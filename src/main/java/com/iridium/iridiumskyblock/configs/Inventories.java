@@ -98,6 +98,8 @@ public class Inventories {
         public List<String> lore;
         public Integer slot;
 
+        public Item(){}
+
         public Item(XMaterial material, int amount, String title, List<String> lore) {
             this.material = material;
             this.amount = amount;

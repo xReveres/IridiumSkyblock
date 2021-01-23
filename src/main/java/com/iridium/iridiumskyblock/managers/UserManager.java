@@ -34,7 +34,7 @@ public class UserManager {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     //There is a value
-                    User user = IridiumSkyblock.getInstance().getPersist().gson.fromJson(resultSet.getString("json"), User.class);
+                    User user = IridiumSkyblock.getInstance().getPersist().load(User.class, resultSet.getString("json"));
                     cache.put(uuid, user);
 
                     return user;
@@ -54,7 +54,7 @@ public class UserManager {
 
     public static void saveUser(User user, Connection connection) {
 
-        String json = IridiumSkyblock.getInstance().getPersist().gson.toJson(user);
+        String json = IridiumSkyblock.getInstance().getPersist().toString(user);
         try (PreparedStatement insert = connection.prepareStatement("REPLACE INTO users (UUID,json) VALUES (?,?);")) {
             insert.setString(1, user.player);
             insert.setString(2, json);

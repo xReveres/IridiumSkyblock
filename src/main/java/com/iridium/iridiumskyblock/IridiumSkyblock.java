@@ -23,7 +23,6 @@ import com.iridium.iridiumskyblock.schematics.Schematic;
 import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.schematics.WorldEdit6;
 import com.iridium.iridiumskyblock.schematics.WorldEdit7;
-import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import lombok.Getter;
@@ -103,12 +102,6 @@ public class IridiumSkyblock extends JavaPlugin {
         instance = this;
 
         try {
-            database = new DatabaseWrapper();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
-        try {
             nms = (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
         } catch (ClassNotFoundException e) {
             //Unsupported Version
@@ -135,7 +128,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getUpdateFolderFile().mkdir();
         getDataFolder().mkdir();
 
-        persist = new Persist();
+        persist = new Persist(Persist.PersistType.YAML);
 
         new Metrics(this, 5825);
 

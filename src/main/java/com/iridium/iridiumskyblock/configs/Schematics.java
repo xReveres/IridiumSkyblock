@@ -23,6 +23,8 @@ public class Schematics {
         public List<String> lore;
         public Integer slot;
 
+        public FakeSchematic(){}
+
         public FakeSchematic(double x, double y, double z, SchematicData overworldData, SchematicData netherData, String permission, XMaterial item, String displayname, List<String> lore, int slot) {
             this.x = x;
             this.y = y;
@@ -43,6 +45,8 @@ public class Schematics {
         public double xOffset;
         public double yOffset;
         public double zOffset;
+
+        public SchematicData(){}
 
         public SchematicData(String schematic, XBiome biome, double xOffset, double yOffset, double zOffset) {
             this.schematic = schematic;

@@ -1,24 +1,12 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumskyblock.Direction;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.MissionRestart;
-import com.iridium.iridiumskyblock.Role;
-import com.iridium.iridiumskyblock.SkyblockGenerator;
-import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.utils.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,17 +18,7 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class IslandManager {
@@ -281,7 +259,7 @@ public class IslandManager {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     //There is a value
-                    Island island = IridiumSkyblock.getInstance().getPersist().gson.fromJson(resultSet.getString("json"), Island.class);
+                    Island island = IridiumSkyblock.getInstance().getPersist().load(Island.class, resultSet.getString("json"));
                     cache.put(id, island);
 
                     island.init();
@@ -322,8 +300,8 @@ public class IslandManager {
 
     public static void save(Island island, Connection connection) {
 
-            String json = IridiumSkyblock.getInstance().getPersist().gson.toJson(island);
-        try (PreparedStatement insert = connection.prepareStatement("REPLACE INTO islands (id,json) VALUES (?,?);")){
+        String json = IridiumSkyblock.getInstance().getPersist().toString(island);
+        try (PreparedStatement insert = connection.prepareStatement("REPLACE INTO islands (id,json) VALUES (?,?);")) {
             insert.setInt(1, island.id);
             insert.setString(2, json);
             insert.executeUpdate();
@@ -336,7 +314,7 @@ public class IslandManager {
     public static void removeIsland(Island island, Connection connection) {
         final int id = island.id;
         cache.remove(id);
-        try (PreparedStatement insert = connection.prepareStatement("DELETE FROM islands WHERE id=?;")){
+        try (PreparedStatement insert = connection.prepareStatement("DELETE FROM islands WHERE id=?;")) {
             insert.setInt(1, id);
             insert.executeUpdate();
         } catch (SQLException throwables) {

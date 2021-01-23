@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.bank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.configs.Inventories;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
@@ -9,8 +10,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class CrystalsBankItem implements BankItem<Integer> {
 
-    private final Inventories.Item item;
+    private Inventories.Item item;
     private final boolean enabled = true;
+
+    public CrystalsBankItem(){}
 
     public CrystalsBankItem(Inventories.Item item) {
         this.item = item;
@@ -66,6 +69,7 @@ public class CrystalsBankItem implements BankItem<Integer> {
     }
 
     @Override
+    @JsonIgnore
     public Integer getDefaultWithdraw() {
         return 10;
     }
