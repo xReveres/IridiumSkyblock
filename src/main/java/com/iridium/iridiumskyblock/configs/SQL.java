@@ -10,7 +10,6 @@ public class SQL {
     public String password = "";
     public int port = 3306;
     public int poolSize = 25;
-
     public enum Driver {
 
         MYSQL,
@@ -20,4 +19,6 @@ public class SQL {
         H2,
         SQLITE
     }
+    public long connectionTimeout = 30000;
+    public long leakDetectionThreshold = 60000;
 }

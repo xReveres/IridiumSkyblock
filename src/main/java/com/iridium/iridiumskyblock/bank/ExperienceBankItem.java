@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.bank;
 
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Inventories;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.entity.Player;
 
 public class ExperienceBankItem implements BankItem<Integer> {
@@ -30,16 +30,16 @@ public class ExperienceBankItem implements BankItem<Integer> {
         if (amount > current) amount = current;
         if (amount == 0) return;
         island.setExperience(getValue(island) - amount);
-        Utils.setTotalExperience(player, Utils.getTotalExperience(player) + amount);
+        PlayerUtils.setTotalExperience(player, PlayerUtils.getTotalExperience(player) + amount);
     }
 
     @Override
     public void deposit(Player player, Island island, Integer amount) {
-        int current = Utils.getTotalExperience(player);
+        int current = PlayerUtils.getTotalExperience(player);
         if (amount > current) amount = current;
         if (amount == 0) return;
         island.setExperience(getValue(island) + amount);
-        Utils.setTotalExperience(player, Utils.getTotalExperience(player) - amount);
+        PlayerUtils.setTotalExperience(player, PlayerUtils.getTotalExperience(player) - amount);
     }
 
     @Override
