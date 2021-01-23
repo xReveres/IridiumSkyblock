@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.gui;
 import com.cryptomorin.xseries.XBiome;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.User;
 import com.iridium.iridiumskyblock.configs.Config;
 import com.iridium.iridiumskyblock.utils.*;
 import org.apache.commons.lang.WordUtils;
@@ -19,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class BiomeGUI extends GUI implements Listener {
 
@@ -64,7 +64,7 @@ public class BiomeGUI extends GUI implements Listener {
 
     public void sendBiomeChangeMessage(String biome, Player p) {
         for (String member : getIsland().members) {
-            Player pl = Bukkit.getPlayer(User.getUser(member).name);
+            Player pl = Bukkit.getPlayer(UUID.fromString(member));
             if (pl != null) {
                 pl.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().biomeChanged
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)

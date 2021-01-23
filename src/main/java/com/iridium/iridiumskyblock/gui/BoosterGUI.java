@@ -47,8 +47,8 @@ public class BoosterGUI extends GUI implements Listener {
     @Override
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
-            Player p = (Player) e.getWhoClicked();
             e.setCancelled(true);
+            Player p = (Player) e.getWhoClicked();
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInstance().getInventories().backButtons) {
                 e.getWhoClicked().openInventory(getIsland().islandMenuGUI.getInventory());
@@ -61,9 +61,14 @@ public class BoosterGUI extends GUI implements Listener {
                         if (response == MiscUtils.BuyResponse.SUCCESS) {
                             sendMessage(p, booster.name);
                             getIsland().addBoosterTime(booster.name, booster.time);
+                        } else {
+                            p.sendMessage(StringUtils.color((response == MiscUtils.BuyResponse.NOT_ENOUGH_VAULT ? IridiumSkyblock.getInstance().getMessages().cantBuy : IridiumSkyblock.getInstance().getMessages().notEnoughCrystals)
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                     } else {
-                        e.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().spawnerBoosterActive.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().boosterAlreadyActive
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                .replace("%booster%", booster.name)));
                     }
                 }
             }

@@ -566,6 +566,10 @@ public class IridiumSkyblock extends JavaPlugin {
         stackable = persist.getFile(Stackable.class).exists() ? persist.load(Stackable.class) : new Stackable();
         bank = persist.getFile(Bank.class).exists() ? persist.load(Bank.class) : new Bank();
 
+        islandUpgrades.clear();
+        islandBoosters.clear();
+        bankItems.clear();
+        
         registerUpgrade(getUpgrades().islandSizeUpgrade);
         registerUpgrade(getUpgrades().islandMemberUpgrade);
         registerUpgrade(getUpgrades().islandOresUpgrade);
