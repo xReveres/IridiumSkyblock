@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.database.orm.User;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.orm.Island;
+import com.iridium.iridiumskyblock.database.orm.User;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public final class DatabaseWrapper {
 
-    private static final SQL SQL_CONFIG = IridiumSkyblock.getSql();
+    private static final SQL SQL_CONFIG = IridiumSkyblock.getInstance().getSql();
 
     private final Dao<User, Integer> userDao;
     private final Dao<Island, Integer> islandDao;
