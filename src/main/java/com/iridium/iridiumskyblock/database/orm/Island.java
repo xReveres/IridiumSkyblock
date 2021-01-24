@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.database.orm;
 
-import com.iridium.iridiumskyblock.schematics.Schematic;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -68,7 +67,4 @@ public final class Island {
 
     @DatabaseField(columnName = "last_regen")
     @Nullable LocalDateTime lastRegenTime;
-
-    @DatabaseField(columnName = "last_player_caching")
-    @Nullable LocalDateTime lastPlayerCaching;
 }
