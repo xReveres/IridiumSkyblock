@@ -95,6 +95,8 @@ public class Inventories {
         public Item item;
         public String command;
 
+        public MenuItem(){}
+
         public MenuItem(Item item, String command) {
             this.item = item;
             this.command = command;
