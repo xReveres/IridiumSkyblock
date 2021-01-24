@@ -88,13 +88,19 @@ public class Persist {
     }
 
     public <T> T load(Class<T> clazz, File file) {
-        try {
-            return objectMapper.readValue(file, clazz);
-        } catch (IOException e) {
-            IridiumSkyblock.getInstance().getLogger().severe("Failed to parse " + file.toString() + ": " + e.getMessage());
-            Bukkit.getPluginManager().disablePlugin(IridiumSkyblock.getInstance());
+        if (file.exists()) {
+            try {
+                return objectMapper.readValue(file, clazz);
+            } catch (IOException e) {
+                IridiumSkyblock.getInstance().getLogger().severe("Failed to parse " + file.toString() + ": " + e.getMessage());
+                Bukkit.getPluginManager().disablePlugin(IridiumSkyblock.getInstance());
+            }
         }
-
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

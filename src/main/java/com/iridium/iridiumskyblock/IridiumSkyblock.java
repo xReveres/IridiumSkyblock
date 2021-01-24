@@ -140,7 +140,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
             IslandManager.makeWorlds();
             IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
-            try{
+            try {
                 database = new DatabaseWrapper();
             } catch (SQLException exception) {
                 exception.printStackTrace();
@@ -501,25 +501,25 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void loadConfigs() {
-        configuration = persist.getFile(Config.class).exists() ? persist.load(Config.class) : new Config();
-        sql = persist.getFile(SQL.class).exists() ? persist.load(SQL.class) : new SQL();
-        missions = persist.getFile(Missions.class).exists() ? persist.load(Missions.class) : new Missions();
-        messages = persist.getFile(Messages.class).exists() ? persist.load(Messages.class) : new Messages();
-        upgrades = persist.getFile(Upgrades.class).exists() ? persist.load(Upgrades.class) : new Upgrades();
-        boosters = persist.getFile(Boosters.class).exists() ? persist.load(Boosters.class) : new Boosters();
-        inventories = persist.getFile(Inventories.class).exists() ? persist.load(Inventories.class) : new Inventories();
-        schematics = persist.getFile(Schematics.class).exists() ? persist.load(Schematics.class) : new Schematics();
-        commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
-        blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
-        shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
-        border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
-        stackable = persist.getFile(Stackable.class).exists() ? persist.load(Stackable.class) : new Stackable();
-        bank = persist.getFile(Bank.class).exists() ? persist.load(Bank.class) : new Bank();
+        configuration = persist.load(Config.class);
+        sql = persist.load(SQL.class);
+        missions = persist.load(Missions.class);
+        messages = persist.load(Messages.class);
+        upgrades = persist.load(Upgrades.class);
+        boosters = persist.load(Boosters.class);
+        inventories = persist.load(Inventories.class);
+        schematics = persist.load(Schematics.class);
+        commands = persist.load(Commands.class);
+        blockValues = persist.load(BlockValues.class);
+        shop = persist.load(Shop.class);
+        border = persist.load(Border.class);
+        stackable = persist.load(Stackable.class);
+        bank = persist.load(Bank.class);
 
         islandUpgrades.clear();
         islandBoosters.clear();
         bankItems.clear();
-        
+
         registerUpgrade(getUpgrades().islandSizeUpgrade);
         registerUpgrade(getUpgrades().islandMemberUpgrade);
         registerUpgrade(getUpgrades().islandOresUpgrade);
