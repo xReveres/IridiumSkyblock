@@ -1107,17 +1107,23 @@ public class Island {
     }
 
     public void setOwner(OfflinePlayer owner) {
+        User oldOwner = User.getUser(this.owner);
+        User newOwner = User.getUser(owner);
+        PreLeaderChangeEvent event = new PreLeaderChangeEvent(this, oldOwner, newOwner);
+        Bukkit.getPluginManager().callEvent(event);
+        if (!event.isCancelled()) {
+            return;
+        }
         for (String player : members) {
-            User user = User.getUser(player);
-            Player p = Bukkit.getPlayer(user.name);
+            Player p = Bukkit.getPlayer(UUID.fromString(player));
             if (p != null) {
-                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().transferdOwnership.replace("%player%", owner.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().transferdOwnership.replace("%player%", newOwner.name).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 
             }
         }
-        User.getUser(this.owner).role = Role.CoOwner;
+        oldOwner.role = Role.CoOwner;
         this.owner = owner.getUniqueId().toString();
-        User.getUser(owner).role = Role.Owner;
+        newOwner.role = Role.Owner;
     }
 
     public void removeWarp(IslandWarp islandWarp) {

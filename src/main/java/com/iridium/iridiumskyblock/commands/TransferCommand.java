@@ -34,11 +34,7 @@ public class TransferCommand extends Command {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
                 User toUser = User.getUser(player);
                 if (island.equals(toUser.getIsland())) {
-                    PreLeaderChangeEvent event = new PreLeaderChangeEvent(island, user, toUser);
-                    Bukkit.getPluginManager().callEvent(event);
-                    if (!event.isCancelled()) {
-                        p.openInventory(new ConfirmationGUI(user.getIsland(), () -> island.setOwner(player), IridiumSkyblock.getInstance().getMessages().transferAction.replace("%player%", toUser.name)).getInventory());
-                    }
+                    p.openInventory(new ConfirmationGUI(user.getIsland(), () -> island.setOwner(player), IridiumSkyblock.getInstance().getMessages().transferAction.replace("%player%", toUser.name)).getInventory());
                 } else {
                     sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
