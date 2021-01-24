@@ -128,7 +128,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getUpdateFolderFile().mkdir();
         getDataFolder().mkdir();
 
-        persist = new Persist(Persist.PersistType.YAML);
+        persist = new Persist(Persist.PersistType.JSON);
 
         new Metrics(this, 5825);
 
@@ -422,21 +422,20 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
+    public void loadSchematic(String name) {
+        if (!new File(schematicFolder, name).exists()) {
+            if (getResource("schematics/" + name) != null) {
+                saveResource("schematics/" + name, false);
+            }
+        }
+    }
+
     public void loadSchematics() throws IOException {
         schematicFolder = new File(getDataFolder(), "schematics");
-        if (!schematicFolder.exists()) {
-            schematicFolder.mkdir();
-        }
-        if (!new File(schematicFolder, "island.schematic").exists()) {
-            if (getResource("schematics/island.schematic") != null) {
-                saveResource("schematics/island.schematic", false);
-            }
-        }
-        if (!new File(schematicFolder, "nether.schematic").exists()) {
-            if (getResource("schematics/nether.schematic") != null) {
-                saveResource("schematics/nether.schematic", false);
-            }
-        }
+        if (!schematicFolder.exists()) schematicFolder.mkdir();
+        loadSchematic("desert.schem");
+        loadSchematic("jungle.schem");
+        loadSchematic("mushroom.schem");
 
         for (Schematics.FakeSchematic fakeSchematic : schematics.schematicList) {
             File overworld = new File(schematicFolder, fakeSchematic.overworldData.schematic);
