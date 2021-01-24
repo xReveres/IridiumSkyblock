@@ -13,6 +13,7 @@ import com.j256.ormlite.table.TableUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -50,12 +51,16 @@ public final class DatabaseWrapper {
 
     private @NotNull String getDatabaseURL() {
         switch (SQL_CONFIG.driver) {
-            case MYSQL: case MARIADB: case POSTGRESQL:
+            case MYSQL:
+            case MARIADB:
+            case POSTGRESQL:
                 return "jdbc:" + SQL_CONFIG.driver + "://" + SQL_CONFIG.host + ":" + SQL_CONFIG.port + "/" + SQL_CONFIG.database;
             case SQLSERVER:
                 return "jdbc:sqlserver://" + SQL_CONFIG.host + ":" + SQL_CONFIG.port + ";databaseName=" + SQL_CONFIG.database;
             case H2:
                 return "jdbc:h2:file:" + SQL_CONFIG.database;
+            case SQLITE:
+                return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), SQL_CONFIG.database + ".db");
         }
 
         throw new RuntimeException("How did we get here?");

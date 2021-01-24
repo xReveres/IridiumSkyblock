@@ -140,6 +140,11 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
             IslandManager.makeWorlds();
             IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
+            try{
+                database = new DatabaseWrapper();
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
             loadManagers();
 
             if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
