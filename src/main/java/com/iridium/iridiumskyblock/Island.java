@@ -1109,7 +1109,7 @@ public class Island {
     public void setOwner(OfflinePlayer owner) {
         User oldOwner = User.getUser(this.owner);
         User newOwner = User.getUser(owner);
-        PreLeaderChangeEvent event = new PreLeaderChangeEvent(this, oldOwner, newOwner);
+        IslandLeaderChangeEvent event = new IslandLeaderChangeEvent(this, oldOwner, newOwner);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             return;
