@@ -1,11 +1,15 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 
 public class Upgrades {
 
@@ -60,8 +64,11 @@ public class Upgrades {
         }
     }
 
-    //TODO Fix polymorphism with jackson
-
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = PROPERTY)
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = IslandOreUpgrade.class, name = "IslandOreUpgrade"),
+            @JsonSubTypes.Type(value = IslandBlockLimitUpgrade.class, name = "IslandBlockLimitUpgrade")
+    })
     public static class IslandUpgrade {
         public int crystalsCost;
         public int vaultCost;
