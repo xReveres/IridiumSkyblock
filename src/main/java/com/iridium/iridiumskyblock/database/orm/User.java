@@ -4,11 +4,9 @@ import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Role;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,27 +22,32 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @DatabaseTable(tableName = "users")
 public final class User {
 
     @DatabaseField(columnName = "id", generatedId = true)
-    @Nullable Integer id;
+    @Nullable
+    private Integer id;
 
     @DatabaseField(columnName = "uuid", canBeNull = false)
-    @NotNull UUID uuid;
+    @NotNull
+    private UUID uuid;
 
     @DatabaseField(columnName = "name", canBeNull = false)
-    @NotNull String name;
+    @NotNull
+    private String name;
 
     @DatabaseField(columnName = "island_id", foreign = true)
-    @NotNull Island island;
+    @NotNull
+    private Island island;
 
     @DatabaseField(columnName = "role")
-    @Nullable Role role;
+    @Nullable
+    private Role role;
 
     @DatabaseField(columnName = "last_creation_time", canBeNull = false)
-    @Nullable LocalDateTime lastCreationTime; // May not fully work yet, still waiting on java.time support for ormlite
+    @Nullable
+    private LocalDateTime lastCreationTime; // May not fully work yet, still waiting on java.time support for ormlite
 
     public User(final @NotNull UUID uuid, final @NotNull String name) {
         this.uuid = uuid;

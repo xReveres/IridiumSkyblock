@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldDefaults;
 import org.bukkit.block.Biome;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,44 +26,42 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @DatabaseTable(tableName = "islands")
 public final class Island {
 
     @DatabaseField(columnName = "id", generatedId = true)
-    @Nullable Integer id;
+    @Nullable
+    private Integer id;
 
     @DatabaseField(columnName = "name", canBeNull = false)
-    @NotNull String name;
+    @NotNull
+    private String name;
 
     @DatabaseField(columnName = "owner_id", foreign = true, unique = true)
-    @NotNull User owner;
+    @NotNull
+    private User owner;
 
     @ForeignCollectionField
     @Setter(AccessLevel.PRIVATE)
-    ForeignCollection<User> members;
-
-    @DatabaseField(columnName = "value", canBeNull = false)
-    int value;
-
-    @DatabaseField(columnName = "balance", canBeNull = false)
-    int balance;
-
-    @DatabaseField(columnName = "experience", canBeNull = false)
-    int experience;
+    private ForeignCollection<User> members;
 
     @DatabaseField(columnName = "biome", canBeNull = false)
-    @NotNull Biome biome;
+    @NotNull
+    private Biome biome;
 
     @DatabaseField(columnName = "nether_biome", canBeNull = false)
-    @NotNull Biome netherBiome;
+    @NotNull
+    private Biome netherBiome;
 
     @DatabaseField(columnName = "schematic", canBeNull = false)
-    @NotNull String schematic;
+    @NotNull
+    private String schematic;
 
     @DatabaseField(columnName = "nether_schematic", canBeNull = false)
-    @NotNull String netherSchematic;
+    @NotNull
+    private String netherSchematic;
 
     @DatabaseField(columnName = "last_regen")
-    @Nullable LocalDateTime lastRegenTime;
+    @Nullable
+    private LocalDateTime lastRegenTime;
 }
