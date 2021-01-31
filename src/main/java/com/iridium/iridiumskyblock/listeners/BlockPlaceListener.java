@@ -110,24 +110,16 @@ public class BlockPlaceListener implements Listener {
 
     @EventHandler
     public void onBlockClick(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         final Block block = event.getClickedBlock();
-        if (block == null || block.getType() == Material.AIR) {
-            return;
-        }
+        if (block == null || block.getType() == Material.AIR) return;
         final Location location = block.getLocation();
         final Island island = IslandManager.getIslandViaLocation(location);
 
         final Material material = block.getType();
         final XMaterial xmaterial = XMaterial.matchXMaterial(material);
-        if (island == null) {
-            return;
-        }
-        if (!island.getPermissions(User.getUser(event.getPlayer())).placeBlocks) {
-            return;
-        }
+        if (island == null) return;
+        if (!island.getPermissions(User.getUser(event.getPlayer())).placeBlocks) return;
         int amount = event.getPlayer().getItemInHand().getAmount();
 
         if (IridiumSkyblock.getInstance().getConfiguration().enableBlockStacking) {
@@ -141,8 +133,7 @@ public class BlockPlaceListener implements Listener {
             if (event.getPlayer().isSneaking() && material == event.getPlayer().getItemInHand().getType() && canStack) {
                 event.setCancelled(true);
                 island.stackedBlocks.compute(location, (loc, original) -> {
-                    if (original == null)
-                        return 1 + amount;
+                    if (original == null) return 1 + amount;
                     return original + amount;
                 });
 

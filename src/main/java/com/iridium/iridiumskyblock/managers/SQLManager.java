@@ -18,9 +18,7 @@ public class SQLManager {
     }
 
     private void setupConnection() {
-        if (hikariDataSource != null) {
-            return;
-        }
+        if (hikariDataSource != null) return;
 
         HikariConfig hikariConfig = new HikariConfig();
 
@@ -57,7 +55,7 @@ public class SQLManager {
 
     public void deleteAll() {
 
-        try (Connection connection = getConnection()){
+        try (Connection connection = getConnection()) {
             connection.createStatement().executeUpdate("DELETE FROM users;");
             connection.createStatement().executeUpdate("DELETE FROM claims;");
             connection.createStatement().executeUpdate("DELETE FROM islands;");
@@ -71,7 +69,7 @@ public class SQLManager {
     }
 
     public void createTables() {
-        try (Connection connection = getConnection()){
+        try (Connection connection = getConnection()) {
 
             connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS users "
                     + "(UUID VARCHAR(255), json TEXT, PRIMARY KEY (UUID));");

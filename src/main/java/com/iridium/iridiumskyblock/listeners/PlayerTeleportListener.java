@@ -23,14 +23,10 @@ public class PlayerTeleportListener implements Listener {
         final Location fromLocation = event.getFrom();
         if (!IslandManager.isIslandWorld(toLocation)) return;
         final Island toIsland = IslandManager.getIslandViaLocation(toLocation);
-        if (toIsland == null) {
-            return;
-        }
+        if (toIsland == null) return;
 
         final Player player = event.getPlayer();
-        if (player.hasMetadata("NPC")) {
-            return;
-        }
+        if (player.hasMetadata("NPC")) return;
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendHolograms(player), 1);
         final User user = User.getUser(player);
@@ -49,9 +45,7 @@ public class PlayerTeleportListener implements Listener {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendBorder(player), 1);
                 if (user.islandID != toIsland.id) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().visitingIsland.replace("%player%", User.getUser(toIsland.owner).name).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    if (player.hasPermission("iridiumskyblock.silentvisit")) {
-                        return;
-                    }
+                    if (player.hasPermission("iridiumskyblock.silentvisit")) return;
                     for (String pl : toIsland.members) {
                         Player p = Bukkit.getPlayer(UUID.fromString(pl));
                         if (p != null && p.canSee(player)) {
