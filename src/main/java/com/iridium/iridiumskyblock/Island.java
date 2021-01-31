@@ -786,7 +786,7 @@ public class Island {
             p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().visitingIsland.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             for (String pl : members) {
                 Player player = Bukkit.getPlayer(User.getUser(pl).name);
-                if (player != null) {
+                if (player != null && !player.hasMetadata("NPC")) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().visitedYourIsland.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
