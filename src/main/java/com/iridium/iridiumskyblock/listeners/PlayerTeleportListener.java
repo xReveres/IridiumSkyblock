@@ -26,6 +26,8 @@ public class PlayerTeleportListener implements Listener {
         if (toIsland == null) return;
 
         final Player player = event.getPlayer();
+        if (player.hasMetadata("NPC")) return;
+
         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> toIsland.sendHolograms(player), 1);
         final User user = User.getUser(player);
 

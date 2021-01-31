@@ -8,12 +8,15 @@ import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.bukkit.CropState;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NetherWartsState;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.material.Crops;
+import org.bukkit.material.MaterialData;
+import org.bukkit.material.NetherWarts;
 
 public class BlockGrowListener implements Listener {
 
@@ -31,9 +34,14 @@ public class BlockGrowListener implements Listener {
 
         event.setCancelled(true);
 
-        final Crops crops = new Crops(CropState.RIPE);
         final BlockState blockState = block.getState();
-        blockState.setData(crops);
+        MaterialData data;
+        if (XBlock.isNetherWart(material)) {
+            data = new NetherWarts(NetherWartsState.RIPE);
+        } else {
+            data = new Crops(CropState.RIPE);
+        }
+        blockState.setData(data);
         blockState.update();
     }
 }
