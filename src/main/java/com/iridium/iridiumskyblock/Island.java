@@ -782,11 +782,11 @@ public class Island {
         p.setFallDistance(0);
         if (members.contains(p.getUniqueId().toString())) {
             p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        } else {
+        } else if(!p.hasMetadata("NPC")){
             p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().visitingIsland.replace("%player%", User.getUser(owner).name).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             for (String pl : members) {
                 Player player = Bukkit.getPlayer(User.getUser(pl).name);
-                if (player != null && !player.hasMetadata("NPC")) {
+                if (player != null) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().visitedYourIsland.replace("%player%", p.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
