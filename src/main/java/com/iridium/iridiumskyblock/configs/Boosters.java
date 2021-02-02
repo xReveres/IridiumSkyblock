@@ -19,6 +19,8 @@ public class Boosters {
         public boolean enabled;
         public Inventories.Item item;
 
+        public Booster(){}
+
         public Booster(String name, int crystalsCost, int vaultCost, int time, boolean enabled, Inventories.Item item) {
             this.name = name;
             this.crystalsCost = crystalsCost;

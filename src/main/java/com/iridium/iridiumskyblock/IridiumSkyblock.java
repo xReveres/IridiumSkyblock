@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
+import com.iridium.iridiumskyblock.database.DatabaseWrapper;
 import com.iridium.iridiumskyblock.gui.*;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.IslandDataManager;
@@ -22,9 +23,9 @@ import com.iridium.iridiumskyblock.schematics.Schematic;
 import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.schematics.WorldEdit6;
 import com.iridium.iridiumskyblock.schematics.WorldEdit7;
-import com.iridium.iridiumskyblock.serializer.Persist;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.StringUtils;
+import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -93,9 +94,13 @@ public class IridiumSkyblock extends JavaPlugin {
         return instance;
     }
 
+    @Getter
+    private DatabaseWrapper database;
+
     @Override
     public void onEnable() {
         instance = this;
+
         try {
             nms = (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
         } catch (ClassNotFoundException e) {
@@ -123,7 +128,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getUpdateFolderFile().mkdir();
         getDataFolder().mkdir();
 
-        persist = new Persist();
+        persist = new Persist(Persist.PersistType.JSON);
 
         new Metrics(this, 5825);
 
@@ -135,6 +140,11 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getScheduler().runTask(this, () -> { // Call this a tick later to ensure all worlds are loaded
             IslandManager.makeWorlds();
             IslandManager.nextLocation = new Location(IslandManager.getWorld(), 0, 0, 0);
+            try {
+                database = new DatabaseWrapper();
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
             loadManagers();
 
             if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) registerMultiverse();
@@ -412,21 +422,20 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
+    public void loadSchematic(String name) {
+        if (!new File(schematicFolder, name).exists()) {
+            if (getResource("schematics/" + name) != null) {
+                saveResource("schematics/" + name, false);
+            }
+        }
+    }
+
     public void loadSchematics() throws IOException {
         schematicFolder = new File(getDataFolder(), "schematics");
-        if (!schematicFolder.exists()) {
-            schematicFolder.mkdir();
-        }
-        if (!new File(schematicFolder, "island.schematic").exists()) {
-            if (getResource("schematics/island.schematic") != null) {
-                saveResource("schematics/island.schematic", false);
-            }
-        }
-        if (!new File(schematicFolder, "nether.schematic").exists()) {
-            if (getResource("schematics/nether.schematic") != null) {
-                saveResource("schematics/nether.schematic", false);
-            }
-        }
+        if (!schematicFolder.exists()) schematicFolder.mkdir();
+        loadSchematic("desert.schem");
+        loadSchematic("jungle.schem");
+        loadSchematic("mushroom.schem");
 
         for (Schematics.FakeSchematic fakeSchematic : schematics.schematicList) {
             File overworld = new File(schematicFolder, fakeSchematic.overworldData.schematic);
@@ -491,20 +500,20 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     public void loadConfigs() {
-        configuration = persist.getFile(Config.class).exists() ? persist.load(Config.class) : new Config();
-        sql = persist.getFile(SQL.class).exists() ? persist.load(SQL.class) : new SQL();
-        missions = persist.getFile(Missions.class).exists() ? persist.load(Missions.class) : new Missions();
-        messages = persist.getFile(Messages.class).exists() ? persist.load(Messages.class) : new Messages();
-        upgrades = persist.getFile(Upgrades.class).exists() ? persist.load(Upgrades.class) : new Upgrades();
-        boosters = persist.getFile(Boosters.class).exists() ? persist.load(Boosters.class) : new Boosters();
-        inventories = persist.getFile(Inventories.class).exists() ? persist.load(Inventories.class) : new Inventories();
-        schematics = persist.getFile(Schematics.class).exists() ? persist.load(Schematics.class) : new Schematics();
-        commands = persist.getFile(Commands.class).exists() ? persist.load(Commands.class) : new Commands();
-        blockValues = persist.getFile(BlockValues.class).exists() ? persist.load(BlockValues.class) : new BlockValues();
-        shop = persist.getFile(Shop.class).exists() ? persist.load(Shop.class) : new Shop();
-        border = persist.getFile(Border.class).exists() ? persist.load(Border.class) : new Border();
-        stackable = persist.getFile(Stackable.class).exists() ? persist.load(Stackable.class) : new Stackable();
-        bank = persist.getFile(Bank.class).exists() ? persist.load(Bank.class) : new Bank();
+        configuration = persist.load(Config.class);
+        sql = persist.load(SQL.class);
+        missions = persist.load(Missions.class);
+        messages = persist.load(Messages.class);
+        upgrades = persist.load(Upgrades.class);
+        boosters = persist.load(Boosters.class);
+        inventories = persist.load(Inventories.class);
+        schematics = persist.load(Schematics.class);
+        commands = persist.load(Commands.class);
+        blockValues = persist.load(BlockValues.class);
+        shop = persist.load(Shop.class);
+        border = persist.load(Border.class);
+        stackable = persist.load(Stackable.class);
+        bank = persist.load(Bank.class);
 
         islandUpgrades.clear();
         islandBoosters.clear();

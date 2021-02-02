@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
@@ -26,15 +25,9 @@ public class SchematicSelectGUI extends GUI implements Listener {
         if (getInventory().getViewers().isEmpty()) return;
         if (getIsland() != null) {
             int i = 0;
-            for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().getSchematics().schematicList) {
-                if (fakeSchematic.slot == null) fakeSchematic.slot = i;
-                try {
-                    setItem(fakeSchematic.slot, ItemStackUtils.makeItem(fakeSchematic.item, 1, fakeSchematic.displayname, fakeSchematic.lore));
-                } catch (Exception e) {
-                    setItem(fakeSchematic.slot, ItemStackUtils.makeItem(XMaterial.STONE, 1, fakeSchematic.displayname, fakeSchematic.lore));
-                }
-                i++;
-            }
+            IridiumSkyblock.getInstance().getSchematics().schematicList.stream().map(fakeSchematic -> fakeSchematic.item).forEach(item -> {
+                setItem(item.slot, ItemStackUtils.makeItem(item));
+            });
         }
     }
 
@@ -45,7 +38,7 @@ public class SchematicSelectGUI extends GUI implements Listener {
             e.setCancelled(true);
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().getSchematics().schematicList) {
-                if (e.getSlot() == fakeSchematic.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
+                if (e.getSlot() == fakeSchematic.item.slot && (fakeSchematic.permission.isEmpty() || e.getWhoClicked().hasPermission(fakeSchematic.permission))) {
                     e.getWhoClicked().closeInventory();
                     if (getIsland().schematic != null) {
                         for (String player : getIsland().members) {
