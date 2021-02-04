@@ -420,7 +420,7 @@ public class IridiumSkyblock extends JavaPlugin {
         }
     }
 
-    public void loadSchematic(String name) {
+    public void saveSchematics(String name) {
         if (!new File(schematicFolder, name).exists()) {
             if (getResource("schematics/" + name) != null) {
                 saveResource("schematics/" + name, false);
@@ -431,9 +431,9 @@ public class IridiumSkyblock extends JavaPlugin {
     public void loadSchematics() throws IOException {
         schematicFolder = new File(getDataFolder(), "schematics");
         if (!schematicFolder.exists()) schematicFolder.mkdir();
-        loadSchematic("desert.schem");
-        loadSchematic("jungle.schem");
-        loadSchematic("mushroom.schem");
+        saveSchematics("desert.schem");
+        saveSchematics("jungle.schem");
+        saveSchematics("mushroom.schem");
 
         for (Schematics.FakeSchematic fakeSchematic : schematics.schematicList) {
             File overworld = new File(schematicFolder, fakeSchematic.overworldData.schematic);
