@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.database.orm;
 
-import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Role;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
