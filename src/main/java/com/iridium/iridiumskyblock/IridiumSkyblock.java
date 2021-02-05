@@ -434,6 +434,7 @@ public class IridiumSkyblock extends JavaPlugin {
         saveSchematics("desert.schem");
         saveSchematics("jungle.schem");
         saveSchematics("mushroom.schem");
+        saveSchematics("nether.schematic");
 
         for (Schematics.FakeSchematic fakeSchematic : schematics.schematicList) {
             File overworld = new File(schematicFolder, fakeSchematic.overworldData.schematic);
