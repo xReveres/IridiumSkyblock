@@ -555,6 +555,7 @@ public class Island {
             members = new HashSet<>();
             members.add(owner);
         }
+        //TODO recode GUI's to top  registering a litener per  island
         upgradeGUI = new UpgradeGUI(this);
         boosterGUI = new BoosterGUI(this);
         missionsGUI = new MissionsGUI(this);
@@ -589,6 +590,7 @@ public class Island {
 
         failedGenerators = new HashSet<>();
         coopInvites = new HashSet<>();
+        //TODO remove this, store a Time in HashMap instead? and schedule a runnable/event when its expired.
         boosterId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), () -> {
             for (String booster : new ArrayList<>(boosterTimes.keySet())) {
                 int time = boosterTimes.get(booster);
