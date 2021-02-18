@@ -20,22 +20,33 @@ public class PlayerFishListener implements Listener {
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
         final Player player = event.getPlayer();
-        final Location location = player.getLocation();
+        final Location location = event.getHook().getLocation();
         if (!IslandManager.isIslandWorld(location)) return;
+
+        final User user = User.getUser(player);
+        final Island userIsland = user.getIsland();
+        if (userIsland == null) return;
+
+        // Prevent entities from being caught on other islands
+        if (!userIsland.isInIsland(location)) {
+            Island island = IslandManager.getIslandViaLocation(location);
+            if (!island.members.contains(user.player) && !island.isCoop(userIsland)) {
+                if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
 
         if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) return;
 
-        final User user = User.getUser(player);
-        final Island island = user.getIsland();
-        if (island == null) return;
-
         for (Mission mission : IridiumSkyblock.getInstance().getMissions().missions) {
-            final Map<String, Integer> levels = island.getMissionLevels();
+            final Map<String, Integer> levels = userIsland.getMissionLevels();
             levels.putIfAbsent(mission.name, 1);
 
             final MissionData level = mission.levels.get(levels.get(mission.name));
             if (level.type == MissionType.FISH_CATCH)
-                island.addMission(mission.name, 1);
+                userIsland.addMission(mission.name, 1);
         }
     }
 }
