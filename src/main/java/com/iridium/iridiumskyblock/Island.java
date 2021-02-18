@@ -1217,7 +1217,7 @@ public class Island {
     }
 
     public String getFormattedLevel() {
-        return NumberFormatter.format(value / IridiumSkyblock.getInstance().getConfiguration().valuePerLevel);
+        return NumberFormatter.format(Math.floor(value / IridiumSkyblock.getInstance().getConfiguration().valuePerLevel));
     }
 
     public int getCrystals() {
