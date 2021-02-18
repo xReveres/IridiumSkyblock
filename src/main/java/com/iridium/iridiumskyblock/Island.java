@@ -16,6 +16,7 @@ import com.iridium.iridiumskyblock.utils.MiscUtils;
 import com.iridium.iridiumskyblock.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.utils.Placeholder;
 import com.iridium.iridiumskyblock.utils.StringUtils;
+import io.netty.util.internal.ConcurrentSet;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -106,7 +107,8 @@ public class Island {
     private Set<String> votes;
     private Set<Integer> coop;
     private Date lastRegen;
-    private transient Set<Player> playersOnIsland;
+
+    private transient ConcurrentSet<Player> playersOnIsland;
     private long lastPlayerCaching;
 
     public Island(Player owner, Location pos1, Location pos2, Location center, Location home, int id) {
@@ -538,7 +540,7 @@ public class Island {
 
     public void init() {
         if (islandWarps == null) islandWarps = new ArrayList<>();
-        this.playersOnIsland = new HashSet<>();
+        this.playersOnIsland = new ConcurrentSet<>();
         this.lastPlayerCaching = 0L;
         if (netherschematic == null) {
             for (Schematics.FakeSchematic fakeSchematic : IridiumSkyblock.getInstance().getSchematics().schematicList) {
