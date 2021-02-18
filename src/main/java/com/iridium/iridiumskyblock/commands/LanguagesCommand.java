@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -10,13 +11,18 @@ import java.util.List;
 public class LanguagesCommand extends Command {
 
     public LanguagesCommand() {
-        super(Arrays.asList("language", "languages", "translate"), "Change the plugin language", "language", true);
+        super(Arrays.asList("language", "languages", "translate"), "Change the plugin language", "IridiumSkyblock.getLatest", true);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        p.openInventory(IridiumSkyblock.getInstance().languagesGUI.pages.get(1).getInventory());
+        p.openInventory(IridiumSkyblock.getInstance().getLanguagesGUI().getPage(1).getInventory());
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

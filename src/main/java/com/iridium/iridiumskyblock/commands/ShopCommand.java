@@ -1,26 +1,43 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.configs.Shop;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShopCommand extends Command {
 
     public ShopCommand() {
-        super(Arrays.asList("shop"), "Access the Skyblock Shop", "", true);
+        super(Collections.singletonList("shop"), "Access the Skyblock Shop", "", true);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        p.openInventory(IridiumSkyblock.getShopGUI().getInventory());
+        if (args.length > 1) {
+            String shopName = args[1];
+            for (Shop.ShopObject shopObject : IridiumSkyblock.getInstance().getShop().shop) {
+                if (shopObject.name.equalsIgnoreCase(shopName)) {
+                    p.openInventory(IridiumSkyblock.getInstance().getShopGUI().pages.getPage(shopObject.slot).getPage(1).getInventory());
+                    return;
+                }
+            }
+        }
+        p.openInventory(IridiumSkyblock.getInstance().getShopGUI().getInventory());
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
-        return null;
+        return IridiumSkyblock.getInstance().getShop().shop.stream().map(shopObject -> shopObject.name).collect(Collectors.toList());
     }
 }

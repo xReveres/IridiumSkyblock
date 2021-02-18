@@ -1,11 +1,11 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.configs.Config;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.IslandManager;
-import com.iridium.iridiumskyblock.Utils;
-import com.iridium.iridiumskyblock.XMaterial;
+import com.iridium.iridiumskyblock.configs.Config;
+import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.MiscUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,89 +25,72 @@ public class BlockFromToListener implements Listener {
 
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent event) {
-        try {
-            final Block block = event.getBlock();
-            final Location location = block.getLocation();
-            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) return;
+        final Block block = event.getBlock();
+        final Location location = block.getLocation();
+        final Island island = IslandManager.getIslandViaLocation(location);
+        if (island == null) return;
 
-            final Material material = block.getType();
-            final Block toBlock = event.getToBlock();
-            final Location toLocation = toBlock.getLocation();
+        final Material material = block.getType();
+        final Block toBlock = event.getToBlock();
+        final Location toLocation = toBlock.getLocation();
 
-            if (material.equals(Material.WATER) || material.equals(Material.LAVA)) {
-                final Island toIsland = islandManager.getIslandViaLocation(toLocation);
-                if (island != toIsland)
-                    event.setCancelled(true);
-            }
+        if (material.equals(Material.WATER) || material.equals(Material.LAVA)) {
+            final Island toIsland = IslandManager.getIslandViaLocation(toLocation);
+            if (island != toIsland)
+                event.setCancelled(true);
+        }
 
-            if (!IridiumSkyblock.getUpgrades().oresUpgrade.enabled) return;
+        if (!IridiumSkyblock.getInstance().getUpgrades().islandOresUpgrade.enabled) return;
 
-            if (event.getFace() == BlockFace.DOWN) return;
+        if (event.getFace() == BlockFace.DOWN) return;
 
-            if (!isSurroundedByWater(toLocation))
+        if (!isSurroundedByWater(toLocation))
+            return;
+
+        final int oreLevel = island.getOreLevel();
+        final World world = location.getWorld();
+        if (world == null) return;
+
+        final String worldName = world.getName();
+        final Config config = IridiumSkyblock.getInstance().getConfiguration();
+        List<XMaterial> islandOreUpgrades = worldName.equals(config.netherWorldName) ? IridiumSkyblock.getInstance().getNetherOreCache(oreLevel) : IridiumSkyblock.getInstance().getOreCache(oreLevel);
+
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+            final Material toMaterial = toBlock.getType();
+            if (!(toMaterial.equals(Material.COBBLESTONE) || toMaterial.equals(Material.STONE)))
                 return;
 
-            final int oreLevel = island.getOreLevel();
-            final World world = location.getWorld();
-            if (world == null) return;
+            final Random random = new Random();
+            final Material oreUpgrade = islandOreUpgrades.get(random.nextInt(islandOreUpgrades.size())).parseMaterial();
 
-            final String worldName = world.getName();
-            final Config config = IridiumSkyblock.getConfiguration();
-            List<String> islandOreUpgrades;
-            if (worldName.equals(config.worldName)) islandOreUpgrades = IridiumSkyblock.oreUpgradeCache.get(oreLevel);
-            else if (worldName.equals(config.netherWorldName)) islandOreUpgrades = IridiumSkyblock.netherOreUpgradeCache.get(oreLevel);
-            else return;
+            if (oreUpgrade == null) return;
 
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                final Material toMaterial = toBlock.getType();
-                if (!(toMaterial.equals(Material.COBBLESTONE) || toMaterial.equals(Material.STONE)))
-                    return;
+            toBlock.setType(oreUpgrade);
 
-                final Random random = new Random();
-                final String oreUpgrade = islandOreUpgrades.get(random.nextInt(islandOreUpgrades.size()));
+            final BlockState blockState = toBlock.getState();
+            blockState.update(true);
 
-                final XMaterial oreUpgradeXmaterial = XMaterial.valueOf(oreUpgrade);
-                final Material oreUpgradeMaterial = oreUpgradeXmaterial.parseMaterial(true);
-                if (oreUpgradeMaterial == null) return;
-
-                toBlock.setType(oreUpgradeMaterial);
-
-                final BlockState blockState = toBlock.getState();
-                blockState.update(true);
-
-                if (Utils.isBlockValuable(toBlock)) {
-                    final XMaterial xmaterial = XMaterial.matchXMaterial(material);
-                    island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
-                        if (original == null) return 1;
-                        return original + 1;
-                    });
-                    if (island.updating)
-                        island.tempValues.add(location);
-                    island.calculateIslandValue();
-                }
-            });
-        } catch (Exception ex) {
-            IridiumSkyblock.getInstance().sendErrorMessage(ex);
-        }
+            if (MiscUtils.isBlockValuable(toBlock)) {
+                final XMaterial xmaterial = XMaterial.matchXMaterial(material);
+                island.valuableBlocks.compute(xmaterial.name(), (name, original) -> {
+                    if (original == null) return 1;
+                    return original + 1;
+                });
+                island.calculateIslandValue();
+            }
+        });
     }
 
     @EventHandler
     public void onBlockFrom(BlockFormEvent event) {
-        try {
-            final Block block = event.getBlock();
-            final Location location = block.getLocation();
-            final IslandManager islandManager = IridiumSkyblock.getIslandManager();
-            final Island island = islandManager.getIslandViaLocation(location);
-            if (island == null) return;
+        final Block block = event.getBlock();
+        final Location location = block.getLocation();
+        final Island island = IslandManager.getIslandViaLocation(location);
+        if (island == null) return;
 
-            if (!event.getNewState().getType().equals(Material.OBSIDIAN)) return;
+        if (!event.getNewState().getType().equals(Material.OBSIDIAN)) return;
 
-            island.failedGenerators.add(location);
-        } catch (Exception ex) {
-            IridiumSkyblock.getInstance().sendErrorMessage(ex);
-        }
+        island.failedGenerators.add(location);
     }
 
     public boolean isSurroundedByWater(Location location) {

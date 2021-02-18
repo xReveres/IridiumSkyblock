@@ -2,16 +2,20 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.configs.Boosters;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.MiscUtils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class BoosterGUI extends GUI implements Listener {
-
     public BoosterGUI(Island island) {
-        super(island, IridiumSkyblock.getInventories().boosterGUISize, IridiumSkyblock.getInventories().boosterGUITitle);
+        super(island, IridiumSkyblock.getInstance().getInventories().boosterGUISize, IridiumSkyblock.getInstance().getInventories().boosterGUITitle);
         IridiumSkyblock.getInstance().registerListeners(this);
     }
 
@@ -19,15 +23,23 @@ public class BoosterGUI extends GUI implements Listener {
     public void addContent() {
         super.addContent();
         if (getInventory().getViewers().isEmpty()) return;
-        if (IridiumSkyblock.getIslandManager().islands.containsKey(islandID)) {
-            if (IridiumSkyblock.getBoosters().spawnerBooster.enabled)
-                setItem(IridiumSkyblock.getBoosters().spawnerBooster.slot, Utils.makeItem(IridiumSkyblock.getInventories().spawner, getIsland()));
-            if (IridiumSkyblock.getBoosters().farmingBooster.enabled)
-                setItem(IridiumSkyblock.getBoosters().farmingBooster.slot, Utils.makeItem(IridiumSkyblock.getInventories().farming, getIsland()));
-            if (IridiumSkyblock.getBoosters().experianceBooster.enabled)
-                setItem(IridiumSkyblock.getBoosters().experianceBooster.slot, Utils.makeItem(IridiumSkyblock.getInventories().exp, getIsland()));
-            if (IridiumSkyblock.getBoosters().flightBooster.enabled)
-                setItem(IridiumSkyblock.getBoosters().flightBooster.slot, Utils.makeItem(IridiumSkyblock.getInventories().flight, getIsland()));
+        if (getIsland() != null) {
+            for (Boosters.Booster booster : IridiumSkyblock.getInstance().getIslandBoosters()) {
+                if (booster.enabled) {
+                    setItem(booster.item.slot, ItemStackUtils.makeItem(booster.item, getIsland()));
+                }
+            }
+            if (IridiumSkyblock.getInstance().getInventories().backButtons)
+                setItem(getInventory().getSize() - 5, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().back));
+        }
+    }
+
+    public void sendMessage(Player p, String s) {
+        for (String m : getIsland().members) {
+            Player pl = Bukkit.getPlayer(User.getUser(m).name);
+            if (pl != null) {
+                pl.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().activatedBooster.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%player%", p.getName()).replace("%boostername%", s)));
+            }
         }
     }
 
@@ -35,52 +47,29 @@ public class BoosterGUI extends GUI implements Listener {
     @Override
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getInventory().equals(getInventory())) {
-            Player p = (Player) e.getWhoClicked();
-            Island island = IridiumSkyblock.getIslandManager().islands.get(islandID);
             e.setCancelled(true);
+            Player p = (Player) e.getWhoClicked();
             if (e.getClickedInventory() == null || !e.getClickedInventory().equals(getInventory())) return;
-            if (e.getSlot() == IridiumSkyblock.getBoosters().spawnerBooster.slot && IridiumSkyblock.getBoosters().spawnerBooster.enabled) {
-                if (getIsland().getSpawnerBooster() == 0) {
-                    if (Utils.canBuy(p, IridiumSkyblock.getBoosters().spawnerBooster.vaultCost, IridiumSkyblock.getBoosters().spawnerBooster.crystalsCost)) {
-                        getIsland().setSpawnerBooster(IridiumSkyblock.getBoosters().spawnerBooster.time);
-                    } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
-                } else {
-                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().spawnerBoosterActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
+            if (e.getSlot() == getInventory().getSize() - 5 && IridiumSkyblock.getInstance().getInventories().backButtons) {
+                e.getWhoClicked().openInventory(getIsland().islandMenuGUI.getInventory());
             }
-            if (e.getSlot() == IridiumSkyblock.getBoosters().farmingBooster.slot && IridiumSkyblock.getBoosters().farmingBooster.enabled) {
-                if (getIsland().getFarmingBooster() == 0) {
-                    if (Utils.canBuy(p, IridiumSkyblock.getBoosters().farmingBooster.vaultCost, IridiumSkyblock.getBoosters().farmingBooster.crystalsCost)) {
-                        getIsland().setFarmingBooster(IridiumSkyblock.getBoosters().farmingBooster.time);
+            for (Boosters.Booster booster : IridiumSkyblock.getInstance().getIslandBoosters()) {
+                if (booster.enabled && e.getSlot() == booster.item.slot) {
+                    int time = getIsland().getBoosterTime(booster.name);
+                    if (time == 0 || IridiumSkyblock.getInstance().getConfiguration().stackableBoosters) {
+                        MiscUtils.BuyResponse response = MiscUtils.canBuy(p, booster.vaultCost, booster.crystalsCost);
+                        if (response == MiscUtils.BuyResponse.SUCCESS) {
+                            sendMessage(p, booster.name);
+                            getIsland().addBoosterTime(booster.name, booster.time);
+                        } else {
+                            p.sendMessage(StringUtils.color((response == MiscUtils.BuyResponse.NOT_ENOUGH_VAULT ? IridiumSkyblock.getInstance().getMessages().cantBuy : IridiumSkyblock.getInstance().getMessages().notEnoughCrystals)
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        }
                     } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().boosterAlreadyActive
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                .replace("%booster%", booster.name)));
                     }
-                } else {
-                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().farmingBoosterActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
-            }
-            if (e.getSlot() == IridiumSkyblock.getBoosters().experianceBooster.slot && IridiumSkyblock.getBoosters().experianceBooster.enabled) {
-                if (getIsland().getExpBooster() == 0) {
-                    if (Utils.canBuy(p, IridiumSkyblock.getBoosters().experianceBooster.vaultCost, IridiumSkyblock.getBoosters().experianceBooster.crystalsCost)) {
-                        getIsland().setExpBooster(IridiumSkyblock.getBoosters().experianceBooster.time);
-                    } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
-                } else {
-                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().expBoosterActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
-            }
-            if (e.getSlot() == IridiumSkyblock.getBoosters().flightBooster.slot && IridiumSkyblock.getBoosters().flightBooster.enabled) {
-                if (getIsland().getFlightBooster() == 0) {
-                    if (Utils.canBuy(p, IridiumSkyblock.getBoosters().flightBooster.vaultCost, IridiumSkyblock.getBoosters().flightBooster.crystalsCost)) {
-                        getIsland().setFlightBooster(IridiumSkyblock.getBoosters().flightBooster.time);
-                    } else {
-                        e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().notEnoughCrystals.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    }
-                } else {
-                    e.getWhoClicked().sendMessage(Utils.color(IridiumSkyblock.getMessages().flightBoosterActive.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
                 }
             }
         }

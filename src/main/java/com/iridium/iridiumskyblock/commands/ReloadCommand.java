@@ -1,7 +1,8 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -10,13 +11,18 @@ import java.util.List;
 public class ReloadCommand extends Command {
 
     public ReloadCommand() {
-        super(Collections.singletonList("reload"), "Reload your configurations","reload", false);
+        super(Collections.singletonList("reload"), "Reload your configurations", "iridiumskyblock.reload", false);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         IridiumSkyblock.getInstance().loadConfigs();
-        sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

@@ -2,7 +2,9 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -11,30 +13,41 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class GUI {
 
-    private Inventory inventory;
     public int islandID;
     public int scheduler;
+    private Inventory inventory;
 
     public GUI() {
 
     }
 
     public GUI(Island island, int size, String name) {
-        islandID = island.getId();
-        this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
+        islandID = island.id;
+        this.inventory = Bukkit.createInventory(null, size, StringUtils.color(name));
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 2);
     }
 
     public GUI(int size, String name) {
-        this.inventory = Bukkit.createInventory(null, size, Utils.color(name));
+        this.inventory = Bukkit.createInventory(null, size, StringUtils.color(name));
         scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, 2);
+    }
+
+    public GUI(Island island, int size, String name, int refresh) {
+        islandID = island.id;
+        this.inventory = Bukkit.createInventory(null, size, StringUtils.color(name));
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, refresh);
+    }
+
+    public GUI(int size, String name, int refresh) {
+        this.inventory = Bukkit.createInventory(null, size, StringUtils.color(name));
+        scheduler = Bukkit.getScheduler().scheduleAsyncRepeatingTask(IridiumSkyblock.getInstance(), this::addContent, 0, refresh);
     }
 
     public void addContent() {
         if (inventory.getViewers().isEmpty()) return;
         for (int i = 0; i < inventory.getSize(); i++) {
-            if (inventory.getItem(i) == null || inventory.getItem(i).getType().equals(Material.AIR)) {
-                setItem(i, Utils.makeItemHidden(IridiumSkyblock.getInventories().background));
+            if (inventory.getItem(i) == null || inventory.getItem(i).getType() == Material.AIR) {
+                setItem(i, ItemStackUtils.makeItemHidden(IridiumSkyblock.getInstance().getInventories().background));
             }
         }
     }
@@ -52,6 +65,6 @@ public abstract class GUI {
     }
 
     public Island getIsland() {
-        return IridiumSkyblock.getIslandManager().getIslandViaId(islandID);
+        return IslandManager.getIslandViaId(islandID);
     }
 }

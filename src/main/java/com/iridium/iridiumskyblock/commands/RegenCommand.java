@@ -1,11 +1,12 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.Role;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -28,48 +29,72 @@ public class RegenCommand extends Command {
                 if (user.bypassing || user.getIsland().getPermissions(user.role).regen) {
                     long time = user.getIsland().canGenerate() / 1000;
                     if (time == 0 || user.bypassing) {
-                        if (IridiumSkyblock.getInstance().schems.size() == 1) {
+                        if (IridiumSkyblock.getInstance().getSchematics().schematicList.size() == 1) {
                             p.openInventory(new ConfirmationGUI(user.getIsland(), () -> {
-                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().schems.keySet()) {
-                                    user.getIsland().setSchematic(schematic.name);
-                                    user.getIsland().setHome(user.getIsland().getHome().add(schematic.x, schematic.y, schematic.z));
-                                    user.getIsland().setNetherhome(user.getIsland().getNetherhome().add(schematic.x, schematic.y, schematic.z));
+                                for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().getSchematics().schematicList) {
+                                    user.getIsland().schematic = schematic.overworldData.schematic;
+                                    user.getIsland().netherschematic = schematic.netherData.schematic;
+                                    user.getIsland().home = user.getIsland().home.add(schematic.x, schematic.y, schematic.z);
+                                    break;
                                 }
                                 user.getIsland().pasteSchematic(true);
-                                if (IridiumSkyblock.getConfiguration().restartUpgradesOnRegen) {
+                                if (IridiumSkyblock.getInstance().getConfiguration().restartUpgradesOnRegen) {
                                     user.getIsland().resetMissions();
                                     user.getIsland().setSizeLevel(1);
                                     user.getIsland().setMemberLevel(1);
                                     user.getIsland().setWarpLevel(1);
                                     user.getIsland().setOreLevel(1);
-                                    user.getIsland().setFlightBooster(0);
-                                    user.getIsland().setExpBooster(0);
-                                    user.getIsland().setFarmingBooster(0);
-                                    user.getIsland().setSpawnerBooster(0);
-                                    user.getIsland().setCrystals(0);
-                                    user.getIsland().exp = 0;
-                                    user.getIsland().money = 0;
                                 }
                                 user.getIsland().teleportPlayersHome();
-                            }, IridiumSkyblock.getMessages().resetAction).getInventory());
+                            }, IridiumSkyblock.getInstance().getMessages().resetAction).getInventory());
                         } else {
-                            p.openInventory(user.getIsland().getSchematicSelectGUI().getInventory());
+                            p.openInventory(user.getIsland().schematicSelectGUI.getInventory());
                         }
                     } else {
                         int day = (int) TimeUnit.SECONDS.toDays(time);
-                        int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400));
+                        int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400L));
                         int minute = (int) Math.floor((time - day * 86400 - hours * 3600) / 60.00);
                         int second = (int) Math.floor((time - day * 86400 - hours * 3600) % 60.00);
-                        p.sendMessage(Utils.color(IridiumSkyblock.getMessages().regenCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regenCooldown.replace("%days%", day + "").replace("%hours%", hours + "").replace("%minutes%", minute + "").replace("%seconds%", second + "").replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeIslandOwner.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player p = (Player) sender;
+        if (island != null) {
+            if (IridiumSkyblock.getInstance().getSchematics().schematicList.size() == 1) {
+                p.openInventory(new ConfirmationGUI(island, () -> {
+                    for (Schematics.FakeSchematic schematic : IridiumSkyblock.getInstance().getSchematics().schematicList) {
+                        island.schematic = schematic.overworldData.schematic;
+                        island.netherschematic = schematic.netherData.schematic;
+                        island.home = island.home.add(schematic.x, schematic.y, schematic.z);
+                        break;
+                    }
+                    island.pasteSchematic(true);
+                    if (IridiumSkyblock.getInstance().getConfiguration().restartUpgradesOnRegen) {
+                        island.resetMissions();
+                        island.setSizeLevel(1);
+                        island.setMemberLevel(1);
+                        island.setWarpLevel(1);
+                        island.setOreLevel(1);
+                    }
+                    island.teleportPlayersHome();
+                }, IridiumSkyblock.getInstance().getMessages().resetAction).getInventory());
+            } else {
+                p.openInventory(island.schematicSelectGUI.getInventory());
+            }
+        } else {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

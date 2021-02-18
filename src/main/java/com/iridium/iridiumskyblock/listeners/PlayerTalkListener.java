@@ -3,7 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,73 +14,81 @@ public class PlayerTalkListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerTalk(AsyncPlayerChatEvent event) {
-        try {
-            final Player player = event.getPlayer();
-            final User user = User.getUser(player);
+        final Player player = event.getPlayer();
+        final User user = User.getUser(player);
 
-            if (user.warp != null) {
-                if (user.warp.getPassword().equals(event.getMessage())) {
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.teleport(user.warp.getLocation()));
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().teleporting
-                            .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                } else {
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().wrongPassword
-                            .replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                    user.warp = null;
-                }
-                event.setCancelled(true);
+        if (user.islandWarp != null) {
+            if (user.islandWarp.getPassword().equals(event.getMessage())) {
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    player.teleport(user.islandWarp.getLocation());
+                    user.islandWarp = null;
+                });
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleporting
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            } else {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().wrongPassword
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                user.islandWarp = null;
             }
-
-            final Island island = user.getIsland();
-
-            String format = event.getFormat();
-            if (format.contains(IridiumSkyblock.getConfiguration().chatRankPlaceholder)) {
-                if (island == null) {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, "");
-                } else {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "");
-                }
-            }
-            if (format.contains(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder)) {
-                if (island == null) {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, "");
-                } else {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName());
-                }
-            }
-            if (format.contains(IridiumSkyblock.getConfiguration().chatValuePlaceholder)) {
-                if (island == null) {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, "");
-                } else {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getValue() + "");
-                }
-            }
-            if (format.contains(IridiumSkyblock.getConfiguration().chatLevelPlaceholder)) {
-                if (island == null) {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, "");
-                } else {
-                    format = format.replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, String.format("%.2f", island.getValue()));
-                }
-            }
-
-            if (island != null && user.islandChat) {
-                for (String member : island.getMembers()) {
-                    final Player islandPlayer = Bukkit.getPlayer(User.getUser(member).name);
-                    if (islandPlayer == null) continue;
-                    player.sendMessage(Utils.color(IridiumSkyblock.getMessages().chatFormat)
-                            .replace(IridiumSkyblock.getConfiguration().chatValuePlaceholder, island.getValue() + "")
-                            .replace(IridiumSkyblock.getConfiguration().chatNAMEPlaceholder, island.getName())
-                            .replace(IridiumSkyblock.getConfiguration().chatLevelPlaceholder, String.format("%.2f", island.getValue()))
-                            .replace(IridiumSkyblock.getConfiguration().chatRankPlaceholder, Utils.getIslandRank(island) + "")
-                            .replace("%player%", player.getName())
-                            .replace("%message%", event.getMessage()));
-                }
-                event.setCancelled(true);
-            }
-
-            event.setFormat(Utils.color(format));
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
+            event.setCancelled(true);
         }
+
+        final Island island = user.getIsland();
+
+        String format = event.getFormat();
+        if (format.contains(IridiumSkyblock.getInstance().getConfiguration().chatRankPlaceholder)) {
+            if (island == null) {
+                format = format.replace(IridiumSkyblock.getInstance().getConfiguration().chatRankPlaceholder, "");
+            } else {
+                format = format.replace(IridiumSkyblock.getInstance().getConfiguration().chatRankPlaceholder, Integer.toString(island.getRank()));
+            }
+        }
+        if (format.contains(IridiumSkyblock.getInstance().getConfiguration().chatNAMEPlaceholder)) {
+            if (island == null) {
+                format = format.replace(IridiumSkyblock.getInstance().getConfiguration().chatNAMEPlaceholder, "");
+            } else {
+                format = format.replace(IridiumSkyblock.getInstance().getConfiguration().chatNAMEPlaceholder, island.getName());
+            }
+        }
+        if (format.contains(IridiumSkyblock.getInstance().getConfiguration().chatValuePlaceholder)) {
+            if (island == null) {
+                format = format.replace(IridiumSkyblock.getInstance().getConfiguration().chatValuePlaceholder, "");
+            } else {
+                format = format.replace(IridiumSkyblock.getInstance().getConfiguration().chatValuePlaceholder, island.getFormattedValue());
+            }
+        }
+        if (format.contains(IridiumSkyblock.getInstance().getConfiguration().chatLevelPlaceholder)) {
+            if (island == null) {
+                format = format.replace(IridiumSkyblock.getInstance().getConfiguration().chatLevelPlaceholder, "");
+            } else {
+                format = format.replace(IridiumSkyblock.getInstance().getConfiguration().chatLevelPlaceholder, island.getFormattedLevel());
+            }
+        }
+
+        if (island != null && user.islandChat) {
+            for (String member : island.members) {
+                final Player islandPlayer = Bukkit.getPlayer(User.getUser(member).name);
+                if (islandPlayer == null) continue;
+                islandPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().chatFormat)
+                        .replace(IridiumSkyblock.getInstance().getConfiguration().chatValuePlaceholder, island.getFormattedValue())
+                        .replace(IridiumSkyblock.getInstance().getConfiguration().chatNAMEPlaceholder, island.getName())
+                        .replace(IridiumSkyblock.getInstance().getConfiguration().chatLevelPlaceholder, island.getFormattedLevel())
+                        .replace(IridiumSkyblock.getInstance().getConfiguration().chatRankPlaceholder, Integer.toString(island.getRank()))
+                        .replace("%player%", player.getName())
+                        .replace("%message%", event.getMessage()));
+            }
+            Bukkit.getServer().getOnlinePlayers().stream()
+                    .filter(onlinePlayer -> User.getUser(onlinePlayer).spyingIslandsChat)
+                    .forEach((spyingPlayer) -> spyingPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().spyChatFormat)
+                            .replace(IridiumSkyblock.getInstance().getConfiguration().chatValuePlaceholder, island.getFormattedValue())
+                            .replace(IridiumSkyblock.getInstance().getConfiguration().chatNAMEPlaceholder, island.getName())
+                            .replace(IridiumSkyblock.getInstance().getConfiguration().chatLevelPlaceholder, island.getFormattedLevel())
+                            .replace(IridiumSkyblock.getInstance().getConfiguration().chatRankPlaceholder, Integer.toString(island.getRank()))
+                            .replace("%player%", player.getName())
+                            .replace("%message%", event.getMessage())));
+            event.setCancelled(true);
+        }
+
+        event.setFormat(StringUtils.color(format));
     }
 }

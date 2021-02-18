@@ -1,8 +1,6 @@
 package com.iridium.iridiumskyblock;
 
 public class Permissions {
-
-
     public boolean breakBlocks;
     public boolean placeBlocks;
     public boolean interact;
@@ -18,8 +16,9 @@ public class Permissions {
     public boolean withdrawBank;
     public boolean killMobs;
     public boolean pickupItems;
+    public boolean breakSpawners;
 
-    public Permissions(boolean breakBlocks, boolean placeBlocks, boolean interact, boolean kickMembers, boolean inviteMembers, boolean regen, boolean islandprivate, boolean promote, boolean demote, boolean useNetherPortal, boolean useWarps, boolean coop, boolean withdrawBank, boolean killMobs, boolean pickupItems) {
+    public Permissions(boolean breakBlocks, boolean placeBlocks, boolean interact, boolean kickMembers, boolean inviteMembers, boolean regen, boolean islandprivate, boolean promote, boolean demote, boolean useNetherPortal, boolean useWarps, boolean coop, boolean withdrawBank, boolean killMobs, boolean pickupItems, boolean breakSpawners) {
         this.breakBlocks = breakBlocks;
         this.placeBlocks = placeBlocks;
         this.interact = interact;
@@ -35,6 +34,7 @@ public class Permissions {
         this.withdrawBank = withdrawBank;
         this.killMobs = killMobs;
         this.pickupItems = pickupItems;
+        this.breakSpawners = breakSpawners;
     }
 
     public Permissions() {
@@ -53,5 +53,6 @@ public class Permissions {
         withdrawBank = true;
         killMobs = true;
         pickupItems = true;
+        breakSpawners = true;
     }
 }

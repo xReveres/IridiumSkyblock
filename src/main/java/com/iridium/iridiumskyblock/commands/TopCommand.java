@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,8 +17,12 @@ public class TopCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        p.openInventory(IridiumSkyblock.topGUI.getInventory());
+        p.openInventory(IridiumSkyblock.getInstance().getTopGUI().getInventory());
+    }
 
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

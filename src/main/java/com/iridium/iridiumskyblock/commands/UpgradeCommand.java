@@ -1,8 +1,9 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,9 +21,19 @@ public class UpgradeCommand extends Command {
         Player p = (Player) sender;
         User user = User.getUser(p);
         if (user.getIsland() != null) {
-            p.openInventory(user.getIsland().getUpgradeGUI().getInventory());
+            p.openInventory(user.getIsland().upgradeGUI.getInventory());
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player p = (Player) sender;
+        if (island != null) {
+            p.openInventory(island.upgradeGUI.getInventory());
+        } else {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

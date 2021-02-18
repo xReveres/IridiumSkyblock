@@ -1,6 +1,10 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
+import com.iridium.iridiumskyblock.Role;
+import com.iridium.iridiumskyblock.User;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,18 +29,23 @@ public class WarpsCommand extends Command {
             island = user.getIsland();
         }
         if (island != null) {
-            if (island.getPermissions(user.islandID == island.getId() ? user.role : Role.Visitor).useWarps || user.bypassing) {
-                p.openInventory(island.getWarpGUI().getInventory());
+            if (island.getPermissions(user.islandID == island.id ? user.role : Role.Visitor).useWarps || user.bypassing) {
+                p.openInventory(island.warpGUI.getInventory());
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             if (user.getIsland() != null) {
-                p.openInventory(user.getIsland().getWarpGUI().getInventory());
+                p.openInventory(user.getIsland().warpGUI.getInventory());
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

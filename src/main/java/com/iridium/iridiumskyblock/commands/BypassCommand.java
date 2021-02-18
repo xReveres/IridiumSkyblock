@@ -1,8 +1,9 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class BypassCommand extends Command {
 
     public BypassCommand() {
-        super(Collections.singletonList("bypass"), "Bypass all island restrictions", "bypass", true);
+        super(Collections.singletonList("bypass"), "Bypass all island restrictions", "iridiumskyblock.bypass", true);
     }
 
     @Override
@@ -21,10 +22,15 @@ public class BypassCommand extends Command {
         User u = User.getUser(p);
         u.bypassing = !u.bypassing;
         if (u.bypassing) {
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().nowBypassing.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().nowBypassing.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
-            p.sendMessage(Utils.color(IridiumSkyblock.getMessages().noLongerBypassing.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noLongerBypassing.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override

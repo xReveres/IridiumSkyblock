@@ -20,7 +20,15 @@ public class PermissionsCommand extends Command {
         User user = User.getUser(player);
         Island island = user.getIsland();
         if (island != null) {
-            player.openInventory(island.getPermissionsGUI().getInventory());
+            player.openInventory(island.permissionsGUI.getInventory());
+        }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        Player player = (Player) sender;
+        if (island != null) {
+            player.openInventory(island.permissionsGUI.getInventory());
         }
     }
 

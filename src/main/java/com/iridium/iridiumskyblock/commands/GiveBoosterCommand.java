@@ -3,25 +3,25 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GiveBoosterCommand extends Command {
 
     public GiveBoosterCommand() {
-        super(Collections.singletonList("givebooster"), "Give an Island a Booster", "givebooster", false);
+        super(Collections.singletonList("givebooster"), "Give an Island a Booster", "iridiumskyblock.givebooster", false);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 4 && args.length != 3) {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getConfiguration().prefix) + "/is givebooster <player> <booster> <amount>");
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix) + "/is givebooster <player> <booster> <time>");
             return;
         }
 
@@ -30,36 +30,34 @@ public class GiveBoosterCommand extends Command {
             if (player != null) {
                 Island island = User.getUser(player).getIsland();
                 if (island != null) {
-                    try {
+                    if (args.length == 3 || org.apache.commons.lang.StringUtils.isNumeric(args[3])) {
                         int amount = args.length == 3 ? 3600 : Integer.parseInt(args[3]);
-                        if (args[2].equalsIgnoreCase("exp")) {
-                            island.setExpBooster(amount);
+                        if (IridiumSkyblock.getInstance().getIslandBoosters().stream().map(booster -> booster.name).collect(Collectors.toList()).contains(args[2])) {
+                            island.addBoosterTime(args[2], amount);
+                        } else {
+                            sender.sendMessage("Unknown booster");
                         }
-                        if (args[2].equalsIgnoreCase("farming")) {
-                            island.setFarmingBooster(amount);
-                        }
-                        if (args[2].equalsIgnoreCase("flight")) {
-                            island.setFlightBooster(amount);
-                        }
-                        if (args[2].equalsIgnoreCase("spawner")) {
-                            island.setSpawnerBooster(amount);
-                        }
-                    } catch (Exception e) {
-                        sender.sendMessage(args[2] + "is not a number");
+                    } else {
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notNumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%error%", args[2])));
                     }
                 } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
     }
 
     @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
+    }
+
+    @Override
     public List<String> TabComplete(CommandSender cs, org.bukkit.command.Command cmd, String s, String[] args) {
         if (args.length == 3) {
-            return Arrays.asList("exp", "farming", "flight", "spawner");
+            return IridiumSkyblock.getInstance().getIslandBoosters().stream().map(booster -> booster.name).collect(Collectors.toList());
         }
         return null;
     }

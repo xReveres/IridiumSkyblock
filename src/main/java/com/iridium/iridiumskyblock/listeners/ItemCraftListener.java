@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.utils.MiscUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,23 +13,19 @@ public class ItemCraftListener implements Listener {
 
     @EventHandler
     public void onItemCraft(PrepareItemCraftEvent event) {
-        try {
-            final CraftingInventory inventory = event.getInventory();
-            if (inventory.getResult() == null) return;
+        final CraftingInventory inventory = event.getInventory();
+        if (inventory.getResult() == null) return;
 
-            for (ItemStack itemStack : inventory.getContents()) {
-                if (!Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal).isSimilar(itemStack)) continue;
-                inventory.setResult(null);
-                return;
-            }
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().sendErrorMessage(e);
+        for (ItemStack itemStack : inventory.getContents()) {
+            if (MiscUtils.getCrystals(itemStack) == 0) continue;
+            inventory.setResult(null);
+            return;
         }
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getInventory().getType() == InventoryType.ANVIL && Utils.makeItemHidden(IridiumSkyblock.getInventories().crystal).isSimilar(event.getCurrentItem())) {
+        if (event.getInventory().getType() == InventoryType.ANVIL && MiscUtils.getCrystals(event.getCurrentItem()) != 0) {
             event.setCancelled(true);
         }
     }

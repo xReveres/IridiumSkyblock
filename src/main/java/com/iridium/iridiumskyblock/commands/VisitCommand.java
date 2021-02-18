@@ -1,8 +1,10 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Island;
 import com.iridium.iridiumskyblock.User;
-import com.iridium.iridiumskyblock.Utils;
+import com.iridium.iridiumskyblock.gui.VisitGUI;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -21,24 +23,29 @@ public class VisitCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length != 2) {
-            p.openInventory(IridiumSkyblock.visitGUI.get(1).getInventory());
+            VisitGUI visitGUI = IridiumSkyblock.getInstance().getVisitGUI().getPage(1);
+            visitGUI.addContent();
+            p.openInventory(visitGUI.getInventory());
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-        if (player != null) {
-            User user = User.getUser(player);
-            if (user.getIsland() != null) {
-                if (user.getIsland().isVisit() || User.getUser(p).bypassing) {
-                    user.getIsland().teleportHome(p);
-                } else {
-                    sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
-                }
+        User user = User.getUser(player);
+        User commandExecutor = User.getUser(p);
+        Island island = user.getIsland();
+        if (island != null) {
+            if (island.visit || User.getUser(p).bypassing || p.hasPermission("iridiumskyblock.visitbypass") || user.hasCoopVisitPermissions(commandExecutor)) {
+                island.teleportHome(p);
             } else {
-                sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playersIslandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(Utils.color(IridiumSkyblock.getMessages().playerOffline.replace("%prefix%", IridiumSkyblock.getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+    }
+
+    @Override
+    public void admin(CommandSender sender, String[] args, Island island) {
+        execute(sender, args);
     }
 
     @Override
